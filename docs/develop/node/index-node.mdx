@@ -11,6 +11,99 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Find Tutorials, Examples and Technical articles that will help you to develop with Redis and Node.js/JavaScript.
 
-## Getting Started
+### Getting Started
 
-The Node.js community has built many client libraries that you can find here. For your first steps with Node.js and Redis, this article will show how to use the recommended libraries: ioredis and node-redis
+The Node.js community has built many client libraries that you can find [here](https://redis.io/clients#nodejs). 
+For your first steps with Node.js and Redis, this article will show how to use the recommended libraries: [ioredis](https://github.com/luin/ioredis) and [node-redis](https://github.com/NodeRedis/node-redis).
+
+<Tabs
+  defaultValue="ioredis"
+  values={[
+    {label: 'IO redis', value: 'ioredis'},
+    {label: 'Node Redis', value: 'node_redis'},
+  ]}>
+    <TabItem value="ioredis"> 
+
+### Getting Started with ioredis
+
+1. Install the ioredis library using `npm` (or `yarn`)
+
+    ```bash
+    npm install ioredis
+    ```
+
+
+3. Write your application code
+
+    ```javascript
+    const Redis = require("ioredis");
+    const redis = new Redis(6379, "localhost");
+
+    redis.set("mykey", "Hello from io-redis!");
+    redis.get("mykey", function(err, result){
+        if (err) { throw err; }
+    
+        console.log(result);
+    });
+
+    // use the promise instead of callback
+    redis.get("mykey").then(function (result) {
+        console.log(result);
+    });
+
+    redis.zadd("vehicles", 0, "car", 0, "bike");
+    redis.zrange("vehicles", 0, -1, "WITHSCORES").then((res) => console.log(res));
+
+    ```
+
+Find more information about Redis & io-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/ioredis)".
+
+  </TabItem>
+  <TabItem value="node_redis">
+
+### Getting Started with node-redis
+
+1. Install the Redis library using `npm` (or `yarn`)
+
+    ```bash
+    npm install redis
+    ```
+
+
+3. Write your application code
+
+    ```javascript
+    const redis = require("redis");
+    
+    const client = redis.createClient ({
+        port : 6379,
+        host : "localhost"
+    });
+
+    client.set("mykey", "Hello from node-redis!");
+    client.get("mykey", function(err, result){
+        if (err) { throw err; }
+    
+        console.log(result);
+    });
+
+    const vehiclesData = ["vehicles", 4, "car", 2, "bike"];
+    client.zadd(vehiclesData, function(addError, addResponse) {
+        if (addError) { throw addError; }
+
+        console.log("added " + addResponse + " items.");
+
+        const query = ["vehicles", 0, -1];
+        client.zrange(query, function(rangeError, rangeResponse) {
+            if (rangeError) {throw rangeError;}
+            console.log("vehicles", rangeResponse);
+        });
+    });
+
+    ```
+
+Find more information about Redis & node-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/node-redis)".
+
+
+  </TabItem>
+</Tabs>
