@@ -9,6 +9,7 @@ module.exports = {
   organizationName: 'redis-developer', // Usually your GitHub org/user name.
   projectName: 'redis-developer', // Usually your repo name.
   themeConfig: {
+    hideableSidebar: true,
     navbar: {
       title: 'Redis Developer',
       logo: {
@@ -19,7 +20,7 @@ module.exports = {
         {
           to: 'docs/',
           activeBasePath: 'docs',
-          label: 'Getting Started v2',
+          label: 'Getting Started',
           position: 'left',
         },
 

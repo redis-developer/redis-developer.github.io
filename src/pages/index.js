@@ -85,11 +85,11 @@ function Home() {
             <div className="row text--center">
             <a class="col col--2" href={useBaseUrl('docs/develop/java')}>Java</a>            
 
-            <a class="col col--2" href={useBaseUrl('develop/python')}>Python</a>            
+            <a class="col col--2" href={useBaseUrl('docs/develop/python')}>Python</a>            
 
-            <a class="col col--2" href={useBaseUrl('develop/node')}>Node.js</a>            
+            <a class="col col--2" href={useBaseUrl('docs/develop/node')}>Node.js</a>            
 
-            <a class="col col--2" href={useBaseUrl('develop/golang')}>Golang</a>            
+            <a class="col col--2" href={useBaseUrl('docs/develop/golang')}>Golang</a>            
 
 
             </div>
