@@ -7,6 +7,6 @@ module.exports = {
       href: '/' // The target URL (string).
     }],
     Develop: ['develop/java/index-java', 'develop/node/index-node' ],
-    Features: ['mdx'],
+    'Tools & Guides': ['tools/index-tools','guides/index-guides'],
   },
 };
