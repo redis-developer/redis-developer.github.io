@@ -2,7 +2,7 @@ module.exports = {
   title: 'Redis Developer',
   tagline: 'The Home of Redis Developer',
   url: 'https://redis-developer.github.io/',
-  baseUrl: '/redis-developer/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
