@@ -36,7 +36,18 @@ module.exports = {
               label: 'Java',
               to: 'docs/develop/java',
             },
-
+            {
+              label: 'Python',
+              to: 'docs/develop/python',
+            },
+            {
+              label: 'Node.js',
+              to: 'docs/develop/node',
+            },
+            {
+              label: 'Go',
+              to: 'docs/develop/golang',
+            },                        
           ],
         },
         {
