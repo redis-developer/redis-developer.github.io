@@ -9,15 +9,65 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Find tutorials, examples and technical articles that will help you to develop with Redis and Python.
+Find Tutorials, Examples and Technical articles that will help you to develop with Redis and Python.
 
-### Getting Started
+## Getting Started
+
+The Python community has built many client libraries that you can find [here](https://redis.io/clients#python).
+For your first steps with Python and Redis, this article will show how to use the recommended library: [redis-py](https://github.com/andymccurdy/redis-py).
 
 
-```python
 
-import x
+<Tabs
+  defaultValue="redis-py"
+  values={[
+    {label: 'Redis Py', value: 'redis-py'},
+  ]}>
+  <TabItem value="redis-py">
 
-for 
+### Getting Started with redis-py
 
-```
+1. Install the Redis library using `pip`
+
+    ```bash
+    pip3 install redis
+    ```
+
+
+3. Write your application code
+
+    ```python
+    import redis
+
+    redis = redis.Redis(
+        host= 'localhost',
+        port= '6379')
+
+    redis.set('mykey', 'Hello from Python!')
+    value = redis.get('mykey') 
+    print(value)
+
+    redis.zadd('vehicles', {'car' : 0})
+    redis.zadd('vehicles', {'bike' : 0})
+    vehicles = redis.zrange('vehicles', 0, -1)
+    print(vehicles)
+    ```
+
+Find more information about Redis & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/python/redispy)".
+
+  </TabItem>
+</Tabs>
+  
+
+  ---
+
+## Redis University
+
+### [Redis for Python Developers](https://university.redislabs.com/courses/ru102py/)
+
+A complete introduction to Redis for Python developers.
+
+
+<div class="text--center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BxRJRNt7Qwc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
