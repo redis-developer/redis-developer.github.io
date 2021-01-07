@@ -1,0 +1,14 @@
+---
+id: import-data
+title: Online Database Migration from Amazon ElastiCache to Redis Enterprise Cloud Made Simple
+sidebar_label: Import Data
+slug: /guides/import-data/database-migration-aws-elasticache-redis-enterprise-cloud
+---
+
+Most of the database migration tools available today are offline in nature. They are complex and require manual intervention. 
+
+If you want to migrate your data from Amazon ElastiCache to Redis Enterprise Cloud, for example, the usual process is to back up your ElastiCache data to an Amazon S3 bucket and then import your data using the Redis Enterprise Cloud UI. This process can require painful downtime and could result in data loss. Other available techniques include creating point-in-time snapshots of the source Redis server and applying the changes to the destination servers to keep both the servers in sync. That might sound like a good approach, but it can be challenging when you have to maintain dozens of scripts to implement the migration strategy. 
+
+So we’ve come up with a different approach:
+
+### Introducing RIOT 

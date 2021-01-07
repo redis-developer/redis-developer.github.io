@@ -103,6 +103,15 @@ function Home() {
 
           <h1>Sample and Demos</h1>
 
+          <b>New Article</b>
+          <p>
+            <h3>
+              <a href={useBaseUrl('/docs/guides/import-data/database-migration-aws-elasticache-redis-enterprise-cloud')}>
+             Database Migration</a>
+            </h3>
+          
+          </p>
+
         </div>
         </section>
 
