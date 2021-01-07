@@ -83,14 +83,34 @@ function Home() {
             <h1>Resources by Languages</h1>
             <p className="">Find documentation, sample code and tools to develop with your favorite language.</p>
             <div className="row text--center">
-            <a class="col col--2" href={useBaseUrl('docs/develop/java')}>Java</a>            
 
-            <a class="col col--2" href={useBaseUrl('docs/develop/python')}>Python</a>            
+            <div className=" col col--2 text--center">
+              <a  href={useBaseUrl('docs/develop/java')}>
+              <img src={useBaseUrl('/img/logos/java.png')} />
+                <h4>Java</h4>
+              </a>     
+            </div>       
 
-            <a class="col col--2" href={useBaseUrl('docs/develop/node')}>Node.js</a>            
+            <div className=" col col--2 text--center">
+              <a  href={useBaseUrl('docs/develop/python')}>
+              <img src={useBaseUrl('/img/logos/python.png')} />
+                <h4>Python</h4>
+              </a>     
+            </div> 
 
-            <a class="col col--2" href={useBaseUrl('docs/develop/golang')}>Golang</a>            
+            <div className=" col col--2 text--center">
+              <a  href={useBaseUrl('docs/develop/node')}>
+              <img src={useBaseUrl('/img/logos/nodejs.png')} />
+                <h4>Node.js</h4>
+              </a>     
+            </div>          
 
+            <div className=" col col--2 text--center">
+              <a  href={useBaseUrl('docs/develop/golang')}>
+              <img src={useBaseUrl('/img/logos/golang.png')} />
+                <h4>Go</h4>
+              </a>     
+            </div>    
 
             </div>
 
