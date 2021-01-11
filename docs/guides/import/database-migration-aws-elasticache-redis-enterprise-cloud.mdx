@@ -38,14 +38,13 @@ Use SSH to connect to this new EC2 instance from your computer as shown here:
 ssh -i “public key” <AWS EC2 Instance>
 ```
 
-## Step 2 - Install the redis-cli tool on this new instance by running this command:
-
+## Step 2 - Install the redis-cli tool 
 ```
 $ sudo apt update
 # sudo apt install -y redis-tools
 ```
 
-###  Using redis-cli to verify the connectivity with the ElastiCache database
+###  Verify the connectivity with the ElastiCache database
 
 Syntax:
 
@@ -67,7 +66,9 @@ Run the commands below to set up the migration tool.
 
 ### Prerequisites: 
 
-#### Install Java: We recommended using OpenJDK 11 or later:
+#### Install Java
+
+We recommended using OpenJDK 11 or later:
 
 ```
 sudo add-apt-repository ppa:openjdk-r/ppa && sudo apt-get update -q && sudo apt install -y openjdk-11-jdk
