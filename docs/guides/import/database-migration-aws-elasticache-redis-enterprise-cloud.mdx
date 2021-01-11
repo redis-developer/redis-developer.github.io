@@ -28,7 +28,7 @@ You will require a few resources to use the migration tool:
 - An Amazon EC2 instance based on Linux
 
 
-# Setting up an Amazon EC2 instance
+## Step 1 - Setting up an Amazon EC2 instance
 
 You can either create a new EC2 instance or leverage an existing one. In our example, we will first create an instance on Amazon Web Services (AWS). The most common scenario is to access an ElastiCache cluster from an Amazon EC2 instance in the same Amazon Virtual Private Cloud (Amazon VPC). We have used Ubuntu 16.04 LTS for this setup, but you can choose the Ubuntu or Debian distribution of your choice.
 
@@ -38,14 +38,14 @@ Use SSH to connect to this new EC2 instance from your computer as shown here:
 ssh -i “public key” <AWS EC2 Instance>
 ```
 
-## Install the redis-cli tool on this new instance by running this command:
+## Step 2 - Install the redis-cli tool on this new instance by running this command:
 
 ```
 $ sudo apt update
 # sudo apt install -y redis-tools
 ```
 
-## Using redis-cli to verify the connectivity with the ElastiCache database
+###  Using redis-cli to verify the connectivity with the ElastiCache database
 
 Syntax:
 
@@ -61,19 +61,19 @@ $ sudo redis-cli -h <elasticache primary endpoint> -p 6379
 
 Ensure that the above command allows you to connect to the remote Redis database successfully. 
 
-# Using the RIOT migration tool
+## Step 3 - Using the RIOT migration tool
 
 Run the commands below to set up the migration tool. 
 
-Prerequisites: 
+### Prerequisites: 
 
-## Install Java: We recommended using OpenJDK 11 or later:
+#### Install Java: We recommended using OpenJDK 11 or later:
 
 ```
 sudo add-apt-repository ppa:openjdk-r/ppa && sudo apt-get update -q && sudo apt install -y openjdk-11-jdk
 ```
 
-## Installing RIOT 
+#### Installing RIOT 
 
 Unzip the package and make sure the RIOT binaries are in place, as shown here:
 
@@ -116,6 +116,9 @@ Commands:
 ````
 
 Once Java and RIOT are installed, we are all set to begin the migration process with the command below, which replicates data directly from the source (ElastiCache) to the target (Redis Enterprise Cloud).
+
+
+## Step 4 - Migrate the data
 
 Finally, it’s time to replicate the data from ElastiCache to Redis Enterprise Cloud by running the below command:
 
