@@ -130,7 +130,7 @@ function Home() {
           <b>New Article</b>
           <p>
             <h3>
-              <a href={useBaseUrl('/docs/guides/import-data/database-migration-aws-elasticache-redis-enterprise-cloud')}>
+              <a href={useBaseUrl('/docs/guides/import/database-migration-aws-elasticache-redis-enterprise-cloud')}>
              Database Migration</a>
             </h3>
           
