@@ -18,7 +18,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
+          to: '/',
           activeBasePath: 'docs',
           label: 'Getting Started',
           position: 'left',
@@ -34,19 +34,19 @@ module.exports = {
           items: [
             {
               label: 'Java',
-              to: 'docs/develop/java',
+              to: '/develop/java',
             },
             {
               label: 'Python',
-              to: 'docs/develop/python',
+              to: '/develop/python',
             },
             {
               label: 'Node.js',
-              to: 'docs/develop/node',
+              to: '/develop/node',
             },
             {
               label: 'Go',
-              to: 'docs/develop/golang',
+              to: '/develop/golang',
             },                        
           ],
         },
@@ -90,6 +90,7 @@ module.exports = {
       {
         docs: {
           routeBasePath: '/',
+          path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
