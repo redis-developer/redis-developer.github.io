@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 const features = [
   {
     title: 'Create',
-    page: '/docs/create',
+    page: '/create',
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
@@ -19,7 +19,7 @@ const features = [
   },
   {
     title: 'Explore',
-    page: '/docs/explore',
+    page: '/explore',
     imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
@@ -29,7 +29,7 @@ const features = [
   },
   {
     title: 'Code',
-    page: '/docs/develop',
+    page: '/develop',
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
@@ -89,28 +89,28 @@ function Home() {
             <div className="row text--center">
 
             <div className=" col col--2 text--center">
-              <a  href={useBaseUrl('docs/develop/java')}>
+              <a  href={useBaseUrl('/develop/java')}>
               <img src={useBaseUrl('/img/logos/java.png')} />
                 <h4>Java</h4>
               </a>     
             </div>       
 
             <div className=" col col--2 text--center">
-              <a  href={useBaseUrl('docs/develop/python')}>
+              <a  href={useBaseUrl('/develop/python')}>
               <img src={useBaseUrl('/img/logos/python.png')} />
                 <h4>Python</h4>
               </a>     
             </div> 
 
             <div className=" col col--2 text--center">
-              <a  href={useBaseUrl('docs/develop/node')}>
+              <a  href={useBaseUrl('/develop/node')}>
               <img src={useBaseUrl('/img/logos/nodejs.png')} />
                 <h4>Node.js</h4>
               </a>     
             </div>          
 
             <div className=" col col--2 text--center">
-              <a  href={useBaseUrl('docs/develop/golang')}>
+              <a  href={useBaseUrl('/develop/golang')}>
               <img src={useBaseUrl('/img/logos/golang.png')} />
                 <h4>Go</h4>
               </a>     
@@ -130,7 +130,7 @@ function Home() {
           <b>New Article</b>
           <p>
             <h3>
-              <a href={useBaseUrl('/docs/guides/import-data/database-migration-aws-elasticache-redis-enterprise-cloud')}>
+              <a href={useBaseUrl('/guides/import-data/database-migration-aws-elasticache-redis-enterprise-cloud')}>
              Database Migration</a>
             </h3>
           
