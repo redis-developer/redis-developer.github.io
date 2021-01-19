@@ -185,6 +185,58 @@ function Home() {
         </section>
 
 
+        <section>
+        <div className="container">
+
+        <hr/>
+        <h1>Community</h1>
+
+          <div className="row">
+
+            <div className=" col " >
+              <div className="ri-container">
+
+                  <h3>Podcast</h3>
+                  <div className="ri-title">
+                  <a href="https://redisstars.simplecast.com/episodes/how-redis-delivers-15-million-myteam11-users-with-over-25-000-operations-per-second" target="_blank" >How Redis delivers 15 million+ users with over 25,000 operations per second.</a>.
+                  </div>
+
+              </div>
+            </div>
+
+            <div className=" col " >
+              <div className="ri-container">        
+
+                <h3>Blog</h3>
+                <div className="ri-title">
+                  <a href="https://redislabs.com/blog/serverless-development-with-aws-lambda-and-redis-enterprise-cloud/" target="_blank" >Serverless Development with AWS Lambda and Redis Enterprise Cloud</a>.
+                </div>
+
+              </div>
+            </div>
+
+            <div className=" col " >
+              <div className="ri-container">        
+
+                <h3>Meetup</h3>
+                <div className="ri-title">
+                  <a href="https://youtu.be/C5KkQUKhc_4?t=324" target="_blank" >How to write a Redis Client in Python, from Scratch - Silicon Valley Redis Meetup</a>.
+                </div>
+
+              </div>
+            </div>
+
+
+
+          </div>
+
+
+        </div>
+
+
+
+        </section>
+
       </main>
     </Layout>
   );
