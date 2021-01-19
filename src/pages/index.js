@@ -84,6 +84,8 @@ function Home() {
 
         <section>
         <div className="container">
+        <hr/>
+
             <h1>Resources by Languages</h1>
             <p className="">Find documentation, sample code and tools to develop with your favorite language.</p>
             <div className="row text--center">
@@ -125,18 +127,61 @@ function Home() {
         <section>
         <div className="container">
 
+        <hr/>
+
           <h1>Sample and Demos</h1>
 
-          <b>New Article</b>
-          <p>
-            <h3>
-              <a href={useBaseUrl('/guides/import/database-migration-aws-elasticache-redis-enterprise-cloud')}>
-             Database Migration</a>
-            </h3>
-          
-          </p>
+
+          <div className="row">
+
+            <div className=" col " >
+              <div className="ri-container">
+
+                  <h3>Redis 101</h3>
+
+                  <div className="ri-title">
+                  <a href="https://github.com/redis-developer/redis-connect" target="_blank" >Connect to Redis: All Languages</a>
+                  </div>
+
+                  <div className="ri-title">
+                  <a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/" target="_blank" >Getting Started with Redis Streams and Java</a>
+                  </div>
+
+                  <div className="ri-title">
+                  <a href="https://github.com/RediSearch/redisearch-getting-started" target="_blank" >Getting Started with RediSearch</a>
+                  </div>
+
+              </div>
+            </div>
+
+            <div className=" col " >
+              <div className="ri-container">        
+
+                <h3>Complete Applications</h3>
+
+                <div className="ri-title">
+                <a href="https://github.com/redis-developer/brewdis" target="_blank" >Brewdis</a>: Real-time inventory demo based on data from brewerydb.com.
+                </div>
+
+                <div className="ri-title">
+                <a href="https://github.com/redis-developer/redis-microservices-demo/" target="_blank" >Redis Movie Database</a>: Microservices and Application modernization.
+                </div>
+
+                <div className="ri-title">
+                <a href="https://github.com/redis-developer/basic-caching-demo-nodejs" target="_blank" >Basic Redis Caching</a>.
+                </div>
+
+              </div>
+            </div>
+
+
+          </div>
+
 
         </div>
+
+
+
         </section>
 
 
