@@ -1,4 +1,5 @@
 module.exports = {
+  cname: 'developer.redislabs.com',
   title: 'Redis Developer',
   tagline: 'The Home of Redis Developer',
   url: 'https://developer.redislabs.com',
