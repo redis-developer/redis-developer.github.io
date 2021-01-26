@@ -1,5 +1,5 @@
 {
-  "name": "redis-developer-hub",
+  "name": "redis-developer-site",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,14 +13,12 @@
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-alpha.70",
+    "@docusaurus/plugin-sitemap": "^2.0.0-alpha.70",
     "@docusaurus/preset-classic": "2.0.0-alpha.70",
-    "@docusaurus/theme-search-algolia": "^2.0.0-alpha.70",
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",
-    "docusaurus-plugin-sass": "^0.1.11",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-typed": "^1.2.0"
+    "react-dom": "^16.8.4"
   },
   "browserslist": {
     "production": [

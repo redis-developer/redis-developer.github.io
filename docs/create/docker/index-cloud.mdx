@@ -1,0 +1,31 @@
+---
+id: index-docker
+title: Using Docker
+sidebar_label: Docker
+slug: /create/docker
+---
+
+
+### Create a database using Docker Container
+
+### Pre-requisite
+
+- Ensure that Docker is installed in your system. 
+If you're new, refer https://docs.docker.com/docker-for-mac/install/ to install Docker on Mac. 
+
+### Run the container
+
+To pull and start the Redis Enterprise Software Docker container, run this docker run command in the terminal or command-line for your operating system.
+
+Note: On Windows, make sure Docker is configured to run Linux-based containers.
+
+```
+docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
+```
+
+The Docker container with RS runs on your localhost with port 8443 open for HTTPS connections, 9443 for REST API connections, and port 12000 open for redis client connections. You can publish other ports with -p <host_port>:<container_port>.
+ 
+
+
+
+
