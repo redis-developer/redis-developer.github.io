@@ -1,13 +1,13 @@
 module.exports = {
   title: 'Redis Developer',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  tagline: 'The Home of Redis Developer',
+  url: 'https://developer.redislabs.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'redis', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'redis-developer', // Usually your GitHub org/user name.
+  projectName: 'redis-developer.github.io', // Usually your repo name.
   themeConfig: {
     navbar: {
       style: 'dark',
