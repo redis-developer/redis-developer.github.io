@@ -1,0 +1,56 @@
+.rds-languages {
+  position: relative;
+  padding-top: 76px;
+
+  .shape {
+    position: absolute;
+    top: -61px;
+    left: calc(50% - 154px);
+  }
+
+  .languages-list {
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1050px;
+    list-style: none;
+
+    &:not(:first-child) {
+      margin-top: 76px;
+    }
+
+    li {
+      a {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        text-decoration: none;
+
+        svg {
+          margin-bottom: 27px;
+        }
+
+        .btn {
+          padding: 6px 15px 8px;
+          border-radius: 3px;
+          line-height: 1.3;
+          font-family: $roboto;
+          font-size: 16px;
+          font-weight: 500;
+          color: $red;
+          transition: background-color .2s ease-in-out, color .2s ease-in-out;
+        }
+
+        &:hover .btn {
+          background-color: $purple;
+          color: $white;
+        }
+      }
+    }
+  }
+}

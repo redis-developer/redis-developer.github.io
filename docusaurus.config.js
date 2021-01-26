@@ -1,87 +1,121 @@
 module.exports = {
   title: 'Redis Developer',
-  tagline: 'The Home of Redis Developer',
-  url: 'https://developer.redislabs.com',
+  tagline: 'The tagline of my site',
+  url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'redis-developer', // Usually your GitHub org/user name.
-  projectName: 'redis-developer', // Usually your repo name.
+  organizationName: 'redis', // Usually your GitHub org/user name.
+  projectName: 'docusaurus', // Usually your repo name.
   themeConfig: {
-    hideableSidebar: true,
     navbar: {
-      title: 'Redis Developer',
+      style: 'dark',
+      title: null,
       logo: {
-        alt: 'Redis Logo',
-        src: 'img/logos/redis.svg',
+        alt: 'Redis Developer',
+        src: 'img/logo-1.png',
       },
       items: [
         {
-          to: '/',
+          to: 'docs/',
           activeBasePath: 'docs',
-          label: 'Getting Started',
-          position: 'left',
+          label: 'Get started',
+          position: 'right',
         },
-
+        {
+          href: '#',
+          label: 'Resources',
+          position: 'right',
+        },
+        {
+          href: '#',
+          label: 'Command Reference',
+          position: 'right',
+        },
       ],
     },
     footer: {
       style: 'dark',
+      logo: {
+        alt: 'Redis Developer',
+        src: 'img/logo-2.png',
+      },
       links: [
         {
-          title: 'Develop',
+          title: 'Get Started',
           items: [
             {
-              label: 'Java',
-              to: '/develop/java',
+              label: 'Create Database',
+              to: '#',
             },
             {
-              label: 'Python',
-              to: '/develop/python',
+              label: 'Develop',
+              to: '#',
             },
             {
-              label: 'Node.js',
-              to: '/develop/node',
+              label: 'Explore your data',
+              to: '#',
             },
             {
-              label: 'Go',
-              to: '/develop/golang',
-            },                        
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/redis',
+              label: 'Best Practices',
+              to: '#',
             },
             {
-              label: 'Discussion Forums',
-              href: 'https://forum.redislabs.com/',
+              label: 'Tutorials',
+              to: '#',
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/redislabs',
+              label: 'Samples & Demos',
+              to: '#',
+            },
+            {
+              label: 'Add Superpowers to Redis',
+              to: '#',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Resources',
           items: [
             {
-              label: 'Blog',
-              href: 'https://redislabs.com/blog/tech-blog/',
+              label: 'Community',
+              href: '#',
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/redis-developer/',
+              label: 'Redis University Command Reference Tools',
+              href: '#',
+            },
+            {
+              label: 'Use Cases',
+              href: '#',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} RedisLabs Built with Docusaurus.`,
+      copyright: `Copyright: © ${new Date().getFullYear()} Redis Labs. Redis and the cube logo are registered trademarks of Redis Labs Ltd.`,
+    },
+    algolia: {
+      apiKey: 'YOUR_API_KEY',
+      indexName: 'YOUR_INDEX_NAME',
+
+      // Optional: see doc section bellow
+      contextualSearch: true,
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+    },
+    colorMode: {
+      // Hides the switch in the navbar
+      // Useful if you want to support a single color mode
+      disableSwitch: true,
+    },
+    announcementBar: {
+      id: 'sample', // Any value that will identify this message.
+      content: 'Optional Announcement bar lorem ipsum dolor sit amet consectetur <a href="#">Learn more</a>',
+      backgroundColor: '#fff', // Defaults to `#fff`.
+      textColor: '#000', // Defaults to `#000`.
+      isCloseable: true, // Defaults to `true`.
     },
   },
   presets: [
@@ -89,23 +123,16 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          routeBasePath: '/',
-          path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/redis-developer/redis-developer/edit/master/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/redis-developer/redis-developer/edit/master/blog/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/custom.scss'),
         },
       },
     ],
   ],
+  plugins: ['docusaurus-plugin-sass'],
 };

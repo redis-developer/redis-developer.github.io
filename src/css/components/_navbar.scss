@@ -1,0 +1,47 @@
+.navbar {
+  padding: 15px;
+  height: auto;
+  border-radius: 0 0 10px 10px;
+  background-color: $primary-blue;
+  box-shadow: none;
+
+  &__brand {
+    height: 26px;
+  }
+
+  &__link {
+    padding: 5px 21px;
+    font-size: 17px;
+    color: $white !important;
+  }
+
+  .DocSearch-Button {
+    margin-left: 19px;
+    padding: 0 13px;
+    width: 202px;
+    height: 32px;
+    box-shadow: none !important;
+    border-radius: 21px;
+    background-color: $zircon;
+
+    .DocSearch-Search-Icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .DocSearch-Button-Placeholder {
+      margin-left: 8px;
+      padding: 0;
+      line-height: 1;
+      font-family: $lato;
+      font-size: 14px;
+      color: $primary-blue;
+    }
+
+    .DocSearch-Button-Key {
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
