@@ -61,18 +61,18 @@ module.exports = {
               label: 'Best Practices',
               to: 'https://redislabs.com/redis-best-practices/introduction/',
             },
-            {
-              label: 'Tutorials',
-              to: '#',
-            },
-            {
-              label: 'Samples & Demos',
-              to: '#',
-            },
-            {
-              label: 'Add Superpowers to Redis',
-              to: '#',
-            },
+            // {
+            //   label: 'Tutorials',
+            //   to: '#',
+            // },
+            // {
+            //   label: 'Samples & Demos',
+            //   to: '#',
+            // },
+            // {
+            //   label: 'Add Superpowers to Redis',
+            //   to: '#',
+            // },
           ],
         },
         {
@@ -94,10 +94,10 @@ module.exports = {
               label: 'Tools',
               href: '/tools',
             },
-            {
-              label: 'Use Cases',
-              href: 'https://redislabs.com/solutions',
-            },
+            // {
+            //   label: 'Use Cases',
+            //   href: 'https://redislabs.com/solutions',
+            // },
           ],
         },
       ],
