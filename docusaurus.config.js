@@ -7,7 +7,7 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'redis-developer', // Usually your GitHub org/user name.
-  projectName: 'redis-developer.github.io', // Usually your repo name.
+  projectName: 'redis-developer', // Usually your repo name.
   themeConfig: {
     navbar: {
       style: 'dark',
