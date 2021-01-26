@@ -6,10 +6,10 @@ slug: /create/resoftware
 ---
 
 
-## Installing and Create Redis database from Source
+### Installing and Create Redis database from Source
 
 
-### Download, extract and compile Redis
+#### Download, extract and compile Redis
  
 ```
 wget http://download.redis.io/redis-stable.tar.gz
@@ -26,13 +26,16 @@ sudo cp src/redis-cli /usr/local/bin/
 ```
 Or just using ```sudo make install.```
 
-The binaries that are now compiled are available in the src directory. Run Redis with:
+The binaries that are now compiled are available in the src directory. 
+
+
+#### Running Redis Server
  
 ```
 $ redis-server
 ```
 
-### Interacting with Redis 
+#### Interacting with Redis Client
 
 ```
 $ src/redis-cli
