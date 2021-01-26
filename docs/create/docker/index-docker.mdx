@@ -6,24 +6,44 @@ slug: /create/docker
 ---
 
 
-### Create a database using Docker Container
+## Installing and creating Redis database using Docker container
 
-### Pre-requisite
+## Pre-requisites:
 
-- Ensure that Docker is installed in your system. 
-If you're new, refer https://docs.docker.com/docker-for-mac/install/ to install Docker on Mac. 
+Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-### Run the container
+### Run the Redis instance:
 
-To pull and start the Redis Enterprise Software Docker container, run this docker run command in the terminal or command-line for your operating system.
-
-Note: On Windows, make sure Docker is configured to run Linux-based containers.
 
 ```
-docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
+$ docker run --name myredis -d redis
 ```
 
-The Docker container with RS runs on your localhost with port 8443 open for HTTPS connections, 9443 for REST API connections, and port 12000 open for redis client connections. You can publish other ports with -p <host_port>:<container_port>.
+### Verify if Redis container is running or not:
+
+```
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS      NAMES
+241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
+```
+
+### Connecting to Redis Server using redis-cli client
+
+```
+$ docker exec -it 241 sh
+# redis-cli
+127.0.0.1:6379>ping
+PONG
+```
+
+### Running Redis container with Persistent Storage
+
+```
+$ docker run --name some-redis -d redis redis-server --appendonly yes
+```
+
+If persistence is enabled, data is stored in the VOLUME /data, which can be used with --volumes-from some-volume-container or -v /docker/host/dir:/data 
+
  
 
 
