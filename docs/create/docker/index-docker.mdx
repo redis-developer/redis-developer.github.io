@@ -6,20 +6,20 @@ slug: /create/docker
 ---
 
 
-## Installing and creating Redis database using Docker container
+# Installing and creating Redis database using Docker container
 
 ## Pre-requisites:
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-### Run the Redis instance:
+## Run the Redis instance:
 
 
 ```
 $ docker run --name myredis -d redis
 ```
 
-### Verify if Redis container is running or not:
+## Verify if Redis container is running or not:
 
 ```
 $ docker ps
@@ -27,7 +27,7 @@ CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS        
 241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
 ```
 
-### Connecting to Redis Server using redis-cli client
+## Connecting to Redis Server using redis-cli client
 
 ```
 $ docker exec -it 241 sh
@@ -36,7 +36,7 @@ $ docker exec -it 241 sh
 PONG
 ```
 
-### Running Redis container with Persistent Storage
+## Running Redis container with Persistent Storage
 
 ```
 $ docker run --name some-redis -d redis redis-server --appendonly yes
