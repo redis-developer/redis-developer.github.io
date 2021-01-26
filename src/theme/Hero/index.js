@@ -10,6 +10,8 @@ import SvgExplore from '@site/src/svg/Explore';
 import SvgExploreBg from '@site/src/svg/ExploreBg';
 import SvgArrowRight from '@site/src/svg/ArrowRight';
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 function Hero() {
 	return (
     <header className="rds-hero">
@@ -38,7 +40,7 @@ function Hero() {
                   <p className="description">Create a new database using Cloud, Docker or from Sources</p>
                   <span className="more">Create a database <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href="#" className="link">Read More</a>
+                <a href={useBaseUrl('/create')} className="link">Read More</a>
               </div>
 
               <div className="box box-develop">
@@ -51,7 +53,7 @@ function Hero() {
                   <p className="description">Develop your application with your favorite language</p>
                   <span className="more">Code your application <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href="#" className="link">Read More</a>
+                <a href={useBaseUrl('/develop')} className="link">Read More</a>
               </div>
 
               <div className="box box-explore">
@@ -64,7 +66,7 @@ function Hero() {
                   <p className="description">Insert, update, and explore your database using RedisInsight</p>
                   <span className="more">Explore your data <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href="#" className="link">Read More</a>
+                <a href={useBaseUrl('/explore')} className="link">Read More</a>
               </div>
             </div>
           </div>

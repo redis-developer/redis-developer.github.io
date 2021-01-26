@@ -7,6 +7,8 @@ import SvgNode from '@site/src/svg/Node';
 import SvgCSharp from '@site/src/svg/CSharp';
 import SvgGo from '@site/src/svg/Go';
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 function Languages() {
   return <section className="rds-languages">
     <SvgRectangles className="shape" />
@@ -18,35 +20,35 @@ function Languages() {
 
       <ul className="languages-list">
         <li>
-          <a href="#">
+          <a href={useBaseUrl('/develop/java')}>
             <SvgJava />
             <span className="btn">Java</span>
           </a>
         </li>
 
         <li>
-          <a href="#">
+        <a href={useBaseUrl('/develop/python')}>
             <SvgPython />
             <span className="btn">Python</span>
           </a>
         </li>
 
         <li>
-          <a href="#">
+        <a href={useBaseUrl('/develop/node')}>
             <SvgNode />
             <span className="btn">Node.js</span>
           </a>
         </li>
 
-        <li>
+        {/* <li>
           <a href="#">
             <SvgCSharp />
             <span className="btn">C#/.Net</span>
           </a>
-        </li>
+        </li> */}
 
         <li>
-          <a href="#">
+        <a href={useBaseUrl('/develop/golang')}>
             <SvgGo />
             <span className="btn">Golang</span>
           </a>

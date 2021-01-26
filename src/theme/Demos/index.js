@@ -21,10 +21,9 @@ function Demos() {
             <div className="terminal-body">
               <h3 className="title">Redis 101</h3>
               <ul className="links">
-                <li><a href="#">Connect to Redis: all languages</a></li>
-                <li><a href="#">Getting Started with Redis Streams</a></li>
-                <li><a href="#">Getting Started with RediSearch</a></li>
-                <li><a href="#">Redis Streams &amp; Consumer Groups</a></li>
+                <li><a href="https://github.com/redis-developer/redis-connect">Connect to Redis: all languages</a></li>
+                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/">Getting Started with Redis Streams</a></li>
+                <li><a href="https://github.com/RediSearch/redisearch-getting-started">Getting Started with RediSearch</a></li>
               </ul>
             </div>
           </div>
@@ -39,9 +38,10 @@ function Demos() {
             <div className="terminal-body">
               <h3 className="title">Complete Applications</h3>
               <ul className="links">
-                <li><a href="#">Brewdis</a></li>
-                <li><a href="#">Popup Store</a></li>
-                <li><a href="#">Microservices with Redis</a></li>
+                <li><a href="https://github.com/redis-developer/brewdis">Brewdis</a></li>
+                <li><a href="https://github.com/RedisTimeSeries/redis-pop-up-store">Popup Store</a></li>
+                <li><a href="https://github.com/redis-developer/redis-microservices-demo/">Redis Movie Database</a></li>
+                <li><a href="https://github.com/redis-developer/basic-caching-demo-nodejs">Basic Redis Caching Demo</a></li>
               </ul>
             </div>
           </div>

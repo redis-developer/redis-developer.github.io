@@ -18,7 +18,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
+          to: '#',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
@@ -29,7 +29,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: '#',
+          href: 'https://redis.io/commands',
           label: 'Command Reference',
           position: 'right',
         },
@@ -47,19 +47,19 @@ module.exports = {
           items: [
             {
               label: 'Create Database',
-              to: '#',
+              to: '/create',
             },
             {
               label: 'Develop',
-              to: '#',
+              to: '/develop',
             },
             {
               label: 'Explore your data',
-              to: '#',
+              to: '/explore',
             },
             {
               label: 'Best Practices',
-              to: '#',
+              to: 'https://redislabs.com/redis-best-practices/introduction/',
             },
             {
               label: 'Tutorials',
@@ -80,15 +80,23 @@ module.exports = {
           items: [
             {
               label: 'Community',
-              href: '#',
+              href: 'https://redislabs.com/community',
             },
             {
-              label: 'Redis University Command Reference Tools',
-              href: '#',
+              label: 'Redis University',
+              href: 'https://university.redislabs.com',
+            },
+            {
+              label: 'Command Reference',
+              href: 'https://redis.io/commands',
+            },
+            {
+              label: 'Tools',
+              href: '/tools',
             },
             {
               label: 'Use Cases',
-              href: '#',
+              href: 'https://redislabs.com/solutions',
             },
           ],
         },
@@ -123,6 +131,8 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          routeBasePath: '/',
+          path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
         },
         blog: {
