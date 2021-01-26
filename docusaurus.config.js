@@ -110,8 +110,8 @@ module.exports = {
       disableSwitch: false,
     },
     announcementBar: {
-      id: 'sample', // Any value that will identify this message.
-      content: 'Optional Announcement bar lorem ipsum dolor sit amet consectetur <a href="#">Learn more</a>',
+      id: 'redisconf20201cfp', // Any value that will identify this message.
+      content: 'RedisConf 2021 - The Call for Paper is Open, Submit your Proposal <a href="https://redislabs.com/redisconf/">Learn more</a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
       isCloseable: true, // Defaults to `true`.
