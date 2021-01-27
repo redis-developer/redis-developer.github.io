@@ -91,20 +91,30 @@ Note: On Windows, make sure Docker is configured to run Linux-based containers.
 docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
 ```
 
+Open your preferred browser and type https://<IPAddress>:8443 to open Redis Enterprise UI.
+
 ![My Image](images/resoftware-1.png)
 
 Click on “Setup”.
 
-In the Node Configuration settings, enter a cluster FQDN such as cluster.local. Then click Next button.
-
+In the Node Configuration settings, enter your preferred FQDN. Then click Next button.
 
 ![My Image](images/resoftware-2.png)
 
+Enter the admin credentials:
+
 ![My Image](images/resoftware-4.png)
+
+Select "Single Region" as  Deployment option for a quick demonstration.
 
 ![My Image](images/resoftware-5.png)
 
+Create a Database:
+
+
 ![My Image](images/resoftware-7.png)
+
+
 
 </TabItem>
 </Tabs>
