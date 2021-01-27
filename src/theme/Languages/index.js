@@ -15,7 +15,7 @@ function Languages() {
     
     <div className="container">
 
-      <h2 className="section-title">Resources by Languages</h2>
+      <h2 className="section-title" id="developlanguages">Resources by Languages</h2>
       <h3 className="section-description">Find documentation, sample code ad tools to develop with your favorite language.</h3>
 
       <ul className="languages-list">

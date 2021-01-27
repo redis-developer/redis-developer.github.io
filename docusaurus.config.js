@@ -52,7 +52,7 @@ module.exports = {
             },
             {
               label: 'Develop',
-              to: '/develop',
+              to: '#developlanguages',
             },
             {
               label: 'Explore your data',

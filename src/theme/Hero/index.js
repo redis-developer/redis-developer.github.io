@@ -53,7 +53,7 @@ function Hero() {
                   <p className="description">Develop your application with your favorite language</p>
                   <span className="more">Code your application <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/develop')} className="link">Read More</a>
+                <a href="#developlanguages" className="link">Read More</a>
               </div>
 
               <div className="box box-explore">
