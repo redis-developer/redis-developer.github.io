@@ -4,20 +4,32 @@ title: Install and create Redis database using Docker
 sidebar_label: Docker
 slug: /create/docker
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
 
 
-#### Pre-requisites:
+<Tabs
+  defaultValue="Redis Enterprise"
+  values={[
+    {label: 'Redis', value: 'Redis'},
+    {label: 'Redis Enterprise', value: 'Redis Enterprise'},
+  ]}>
+  <TabItem value="Redis">
+
+### Pre-requisites:
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-#### Run the Redis instance:
+### Run the Redis instance:
 
 
 ```
 $ docker run --name myredis -d redis
 ```
 
-#### Verify if Redis container is running or not:
+### Verify if Redis container is running or not:
 
 ```
 $ docker ps
@@ -25,7 +37,7 @@ CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS        
 241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
 ```
 
-#### Connecting to Redis Server using redis-cli client
+### Connecting to Redis Server using redis-cli client
 
 ```
 $ docker exec -it 241 sh
@@ -36,7 +48,7 @@ PONG
 
 Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
 
-#### Running Redis container with Persistent Storage
+### Running Redis container with Persistent Storage
 
 ```
 $ docker run --name some-redis -d redis redis-server --appendonly yes
@@ -45,7 +57,26 @@ $ docker run --name some-redis -d redis redis-server --appendonly yes
 If persistence is enabled, data is stored in the VOLUME /data, which can be used with --volumes-from some-volume-container or -v /docker/host/dir:/data 
 
  
+</TabItem>
+  <TabItem value="Redis Enterprise">
 
 
 
+### Pre-requisite
+
+Ensure that Docker is installed in your system.
+
+If you're new, refer https://docs.docker.com/docker-for-mac/install/ to install Docker on Mac. 
+
+
+To pull and start the Redis Enterprise Software Docker container, run this docker run command in the terminal or command-line for your operating system.
+
+Note: On Windows, make sure Docker is configured to run Linux-based containers.
+
+```
+docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
+```
+
+</TabItem>
+</Tabs>
 
