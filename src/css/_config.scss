@@ -8,6 +8,7 @@ $secondary-black: #2E2E2E;
 $zircon: #F8FAFF;
 $grey: #707070;
 $grey-light: #E0DFDF;
+$grey-dark: #C2C0C0;
 $purple: #5961FF;
 $purple-hover: #3F41A0;
 $purple-light: #F2F5FE;
@@ -30,8 +31,40 @@ monospace;
   --zircon: #F8FAFF;
   --grey: #707070;
   --grey-light: #E0DFDF;
+  --grey-dark: #C2C0C0;
   --purple: #5961FF;
   --purple-hover: #3F41A0;
   --purple-light: #F2F5FE;
   --purple-lighter: #F9FAFF;
+}
+
+/* media queries */
+@mixin desktop {
+  @media only screen and (min-width: 997px) {
+    @content;
+  }
+}
+
+@mixin desktop-tablet {
+  @media only screen and (min-width: 751px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (min-width: 751px) and (max-width: 996px) {
+    @content;
+  }
+}
+
+@mixin tablet-mobile {
+  @media only screen and (max-width: 996px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media only screen and (max-width: 750px) {
+    @content;
+  }
 }

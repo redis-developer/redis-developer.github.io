@@ -18,6 +18,8 @@ import Logo from '@theme/Logo';
 import IconMenu from '@theme/IconMenu';
 import styles from './styles.module.css'; // retrocompatible with v1
 
+import SvgHamburger from '@site/src/svg/Hamburger';
+
 const DefaultNavItemPosition = 'right'; // If split links by left/right
 // if position is unspecified, fallback to right (as v1)
 
@@ -80,7 +82,7 @@ function Navbar() {
       <div className="navbar__inner">
         <div className="navbar__items">
           {items != null && items.length !== 0 && <div aria-label="Navigation bar toggle" className="navbar__toggle" role="button" tabIndex={0} onClick={showSidebar} onKeyDown={showSidebar}>
-              <IconMenu />
+              <SvgHamburger color="#FFFFFF" />
             </div>}
           <Logo className="navbar__brand" imageClassName="navbar__logo" titleClassName={clsx('navbar__title', {
           [styles.hideLogoText]: isSearchBarExpanded

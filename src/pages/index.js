@@ -19,7 +19,7 @@ function Home() {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
       <Hero />
-      <main style={{ overflow: 'hidden' }}>
+      <main className="home-main">
         <Languages />
         <Demos />
         <Resources />

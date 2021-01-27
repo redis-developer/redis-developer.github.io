@@ -16,6 +16,7 @@ module.exports = {
         alt: 'Redis Developer',
         src: 'img/logo-1.png',
       },
+      hideOnScroll: true,
       items: [
         {
           to: '#',
@@ -103,7 +104,6 @@ module.exports = {
       ],
       copyright: `Copyright: © ${new Date().getFullYear()} Redis Labs. Redis and the cube logo are registered trademarks of Redis Labs Ltd.`,
     },
-
     colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
@@ -111,7 +111,7 @@ module.exports = {
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: 'RedisConf 2021 - The Call for Paper is Open, Submit your Proposal <a href="https://redislabs.com/redisconf/">Learn more</a>',
+      content: '<p class="text">RedisConf 2021 - The Call for Paper is Open, Submit your Proposal</p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="nofollow noopener" class="btn">Learn more</a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
       isCloseable: true, // Defaults to `true`.
