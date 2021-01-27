@@ -18,11 +18,11 @@ import RedisCard from '@site/src/theme/RedisCard';
   ]}>
   <TabItem value="Redis">
 
-### Pre-requisite:
+## Pre-requisite:
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-### Run the Redis instance:
+## Run the Redis instance:
 
 
 ```
@@ -43,7 +43,7 @@ CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS        
 241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
 ```
 
-### Connecting to Redis Server using redis-cli client
+## Connecting to Redis Server using redis-cli client
 
 The below CLI uses the first three alphanumeric character of Container ID  and opens up "sh" shell of Redis Docker container:
 
@@ -52,7 +52,7 @@ $ docker exec -it 241 sh
 # redis-cli
 ```
 
-### Testing Redis container
+## Testing Redis container
 
 
 ```
@@ -62,7 +62,7 @@ PONG
 
 Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
 
-### Running Redis container with Persistent Storage
+## Running Redis container with Persistent Storage
 
 ```
 $ docker run --name some-redis -d redis redis-server --appendonly yes
@@ -76,7 +76,7 @@ If persistence is enabled, data is stored in the VOLUME /data, which can be used
 
 
 
-### Pre-requisite
+## Pre-requisite
 
 Ensure that Docker is installed in your system.
 
@@ -101,7 +101,7 @@ In the Node Configuration settings, enter your preferred FQDN. Then click Next b
 
 ![My Image](images/resoftware-2.png)
 
-Enter the admin credentials:
+## Enter the admin credentials:
 
 ![My Image](images/resoftware-4.png)
 
@@ -109,12 +109,12 @@ Select "Single Region" as  Deployment option for a quick demonstration.
 
 ![My Image](images/resoftware-5.png)
 
-Create a Database:
+## Create a Database:
 
 
 ![My Image](images/resoftware-7.png)
 
-Accessing the database:
+## Accessing the database:
 
 ```
 $ docker exec -it rp bash
