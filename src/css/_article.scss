@@ -96,37 +96,95 @@ blockquote {
   border-left: 5px solid #dbdada;
 }
 
+main:not(.home-main) {
+  a {
+    text-decoration: none;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      color: $purple-hover;
+    }
+  }
+
+  article {
+    header {
+      h1 {
+        line-height: 1.2;
+        font-size: 49px;
+
+        @include mobile {
+          font-size: 39px;
+        }
+      }
+    }
+  }
+}
+
 .markdown {
   color: $black;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $lato;
+    font-weight: 700;
+  }
 
   h1 {
     line-height: 1.2;
     font-size: 49px;
+
+    @include mobile {
+      font-size: 39px;
+    }
   }
 
   h2 {
     line-height: 1.2;
     font-size: 38px;
+
+    @include mobile {
+      font-size: 28px;
+    }
   }
 
   h3 {
     line-height: 1.2;
     font-size: 32px;
+
+    @include mobile {
+      font-size: 22px;
+    }
   }
 
   h4 {
     line-height: 1.5;
     font-size: 25px;
+
+    @include mobile {
+      font-size: 20px;
+    }
   }
 
   h5 {
     line-height: 1.45;
     font-size: 20px;
+
+    @include mobile {
+      font-size: 18px;
+    }
   }
 
   h6 {
     line-height: 1.6;
     font-size: 18px;
+
+    @include mobile {
+      font-size: 16px;
+    }
   }
 }
 
@@ -172,6 +230,7 @@ blockquote {
     border-radius: 0;
     line-height: 1;
     font-size: 17px;
+    transition: color .2s ease-in-out;
 
     &:not(:last-child) {
       margin-right: 10px;
@@ -179,8 +238,72 @@ blockquote {
 
     &:hover {
       background-color: transparent;
+      color: $purple-hover;
     }
 
-    &--active {}
+    &--active {
+      color: var(--ifm-tabs-color-active) !important;
+    }
+  }
+}
+
+.ri-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  height: calc(100% - 30px);
+  border: 2px solid $grey-dark;
+
+  .ri-icon {
+    display: none;
+  }
+
+  .ri-detail {
+    width: 100%;
+  }
+
+  .ri-title {
+    text-align: left;
+    line-height: 1.6;
+    font-size: 18px;
+
+    a {
+      color: $black;
+    }
+  }
+
+  .ri-description {
+    text-align: left;
+    line-height: 1.8;
+    font-size: 16px;
+    color: $black;
+
+    img {
+      margin-top: 15px;
+    }
+  }
+
+  img {
+    max-width: 50%;
+  }
+}
+
+code {
+  border-radius: 4px;
+  background-color: $purple-light;
+}
+
+iframe {
+  max-width: 100%;
+  box-shadow: 0 2px 20px rgba($black, .17);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 60px;
+
+  img {
+    height: 26px;
   }
 }

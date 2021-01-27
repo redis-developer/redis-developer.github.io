@@ -5,6 +5,9 @@
 * work well for content-centric websites.
 */
 
+@import '../slick/slick';
+@import '../slick/slick-theme';
+
 @import './config';
 @import './typography';
 @import './article';
@@ -16,6 +19,7 @@
 @import './components/languages';
 @import './components/demos';
 @import './components/resources';
+
 
 /* You can override the default Infima variables here. */
 :root {
@@ -39,4 +43,8 @@
 
 .container {
   max-width: 1140px;
+}
+
+.home-main {
+  overflow: hidden;
 }
