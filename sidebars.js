@@ -21,13 +21,6 @@ module.exports = {
     },    
     {
       type: 'category',
-      label: 'Explore',
-      items: [
-        'explore/index-explore',
-      ]
-    },
-    {
-      type: 'category',
       label: 'Develop',
       items: [
         'develop/java/index-java',
@@ -35,6 +28,13 @@ module.exports = {
         'develop/node/index-node',
         'develop/golang/index-golang',
       ]
-    }
+    },
+    {
+      type: 'category',
+      label: 'Explore',
+      items: [
+        'explore/index-explore',
+      ]
+    },
   ]
 };
