@@ -19,7 +19,7 @@ module.exports = {
       hideOnScroll: true,
       items: [
         {
-          to: '#',
+          to: '/create/cloud',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
@@ -95,7 +95,10 @@ module.exports = {
               label: 'Tools',
               href: '/tools',
             },
-            // {
+            {
+              label: 'Guides',
+              href: '/guides',
+            },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
             // },
