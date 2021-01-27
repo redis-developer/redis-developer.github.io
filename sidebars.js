@@ -36,5 +36,13 @@ module.exports = {
         'explore/index-explore',
       ]
     },
+    {
+      type: 'category',
+      label: 'Tools & Guides',
+      items: [
+        'tools/index-tools',
+        'guides/index-guides',
+      ]
+    },
   ]
 };
