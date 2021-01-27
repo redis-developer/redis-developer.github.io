@@ -17,11 +17,25 @@
     font-weight: 500;
     letter-spacing: 0.25px;
 
+    @include mobile {
+      line-height: 1.3;
+      font-size: 13px;
+    }
+
     &.announcementBarCloseable {
       padding-right: 56px;
     }
 
-    a {
+    .text {
+      margin: 0;
+      display: inline-block;
+
+      @include mobile {
+        display: block;
+      }
+    }
+
+    .btn {
       display: inline-block;
       margin-left: 15px;
       padding: 5px 23px 4px;
@@ -34,6 +48,16 @@
       letter-spacing: 0.5px;
       text-decoration: none;
       color: $white;
+      transition: background-color .2s ease-in-out, color .2s ease-in-out;
+
+      @include mobile {
+        margin-top: 10px;
+      }
+
+      &:hover {
+        background-color: $white;
+        color: $secondary-blue;
+      }
     }
   }
 

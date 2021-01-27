@@ -1,18 +1,76 @@
+.navbar-sidebar--show .navbar-sidebar {
+  box-shadow: 0 5px 40px rgba($primary-blue, .5);
+}
+
+.navbar-sidebar {
+  background-color: $primary-blue;
+  box-shadow: none;
+
+  &__backdrop {
+    background-color: rgba($primary-blue, .5);
+  }
+
+  &__brand {
+    box-shadow: none;
+  }
+
+  &__items {
+    margin-top: 15px;
+    padding: 0;
+  }
+
+  .menu {
+    &__list-item {
+      margin: 0;
+
+      &:not(:first-child) {
+        margin-top: 10px;
+      }
+    }
+
+    &__link {
+      padding: 5px 15px;
+      border-radius: 0;
+      background-color: transparent;
+      font-size: 17px;
+      color: $white;
+    }
+  }
+}
+
 .navbar {
-  padding: 15px;
+  padding: 14px 15px;
   height: auto;
   border-radius: 0 0 10px 10px;
   background-color: $primary-blue;
   box-shadow: none;
 
-  &__brand {
-    height: 26px;
+  &__toggle {
+    margin-right: 18px;
+  }
+
+  &__brand,
+  &__logo {
+    width: 171px !important;
+    height: 26px !important;
   }
 
   &__link {
-    padding: 5px 21px;
+    padding: 7px 21px 8px;
+    line-height: 1;
     font-size: 17px;
     color: $white !important;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .DocSearch-Button-Container {
+    @include mobile {
+      justify-content: center;
+      width: 100%;
+    }
   }
 
   .DocSearch-Button {
@@ -23,6 +81,11 @@
     box-shadow: none !important;
     border-radius: 21px;
     background-color: $zircon;
+
+    @include mobile {
+      padding: 0;
+      width: 32px;
+    }
 
     .DocSearch-Search-Icon {
       width: 16px;

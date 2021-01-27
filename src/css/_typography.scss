@@ -15,8 +15,18 @@ h6 {
   font-size: 38px;
   font-weight: 600;
 
+  @include mobile {
+    font-size: 32px;
+  }
+
   &.white {
     color: $white;
+  }
+
+  br {
+    @include desktop-tablet {
+      display: none;
+    }
   }
 }
 
@@ -29,8 +39,17 @@ h6 {
   font-size: 18px;
   font-weight: 400;
 
+  @include mobile {
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
   &:not(:first-child) {
     margin-top: 11px;
+
+    @include mobile {
+      margin-top: 14px;
+    }
   }
 
   &.white {

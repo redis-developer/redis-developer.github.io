@@ -1,19 +1,46 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Slider from 'react-slick';
 
 function Resources() {
+  var sliderSettings = {
+    infinite: true,
+    centerMode: true,
+    centerPadding: '32.5px',
+    speed: 500,
+    arrows: false,
+    dots: true,
+    responsive: [
+      {
+        breakpoint: 10000,
+        settings: 'unslick'
+      },
+      {
+        breakpoint: 996,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 750,
+        settings: {
+          slidesToShow: 1,
+        }
+      }
+    ]
+  };
   return <section className="rds-resources">
     <div className="container" id="resources">
 
-      <h2 className="section-title white">Resources &amp; Community</h2>
+      <h2 className="section-title white">Resources<br /> &amp; Community</h2>
       <h3 className="section-description white">Find documentation, sample code ad tools to develop with your favorite language.</h3>
 
-      <div className="row articles">
+      <Slider className="row articles" {...sliderSettings}>
         <div className="col col--4">
 
           <article className="article">
             <div className="article-wrapper">
-              <img src={useBaseUrl('https://redislabs.com/wp-content/uploads/2020/12/tug-serverless-2-270x191.png')} className="thumb" alt="" />
+              <img src="https://redislabs.com/wp-content/uploads/2020/12/tug-serverless-2-270x191.png" className="thumb" alt="" />
               <div className="article-body">
                 <span className="type">Blog</span>
                 <h3 className="title">Serverless Development with AWS Lambda and Redis Enterprise Cloud</h3>
@@ -51,7 +78,7 @@ function Resources() {
           </article>
 
         </div>
-      </div>
+      </Slider>
 
       <div className="cta">
         <a href="https://redislabs.com/community" className="btn">Join the Community</a>

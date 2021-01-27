@@ -7,7 +7,7 @@ function Demos() {
   return <section className="rds-demos">
     <div className="container">
 
-      <h2 className="section-title">Samples and Demos</h2>
+      <h2 className="section-title">Samples<br /> and Demos</h2>
 
       <div className="row terminals">
         <img src={useBaseUrl('/img/code-1.png')} className="code" alt="" />

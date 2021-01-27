@@ -20,6 +20,7 @@
     "docusaurus-plugin-sass": "^0.1.11",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-slick": "^0.28.0",
     "react-typed": "^1.2.0"
   },
   "browserslist": {

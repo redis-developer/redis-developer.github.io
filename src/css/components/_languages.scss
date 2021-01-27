@@ -2,27 +2,53 @@
   position: relative;
   padding-top: 76px;
 
+  @include mobile {
+    padding-top: 54px;
+  }
+
   .shape {
     position: absolute;
     top: -61px;
     left: calc(50% - 154px);
+
+    @include mobile {
+      zoom: .5;
+      top: 380px;
+      left: -150px;
+    }
   }
 
   .languages-list {
     z-index: 2;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: space-around;
     position: relative;
     margin: 0 auto;
     padding: 0;
     max-width: 1050px;
     list-style: none;
 
+    @include mobile {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     &:not(:first-child) {
       margin-top: 76px;
+
+      @include mobile {
+        margin-top: 12px;
+      }
     }
 
     li {
+      @include mobile {
+        flex: 0 0 50%;
+        margin-top: 42px;
+        text-align: center;
+      }
+
       a {
         display: inline-flex;
         flex-direction: column;
@@ -33,9 +59,15 @@
 
         svg {
           margin-bottom: 27px;
+
+          @include mobile {
+            zoom: .85;
+            margin-bottom: 21px;
+          }
         }
 
         .btn {
+          margin-top: auto;
           padding: 6px 15px 8px;
           border-radius: 3px;
           line-height: 1.3;
@@ -44,6 +76,10 @@
           font-weight: 500;
           color: $red;
           transition: background-color .2s ease-in-out, color .2s ease-in-out;
+
+          @include mobile {
+            font-size: 14px;
+          }
         }
 
         &:hover .btn {
