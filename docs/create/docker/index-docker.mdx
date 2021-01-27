@@ -114,7 +114,19 @@ Create a Database:
 
 ![My Image](images/resoftware-7.png)
 
+Accessing the database:
 
+```
+$ docker exec -it rp bash
+redislabs@fd8dca50f905:/opt$
+ /opt/redislabs/bin/redis-cli -p 12000
+127.0.0.1:12000> auth <enter password>
+OK
+127.0.0.1:12000> set key1 123
+OK
+127.0.0.1:12000> get key1
+"123"
+```
 
 </TabItem>
 </Tabs>
