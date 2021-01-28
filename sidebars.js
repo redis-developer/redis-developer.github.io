@@ -9,7 +9,6 @@ module.exports = {
       type: 'category',
       label: 'Create',
       items: [
-        'create/index-create',
         'create/cloud/index-cloud',
         'create/docker/index-docker',
         'create/resoftware/index-software',
