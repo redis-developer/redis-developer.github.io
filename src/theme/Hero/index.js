@@ -1,5 +1,10 @@
 import React from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 import Typed from 'react-typed';
+
+import * as Scroll from 'react-scroll';
+import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
 
 import SvgHero from '@site/src/svg/Hero';
 import SvgCreate from '@site/src/svg/Create';
@@ -9,8 +14,6 @@ import SvgDevelopBg from '@site/src/svg/DevelopBg';
 import SvgExplore from '@site/src/svg/Explore';
 import SvgExploreBg from '@site/src/svg/ExploreBg';
 import SvgArrowRight from '@site/src/svg/ArrowRight';
-
-import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function Hero() {
 	return (
@@ -53,7 +56,7 @@ function Hero() {
                   <p className="description">Develop your application with your favorite language</p>
                   <span className="more">Code your application <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href="#developlanguages" className="link">Read More</a>
+                <Link className="link" to="languages" smooth={true} duration={500}>Read More</Link>
               </div>
 
               <div className="box box-explore">
