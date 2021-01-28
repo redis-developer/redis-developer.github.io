@@ -11,7 +11,7 @@ function Demos() {
 
       <div className="row terminals">
         <img src={useBaseUrl('/img/code-1.png')} className="code" alt="" />
-        
+
         <div className="col col--6">
 
           <div className="terminal left">
@@ -21,9 +21,9 @@ function Demos() {
             <div className="terminal-body">
               <h3 className="title">Redis 101</h3>
               <ul className="links">
-                <li><a href="https://github.com/redis-developer/redis-connect">Connect to Redis: all languages</a></li>
-                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/">Getting Started with Redis Streams</a></li>
-                <li><a href="https://github.com/RediSearch/redisearch-getting-started">Getting Started with RediSearch</a></li>
+                <li><a href="https://github.com/redis-developer/redis-connect" target="_blank" rel="noopener">Connect to Redis: all languages</a></li>
+                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/" target="_blank" rel="noopener">Getting Started with Redis Streams</a></li>
+                <li><a href="https://github.com/RediSearch/redisearch-getting-started" target="_blank" rel="noopener">Getting Started with RediSearch</a></li>
               </ul>
             </div>
           </div>
@@ -38,10 +38,10 @@ function Demos() {
             <div className="terminal-body">
               <h3 className="title">Complete Applications</h3>
               <ul className="links">
-                <li><a href="https://github.com/redis-developer/brewdis">Brewdis</a></li>
-                <li><a href="https://github.com/RedisTimeSeries/redis-pop-up-store">Popup Store</a></li>
-                <li><a href="https://github.com/redis-developer/redis-microservices-demo/">Redis Movie Database</a></li>
-                <li><a href="https://github.com/redis-developer/basic-caching-demo-nodejs">Basic Redis Caching Demo</a></li>
+                <li><a href="https://github.com/redis-developer/brewdis" target="_blank" rel="noopener">Brewdis</a></li>
+                <li><a href="https://github.com/RedisTimeSeries/redis-pop-up-store" target="_blank" rel="noopener">Popup Store</a></li>
+                <li><a href="https://github.com/redis-developer/redis-microservices-demo/" target="_blank" rel="noopener">Redis Movie Database</a></li>
+                <li><a href="https://github.com/redis-developer/basic-caching-demo-nodejs" target="_blank" rel="noopener">Basic Redis Caching Demo</a></li>
               </ul>
             </div>
           </div>
