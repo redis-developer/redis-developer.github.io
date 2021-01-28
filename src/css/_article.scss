@@ -110,6 +110,7 @@ main:not(.home-main) {
     header {
       h1 {
         line-height: 1.2;
+        font-family: $lato;
         font-size: 49px;
 
         @include mobile {
@@ -186,6 +187,11 @@ main:not(.home-main) {
       font-size: 16px;
     }
   }
+
+  >img,
+  >p>img {
+    box-shadow: 0 2px 20px rgba($black, .17);
+  }
 }
 
 .admonition {
@@ -248,10 +254,27 @@ main:not(.home-main) {
 }
 
 .ri-container {
+  position: relative;
   margin-bottom: 30px;
   padding: 20px;
   height: calc(100% - 30px);
   border: 2px solid $grey-dark;
+  transition: border-color .2s ease-in-out;
+
+  &.ri-link:hover {
+    border-color: $purple;
+  }
+
+  .ri-card-link {
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    text-indent: -9999px;
+  }
 
   .ri-icon {
     display: none;
@@ -262,9 +285,10 @@ main:not(.home-main) {
   }
 
   .ri-title {
-    text-align: left;
-    line-height: 1.6;
-    font-size: 18px;
+    &:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+      line-height: 1.6;
+      font-size: 18px;
+    }
 
     a {
       color: $black;
@@ -272,7 +296,6 @@ main:not(.home-main) {
   }
 
   .ri-description {
-    text-align: left;
     line-height: 1.8;
     font-size: 16px;
     color: $black;
