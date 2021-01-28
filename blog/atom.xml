@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://developer.redislabs.com/blog</id>
-    <title>Redis Developer Blog</title>
+    <title>Redis Developer Hub Blog</title>
     <updated>2019-05-30T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://developer.redislabs.com/blog"/>
-    <subtitle>Redis Developer Blog</subtitle>
+    <subtitle>Redis Developer Hub Blog</subtitle>
     <icon>https://developer.redislabs.com/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
