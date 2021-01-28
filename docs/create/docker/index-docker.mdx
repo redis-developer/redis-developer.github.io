@@ -76,7 +76,7 @@ If persistence is enabled, data is stored in the VOLUME /data, which can be used
 
 
 
-## Pre-requisite
+### Pre-requisite
 
 Ensure that Docker is installed in your system.
 
@@ -93,28 +93,30 @@ docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 1200
 
 Open your preferred browser and type https://[IPAddress]:8443 to open Redis Enterprise UI.
 
+### Click on “Setup”.
+
 ![My Image](images/resoftware-1.png)
 
-Click on “Setup”.
 
-In the Node Configuration settings, enter your preferred FQDN. Then click Next button.
+### Enter your preferred FQDN 
 
 ![My Image](images/resoftware-2.png)
 
-## Enter the admin credentials:
+### Enter the admin credentials
 
 ![My Image](images/resoftware-4.png)
 
-Select "Single Region" as  Deployment option for a quick demonstration.
+## Select "Single Region"  
 
 ![My Image](images/resoftware-5.png)
 
-## Create a Database:
+### Create a Database:
 
 
 ![My Image](images/resoftware-7.png)
 
-## Accessing the database:
+### Access the database:
+
 
 ```
 $ docker exec -it rp bash
