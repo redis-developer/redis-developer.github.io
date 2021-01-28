@@ -1,6 +1,6 @@
 module.exports = {
-  title: 'Redis Developer',
-  tagline: 'The Home of Redis Developer',
+  title: 'Redis Developer Hub',
+  tagline: 'The Home of Redis Developers',
   url: 'https://developer.redislabs.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
