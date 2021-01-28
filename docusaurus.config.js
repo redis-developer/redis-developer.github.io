@@ -110,7 +110,7 @@ module.exports = {
     colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
-      disableSwitch: false,
+      disableSwitch: true,
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
