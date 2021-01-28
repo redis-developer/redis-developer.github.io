@@ -114,7 +114,7 @@ module.exports = {
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: '<p class="text">RedisConf 2021 - The Call for Paper is Open, Submit your Proposal</p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="nofollow noopener" class="btn">Learn more</a>',
+      content: '<p class="text">RedisConf 2021 – The Call for Papers is Now Open</p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn">Submit Proposal</a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
       isCloseable: true, // Defaults to `true`.
