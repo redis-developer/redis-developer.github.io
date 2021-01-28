@@ -249,10 +249,27 @@ main:not(.home-main) {
 }
 
 .ri-container {
+  position: relative;
   margin-bottom: 30px;
   padding: 20px;
   height: calc(100% - 30px);
   border: 2px solid $grey-dark;
+  transition: border-color .2s ease-in-out;
+
+  &.ri-link:hover {
+    border-color: $purple;
+  }
+
+  .ri-card-link {
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    text-indent: -9999px;
+  }
 
   .ri-icon {
     display: none;
