@@ -37,51 +37,45 @@ function Resources() {
 
       <Slider className="row articles" {...sliderSettings}>
         <div className="col col--4">
-
           <article className="article">
             <div className="article-wrapper">
-              <img src="https://redislabs.com/wp-content/uploads/2020/12/tug-serverless-2-270x191.png" className="thumb" alt="" />
-              <div className="article-body">
-                <span className="type">Blog</span>
-                <h3 className="title">Serverless Development with AWS Lambda and Redis Enterprise Cloud</h3>
-              </div>
-              <a href="https://redislabs.com/blog/serverless-development-with-aws-lambda-and-redis-enterprise-cloud/" className="link">Read More</a>
-            </div>
-          </article>
-
-        </div>
-        <div className="col col--4">
-
-          <article className="article">
-            <div className="article-wrapper">
-              <img src={useBaseUrl('/media/resource-2.jpg')} className="thumb" alt="" />
-              <div className="article-body">
-                <span className="type">Video</span>
-                <h3 className="title">Continue to Experience RedisConf 2020 Takeaway</h3>
-              </div>
-              <a href="https://events.redislabs.com/redisconf20/" className="link">Read More</a>
-            </div>
-          </article>
-
-        </div>
-        <div className="col col--4">
-
-          <article className="article">
-            <div className="article-wrapper">
-              <img src={useBaseUrl('/media/resource-3.jpg')} className="thumb" alt="" />
+              <img src={useBaseUrl('/img/redis-stars-podcast.jpg')} className="thumb" alt="Redis Stars Podcast" />
               <div className="article-body">
                 <span className="type">Podcast</span>
-                <h3 className="title">How Redis Delivers 15 million+ users with over 25,000 ops per second</h3>
+                <h3 className="title">How Redis delivers 15M+ MyTeam11 users with over 25,000 ops per second</h3>
               </div>
-              <a href="https://redisstars.simplecast.com/episodes/how-redis-delivers-15-million-myteam11-users-with-over-25-000-operations-per-second" className="link">Read More</a>
+              <a href="https://redisstars.simplecast.com/episodes/how-redis-delivers-15-million-myteam11-users-with-over-25-000-operations-per-second" target="_blank" rel="noopener" className="link">Read More</a>
             </div>
           </article>
-
+        </div>
+        <div className="col col--4">
+          <article className="article">
+            <div className="article-wrapper">
+              <img src={useBaseUrl('/img/redis-sample-app-architecture-diagram.jpg')} className="thumb" alt="Redis Enterprise Cloud sample app architecture diagram" />
+              <div className="article-body">
+                <span className="type">Blog</span>
+                <h3 className="title">Serverless development with AWS Lambda and Redis Enterprise Cloud</h3>
+              </div>
+              <a href="https://redislabs.com/blog/serverless-development-with-aws-lambda-and-redis-enterprise-cloud/" target="_blank" rel="noopener" className="link">Read More</a>
+            </div>
+          </article>
+        </div>
+        <div className="col col--4">
+          <article className="article">
+            <div className="article-wrapper">
+              <img src={useBaseUrl('/img/redis-client-in-python-sample.jpg')} className="thumb" alt="Terminal screenshot of Python code" />
+              <div className="article-body">
+                <span className="type">Video</span>
+                <h3 className="title">How to write a Redis client in Python, from scratch</h3>
+              </div>
+              <a href="https://youtu.be/C5KkQUKhc_4?t=324" target="_blank" rel="noopener" className="link">Read More</a>
+            </div>
+          </article>
         </div>
       </Slider>
 
       <div className="cta">
-        <a href="https://redislabs.com/community" className="btn">Join the Community</a>
+        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the Community</a>
       </div>
 
     </div>
