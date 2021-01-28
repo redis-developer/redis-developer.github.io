@@ -16,7 +16,7 @@ module.exports = {
         alt: 'Redis Developer Hub logo',
         src: 'img/logo-1.png',
       },
-      hideOnScroll: true,
+      hideOnScroll: false,
       items: [
         {
           to: '/create/cloud',
