@@ -75,7 +75,7 @@ function Resources() {
       </Slider>
 
       <div className="cta">
-        <a href="https://redislabs.com/community" className="btn">Join the Community</a>
+        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the Community</a>
       </div>
 
     </div>
