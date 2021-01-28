@@ -13,7 +13,7 @@ module.exports = {
       style: 'dark',
       title: null,
       logo: {
-        alt: 'Redis Developer',
+        alt: 'Redis Developer Hub logo',
         src: 'img/logo-1.png',
       },
       hideOnScroll: true,
@@ -24,11 +24,13 @@ module.exports = {
           label: 'Get started',
           position: 'right',
         },
+        /*
         {
           href: '#',
           label: 'Resources',
           position: 'right',
         },
+        */
         {
           href: 'https://redis.io/commands',
           label: 'Command Reference',
@@ -39,7 +41,7 @@ module.exports = {
     footer: {
       style: 'dark',
       logo: {
-        alt: 'Redis Developer',
+        alt: 'Redis Developer Hub logo',
         src: 'img/logo-2.png',
       },
       links: [
@@ -48,19 +50,19 @@ module.exports = {
           items: [
             {
               label: 'Create Database',
-              to: '/create',
+              to: '/create/cloud/',
             },
             {
               label: 'Develop',
-              to: '/#languages',
+              to: '/develop/',
             },
             {
               label: 'Explore your data',
-              to: '/explore',
+              to: '/explore/',
             },
             {
               label: 'Best Practices',
-              to: 'https://redislabs.com/redis-best-practices/introduction/',
+              href: 'https://redislabs.com/redis-best-practices/introduction/',
             },
             // {
             //   label: 'Tutorials',
@@ -72,7 +74,7 @@ module.exports = {
             // },
             {
               label: 'Add Superpowers to Redis',
-              to: 'https://redislabs.com/modules/get-started/',
+              href: 'https://redislabs.com/modules/get-started/',
             },
           ],
         },
@@ -81,7 +83,7 @@ module.exports = {
           items: [
             {
               label: 'Community',
-              href: 'https://redislabs.com/community',
+              href: 'https://redislabs.com/community/',
             },
             {
               label: 'Redis University',
@@ -93,11 +95,11 @@ module.exports = {
             },
             {
               label: 'Tools',
-              href: '/tools',
+              to: '/tools/',
             },
             {
               label: 'Guides',
-              href: '/guides',
+              to: '/guides/',
             },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
