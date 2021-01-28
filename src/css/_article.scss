@@ -258,7 +258,8 @@ main:not(.home-main) {
   margin-bottom: 30px;
   padding: 20px;
   height: calc(100% - 30px);
-  border: 2px solid $grey-dark;
+  border: 2px solid #E5E5E5;
+  box-shadow: 0px 4px 7px rgba(196, 196, 196, .5);
   transition: border-color .2s ease-in-out;
 
   &.ri-link:hover {
