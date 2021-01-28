@@ -9,6 +9,7 @@ module.exports = {
       type: 'category',
       label: 'Create',
       items: [
+        'create/index-create',
         'create/cloud/index-cloud',
         'create/docker/index-docker',
         'create/resoftware/index-software',
@@ -30,18 +31,25 @@ module.exports = {
       ]
     },
     {
-      type: 'category',
-      label: 'Explore',
-      items: [
-        'explore/index-explore',
-      ]
+      type: 'doc',
+      id: 'explore/index-explore',
     },
     {
       type: 'category',
       label: 'Tools & Guides',
       items: [
         'tools/index-tools',
-        'guides/index-guides',
+        {
+          type: 'category',
+          label: 'Guides',
+          items: [
+            'guides/index-guides',
+            'guides/import/index-import',
+            'guides/indexing/indexing-querying',
+            'guides/security/index-security',
+            'guides/data-modeling/index-data-modeling',
+          ]
+        },
       ]
     },
   ]
