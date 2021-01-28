@@ -110,6 +110,7 @@ main:not(.home-main) {
     header {
       h1 {
         line-height: 1.2;
+        font-family: $lato;
         font-size: 49px;
 
         @include mobile {
@@ -262,9 +263,10 @@ main:not(.home-main) {
   }
 
   .ri-title {
-    text-align: left;
-    line-height: 1.6;
-    font-size: 18px;
+    &:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+      line-height: 1.6;
+      font-size: 18px;
+    }
 
     a {
       color: $black;
@@ -272,7 +274,6 @@ main:not(.home-main) {
   }
 
   .ri-description {
-    text-align: left;
     line-height: 1.8;
     font-size: 16px;
     color: $black;
