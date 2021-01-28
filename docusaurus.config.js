@@ -70,10 +70,10 @@ module.exports = {
             //   label: 'Samples & Demos',
             //   to: '#',
             // },
-            // {
-            //   label: 'Add Superpowers to Redis',
-            //   to: '#',
-            // },
+            {
+              label: 'Add Superpowers to Redis',
+              to: 'https://redislabs.com/modules/get-started/',
+            },
           ],
         },
         {
