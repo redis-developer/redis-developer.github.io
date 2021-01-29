@@ -11,7 +11,7 @@ module.exports = {
       items: [
         'create/cloud/index-cloud',
         'create/docker/index-docker',
-        'create/resoftware/index-software',
+        'create/from-source/index-from-source',
         {
           type : 'link',
           label : 'Enterprise on Kubernetes',

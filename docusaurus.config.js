@@ -48,7 +48,7 @@ module.exports = {
           items: [
             {
               label: 'Create Database',
-              to: '/create',
+              to: '/create/cloud/',
             },
             {
               label: 'Develop',
@@ -56,7 +56,7 @@ module.exports = {
             },
             {
               label: 'Explore your data',
-              to: '/explore',
+              to: '/explore/',
             },
             {
               label: 'Best Practices',
@@ -93,11 +93,11 @@ module.exports = {
             },
             {
               label: 'Tools',
-              href: '/tools',
+              href: '/tools/',
             },
             {
               label: 'Guides',
-              href: '/guides',
+              href: '/guides/',
             },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',

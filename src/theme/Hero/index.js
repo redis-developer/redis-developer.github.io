@@ -43,7 +43,7 @@ function Hero() {
                   <p className="description">Create a new database using Cloud, Docker or from Sources</p>
                   <span className="more">Create a database <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/create/cloud')} className="link">Read More</a>
+                <a href={useBaseUrl('/create/cloud/')} className="link">Read More</a>
               </div>
 
               <div className="box box-develop">
@@ -69,7 +69,7 @@ function Hero() {
                   <p className="description">Insert, update, and explore your database using RedisInsight</p>
                   <span className="more">Explore your data <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/explore')} className="link">Read More</a>
+                <a href={useBaseUrl('/explore/')} className="link">Read More</a>
               </div>
             </div>
           </div>
