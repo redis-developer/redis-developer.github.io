@@ -1,3 +1,6 @@
+const path = require('path')
+
+
 module.exports = {
   title: 'Redis Developer Hub',
   tagline: 'The Home of Redis Developers',
@@ -9,6 +12,12 @@ module.exports = {
   organizationName: 'redis-developer', // Usually your GitHub org/user name.
   projectName: 'redis-developer', // Usually your repo name.
   themeConfig: {
+
+    // ...
+    googleTagManager: {
+      trackingID: 'GTM-W8Z6BLQ',
+    },
+
     navbar: {
       style: 'dark',
       title: null,
@@ -142,5 +151,7 @@ module.exports = {
       },
     ],
   ],
-  plugins: ['docusaurus-plugin-sass'],
+  plugins: [
+    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm') 
+  ],
 };
