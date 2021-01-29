@@ -33,13 +33,13 @@ function Resources() {
     <div className="container" id="resources">
 
       <h2 className="section-title white">Resources<br /> &amp; Community</h2>
-      <h3 className="section-description white">Find documentation, sample code ad tools to develop with your favorite language.</h3>
+      <h3 className="section-description white">Latest from your favorite community to support your Redis journey.</h3>
 
       <Slider className="row articles" {...sliderSettings}>
         <div className="col col--4">
           <article className="article">
             <div className="article-wrapper">
-              <img src={useBaseUrl('/img/redis-stars-podcast.jpg')} className="thumb" alt="Redis Stars Podcast" />
+              <img src={useBaseUrl('/img/redis-stars-podcast.jpg')} className="thumb" loading="lazy" alt="Redis Stars Podcast" />
               <div className="article-body">
                 <span className="type">Podcast</span>
                 <h3 className="title">How Redis delivers 15M+ MyTeam11 users with over 25,000 ops per second</h3>
@@ -51,7 +51,7 @@ function Resources() {
         <div className="col col--4">
           <article className="article">
             <div className="article-wrapper">
-              <img src={useBaseUrl('/img/redis-sample-app-architecture-diagram.jpg')} className="thumb" alt="Redis Enterprise Cloud sample app architecture diagram" />
+              <img src={useBaseUrl('/img/redis-sample-app-architecture-diagram.jpg')} className="thumb" loading="lazy" alt="Redis Enterprise Cloud sample app architecture diagram" />
               <div className="article-body">
                 <span className="type">Blog</span>
                 <h3 className="title">Serverless development with AWS Lambda and Redis Enterprise Cloud</h3>
@@ -63,7 +63,7 @@ function Resources() {
         <div className="col col--4">
           <article className="article">
             <div className="article-wrapper">
-              <img src={useBaseUrl('/img/redis-client-in-python-sample.jpg')} className="thumb" alt="Terminal screenshot of Python code" />
+              <img src={useBaseUrl('/img/redis-client-in-python-sample.jpg')} className="thumb" loading="lazy" alt="Terminal screenshot of Python code" />
               <div className="article-body">
                 <span className="type">Video</span>
                 <h3 className="title">How to write a Redis client in Python, from scratch</h3>

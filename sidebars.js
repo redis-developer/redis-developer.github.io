@@ -18,7 +18,7 @@ module.exports = {
           href : 'https://docs.redislabs.com/latest/platforms/',
         },
       ]
-    },    
+    },
     {
       type: 'category',
       label: 'Develop',
@@ -42,7 +42,6 @@ module.exports = {
           type: 'category',
           label: 'Guides',
           items: [
-            'guides/index-guides',
             'guides/import/index-import',
             'guides/indexing/indexing-querying',
             'guides/security/index-security',
