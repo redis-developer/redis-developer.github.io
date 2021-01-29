@@ -12,7 +12,7 @@ import SvgGo from '@site/src/svg/Go';
 function Languages() {
   return <section className="rds-languages" id="languages">
     <SvgRectangles className="shape" />
-    
+
     <div className="container">
 
       <h2 className="section-title">Resources by Languages</h2>
@@ -20,21 +20,21 @@ function Languages() {
 
       <ul className="languages-list">
         <li>
-          <a href={useBaseUrl('/develop/java')}>
+          <a href={useBaseUrl('/develop/java/')}>
             <SvgJava />
             <span className="btn">Java</span>
           </a>
         </li>
 
         <li>
-        <a href={useBaseUrl('/develop/python')}>
+        <a href={useBaseUrl('/develop/python/')}>
             <SvgPython />
             <span className="btn">Python</span>
           </a>
         </li>
 
         <li>
-        <a href={useBaseUrl('/develop/node')}>
+        <a href={useBaseUrl('/develop/node/')}>
             <SvgNode />
             <span className="btn">Node.js</span>
           </a>
@@ -48,7 +48,7 @@ function Languages() {
         </li> */}
 
         <li>
-        <a href={useBaseUrl('/develop/golang')}>
+        <a href={useBaseUrl('/develop/golang/')}>
             <SvgGo />
             <span className="btn">Golang</span>
           </a>
@@ -58,5 +58,5 @@ function Languages() {
     </div>
   </section>;
 }
- 
+
 export default Languages;
