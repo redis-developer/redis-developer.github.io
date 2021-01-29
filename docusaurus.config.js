@@ -99,7 +99,7 @@ module.exports = {
             },
             {
               label: 'Guides',
-              to: '/guides/import/',
+              to: '/guides/',
             },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
