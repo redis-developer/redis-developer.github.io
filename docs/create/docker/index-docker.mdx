@@ -1,6 +1,6 @@
 ---
 id: index-docker
-title: Install and create Redis database using Docker
+title: Run Redis using Docker
 sidebar_label: Docker
 slug: /create/docker/
 ---
@@ -18,11 +18,13 @@ import RedisCard from '@site/src/theme/RedisCard';
   ]}>
   <TabItem value="Redis">
 
-## Pre-requisite:
+## Redis
+
+### Pre-requisite:
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-## Step 1: Run the Redis container
+### Step 1: Run the Redis container
 
 Execute the following command to run Redis container in the background in a “detached” mode.
 
@@ -35,7 +37,7 @@ myredis is the name of Docker container
 -d represent running Redis in a background in a “detached” mode.
 redis is the name of Docker Image that it fetches from Docker Hub.
 
-## Step 2: Verify if Redis container is running or not:
+### Step 2: Verify if Redis container is running or not:
 
 ```
 $ docker ps
@@ -43,7 +45,7 @@ CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS        
 241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
 ```
 
-## Step 3: Connect to your database
+### Step 3: Connect to your database
 
 The below CLI uses the first three alphanumeric character of Container ID  and opens up "sh" shell of Redis Docker container:
 
@@ -52,7 +54,7 @@ $ docker exec -it 241 sh
 # redis-cli
 ```
 
-## Step 4: Testing Redis container
+### Step 4: Testing Redis container
 
 Execute the below command to test the Redis server:
 
@@ -63,7 +65,7 @@ PONG
 
 Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
 
-## Step 5: Running Redis container with Persistent Storage
+### Step 5: Running Redis container with Persistent Storage
 
 In order to enable persistence,  you have to pass the "appendonly" option as "yes" as shown in the below example:
 
@@ -77,9 +79,10 @@ If persistence is enabled, data is stored in the VOLUME /data, which can be used
 </TabItem>
   <TabItem value="Redis Enterprise">
 
+## Redis Enterprise
 
 
-## Pre-requisite
+### Pre-requisite
 
 Ensure that Docker is installed in your system.
 
@@ -96,7 +99,7 @@ docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 1200
 
 In the web browser on the host machine, go to https://localhost:8443 to see the Redis Enterprise Software web console.
 
-## Step 1: Click on “Setup”
+### Step 1: Click on “Setup”
 
 Click Setup to start the node configuration steps.
 
@@ -104,7 +107,7 @@ Click Setup to start the node configuration steps.
 ![My Image](images/resoftware-1.png)
 
 
-## Step 2:  Enter your preferred FQDN 
+### Step 2:  Enter your preferred FQDN 
 
 In the Node Configuration settings, enter a cluster FQDN such as demo.redislabs.com. Then click Next button.
 
@@ -112,7 +115,7 @@ In the Node Configuration settings, enter a cluster FQDN such as demo.redislabs.
 
 Enter your license key, if you have one. If not, click the Next button to use the trial version.
 
-## Step 3: Enter the admin credentials
+### Step 3: Enter the admin credentials
 
 Enter an email and password for the admin account for the web console.
 
@@ -123,7 +126,7 @@ Click OK to confirm that you are aware of the replacement of the HTTPS SSL/TLS c
  
 
 
-## Step 4:  Create a Database:
+### Step 4:  Create a Database:
 
 Select “redis database” and the “single region” deployment, and click Next.
 
@@ -138,7 +141,7 @@ You now have a Redis database!
 
 
 
-## Step 5: Connecting using redis-cli 
+### Step 5: Connecting using redis-cli 
 
 After you create the Redis database, you are ready to store data in your database. redis-cli is a built-in simple command-line tool to interact with Redis database. Run redis-cli, located in the /opt/redislabs/bin directory, to connect to port 12000 and store and retrieve a key in database1
 
