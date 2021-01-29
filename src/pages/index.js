@@ -16,7 +16,7 @@ function Home() {
   const {siteConfig = {}} = context;
   return (
     <Layout
-      title={`Welcome to the ${siteConfig.title} by Redis Labs`}
+      title={`The Home of Redis Developers`}
       description="Learn all the best practices to get up and running with Redis in no time. Get started and discover the power of Redis, whether on your local machines or in the cloud.">
       <Hero />
       <main className="home-main">

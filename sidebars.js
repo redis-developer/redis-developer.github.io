@@ -45,7 +45,6 @@ module.exports = {
             'guides/import/index-import',
             'guides/indexing/indexing-querying',
             'guides/security/index-security',
-            'guides/data-modeling/index-data-modeling',
           ]
         },
       ]
