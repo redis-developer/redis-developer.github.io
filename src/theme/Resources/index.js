@@ -33,7 +33,7 @@ function Resources() {
     <div className="container" id="resources">
 
       <h2 className="section-title white">Resources<br /> &amp; Community</h2>
-      <h3 className="section-description white">Find documentation, sample code ad tools to develop with your favorite language.</h3>
+      <h3 className="section-description white">Latest from your favorite community to support your Redis journey.</h3>
 
       <Slider className="row articles" {...sliderSettings}>
         <div className="col col--4">
