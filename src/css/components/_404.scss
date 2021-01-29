@@ -1,0 +1,108 @@
+.rds-404 {
+  position: relative;
+  margin-top: -10px;
+  padding: 123px 0 117px;
+  overflow: hidden;
+  background-color: $primary-blue;
+  text-align: center;
+
+  @include mobile {
+    padding: 60px 0 70px;
+  }
+
+  .code {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1409px;
+    max-width: none;
+    user-select: none;
+
+    @include mobile {
+      width: 660px;
+    }
+  }
+
+  .container {
+    z-index: 2;
+    position: relative;
+  }
+
+  .terminal {
+    margin: 0 auto;
+    max-width: 402px;
+
+    .terminal-header {
+      position: relative;
+      height: 27px;
+      border-radius: 8px 8px 0 0;
+      background-color: $purple;
+
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 19px;
+        transform: translateY(-50%);
+        zoom: .75;
+      }
+    }
+
+    .terminal-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 20px 30px;
+      height: 208px;
+      border-radius: 0 0 8px 8px;
+      border: 1px dashed $purple;
+      border-top: none;
+      background-color: $primary-blue;
+      line-height: 1;
+      font-family: $roboto;
+      font-size: 104px;
+      color: $white;
+
+      @include mobile {
+        height: 150px;
+        font-size: 70px;
+      }
+    }
+  }
+
+  .title {
+    margin: 0;
+    line-height: 1.1;
+    font-size: 50px;
+    font-weight: 500;
+    color: $white;
+
+    @include mobile {
+      font-size: 30px;
+    }
+
+    &:not(:first-child) {
+      margin-top: 55px;
+    }
+  }
+
+  .link {
+    display: inline-block;
+    text-decoration: underline;
+    font-size: 20px;
+    color: $white;
+    transition: color .2s ease-in-out;
+
+    @include mobile {
+      font-size: 18px;
+    }
+
+    &:not(:first-child) {
+      margin-top: 29px;
+    }
+
+    &:hover {
+      color: $purple;
+    }
+  }
+}
