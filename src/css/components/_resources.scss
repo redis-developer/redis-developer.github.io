@@ -111,7 +111,13 @@
         position: relative;
         top: 0;
         height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
         transition: top .2s ease-in-out, box-shadow .2s ease-in-out;
+
+        @include mobile {
+          border-radius: 8px;
+        }
       }
 
       .thumb {
