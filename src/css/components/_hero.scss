@@ -8,6 +8,19 @@
   @media only screen and (min-width: 997px) and (max-width: 1100px) {
     padding-left: 15px;
     padding-right: 15px;
+
+    .row {
+      flex-wrap: nowrap;
+    }
+
+    .col--7 {
+      min-width: 665px;
+    }
+
+    .col--5 {
+      flex: 1 !important;
+      max-width: none !important;
+    }
   }
 
   @include mobile {
@@ -217,13 +230,15 @@
     }
 
     @media only screen and (min-width: 997px) and (max-width: 1100px) {
-      margin-left: 51px;
+      float: right;
+      margin-left: 0;
+      zoom: .8;
     }
 
     @include tablet-mobile {
       display: block;
       margin: 0 auto 48px;
-      zoom: 0.48;
+      zoom: .48;
     }
   }
 }
