@@ -11,72 +11,12 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 
 <Tabs
-  defaultValue="Redis"
+  defaultValue="Redis Enterprise"
   values={[
-    {label: 'Redis', value: 'Redis'},
     {label: 'Redis Enterprise', value: 'Redis Enterprise'},
+    {label: 'Redis', value: 'Redis'},
   ]}>
-  <TabItem value="Redis">
 
-## Redis
-
-### Pre-requisite:
-
-Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
-
-### Step 1: Run the Redis container
-
-Execute the following command to run Redis container in the background in a “detached” mode.
-
-```
-$ docker run --name myredis -d redis
-```
-
-where,
-myredis is the name of Docker container
--d represent running Redis in a background in a “detached” mode.
-redis is the name of Docker Image that it fetches from Docker Hub.
-
-### Step 2: Verify if Redis container is running or not:
-
-```
-$ docker ps
-CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS      NAMES
-241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
-```
-
-### Step 3: Connect to your database
-
-The below CLI uses the first three alphanumeric character of Container ID  and opens up "sh" shell of Redis Docker container:
-
-```
-$ docker exec -it 241 sh
-# redis-cli
-```
-
-### Step 4: Testing Redis container
-
-Execute the below command to test the Redis server:
-
-```
-127.0.0.1:6379>ping
-PONG
-```
-
-Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
-
-### Step 5: Running Redis container with Persistent Storage
-
-In order to enable persistence,  you have to pass the "appendonly" option as "yes" as shown in the below example:
-
-```
-$ docker run --name some-redis -d redis redis-server --appendonly yes
-```
-
-If persistence is enabled, data is stored in the VOLUME /data, which can be used with --volumes-from some-volume-container or -v /docker/host/dir:/data 
-
- 
-</TabItem>
   <TabItem value="Redis Enterprise" className="has-small-images">
 
 ## Redis Enterprise
@@ -158,5 +98,67 @@ OK
 ```
 
 </TabItem>
+<TabItem value="Redis">
+
+## Redis
+
+### Pre-requisite:
+
+Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
+
+### Step 1: Run the Redis container
+
+Execute the following command to run Redis container in the background in a “detached” mode.
+
+```
+$ docker run --name myredis -d redis
+```
+
+where,
+myredis is the name of Docker container
+-d represent running Redis in a background in a “detached” mode.
+redis is the name of Docker Image that it fetches from Docker Hub.
+
+### Step 2: Verify if Redis container is running or not:
+
+```
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS      NAMES
+241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
+```
+
+### Step 3: Connect to your database
+
+The below CLI uses the first three alphanumeric character of Container ID  and opens up "sh" shell of Redis Docker container:
+
+```
+$ docker exec -it 241 sh
+# redis-cli
+```
+
+### Step 4: Testing Redis container
+
+Execute the below command to test the Redis server:
+
+```
+127.0.0.1:6379>ping
+PONG
+```
+
+Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+
+### Step 5: Running Redis container with Persistent Storage
+
+In order to enable persistence,  you have to pass the "appendonly" option as "yes" as shown in the below example:
+
+```
+$ docker run --name some-redis -d redis redis-server --appendonly yes
+```
+
+If persistence is enabled, data is stored in the VOLUME /data, which can be used with --volumes-from some-volume-container or -v /docker/host/dir:/data 
+
+ 
+</TabItem>
+  
 </Tabs>
 
