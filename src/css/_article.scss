@@ -44,6 +44,20 @@ hr {
   &__link--active {
     font-weight: 700;
   }
+
+  &__button {
+    background-color: $purple !important;
+
+    svg {
+      path {
+        stroke: $white !important;
+      }
+    }
+
+    span {
+      color: $white !important;
+    }
+  }
 }
 
 .table-of-contents {
