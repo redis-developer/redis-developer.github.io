@@ -22,8 +22,9 @@ function Demos() {
               <h3 className="title">Redis 101</h3>
               <ul className="links">
                 <li><a href="https://github.com/redis-developer/redis-connect" target="_blank" rel="noopener">Connect to Redis: all languages</a></li>
-                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/" target="_blank" rel="noopener">Getting Started with Redis Streams</a></li>
+                <li><a href="https://redislabs.com/modules/get-started/" target="_blank" rel="noopener">Getting Started with Redis Modules</a></li>
                 <li><a href="https://github.com/RediSearch/redisearch-getting-started" target="_blank" rel="noopener">Getting Started with RediSearch</a></li>
+                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/" target="_blank" rel="noopener">Getting Started with Redis Streams</a></li>
               </ul>
             </div>
           </div>
