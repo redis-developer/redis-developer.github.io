@@ -5,6 +5,24 @@
   background-color: $primary-blue;
   color: $white;
 
+  @media only screen and (min-width: 997px) and (max-width: 1100px) {
+    padding-left: 15px;
+    padding-right: 15px;
+
+    .row {
+      flex-wrap: nowrap;
+    }
+
+    .col--7 {
+      min-width: 665px;
+    }
+
+    .col--5 {
+      flex: 1 !important;
+      max-width: none !important;
+    }
+  }
+
   @include mobile {
     padding: 71px 0 62px;
   }
@@ -177,6 +195,7 @@
 
           svg {
             margin-left: 8px;
+            flex: 0 0 14px;
 
             path {
               transition: fill .2s ease-in-out;
@@ -210,10 +229,16 @@
       margin-left: 66px;
     }
 
+    @media only screen and (min-width: 997px) and (max-width: 1100px) {
+      float: right;
+      margin-left: 0;
+      zoom: .8;
+    }
+
     @include tablet-mobile {
       display: block;
       margin: 0 auto 48px;
-      zoom: 0.48;
+      zoom: .48;
     }
   }
 }
