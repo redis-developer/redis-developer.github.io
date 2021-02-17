@@ -45,6 +45,11 @@ module.exports = {
           label: 'Command Reference',
           position: 'right',
         },
+        {
+          href: 'https://redislabs.com/try-free/',
+          label: 'Try Free',
+          position: 'right',
+        },
       ],
     },
     footer: {
@@ -82,7 +87,7 @@ module.exports = {
             //   to: '#',
             // },
             {
-              label: 'Add Superpowers to Redis',
+              label: 'Build with Redis Modules',
               href: 'https://redislabs.com/modules/get-started/',
             },
           ],

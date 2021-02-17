@@ -41,7 +41,7 @@ function Demos() {
               <ul className="links">
                 <li><a href="https://github.com/redis-developer/brewdis" target="_blank" rel="noopener">Brewdis</a></li>
                 <li><a href="https://github.com/RedisTimeSeries/redis-pop-up-store" target="_blank" rel="noopener">Popup Store</a></li>
-                <li><a href="https://github.com/redis-developer/redis-microservices-demo/" target="_blank" rel="noopener">Redis Movie Database</a></li>
+                <li><a href="https://github.com/redis-developer/redis-microservices-demo/" target="_blank" rel="noopener">Redis Microservices Demo</a></li>
                 <li><a href="https://github.com/redis-developer/basic-caching-demo-nodejs" target="_blank" rel="noopener">Basic Redis Caching Demo</a></li>
               </ul>
             </div>
