@@ -11,9 +11,6 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'redis-developer', // Usually your GitHub org/user name.
   projectName: 'redis-developer', // Usually your repo name.
-  stylesheets: [
-    '@abrookins-redis/redis-sitesearch-frontend/dist/style.css'
-  ],
   themeConfig: {
 
     // ...
