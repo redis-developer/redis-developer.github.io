@@ -1,0 +1,8 @@
+.rds-search {
+  position: relative;
+  padding-top: 68px;
+
+  @include mobile {
+    padding-top: 46px;
+  }
+}

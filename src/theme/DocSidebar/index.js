@@ -190,7 +190,7 @@ function DocSidebar({
       'menu--show': showResponsiveSidebar,
       [styles.menuWithAnnouncementBar]: !isAnnouncementBarClosed && scrollY === 0
     })}>
-      <Search inline="true"/>
+        <Search inline="true"/>
         <button aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'} aria-haspopup="true" className="button button--secondary button--sm menu__button" type="button" onClick={() => {
         setShowResponsiveSidebar(!showResponsiveSidebar);
       }}>
