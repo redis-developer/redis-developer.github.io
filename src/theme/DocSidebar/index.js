@@ -17,6 +17,7 @@ import Logo from '@theme/Logo';
 import IconArrow from '@theme/IconArrow';
 import IconMenu from '@theme/IconMenu';
 import styles from './styles.module.css';
+import Search from '@theme/Search';
 const MOBILE_TOGGLE_SIZE = 24;
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -189,6 +190,7 @@ function DocSidebar({
       'menu--show': showResponsiveSidebar,
       [styles.menuWithAnnouncementBar]: !isAnnouncementBarClosed && scrollY === 0
     })}>
+      <Search inline="true"/>
         <button aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'} aria-haspopup="true" className="button button--secondary button--sm menu__button" type="button" onClick={() => {
         setShowResponsiveSidebar(!showResponsiveSidebar);
       }}>

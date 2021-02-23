@@ -10,6 +10,7 @@ import Hero from '@theme/Hero';
 import Languages from '@theme/Languages';
 import Demos from '@theme/Demos';
 import Resources from '@theme/Resources';
+import Search from '@theme/Search';
 
 function Home() {
   const context = useDocusaurusContext();
@@ -21,6 +22,7 @@ function Home() {
       <Hero />
       <main className="home-main">
         <Languages />
+        <Search />
         <Demos />
         <Resources />
       </main>
