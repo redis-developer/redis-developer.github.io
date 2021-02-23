@@ -55,8 +55,9 @@ module.exports = {
     footer: {
       style: 'dark',
       logo: {
-        alt: 'Redis Developer Hub logo',
-        src: 'img/logo-2.png',
+        alt: 'Redis Labs logo',
+        src: 'img/redis-labs-logo-reversed.svg',
+        href: 'https://redislabs.com/',
       },
       links: [
         {
