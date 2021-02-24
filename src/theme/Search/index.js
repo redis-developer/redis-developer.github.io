@@ -51,9 +51,14 @@ function getWithExpiry(key) {
 
 
 function Search(props) {
+  var initialized = false;
+
   useEffect(function onFirstMount() {
+    console.log("Mounted")
     const searchLogo = document.querySelector('.redisearch-logo')
     var lastQuery
+
+    initialized = true;
 
     searchLogo.addEventListener('mousedown', (e) => {
       e.preventDefault()
@@ -172,7 +177,7 @@ function Search(props) {
         }
       }
     })
-  })
+  }, [initialized])
 
   if (props.inline) {
     return <div id="redis-sitesearch" className="redis-sitesearch redis-sitesearch-inline">
