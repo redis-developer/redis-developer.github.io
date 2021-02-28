@@ -41,8 +41,8 @@ module.exports = {
         },
         */
         {
-          href: 'https://redis.io/commands',
-          label: 'Command Reference',
+          href: 'https://forum.redislabs.com',
+          label: 'Forum',
           position: 'right',
         },
         {
