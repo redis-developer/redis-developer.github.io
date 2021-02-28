@@ -19,28 +19,27 @@ import RedisCard from '@site/src/theme/RedisCard';
   <TabItem value="NodeJS">
 
 
-1. Pre-requisite
+## 1. Pre-requisite
 
 Install the below software in your local system:
 
-- Redis compiled with RedisJSON module
 - Express 4 backend
 - Node 15.5.0 (at least v12.9.0+)
 - NPM 7.3.0 (at least v6.14.8+)
-- Docker 19.03.X (Optional)
+- Docker (Optional)
 - Docker Compose (Optional)
 
 
 
-2. Clone the repository
+## 2. Clone the repository
 
 ```
 $ git clone https://github.com/redis-developer/basic-redis-shopping-chart-nodejs
 ```
 
-3. Compiling Redis with RedisJSON module
+## 3. Compiling Redis with RedisJSON module
 
-Install docker (on mac: https://docs.docker.com/docker-for-mac/install/)
+Install Docker (Refer: https://docs.docker.com/docker-for-mac/install/)
 
 
 You can use the below docker compose file to run Redis server compiled with RedisJSON module:
@@ -67,7 +66,7 @@ networks:
 
 ```
 
-4. Setting up environmental variable
+## 4. Setting up Environmental variable
 
 Go to server folder, copy `.env.example` to `.env` file and fill environmental variables as shown below:
 
@@ -77,14 +76,14 @@ REDIS_HOST: Redis host (default: 127.0.0.1)
 REDIS_PASSWORD: Redis password (default: demo)
 ```
 
-5. Create a network using `docker network` CLI: 
+## 5. Create a network using `docker network` CLI: 
  
 ```sh
 $ docker network create global 
 ```
 
 
-6. Run a Redis container compiled with RedisJSON:
+## 6. Run a Redis container compiled with RedisJSON:
 
 ```
 $ docker-compose up -d --build
@@ -92,8 +91,7 @@ $ docker-compose up -d --build
 
 The `docker-compose ps` shows the list of running Redis services:
  
- 
- 
+  
 ```
 $ docker-compose ps
 Name                           Command               State          Ports          
@@ -101,34 +99,16 @@ Name                           Command               State          Ports
 redis.redisshoppingcart.docker   docker-entrypoint.sh redis ...   Up      127.0.0.1:55000->6379/tcp
 ```
 
-7. Install dependencies
+## 7. Install dependencies
 
 ```
-npm cache clean && npm install
+npm install
 ```
 
-8. Run dev server
+## 8. Run dev server
 
 ```
 npm run dev
-```
-
-```
-redis-cli
-127.0.0.1:6379> info modules
-NOAUTH Authentication required.
-127.0.0.1:6379> auth demo
-OK
-127.0.0.1:6379> info modules
-# Modules
-module:name=ReJSON,ver=10007,api=1,filters=0,usedby=[],using=[],options=[]
-127.0.0.1:6379> exit
-```
-
-9. Run dev server
-
-```
-ajeetraina@Ajeets-MacBook-Pro server % npm run dev
 
 > redis-shopping-cart-backend@1.0.0 dev
 > nodemon src/index.js
@@ -141,8 +121,40 @@ ajeetraina@Ajeets-MacBook-Pro server % npm run dev
 App listening on port 3000
 ```
 
+```
+redis-cli
+127.0.0.1:6379> info modules
+NOAUTH Authentication required.
+127.0.0.1:6379> auth demo
+OK
+127.0.0.1:6379> info modules
+# Modules
+module:name=ReJSON,ver=10007,api=1,filters=0,usedby=[],using=[],options=[]
+```
+
+## 9. Running the Web Client
+
+```
+$ cd client
+$ npm run serve 
+
+> redis-shopping-cart-client@1.0.0 serve
+> vue-cli-service serve
+
+ INFO  Starting development server...
+98% after emitting CopyPlugin
+
+ DONE  Compiled successfully in 7733ms                                                                                                                              7:15:56 AM
 
 
+  App running at:
+  - Local:   http://localhost:8081/ 
+  - Network: http://192.168.43.81:8081/
+
+  Note that the development build is not optimized.
+  To create a production build, run npm run build.
+
+```
 
 
 </TabItem>
