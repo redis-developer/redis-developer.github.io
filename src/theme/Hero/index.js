@@ -69,7 +69,7 @@ function Hero() {
                   <p className="description">Insert, update, and explore your database using RedisInsight</p>
                   <span className="more">Explore your data <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/explore/')} className="link">Read More</a>
+                <a href={useBaseUrl('/explore/redisinsight/')} className="link">Read More</a>
               </div>
             </div>
           </div>

@@ -30,8 +30,12 @@ module.exports = {
       ]
     },
     {
-      type: 'doc',
-      id: 'explore/index-explore',
+      type: 'category',
+      label: 'Explore',
+      items: [
+        'explore/redisinsight/index-redisinsight',
+        'explore/redisdatasource/index-redisdatasource',
+     ]
     },
     {
       type: 'category',

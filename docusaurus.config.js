@@ -73,7 +73,7 @@ module.exports = {
             },
             {
               label: 'Explore your data',
-              to: '/explore/',
+              to: '/explore/redisinsight/',
             },
             {
               label: 'Best Practices',
