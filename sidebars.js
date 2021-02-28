@@ -39,6 +39,18 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'HowTos & Tutorials',
+      items: [
+         'howtos/Moviesdatabase/index-moviesdatabase',
+         'howtos/Caching/index-caching',
+         'howtos/FraudMitigation/index-fraudmitigation',
+         'howtos/RateLimiting/index-ratelimiting',
+         'howtos/Leaderboard/index-leaderboard',
+         'howtos/Shoppingcart/index-shoppingcart',
+     ]
+    },
+    {
+      type: 'category',
       label: 'Tools & Guides',
       items: [
         'tools/index-tools',
