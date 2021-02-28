@@ -7,7 +7,7 @@ function Demos() {
   return <section className="rds-demos">
     <div className="container">
 
-      <h2 className="section-title">Samples<br /> and Demos</h2>
+      <h2 className="section-title">Top Redis Modules<br /> and HowTos Guides</h2>
 
       <div className="row terminals">
         <img src={useBaseUrl('/img/code-1.png')} className="code" alt="" />
@@ -19,13 +19,14 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h3 className="title">Redis 101</h3>
+              <h3 className="title">Top Redis Modules</h3>
               <ul className="links">
-                <li><a href="https://github.com/redis-developer/redis-connect" target="_blank" rel="noopener">Connect to Redis: all languages</a></li>
                 <li><a href="https://redislabs.com/modules/get-started/" target="_blank" rel="noopener">Getting Started with Redis Modules</a></li>
-                <li><a href="https://github.com/RediSearch/redisearch-getting-started" target="_blank" rel="noopener">Getting Started with RediSearch</a></li>
-                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/" target="_blank" rel="noopener">Getting Started with Redis Streams</a></li>
-              </ul>
+                <li><a href="https://redislabs.com/modules/redisjson-quick-start/" target="_blank" rel="noopener">Getting Started with RedisJSON</a></li>
+                <li><a href="https://redislabs.com/modules/redisearch-quick-start/" target="_blank" rel="noopener">Getting Started with RediSearch</a></li>
+                <li><a href="https://redislabs.com/modules/redisgraph-quick-start/" target="_blank" rel="noopener">Getting Started with RedisGraph</a></li> 
+                <li><a href="https://redislabs.com/modules/redistimeseries-quick-start/" target="_blank" rel="noopener">Getting Started with RedisTimeSeries</a></li>
+             </ul>
             </div>
           </div>
 
@@ -37,12 +38,12 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h3 className="title">Complete Applications</h3>
+              <h3 className="title">HowTos & Tutorials</h3>
               <ul className="links">
-                <li><a href="https://github.com/redis-developer/brewdis" target="_blank" rel="noopener">Brewdis</a></li>
-                <li><a href="https://github.com/RedisTimeSeries/redis-pop-up-store" target="_blank" rel="noopener">Popup Store</a></li>
-                <li><a href="https://github.com/redis-developer/redis-microservices-demo/" target="_blank" rel="noopener">Redis Microservices Demo</a></li>
-                <li><a href="https://github.com/redis-developer/basic-caching-demo-nodejs" target="_blank" rel="noopener">Basic Redis Caching Demo</a></li>
+                <li><a href="/howtos/Shoppingcart/" target="_blank" rel="noopener">How to build Shopping cart using NodeJS & Redis</a></li>
+                <li><a href="/howtos/RateLimiting/" target="_blank" rel="noopener">How to build Rate Limiting using Redis & Python</a></li>
+                <li><a href="/howtos/Moviesdatabase/" target="_blank" rel="noopener">How to build Movies Database using RediSearch</a></li>
+                <li><a href="/howtos/Popupstore/" target="_blank" rel="noopener">How to build Popup Store using Redis</a></li>
               </ul>
             </div>
           </div>
