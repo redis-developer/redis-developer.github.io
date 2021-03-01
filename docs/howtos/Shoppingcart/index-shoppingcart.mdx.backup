@@ -9,8 +9,19 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-![My Image](shoppingcart.png)
-## 1. Install the below software in your local system:
+<Tabs
+  defaultValue="NodeJS"
+  values={[
+    {label: 'NodeJS', value: 'NodeJS'},
+    {label: 'Java', value: 'Java'},
+    {label: 'Python', value: 'Python'},
+  ]}>
+  <TabItem value="NodeJS">
+
+
+## 1. Pre-requisite
+
+Install the below software in your local system:
 
 - Express 4 backend
 - Node 15.5.0 (at least v12.9.0+)
@@ -146,5 +157,18 @@ $ npm run serve
 ```
 
 
+</TabItem>
+
+<TabItem value="Java">
+
+
+
+</TabItem>
+
+<TabItem value="Python">
+
+
+ </TabItem>
+</Tabs>
   
 
