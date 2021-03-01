@@ -48,21 +48,5 @@ module.exports = {
          'howtos/Caching/index-caching',
      ]
     },
-    {
-      type: 'category',
-      label: 'Tools & Guides',
-      items: [
-        'tools/index-tools',
-        {
-          type: 'category',
-          label: 'Guides',
-          items: [
-            'guides/import/index-import',
-            'guides/indexing/indexing-querying',
-            'guides/security/index-security',
-          ]
-        },
-      ]
-    },
   ]
 };
