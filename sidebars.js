@@ -27,7 +27,8 @@ module.exports = {
         'develop/python/index-python',
         'develop/node/index-node',
         'develop/golang/index-golang',
-      ]
+        'develop/rust/index-rust',
+     ]
     },
     {
       type: 'category',
