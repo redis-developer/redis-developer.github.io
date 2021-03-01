@@ -42,11 +42,25 @@ module.exports = {
       type: 'category',
       label: 'HowTos & Tutorials',
       items: [
+        {
+          type: 'category',
+          label: 'How to list & search Movies database using RediSearch',
+          items: [
+           'howtos/Moviesdatabase/intro/index-intro',
+           'howtos/Moviesdatabase/install/index-install',
+           'howtos/Moviesdatabase/create/index-create',
+           'howtos/Moviesdatabase/query/index-query',
+           'howtos/Moviesdatabase/manage/index-manage',
+           'howtos/Moviesdatabase/import/index-import', 
+           'howtos/Moviesdatabase/querymovies/index-querymovies',
+           'howtos/Moviesdatabase/aggregation/index-aggregation',
+           'howtos/Moviesdatabase/advancedoption/index-advancedoption',
+           'howtos/Moviesdatabase/sampleapp/index-sampleapp',
+          ]
+         },
          'howtos/Shoppingcart/index-shoppingcart',
          'howtos/Leaderboard/index-leaderboard',
          'howtos/RateLimiting/index-ratelimiting',
-         'howtos/Moviesdatabase/index-moviesdatabase',
-         'howtos/Caching/index-caching',
      ]
     },
   ]
