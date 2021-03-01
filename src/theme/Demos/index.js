@@ -7,7 +7,7 @@ function Demos() {
   return <section className="rds-demos">
     <div className="container">
 
-      <h2 className="section-title">Top Redis Modules<br /> and HowTos Guides</h2>
+      <h2 className="section-title"><br /> </h2>
 
       <div className="row terminals">
         <img src={useBaseUrl('/img/code-1.png')} className="code" alt="" />
@@ -19,7 +19,7 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h3 className="title">Top Redis Modules</h3>
+              <h5 className="title">Build with Redis Modules</h5>
               <ul className="links">
                 <li><a href="https://redislabs.com/modules/get-started/" target="_blank" rel="noopener">Getting Started with Redis Modules</a></li>
                 <li><a href="https://redislabs.com/modules/redisjson-quick-start/" target="_blank" rel="noopener">Getting Started with RedisJSON</a></li>
@@ -38,7 +38,7 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h3 className="title">HowTos & Tutorials</h3>
+              <h5 className="title">Featured HowTos & Tutorials</h5>
               <ul className="links">
                 <li><a href="/howtos/Shoppingcart/" target="_blank" rel="noopener">How to build Shopping cart app using NodeJS & Redis</a></li>
                 <li><a href="/howtos/RateLimiting/" target="_blank" rel="noopener">How to build Rate Limiting using Redis & Python</a></li>
