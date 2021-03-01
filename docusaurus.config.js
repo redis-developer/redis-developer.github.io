@@ -41,11 +41,6 @@ module.exports = {
         },
         */
         {
-          href: 'https://forum.redislabs.com',
-          label: 'Forum',
-          position: 'right',
-        },
-        {
           href: 'https://redislabs.com/try-free/',
           label: 'Try Free',
           position: 'right',
