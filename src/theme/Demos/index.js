@@ -40,10 +40,10 @@ function Demos() {
             <div className="terminal-body">
               <h3 className="title">HowTos & Tutorials</h3>
               <ul className="links">
-                <li><a href="/howtos/Shoppingcart/" target="_blank" rel="noopener">How to build Shopping cart using NodeJS & Redis</a></li>
+                <li><a href="/howtos/Shoppingcart/" target="_blank" rel="noopener">How to build Shopping cart app using NodeJS & Redis</a></li>
                 <li><a href="/howtos/RateLimiting/" target="_blank" rel="noopener">How to build Rate Limiting using Redis & Python</a></li>
-                <li><a href="/howtos/Moviesdatabase/" target="_blank" rel="noopener">How to build Movies Database using RediSearch</a></li>
-                <li><a href="/howtos/Popupstore/" target="_blank" rel="noopener">How to build Popup Store using Redis</a></li>
+                <li><a href="/howtos/Moviesdatabase/intro" target="_blank" rel="noopener">How to build Movies Database app using RediSearch</a></li>
+                <li><a href="/howtos/Leaderboard/" target="_blank" rel="noopener">How to build a real-time leaderboard app using Redis</a></li>
               </ul>
             </div>
           </div>
