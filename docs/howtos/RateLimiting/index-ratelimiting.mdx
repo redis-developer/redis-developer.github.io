@@ -10,9 +10,10 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
+![My Image](ratelimiting.png)
 
 Rate limiting is a mechanism that many developers may have to deal with at some point in their life. It’s useful for a variety of purposes like sharing access to limited resources or limit the number of requests made to an API endpoint and respond with a 429 status code. In this tutorial, we will see how to implement Rate Limiting using various programming languages:
+
 
 <Tabs
   defaultValue="Python"
@@ -23,9 +24,14 @@ Rate limiting is a mechanism that many developers may have to deal with at some 
   ]}>
   <TabItem value="Python">
 
-### Implementing Rate Limiter using Python
+### Pre-requisite
 
-## How to run it locally?
+-  Python 
+-  Docker
+-  Docker Compose
+
+
+### Clone the repository 
 
 ```
 git clone https://github.com/redis-developer/redis-rate-limiting-python.git
@@ -33,7 +39,6 @@ git clone https://github.com/redis-developer/redis-rate-limiting-python.git
 
 
 ### Run docker compose or install redis manually
-Install docker (on mac: https://docs.docker.com/docker-for-mac/install/)
 
 ```sh
 docker network create global
@@ -41,13 +46,13 @@ docker-compose up -d --build
 ```
 
 
-#### If you install redis manually open django-backend/configuration folder and copy `.env.example` to create `.env`. And provide the values for environment variables
+ If you install redis manually open django-backend/configuration folder and copy `.env.example` to create `.env`. And provide the values for environment variables
     - REDIS_HOST: Redis server host
     - REDIS_PORT: Redis server port
     - REDIS_DB: Redis server db index
     - REDIS_PASSWORD: Redis server password
 
-#### Setup and run 
+### Setup and run 
 
 Install python, pip and venv (on mac: https://installpython3.com/mac/)
 
@@ -67,34 +72,33 @@ python3 manage.py runserver
 
 <TabItem value="NodeJS">
 
-### Implementing Rate Limiter using NodeJS
 
 
-### Prerequisites
+### Pre-requisite
 
 -   Node - v12.19.0
 -   NPM - v6.14.8
 -   Docker - v19.03.13 (optional)
 
-### Local installation
+### Clone the repository
 
 ```bash
 git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs/
 
 ```
 
-# Copy file and set proper data inside
+### Copy file and set proper data inside
 
 Copy .env.example to .env and make the changes as per your environment
 
 
-# Install dependencies
+### Install dependencies
 
 ```bash
 npm cache clean && npm install
 ```
 
-# Run docker compose or install redis manually
+### Run docker compose or install redis manually
 
 ```bash
 docker network create global
@@ -106,7 +110,7 @@ npm run dev
 
 ```
 
-## Deployment
+### Deployment
 
 To make deploys work, you need to create free account in https://redislabs.com/try-free/ and get Redis' instance informations - REDIS_ENDPOINT_URI and REDIS_PASSWORD. You must pass them as environmental variables.
 
@@ -117,9 +121,13 @@ To make deploys work, you need to create free account in https://redislabs.com/t
 
 <TabItem value="Java">
 
-### Implementing Rate Limiter using Java
+### Pre-requisite
 
-![My Image](ratelimitingjava.png)
+-  Java
+-  Docker
+-  Docker Compose
+
+### Clone the repository
 
 ```
 git clone https://github.com/deliveryweb/redis-rate-limiting-java.git
@@ -127,25 +135,24 @@ git clone https://github.com/deliveryweb/redis-rate-limiting-java.git
 
 ### Run docker compose or install redis manually
 
-Install docker (on mac: https://docs.docker.com/docker-for-mac/install/)
 
 ```sh
 docker network create global
 docker-compose up -d --build
 ```
 
-#### If you install redis manually open src/main/resources/ folder and provide the values for environment variables in application.properties
+### If you install redis manually open src/main/resources/ folder and provide the values for environment variables in application.properties
     spring.redis.database=
     spring.redis.host=
     spring.redis.port=
     spring.redis.password=
     spring.redis.timeout=
 
-#### else  
+### else  
     copy .env.example .env
     export $(cat .env | xargs)
 
-#### Setup and run 
+### Setup and run 
 
 Install gradle (on mac: https://gradle.org/install/)
 
