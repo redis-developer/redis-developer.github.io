@@ -42,7 +42,7 @@ module.exports = {
           type: 'category',
           label: 'How to list & search Movies database using RediSearch',
           items: [
-           'howtos/Moviesdatabase/intro/index-intro',
+           'howtos/Moviesdatabase/getting-started/index-gettingstarted',
            'howtos/Moviesdatabase/install/index-install',
            'howtos/Moviesdatabase/create/index-create',
            'howtos/Moviesdatabase/query/index-query',
