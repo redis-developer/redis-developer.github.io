@@ -124,6 +124,13 @@ module.exports = {
       // Useful if you want to support a single color mode
       disableSwitch: true,
     },
+    announcementBar: {
+      id: 'redisconf20201cfp', // Any value that will identify this message.
+      content: '<p class="text">RedisConf 2021 – The Call for Papers is Now Open</p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn">Submit Proposal</a>',
+      backgroundColor: '#fff', // Defaults to `#fff`.
+      textColor: '#000', // Defaults to `#000`.
+      isCloseable: true, // Defaults to `true`.
+    },
   },
   presets: [
     [
