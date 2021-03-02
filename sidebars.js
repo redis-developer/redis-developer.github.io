@@ -24,6 +24,7 @@ module.exports = {
         'develop/node/index-node',
         'develop/golang/index-golang',
         'develop/rust/index-rust',
+        'develop/ruby/index-ruby',
      ]
     },
     {
