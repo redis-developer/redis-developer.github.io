@@ -12,11 +12,7 @@ module.exports = {
         'create/cloud/index-cloud',
         'create/docker/index-docker',
         'create/from-source/index-from-source',
-        {
-          type : 'link',
-          label : 'Enterprise on Kubernetes',
-          href : 'https://docs.redislabs.com/latest/platforms/',
-        },
+        'create/kubernetes/index-kubernetes',       
       ]
     },
     {
