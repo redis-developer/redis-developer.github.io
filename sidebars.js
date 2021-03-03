@@ -59,6 +59,7 @@ module.exports = {
            'howtos/shoppingcart/index-shoppingcart',
            'howtos/leaderboard/index-leaderboard',
            'howtos/ratelimiting/index-ratelimiting',
+           'howtos/caching/index-caching',
      ]
     },
   ]

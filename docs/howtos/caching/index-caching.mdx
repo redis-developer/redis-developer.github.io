@@ -1,0 +1,54 @@
+---
+id: index-caching
+title: How to build a Basic Caching Demo app Using NodeJS  & Redis
+sidebar_label: How to build a Basic Caching Demo app Using NodeJS & Redis
+slug: /howtos/caching
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+![My Image](cachingapp.png)
+
+This app returns the number of repositories a Github account has. When you first search for an account, the server calls Github's API to return the response. This can take some time. The server then adds the details of this slow response to Redis for future requests. When you search again, the next response comes directly from Redis cache instead of calling Github. The responses become much faster.
+
+
+## 1. Install NodeJS
+
+```
+brew install node
+```
+
+
+## 2. Run these commands:
+
+```
+git clone https://github.com/redis-developer/basic-caching-demo-nodejs
+```
+
+## 3. Copy .env.sample to create .env
+
+
+```
+- REDIS_ENDPOINT_URI: Redis server URI
+- REDIS_PASSWORD: Password to the server
+```
+
+## 4. Run frontend
+
+```
+cd client
+yarn
+yarn serve
+```
+
+## 5. Run backend
+
+```
+yarn
+yarn start
+```
+
+![My Image](cachingdemo.png)
