@@ -25,6 +25,7 @@ module.exports = {
         'develop/golang/index-golang',
         'develop/rust/index-rust',
         'develop/ruby/index-ruby',
+        'develop/php/index-php',
      ]
     },
     {
