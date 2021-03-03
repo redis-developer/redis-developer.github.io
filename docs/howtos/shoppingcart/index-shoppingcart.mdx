@@ -10,7 +10,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 ![My Image](shoppingcart.png)
-## 1. Install the below software in your local system:
+## 1. Install the required software
 
 - Express 4 backend
 - Node 15.5.0 (at least v12.9.0+)
@@ -145,6 +145,26 @@ $ npm run serve
 
 ```
 
+![My Image](shoppingcart2.png)
 
-  
+## How it works
 
+### How the data is stored:
+* The products data is stored in external json file. After first request this data is saved in a JSON data type in Redis like: `JSON.SET product:{productId} . {product data in json format}`.
+* The cart data is stored in a hash like: `HSET cart:{cartId} product:{productId} {productQuantity}`, where cartId is random generated value and stored in user session.
+
+### How the data is modified:
+* The product data is modified like `JSON.SET product:{productId} . {new product data in json format}`.
+* The cart data is modified like `HSET cart:{cartId} product:{productId} {newProductQuantity}` or `HINCRBY cart:{cartId} product:{productId} {incrementBy}`.
+* Product can be removed from cart like `HDEL cart:{cartId} product:{productId}`
+* Cart can be cleared using `HGETALL cart:{cartId}` and then `HDEL cart:{cartId} {productKey}`.
+* All carts can be deleted when reset data is requested like: `DEL cart:{cartId}`.
+
+### How the data is accessed:
+* Products: `SCAN {cursor} MATCH product:*` to get all product keys and then `JSON.GET {productKey}`.
+* Cart: `HGETALL cart:{cartId}`to get quantity of products and `JSON.GET product:{productId}` to get products data.  
+
+
+References:
+
+- [Source code](https://github.com/redis-developer/basic-redis-shopping-chart-nodejs)
