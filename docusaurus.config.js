@@ -104,8 +104,8 @@ module.exports = {
               href: 'https://redis.io/commands',
             },
             {
-              label: 'Tools',
-              to: '/tools/',
+              label: 'How-tos & tutorials',
+              to: '/howtos/moviesdatabase/getting-started',
             },
             {
               label: 'Guides',
