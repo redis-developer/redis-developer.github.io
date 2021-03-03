@@ -32,8 +32,8 @@ function Resources() {
   return <section className="rds-resources">
     <div className="container" id="resources">
 
-      <h2 className="section-title white">Resources<br /> &amp; Community</h2>
-      <h3 className="section-description white">Latest from your favorite community to support your Redis journey.</h3>
+      <h2 className="section-title white">Resources<br /> &amp; community</h2>
+      <h3 className="section-description white">The latest from your favorite community to support your Redis journey</h3>
 
       <Slider className="row articles" {...sliderSettings}>
         <div className="col col--4">
@@ -75,7 +75,7 @@ function Resources() {
       </Slider>
 
       <div className="cta">
-        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the Community</a>
+        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the community</a>
       </div>
 
     </div>

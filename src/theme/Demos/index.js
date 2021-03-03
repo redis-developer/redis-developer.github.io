@@ -22,10 +22,10 @@ function Demos() {
               <h5 className="title">Build with Redis Modules</h5>
               <ul className="links">
                 <li><a href="https://redislabs.com/modules/get-started/" target="_blank" rel="noopener">Getting Started with Redis Modules</a></li>
-                <li><a href="https://redislabs.com/modules/redisjson-quick-start/" target="_blank" rel="noopener">Getting Started with RedisJSON</a></li>
-                <li><a href="https://redislabs.com/modules/redisearch-quick-start/" target="_blank" rel="noopener">Getting Started with RediSearch</a></li>
-                <li><a href="https://redislabs.com/modules/redisgraph-quick-start/" target="_blank" rel="noopener">Getting Started with RedisGraph</a></li> 
-                <li><a href="https://redislabs.com/modules/redistimeseries-quick-start/" target="_blank" rel="noopener">Getting Started with RedisTimeSeries</a></li>
+                <li><a href="https://redislabs.com/modules/redisjson-quick-start/" target="_blank" rel="noopener">RedisJSON Quick Start</a></li>
+                <li><a href="https://redislabs.com/modules/redisearch-quick-start/" target="_blank" rel="noopener">RediSearch Quick Start</a></li>
+                <li><a href="https://redislabs.com/modules/redisgraph-quick-start/" target="_blank" rel="noopener">RedisGraph Quick Start</a></li> 
+                <li><a href="https://redislabs.com/modules/redistimeseries-quick-start/" target="_blank" rel="noopener">RedisTimeSeries Quick Start</a></li>
              </ul>
             </div>
           </div>
@@ -38,12 +38,12 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h5 className="title">Featured HowTos & Tutorials</h5>
+              <h5 className="title">Featured how-tos & tutorials</h5>
               <ul className="links">
-                <li><a href="/howtos/Shoppingcart/" target="_blank" rel="noopener">How to build Shopping cart app using NodeJS & Redis</a></li>
-                <li><a href="/howtos/RateLimiting/" target="_blank" rel="noopener">How to build Rate Limiting using Redis & Python</a></li>
-                <li><a href="/howtos/Moviesdatabase/intro" target="_blank" rel="noopener">How to build Movies Database app using RediSearch</a></li>
-                <li><a href="/howtos/Leaderboard/" target="_blank" rel="noopener">How to build a real-time leaderboard app using Redis</a></li>
+                <li><a href="/howtos/Shoppingcart/" target="_blank" rel="noopener">How to build a Shopping Cart app Using NodeJS & RedisJSON</a></li>
+                <li><a href="/howtos/RateLimiting/" target="_blank" rel="noopener">How to build a Rate Limiter Using Redis & Python</a></li>
+                <li><a href="/howtos/Moviesdatabase/intro" target="_blank" rel="noopener">How to build a Movies Database app Using RediSearch</a></li>
+                <li><a href="/howtos/Leaderboard/" target="_blank" rel="noopener">How to build a Real-Time Leaderboard app Using Redis</a></li>
               </ul>
             </div>
           </div>
