@@ -66,7 +66,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 ![My Image](redisinsight5.png)
 
 
-## How to use RedisInsight to run the Redis CLI
+### How to use RedisInsight to run the Redis CLI
 
 Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
 
@@ -93,7 +93,7 @@ Fill out the rest of the form and click “Download.” Please note that the pac
 
 redisinsight-linux64
 
-## Running RedisInsight
+### Running RedisInsight
 
 Open a terminal and navigate to the folder containing the downloaded file.
 
@@ -103,7 +103,7 @@ Make your downloaded file into an executable.
 chmod +x redisinsight-linux64-<version>
 ```
 
-## Start RedisInsight.
+### Start RedisInsight.
 
 ```
 ./redisinsight-linux64-version
@@ -124,7 +124,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 ![My Image](redisinsight5.png)
 
 
-## How to use RedisInsight to run the Redis CLI
+### How to use RedisInsight to run the Redis CLI
 
 Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
 
@@ -158,7 +158,7 @@ Fill out the rest of the form and click “Download.” Please note that the pac
 redisinsight-win-msi
 
 
-## Run the installer.
+### Run the installer.
 
 After the web server starts, open http://127.0.0.1:8001 and add a Redis database connection.
 
@@ -175,7 +175,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 ![My Image](redisinsight5.png)
 
 
-## How to use RedisInsight to run the Redis CLI
+### How to use RedisInsight to run the Redis CLI
 
 Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
 
@@ -250,7 +250,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 ![My Image](redisinsight5.png)
 
 
-## How to use RedisInsight to run the Redis CLI
+### How to use RedisInsight to run the Redis CLI
 
 Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
 
@@ -294,7 +294,7 @@ spec:
   selector:
     app: redisinsight
 ---
-# RedisInsight deployment with name 'redisinsight'
+## RedisInsight deployment with name 'redisinsight'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -327,13 +327,13 @@ spec:
         emptyDir: {} # node-ephemeral volume https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
 ```
 
-## Create the RedisInsight deployment and service
+### Create the RedisInsight deployment and service
 
 ```
 kubectl apply -f redisinsight.yaml
 ```
 
-## Accessing RedisInsight
+### Accessing RedisInsight
 
 Once the deployment and service are successfully applied and complete, you shoould be able to access RedisInsight. 
 This can be accomplished by listing the using the External IP address of the service we created to reach redisinsight.
@@ -357,7 +357,7 @@ $ minikube list
 |-------------|----------------------|--------------|---------------------------------------------|
 ```
 
-## Create the RedisInsight deployment without a service. 
+### Create the RedisInsight deployment without a service. 
 
 Below is an annotated YAML file that will create a RedisInsight deployment in a K8s cluster.
 
@@ -442,7 +442,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 ![My Image](redisinsight5.png)
 
 
-## How to use RedisInsight to run the Redis CLI
+### How to use RedisInsight to run the Redis CLI
 
 Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
 
@@ -460,7 +460,7 @@ You can see the output displayed at the top of the screen. If it says “OK,” 
 
 
 
-## Reference
+### Reference
 
 ### RedisInsight Overview (RedisConf'20)
 
