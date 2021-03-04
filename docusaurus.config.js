@@ -108,8 +108,8 @@ module.exports = {
               to: '/howtos/moviesdatabase/getting-started',
             },
             {
-              label: 'Guides',
-              to: '/guides/',
+              label: 'Tools',
+              to: '/tools/riot',
             },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
