@@ -26,6 +26,7 @@ function Demos() {
                 <li><a href="https://redislabs.com/modules/redisearch-quick-start/" target="_blank" rel="noopener">RediSearch Quick Start</a></li>
                 <li><a href="https://redislabs.com/modules/redisgraph-quick-start/" target="_blank" rel="noopener">RedisGraph Quick Start</a></li> 
                 <li><a href="https://redislabs.com/modules/redistimeseries-quick-start/" target="_blank" rel="noopener">RedisTimeSeries Quick Start</a></li>
+                <li><a href="https://redislabs.com/modules/redisbloom-quick-start/" target="_blank" rel="noopener">RedisBloom Quick Start</a></li>
              </ul>
             </div>
           </div>
