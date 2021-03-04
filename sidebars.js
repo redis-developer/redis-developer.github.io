@@ -34,6 +34,7 @@ module.exports = {
       items: [
         'explore/redisinsight/index-redisinsight',
         'explore/redisdatasource/index-redisdatasource',
+        'explore/riot/index-riot',
      ]
     },
     {
@@ -62,12 +63,5 @@ module.exports = {
            'howtos/caching/index-caching',
      ]
     },
-    {
-          type: 'category',
-          label: 'Tools',
-          items: [
-           'tools/riot/index-riot',
-   ]
-   },
 ]
 };
