@@ -62,5 +62,12 @@ module.exports = {
            'howtos/caching/index-caching',
      ]
     },
-  ]
+    {
+          type: 'category',
+          label: 'Tools',
+          items: [
+           'tools/riot/index-riot',
+   ]
+   },
+]
 };
