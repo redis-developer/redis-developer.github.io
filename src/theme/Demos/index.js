@@ -45,7 +45,7 @@ function Demos() {
                 <li><a href="/howtos/ratelimiting/">How to build a Rate Limiter Using Redis & Python</a></li>
                 <li><a href="/howtos/moviesdatabase/getting-started">How to build a Movies Database app Using RediSearch</a></li>
                 <li><a href="/howtos/leaderboard/">How to build a Real-Time Leaderboard app Using Redis</a></li>
-                <li><a href="/howtos/caching/">How to build a basic Caching demo app Using NodeJS & Redis</a></li>
+                <li><a href="/howtos/caching/">How to cache REST API responses Using Redis & NodeJS</a></li>
               </ul>
             </div>
           </div>
