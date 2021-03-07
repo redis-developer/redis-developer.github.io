@@ -31,7 +31,7 @@ Golang community has built many client libraries that you can find [here](https:
 The `redigo` library is located in the `https://github.com/gomodule/redigo` that you must import in your application.
 
 
-1. Import the `redigo` module
+### Step 1. Import the `redigo` module
 
     ```bash
      go get github.com/gomodule/redigo/redis
@@ -45,7 +45,7 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
     )
     ```
 
-1. Create a connection pool
+### Step 2. Create a connection pool
 
     ```go
     func newPool() *redis.Pool {
@@ -63,7 +63,7 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
     }
     ```    
 
-1. Write your application code
+### Step 3. Write your application code
 
     ```go
     package main
@@ -131,3 +131,12 @@ Find more information about Golang & Redis connections in the "[Redis Connect](h
 
   </TabItem>
 </Tabs>
+
+### Technical Articles & Whitepapers
+
+**[Redis and Golang: Designed to Improve Performance
+](https://redislabs.com/docs/ultra-fast-recommendations-engine-using-redis-go/)**
+
+**[A High Performance Recommendation Engine with Redis and Go](https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/)**
+
+

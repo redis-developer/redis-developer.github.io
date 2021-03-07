@@ -11,7 +11,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 
 
-### Pre-requisite
+### Step 1. Pre-requisite
 
 
 - A Linux system
@@ -21,7 +21,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 - Initializing the cloud SDK by [gcloud init](https://cloud.google.com/sdk/docs/quickstart#initializing_the) link
 
 
-### Ensure that gcloud is installed on your local Linux system:
+### Step 2. Ensure that gcloud is installed on your local Linux system:
  
 ```
 $ gcloud -v
@@ -33,7 +33,7 @@ app-engine-python 1.9.91
 app-engine-python-extras 1.9.91
 ```
 
-### Create a 5 Node GKE cluster:
+### Step 3. Create a 5 Node GKE cluster:
 
 ```
 $ gcloud container clusters create testredis  --subnetwork default --num-nodes 5 --machine-type e2-standard-8 --enable-basic-auth --region us-east1
@@ -41,21 +41,21 @@ $ gcloud container clusters create testredis  --subnetwork default --num-nodes 5
 
 
 
-### Create a new namespace
+### Step 4. Create a new namespace
 
 ```
 [node1 kubelabs]$ kubectl create namespace demo
 namespace/demo created
 ```
 
-### Switch context to the newly created namespace
+### Step 5. Switch context to the newly created namespace
 
 ```
 $ kubectl config set-context --current --namespace=demo
 Context "kubernetes-admin@kubernetes" modified.
 ```
 
-### Deploy the operator bundle
+### Step 6. Deploy the operator bundle
 
 To deploy the default installation with kubectl, the following command will deploy a bundle of all the yaml declarations required for the operator. You can download the bndle YAML file via [this](https://raw.githubusercontent.com/RedisLabs/redis-enterprise-k8s-docs/master/bundle.yaml) link: 
 
@@ -71,7 +71,7 @@ deployment.apps/redis-enterprise-operator created
 customresourcedefinition.apiextensions.k8s.io/redisenterprisedatabases.app.redislabs.com created
 ```
 
-### Listing the deployment:
+### Step 7. Listing the deployment:
 
 Run the below command to verify redis-enterprise-operator deployment is running.
 
@@ -82,7 +82,7 @@ NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
 redis-enterprise-operator          1/1     1            1           9m34s
 ```
 
-### Create a Redis Enterprise Cluster
+### Step 8. Create a Redis Enterprise Cluster
 
 Create a RedisEnterpriseCluster(REC) using the default configuration, which is suitable for development type deployments and works in typical scenarios:
 
@@ -93,7 +93,7 @@ redisenterprisecluster.app.redislabs.com/redis-enterprise created
 ```
 
 
-## Listing the RedisEnterpriseCluster
+### Step 9. Listing the RedisEnterpriseCluster
 
 The rec is a shortcut for RedisEnterpriseCluster. The cluster takes around 5-10 minutes to come up.Run the below command to list the RedisEnterpriseCluster: 
 
@@ -104,7 +104,7 @@ redis-enterprise   14s
 [node1 redis-enterprise-k8s-docs]$
 ```
 
-### Listing kubernetes resources
+### Step 10. Listing kubernetes resources
 
 
 
@@ -125,14 +125,14 @@ deployment.apps/redis-enterprise-operator          1/1     1            1       
 deployment.apps/redis-enterprise-services-rigger   1/1     1            1           6m44s
 ```
 
-### Listing the secrets
+### Step 11.  Listing the secrets
 
 ```
 kubectl get secrets redis-enterprise -o yaml | grep password | awk '{print $2}'
 bXVLeHRpblY=
 ```
 
-### Listing the password
+### Step 12. Listing the password
 
 ```
 echo bXVLeHRpblY= | base64 -d
@@ -140,4 +140,8 @@ echo bXVLeHRpblY= | base64 -d
 
 This command will display the password which you can use to access Redis Enterprise UI over the browser.
 
+## Next Step
 
+- [Redis Labs Kubernetes Architecture](https://docs.redislabs.com/latest/platforms/kubernetes/concepts/architecture/)
+- [Redis Enterprise Kubernetes Operator-based Architecture](https://docs.redislabs.com/latest/platforms/kubernetes/concepts/operator/)
+- [Sizing and Scaling a Redis Enterprise Cluster Deployment on Kubernetes](https://docs.redislabs.com/latest/platforms/kubernetes/concepts/sizing-on-kubernetes/)

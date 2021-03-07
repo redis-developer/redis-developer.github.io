@@ -30,7 +30,7 @@ The blog post “[Jedis vs. Lettuce: An Exploration](https://redislabs.com/blog/
 ### Getting Started with Jedis
 
 
-1. Add dependencies Jedis dependency to your Maven (or Gradle) project file:
+### Step 1. Add dependencies Jedis dependency to your Maven (or Gradle) project file:
 
     ```xml
     <dependency>
@@ -40,14 +40,14 @@ The blog post “[Jedis vs. Lettuce: An Exploration](https://redislabs.com/blog/
     </dependency>
     ```
 
-2. Import the required classes
+### Step 2. Import the required classes
 
     ```java
     import redis.clients.jedis.*;
     ```
 
 
-3. Create a Connection Pool
+### Step 3. Create a Connection Pool
 
     Once you have added the Jedis library to your project and imported the necessary classes you can create a connection pool. 
 
@@ -59,7 +59,7 @@ The blog post “[Jedis vs. Lettuce: An Exploration](https://redislabs.com/blog/
 
 
 
-4. Write your application code
+### Step 4. Write your application code
 
     Once you have access to the connection pool you can now get a Jedis instance and start to interact with your Redis instance.
 
@@ -93,7 +93,7 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
 
 ### Getting Started with Lettuce
 
-1. Add dependencies Jedis dependency to your Maven (or Gradle) project file:
+### Step 1. Add dependencies Jedis dependency to your Maven (or Gradle) project file:
 
     ```xml
     <dependency>
@@ -104,7 +104,7 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
     ```
 
 
-2. Import the Jedis classes
+### Step 2. Import the Jedis classes
 
     ```java
     import io.lettuce.core.RedisClient;
@@ -112,7 +112,7 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
     import io.lettuce.core.api.sync.RedisCommands;
     ```
 
-3. Write your application code
+### Step 3. Write your application code
 
     ```java
         RedisClient redisClient = RedisClient.create("redis://localhost:6379/");
@@ -137,18 +137,7 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
   </TabItem>
 </Tabs>
 
----
-
-## Guides
-
-<RedisCard 
-    title="How to Use SSL/TLS With Redis Enterprise" 
-    page="/guide/security/how-to-use-ssl-tls-with-redis-enterprise/"
-    />
-
----
-
-## Ecosystem
+### Ecosystem
 
 As developer you can use the Java client library directly in your application, or you can frameworks like: [Spring](https://spring.io/), [Quarkus](https://quarkus.io/),  [Vert.x](https://vertx.io/), and [Micronaut](https://micronaut.io/).
 
@@ -209,7 +198,7 @@ As developer you can use the Java client library directly in your application, o
 ---
 
 
-## More developer resources
+### More developer resources
 
 <div class="row">
 
@@ -252,7 +241,7 @@ Run Redis Commands from Lettuce
 
 ---
 
-## Redis University
+### Redis University
 
 ### [Redis for Java Developers](https://university.redislabs.com/courses/ru102j/)
 
