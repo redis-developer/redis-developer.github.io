@@ -28,7 +28,7 @@ module.exports = {
       hideOnScroll: false,
       items: [
         {
-          to: '/create/cloud',
+          to: '/create/cloud/',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
