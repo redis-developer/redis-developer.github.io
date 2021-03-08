@@ -125,6 +125,12 @@ deployment.apps/redis-enterprise-operator          1/1     1            1       
 deployment.apps/redis-enterprise-services-rigger   1/1     1            1           6m44s
 ```
 
+
+You can verify the Pods and list of services over Google Cloud Dashboard UI:
+
+![Redis Enterprise UI](re_kubernetes.png)
+
+
 ### Step 11.  Listing the secrets
 
 ```
@@ -137,6 +143,7 @@ bXVLeHRpblY=
 ```
 echo bXVLeHRpblY= | base64 -d
 ```
+
 
 This command will display the password which you can use to access Redis Enterprise UI over the browser.
 
