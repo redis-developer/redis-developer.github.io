@@ -14,7 +14,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 Find tutorials, examples and technical articles that will help you to develop with Redis and Php.
 
 
-## Getting Started
+### Getting Started
 
 In order to use Redis with PHP you will need a PHP Redis client. In the following sections, we will demonstrate the use of [PhpRedis](https://github.com/phpredis/phpredis), a flexible and feature-complete Redis client library for PHP. Additional [PHP clients](http://redis.io/clients#PHP) for Redis can be found under the PHP section of the Redis Clients page.
 
@@ -27,9 +27,8 @@ In order to use Redis with PHP you will need a PHP Redis client. In the followin
   ]}>
   <TabItem value="Phpredis">
 
-### Getting Started with Phpredis
 
-1. Get pecl 
+### Step 1. Get pecl 
 
 
 ```
@@ -38,13 +37,13 @@ apt install pkg-php-tools
 
 
 
-2. Install PhpRedis
+### Step 2. Install PhpRedis
  
 ```
 pecl install phpredis
 ```
 
-3. Opening a Connection to Redis Using PhpRredis
+### Step 3. Opening a Connection to Redis Using PhpRredis
 
 The following code creates a connection to Redis using Phpredis
 
@@ -65,7 +64,7 @@ if ($redis->ping()) {
 
 Replace the following values with those of your database and save this file as connect.php
 
-4. Executing the script
+### Step 4. Executing the script
 
 ```
 php connect.php
@@ -81,7 +80,7 @@ OK
 
 
 
-## Further Reference:
+### Further Reference:
 
 - [Using Redis with Php](https://redislabs.com/lp/php-redis/)
 - [Getting Started with Redis & Php](https://github.com/redis-developer/redis-php-getting-started/)

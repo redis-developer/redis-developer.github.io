@@ -25,7 +25,7 @@ The Redis Data Source for Grafana is a plug-in that allows users to connect to t
 
 ## Getting Started
 
-### 1. Install using `grafana-cli`
+### Step 1. Install using `grafana-cli`
 
 Use the `grafana-cli` tool to install from the commandline:
 
@@ -33,13 +33,13 @@ Use the `grafana-cli` tool to install from the commandline:
 grafana-cli plugins install redis-datasource
 ```
 
-### 2. Run using `docker`
+### Step 2. Run using `docker`
 
 ```bash
 docker run -d -p 3000:3000 --name=grafana -e "GF_INSTALL_PLUGINS=redis-datasource" grafana/grafana
 ```
 
-### 3. Run using `docker-compose`
+### Step 3. Run using `docker-compose`
 
 Project provides `docker-compose.yml` to start Redis with all Redis Labs modules and Grafana.
 
@@ -56,7 +56,7 @@ There are certain settings that can be configured based on your own setup:
 - Grafana port
 - Data Source URL
 
-### 4.  Configure Grafana port in `docker-compose.yml`
+### Step 4.  Configure Grafana port in `docker-compose.yml`
 
 If standard port 3000 is occupied by another application update the port to bind Grafana to
 
@@ -65,7 +65,7 @@ If standard port 3000 is occupied by another application update the port to bind
       - '3000:3000'
 ```
 
-### 5. Configure Data Source URL in `provisioning/datasources/redis.yaml`
+### Step 5. Configure Data Source URL in `provisioning/datasources/redis.yaml`
 
 If Redis is running and listening on localhost:6379 no changes are required
 
@@ -85,7 +85,7 @@ If Redis is running as Docker container on Linux, please update host to `redis`
     url: redis://redis:6379
 ```
 
-### 6. Run using `docker-compose` for development
+### Step 6. Run using `docker-compose` for development
 
 Data Source have to be built following [BUILD](https://github.com/RedisGrafana/grafana-redis-datasource/blob/master/BUILD.md) instructions before starting using `docker-compose/dev.yml` file.
 
@@ -99,13 +99,13 @@ Data Source supports various Redis commands using custom components and provides
 
 ![Query](https://raw.githubusercontent.com/RedisGrafana/grafana-redis-datasource/master/src/img/query.png)
 
-## Template variables
+### Template variables
 
 Template variables can query any command and use other variables as parameters.
 
 ![Variables](https://raw.githubusercontent.com/RedisGrafana/grafana-redis-datasource/master/src/img/variables.png)
 
-## Learn more
+### Further References 
 
 - [Introducing the Redis Data Source Plug-in for Grafana](https://redislabs.com/blog/introducing-the-redis-data-source-plug-in-for-grafana/)
 - [How to Use the New Redis Data Source for Grafana Plug-in](https://redislabs.com/blog/how-to-use-the-new-redis-data-source-for-grafana-plug-in/)

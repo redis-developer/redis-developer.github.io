@@ -12,7 +12,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Find tutorials, examples and technical articles that will help you to develop with Redis and Ruby.
 
-## Getting Started
+### Getting Started
 
 In order to use Redis with Ruby you will need a Ruby Redis client. In the following sections, we will demonstrate the use of redis-rb, a Ruby client library for Redis.
 Additional Ruby clients for Redis can be found under the Ruby section of the Redis Clients page.
@@ -25,15 +25,14 @@ Additional Ruby clients for Redis can be found under the Ruby section of the Red
   <TabItem value="redis-rb">
 
 
-### Getting started with redis-rb
 
-1. Clone the repository
+### Step 1. Clone the repository
 
 ```
 git clone https://github.com/redis-developer/redis-ruby-getting-started
 ```
 
-2.  Install redis-rb:
+### Step 2.  Install redis-rb:
 
 ```
 $ gem install redis
@@ -41,7 +40,7 @@ $ gem install redis
 
 OR
 
-## Use Gemfile
+### Step 3. Use Gemfile
 
 ```
 $cat Gemfile
@@ -49,7 +48,7 @@ gem 'redis'
 ```
 
 
-3. Execute
+### Step 4. Execute
 
 ```
 $ bundle install
@@ -71,7 +70,7 @@ Bundle complete! 1 Gemfile dependency, 2 gems now installed.
 Use `bundle info [gemname]` to see where a bundled gem is installed.
 ```
 
-4. Verifying 
+### Step 5. Verifying 
   
 ```
 bundle info redis
@@ -85,7 +84,7 @@ bundle info redis
 	Path: /Library/Ruby/Gems/2.6.0/gems/redis-4.2.5
 ```
 
-5. Opening a Connection to Redis Using redis-rb
+### Step 6. Opening a Connection to Redis Using redis-rb
 
 The following code creates a connection to Redis using redis-rb:
 
@@ -105,8 +104,7 @@ Just execute the below command:
 ```
 ruby connect.rb
 ```
-6.  Verifying
-
+### Step 7.  Verifying
 ```
 127.0.0.1:6379> monitor
 OK
@@ -117,7 +115,7 @@ OK
 ```
 
 
-## Further Reference:
+### Further References
 
 - [Redis Enterprise and Ruby](https://redislabs.com/lp/redis-ruby/)
 

@@ -28,7 +28,7 @@ module.exports = {
       hideOnScroll: false,
       items: [
         {
-          to: '/create/cloud',
+          to: '/create/cloud/',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
@@ -107,10 +107,6 @@ module.exports = {
               label: 'How-tos & tutorials',
               to: '/howtos/moviesdatabase/getting-started',
             },
-            {
-              label: 'Guides',
-              to: '/guides/',
-            },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
             // },
@@ -126,6 +122,7 @@ module.exports = {
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
+      content: '<p class="text">Join us at RedisConf 2021, April 20-21</p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn">Register now</a>',
     //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.

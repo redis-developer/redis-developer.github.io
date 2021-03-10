@@ -25,34 +25,33 @@ Golang community has built many client libraries that you can find [here](https:
   ]}>
   <TabItem value="redigo">
 
-### Getting Started with redigo
 
 
 The `redigo` library is located in the `https://github.com/gomodule/redigo` that you must import in your application.
 
 
-1. Import the `redigo` module
+### Step 1. Import the `redigo` module
 
-    ```bash
-     go get github.com/gomodule/redigo/redis
-    ```
+  ```bash
+   go get github.com/gomodule/redigo/redis
+  ```
 
-    ```go
-    import (
-        "fmt"
-        "context"
-        "github.com/gomodule/redigo/redis"
-    )
-    ```
+  ```go
+   import (
+      "fmt"
+      "context"
+      "github.com/gomodule/redigo/redis"
+   )
+  ```
 
-1. Create a connection pool
+### Step 2. Create a connection pool
 
-    ```go
-    func newPool() *redis.Pool {
-        return &redis.Pool{
-            MaxIdle: 80,
-            MaxActive: 12000,
-            Dial: func() (redis.Conn, error) {
+  ```go
+   func newPool() *redis.Pool {
+       return &redis.Pool{
+          MaxIdle: 80,
+          MaxActive: 12000,
+          Dial: func() (redis.Conn, error) {
                 c, err := redis.Dial("tcp", ":6379")
                 if err != nil {
                     panic(err.Error())
@@ -61,11 +60,11 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
             },
         }
     }
-    ```    
+   ```    
 
-1. Write your application code
+### Step 3. Write your application code
 
-    ```go
+   ```go
     package main
 
     import (
@@ -124,10 +123,19 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
             },
         }
     }    
-    ```
+   ```
 
 Find more information about Golang & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/golang/redigo)".
 
 
   </TabItem>
 </Tabs>
+
+### Technical Articles & Whitepapers
+
+**[Redis and Golang: Designed to Improve Performance
+](https://redislabs.com/docs/ultra-fast-recommendations-engine-using-redis-go/)**
+
+**[A High Performance Recommendation Engine with Redis and Go](https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/)**
+
+
