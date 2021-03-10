@@ -28,14 +28,14 @@ For your first steps with Node.js and Redis, this article will show how to use t
 
 ### Step 1. Install the ioredis library using `npm` (or `yarn`)
 
-    ```bash
-    npm install ioredis
-    ```
+  ```bash
+   npm install ioredis
+  ```
 
 
 ### Step 2. Write your application code
 
-    ```javascript
+   ```javascript
     const Redis = require("ioredis");
     const redis = new Redis(6379, "localhost");
 
@@ -54,7 +54,7 @@ For your first steps with Node.js and Redis, this article will show how to use t
     redis.zadd("vehicles", 0, "car", 0, "bike");
     redis.zrange("vehicles", 0, -1, "WITHSCORES").then((res) => console.log(res));
 
-    ```
+  ```
 
 Find more information about Redis & io-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/ioredis)".
 
@@ -64,14 +64,14 @@ Find more information about Redis & io-redis connections in the "[Redis Connect]
 
 ### Step 1. Install the Redis library using `npm` (or `yarn`)
 
-    ```bash
+  ```bash
     npm install redis
-    ```
+  ```
 
 
 ### Step 2. Write your application code
 
-    ```javascript
+  ```javascript
     const redis = require("redis");
     
     const client = redis.createClient ({
@@ -99,7 +99,7 @@ Find more information about Redis & io-redis connections in the "[Redis Connect]
         });
     });
 
-    ```
+  ```
 
 Find more information about Redis & node-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/node-redis)".
 

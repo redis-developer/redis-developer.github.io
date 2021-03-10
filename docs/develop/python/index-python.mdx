@@ -29,14 +29,14 @@ For your first steps with Python and Redis, this article will show how to use th
 
 ### Step 1. Install the Redis library using `pip`
 
-    ```bash
+   ```bash
     pip3 install redis
-    ```
+   ```
 
 
 ### Step 2. Write your application code
 
-    ```python
+   ```python
     import redis
 
     redis = redis.Redis(
@@ -51,7 +51,7 @@ For your first steps with Python and Redis, this article will show how to use th
     redis.zadd('vehicles', {'bike' : 0})
     vehicles = redis.zrange('vehicles', 0, -1)
     print(vehicles)
-    ```
+   ```
 
 Find more information about Redis & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/python/redispy)".
 
