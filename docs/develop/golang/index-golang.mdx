@@ -32,26 +32,26 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
 
 ### Step 1. Import the `redigo` module
 
-    ```bash
-     go get github.com/gomodule/redigo/redis
-    ```
+  ```bash
+   go get github.com/gomodule/redigo/redis
+  ```
 
-    ```go
-    import (
-        "fmt"
-        "context"
-        "github.com/gomodule/redigo/redis"
-    )
-    ```
+  ```go
+   import (
+      "fmt"
+      "context"
+      "github.com/gomodule/redigo/redis"
+   )
+  ```
 
 ### Step 2. Create a connection pool
 
-    ```go
-    func newPool() *redis.Pool {
-        return &redis.Pool{
-            MaxIdle: 80,
-            MaxActive: 12000,
-            Dial: func() (redis.Conn, error) {
+  ```go
+   func newPool() *redis.Pool {
+       return &redis.Pool{
+          MaxIdle: 80,
+          MaxActive: 12000,
+          Dial: func() (redis.Conn, error) {
                 c, err := redis.Dial("tcp", ":6379")
                 if err != nil {
                     panic(err.Error())
@@ -60,11 +60,11 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
             },
         }
     }
-    ```    
+   ```    
 
 ### Step 3. Write your application code
 
-    ```go
+   ```go
     package main
 
     import (
@@ -123,7 +123,7 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
             },
         }
     }    
-    ```
+   ```
 
 Find more information about Golang & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/golang/redigo)".
 
