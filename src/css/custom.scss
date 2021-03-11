@@ -42,6 +42,10 @@
   --ifm-global-radius: 10px;
 }
 
+html[data-theme="dark"] {
+  --ifm-background-color: var(--primary-black);
+}
+
 .container {
   max-width: 1140px;
 }
