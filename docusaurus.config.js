@@ -28,7 +28,7 @@ module.exports = {
       hideOnScroll: false,
       items: [
         {
-          to: '/create/cloud/',
+          to: '/create/cloud/rediscloud',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
@@ -60,7 +60,7 @@ module.exports = {
           items: [
             {
               label: 'Create Database',
-              to: '/create/cloud/',
+              to: '/create/cloud/rediscloud',
             },
             {
               label: 'Develop',

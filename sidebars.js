@@ -5,14 +5,23 @@ module.exports = {
       label: 'Home',
       href: '/',
     },
-    {
+     {
       type: 'category',
       label: 'Create',
       items: [
-        'create/cloud/index-cloud',
-        'create/docker/index-docker',
-        'create/from-source/index-from-source',
-        'create/kubernetes/index-kubernetes',       
+          {
+           type: 'category',
+           label: 'Cloud',
+           items: [
+            'create/cloud/rediscloud/index-rediscloud',
+            'create/cloud/azure/index-azure',
+            'create/cloud/aws/index-aws',
+            'create/cloud/gcp/index-gcp',
+         ]
+        },
+           'create/docker/index-docker',
+           'create/from-source/index-from-source',
+           'create/kubernetes/index-kubernetes',
       ]
     },
     {
