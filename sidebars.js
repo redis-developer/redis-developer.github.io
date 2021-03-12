@@ -48,6 +48,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Modules',
+      items: [
+        'modules/redisearch/index-redisearch',
+        'modules/redisjson/index-redisjson',
+        'modules/redistimeseries/index-redistimeseries',
+        'modules/redisgraph/index-redisgraph',
+        'modules/redisbloom/index-redisbloom',
+     ]
+    },
+    {
+      type: 'category',
       label: 'HowTos & Tutorials',
       items: [
         {
