@@ -15,8 +15,8 @@ module.exports = {
            items: [
             'create/cloud/rediscloud/index-rediscloud',
             'create/cloud/azure/index-azure',
-            'create/cloud/aws/index-aws',
             'create/cloud/gcp/index-gcp',
+            'create/cloud/aws/index-aws',
          ]
         },
            'create/docker/index-docker',
