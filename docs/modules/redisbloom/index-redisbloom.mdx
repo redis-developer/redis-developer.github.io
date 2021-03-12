@@ -9,10 +9,10 @@ RedisBloom extends Redis core to support additional probabilistic data structure
  
 The RedisBloom module provides four data types:
 
-- Bloom filter: A probabilistic data structure that can test for presence. A Bloom filter is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set. Bloom filters typically exhibit better performance and scalability when inserting items (so if you're often adding items to your dataset then Bloom may be ideal). Learn more about Bloom Filters here.
+- Bloom filter: A probabilistic data structure that can test for presence. A Bloom filter is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set. Bloom filters typically exhibit better performance and scalability when inserting items (so if you're often adding items to your dataset then Bloom may be ideal). 
 - Cuckoo filter: An alternative to Bloom filters, Cuckoo filters comes with additional support for deletion of elements from a set. These filters are quicker on check operations.
-- Count-min sketch: A count-min sketch is generally used to determine the frequency of events in a stream. You can query the count-min sketch to get an estimate of the frequency of any given event. Learn more about count-min sketch here. 
-- Top-K: The Top-k probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. Learn more about Top-K here.
+- Count-min sketch: A count-min sketch is generally used to determine the frequency of events in a stream. You can query the count-min sketch to get an estimate of the frequency of any given event.  
+- Top-K: The Top-k probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. 
 
 
 
