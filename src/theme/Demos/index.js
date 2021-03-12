@@ -22,10 +22,10 @@ function Demos() {
               <h5 className="title">Build with Redis Modules</h5>
               <ul className="links">
                 <li><a href="/modules/redisearch" target="_blank" rel="noopener">Getting Started with Redis Modules</a></li>
-                <li><a href="/modules/redisjson" target="_blank" rel="noopener">RedisJSON Quick Start</a></li>
                 <li><a href="/modules/redisearch" target="_blank" rel="noopener">RediSearch Quick Start</a></li>
-                <li><a href="/modules/redisgraph" target="_blank" rel="noopener">RedisGraph Quick Start</a></li> 
-                <li><a href="/modules/redistimeseries" target="_blank" rel="noopener">RedisTimeSeries Quick Start</a></li>
+                <li><a href="/modules/redisjson" target="_blank" rel="noopener">RedisJSON Quick Start</a></li>
+                <li><a href="/modules/redistimeseries" target="_blank" rel="noopener">RedisTimeSeries Quick Start</a></li> 
+                <li><a href="/modules/redisgraph" target="_blank" rel="noopener">RedisGraph Quick Start</a></li>
                 <li><a href="/modules/redisbloom" target="_blank" rel="noopener">RedisBloom Quick Start</a></li>
              </ul>
             </div>
