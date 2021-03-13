@@ -21,7 +21,6 @@ function Demos() {
             <div className="terminal-body">
               <h5 className="title">Build with Redis Modules</h5>
               <ul className="links">
-                <li><a href="/modules/redisearch" >Getting Started with Redis Modules</a></li>
                 <li><a href="/modules/redisearch">RediSearch Quick Start</a></li>
                 <li><a href="/modules/redisjson">RedisJSON Quick Start</a></li>
                 <li><a href="/modules/redistimeseries">RedisTimeSeries Quick Start</a></li> 
