@@ -84,7 +84,7 @@ module.exports = {
             // },
             {
               label: 'Build with Redis Modules',
-              href: 'https://redislabs.com/modules/get-started/',
+              href: '/modules/redisearch/',
             },
           ],
         },
