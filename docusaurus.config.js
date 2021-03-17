@@ -28,7 +28,7 @@ module.exports = {
       hideOnScroll: false,
       items: [
         {
-          to: '/create/cloud/rediscloud',
+          to: '/create/rediscloud',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
@@ -60,7 +60,7 @@ module.exports = {
           items: [
             {
               label: 'Create Database',
-              to: '/create/cloud/rediscloud',
+              to: '/create/rediscloud',
             },
             {
               label: 'Develop',
@@ -84,7 +84,7 @@ module.exports = {
             // },
             {
               label: 'Build with Redis Modules',
-              href: '/modules/redisearch/',
+              href: '/howtos/redisearch/',
             },
           ],
         },

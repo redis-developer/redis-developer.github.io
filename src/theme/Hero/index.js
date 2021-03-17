@@ -43,7 +43,7 @@ function Hero() {
                   <p className="description">Create a new database using cloud, Docker or from sources</p>
                   <span className="more">Create a database <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/create/cloud/rediscloud')} className="link">Read More</a>
+                <a href={useBaseUrl('/create/rediscloud')} className="link">Read More</a>
               </div>
 
               <div className="box box-develop">

@@ -9,19 +9,13 @@ module.exports = {
       type: 'category',
       label: 'Create',
       items: [
-          {
-           type: 'category',
-           label: 'Cloud',
-           items: [
-            'create/cloud/rediscloud/index-rediscloud',
-            'create/cloud/azure/index-azure',
-            'create/cloud/gcp/index-gcp',
-            'create/cloud/aws/index-aws',
-         ]
-        },
-           'create/docker/index-docker',
-           'create/from-source/index-from-source',
-           'create/kubernetes/index-kubernetes',
+        'create/rediscloud/index-rediscloud',
+        'create/azure/index-azure',
+        'create/gcp/index-gcp',
+        'create/aws/index-aws',
+        'create/docker/index-docker',
+        'create/kubernetes/index-kubernetes',
+        'create/from-source/index-from-source',
       ]
     },
     {
@@ -44,13 +38,22 @@ module.exports = {
         'explore/redisinsight/index-redisinsight',
         'explore/redisdatasource/index-redisdatasource',
         'explore/riot/index-riot',
-     ]
+      ]
     },
     {
       type: 'category',
       label: 'HowTos & Tutorials',
       items: [
-        {
+           'howtos/redisearch/index-redisearch',
+           'howtos/redisjson/index-redisjson',
+           'howtos/redistimeseries/index-redistimeseries',
+           'howtos/redisgraph/index-redisgraph',
+           'howtos/redisbloom/index-redisbloom',
+           'howtos/shoppingcart/index-shoppingcart',
+           'howtos/leaderboard/index-leaderboard',
+           'howtos/ratelimiting/index-ratelimiting',
+           'howtos/caching/index-caching',
+          {
           type: 'category',
           label: 'How to list & search Movies database using RediSearch',
           items: [
@@ -66,11 +69,9 @@ module.exports = {
            'howtos/moviesdatabase/sampleapp/index-sampleapp',
           ]
          },
-           'howtos/shoppingcart/index-shoppingcart',
-           'howtos/leaderboard/index-leaderboard',
-           'howtos/ratelimiting/index-ratelimiting',
-           'howtos/caching/index-caching',
-     ]
-    },
+       ]
+     }, 
+    
+
 ]
 };
