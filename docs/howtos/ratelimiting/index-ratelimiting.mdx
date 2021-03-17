@@ -24,21 +24,21 @@ Rate limiting is a mechanism that many developers may have to deal with at some 
   ]}>
   <TabItem value="Python">
 
-## 1. Pre-requisite
+## Step 1. Pre-requisite
 
 -  Python 
 -  Docker
 -  Docker Compose
 
 
-### 2. Clone the repository 
+### Step 2. Clone the repository 
 
 ```
 git clone https://github.com/redis-developer/redis-rate-limiting-python.git
 ```
 
 
-### 3. Run docker compose or install redis manually
+### Step 3. Run docker compose or install redis manually
 
 ```sh
 docker network create global
@@ -52,7 +52,7 @@ docker-compose up -d --build
     - REDIS_DB: Redis server db index
     - REDIS_PASSWORD: Redis server password
 
-### 4. Setup and run 
+### Step 4. Setup and run 
 
 Install python, pip and venv (on mac: https://installpython3.com/mac/)
 
@@ -74,31 +74,31 @@ python3 manage.py runserver
 
 
 
-## 1. Pre-requisite
+## Step 1. Pre-requisite
 
 -   Node - v12.19.0
 -   NPM - v6.14.8
 -   Docker - v19.03.13 (optional)
 
-### 2. Clone the repository
+### Step 2. Clone the repository
 
 ```bash
 git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs/
 
 ```
 
-### 3. Copy file and set proper data inside
+### Step 3. Copy file and set proper data inside
 
 Copy .env.example to .env and make the changes as per your environment
 
 
-### 4. Install dependencies
+### Step 4. Install dependencies
 
 ```bash
 npm cache clean && npm install
 ```
 
-### 5. Run docker compose or install redis manually
+### Step 5. Run docker compose or install redis manually
 
 ```bash
 docker network create global
@@ -110,7 +110,7 @@ npm run dev
 
 ```
 
-### 6. Deployment
+### Step 6. Deployment
 
 To make deploys work, you need to create free account in https://redislabs.com/try-free/ and get Redis' instance informations - REDIS_ENDPOINT_URI and REDIS_PASSWORD. You must pass them as environmental variables.
 
@@ -121,19 +121,19 @@ To make deploys work, you need to create free account in https://redislabs.com/t
 
 <TabItem value="Java">
 
-## 1. Pre-requisite
+## Step 1. Pre-requisite
 
 -  Java
 -  Docker
 -  Docker Compose
 
-### 2. Clone the repository
+### Step 2. Clone the repository
 
 ```
-git clone https://github.com/deliveryweb/redis-rate-limiting-java.git
+https://github.com/redis-developer/basic-rate-limiting-demo-java
 ```
 
-### 3. Run docker compose or install redis manually
+### Step 3. Run docker compose or install redis manually
 
 
 ```sh
@@ -141,29 +141,49 @@ docker network create global
 docker-compose up -d --build
 ```
 
-If you install redis manually open src/main/resources/ folder and provide the values for environment variables in application.properties
-    spring.redis.database=
-    spring.redis.host=
-    spring.redis.port=
-    spring.redis.password=
-    spring.redis.timeout=
+### Step 4. Setting up an environmental variable 
 
-### else  
-    copy .env.example .env
-    export $(cat .env | xargs)
+Open directory server (cd server): copy .env.example to create .env (copy .env.example .env or cp .env.example .env). 
+And provide the values for environment variables (if needed)
+
+
+```
+- REDIS_URL: Redis server url
+- REDIS_HOST: Redis server host
+- REDIS_PORT: Redis server port
+- REDIS_DB: Redis server db index
+- REDIS_PASSWORD: Redis server password
+```
+
 
 ### 4. Setup and run 
 
 Install gradle (on mac: https://gradle.org/install/)
 
+```
+brew install gradle
+```
+
+
 
 Install JDK (on mac: https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-macos.htm)
 
 ``` sh
-gradle wrapper
+cd server
+export $(cat .env | xargs)
 ./gradlew build
 ./gradlew run
 ```
+
+Point your browser to http://IP:5000 and you will be able to select various requests per second option on the screen as shown below:
+
+![Rate Limiter](ratelimiter2.png)
+
+
+As shown in the above example, the server will allow sending max 10 API requests within a 10 second window.If you send more than that, all additional requests will be blocked
+
+
+
 
  </TabItem>
 </Tabs>
