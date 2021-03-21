@@ -55,9 +55,9 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis La
 
  <div class="col">
     <RedisCard
-        title="Chat Application"
-        description="Building a Chat Application using Redis"
-        page="/howtos/chatapp"
+        title="Fraud Detection"
+        description="Building Fraud Detection using Redis"
+        page="/howtos/frauddetection"
         />
  </div>
 
@@ -71,5 +71,23 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis La
  </div>
 </div>
 
+<div class="row">
 
+ <div class="col">
+    <RedisCard
+        title="Chat Application"
+        description="Building a Chat application using Redis"
+        page="/howtos/chatapp"
+        />
+ </div>
+
+
+ <div class="col">
+    <RedisCard
+        title="HackerNews Clone"
+        description="How to build a HackerNews Clone Using RedisJSON"
+        page="/howtos/hackernews"
+        />
+ </div>
+</div>
 
