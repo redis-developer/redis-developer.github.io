@@ -135,17 +135,17 @@ def ip_fraud(self, data):
 
    	 return exists
 
-    def click_spam(self, data):
-   	 is_click_spammed = False
-   	 count = RedisConn().redis().zcount(data.get('device_id'), data['ts'] - self.click_spam_window_in_sec, data['ts'])
-   	 if count >= self.click_spam_threshold:
-   		 is_click_spammed = True
-   		 data['fraud_type'] = Constants.CLICK_SPAM
-   		 data['status'] = Constants.FRAUD
-   	 return is_click_spammed
+def click_spam(self, data):
+	is_click_spammed = False
+	count = RedisConn().redis().zcount(data.get('device_id'), data['ts'] - self.click_spam_window_in_sec, data['ts'])
+	if count >= self.click_spam_threshold:
+		 is_click_spammed = True
+		 data['fraud_type'] = Constants.CLICK_SPAM
+		 data['status'] = Constants.FRAUD
+	return is_click_spammed
 
-    def publish(self, data):
-   	 RedisConn().redis().xadd(Constants.STREAM_NAME, data, id='*')
+def publish(self, data):
+	RedisConn().redis().xadd(Constants.STREAM_NAME, data, id='*')
 ```
 
 In the above code, Cuckoo Filter to find blacklisted IP fraud. Cuckoo filter is a probabilistic data structure, part of the module redisbloom. Checking for existence of IP in cuckoo filter is done using cfExists method provided by bloom client. Please note that Cuckoo filter can return false positives. To configure the error rate, cf.reserve command can be used to create the filter and custom bucket size can be provided.
