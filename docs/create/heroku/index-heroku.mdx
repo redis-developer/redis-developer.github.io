@@ -103,7 +103,7 @@ Assuming that you already have Heroku account created, run the below command to 
 ```
 $ heroku login
 heroku: Press any key to open up the browser to login or q to exit: 
-Opening browser to https://cli-auth.heroku.com/auth/cli/browser/4788f936-3557-439f-ab37-95338b735cf2?requestor=XXXXXXXXXXXA.vhF7XtVTtsp9xliwwrHG5ytuirrmn9EfT6Ef3WuzXFE
+Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
 Logging in... done
 Logged in as your_email_address
 ```
@@ -141,7 +141,7 @@ Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in
 
 ```
 $ heroku config:get REDISCLOUD_URL -a kickstartredis
-redis://default:Ro8eqTcKXXXXXX1JxrXHgs0@redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324
+redis://default:Ro8eXXXX@redis-XXXXX.cXX.us-east-X-X.ecX.cloud.redislabs.com:1X324
 ```
 
 ```
@@ -159,7 +159,7 @@ State:        created
 ```
 $ heroku config -a kickstartredis
 === kickstartredis Config Vars
-REDISCLOUD_URL: redis://default:DTQDWp36wmgXXXNXi115d9sdjVEQFIetEsX@redis-15951.c232.us-east-1-2.ec2.cloud.redislabs.com:15951
+REDISCLOUD_URL: redis://default:XXXX@redis-XXXX.cXXX.us-east-X-X.ecX.cloud.redislabs.com:1X951
 ```
 
 
@@ -170,7 +170,7 @@ REDISCLOUD_URL: redis://default:DTQDWp36wmgXXXNXi115d9sdjVEQFIetEsX@redis-15951.
 
 ```
 $ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
-redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default Ro8eqTcKZXXXX9Prv1JxrXHgs0
+redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default XXXXX
 OK
 redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
 ```
