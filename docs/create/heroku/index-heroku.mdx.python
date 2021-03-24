@@ -1,0 +1,267 @@
+---
+id: index-heroku
+title: Create Redis database on Heroku 
+sidebar_label: Redis on Heroku
+slug: /create/heroku
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+There are two ways to create Redis database on Heroku:
+- Using Heroku Dashboard UI
+- Using Heroku CLI
+
+<Tabs
+  defaultValue="dashboardui"
+  values={[
+    {label: 'Dashboard UI', value: 'dashboardui'},
+    {label: 'CLI', value: 'CLI'},
+  ]}>
+  <TabItem value="dashboardui">
+
+
+
+
+## Using Heroku Dashboard UI
+
+### Prerequisite:
+
+### Step 1: 
+
+
+Sign in to Heroku, open  https://dashboard.heroku.com/apps and create a new sample application. For this demo, I have deployed an application with the name “kickstartredis”. 
+
+### Step 2: 
+
+Open https://elements.heroku.com/addons/rediscloud and click on “Install Redis Enterprise Cloud” to sign up with Heroku.
+
+![heroku](heroku2.png)
+
+### Step 3: 
+
+For this demonstration, we will be picking up a 30MB Free plan(see Plans and Pricing below).
+
+![heroku](pricing.png)
+
+### Step 4: 
+
+Once you sign in, you will see “Online Order Form” as shown below:
+
+![heroku](orderform.png)
+
+### Step 5. 
+
+Provision Redis Enterprise Cloud on your personal application(which in the above case is “kickstartredis”.
+
+### References
+
+- [Redis Enterprise Cloud on Heroku](https://elements.heroku.com/addons/rediscloud)
+- [Pricing](https://elements.heroku.com/addons/rediscloud#pricing)
+- [Region Availability](https://elements.heroku.com/addons/rediscloud#region-map)
+- [Documentation](https://elements.heroku.com/addons/rediscloud#docs)
+
+
+
+    </TabItem>
+<TabItem value="CLI">
+
+## Using Heroku CLI
+
+
+You can use Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
+
+### Step 1: Install Heroku on MacOS
+
+
+```
+$ brew tap heroku/brew && brew install heroku
+```
+
+Assuming that you already have Heroku account created, run the below command to login into Heroku via command prompt:
+
+
+```
+$ heroku login
+heroku: Press any key to open up the browser to login or q to exit: 
+Opening browser to https://cli-auth.heroku.com/auth/cli/browser/4788f936-3557-439f-ab37-95338b735cf2?requestor=XXXXXXXXXXXA.vhF7XtVTtsp9xliwwrHG5ytuirrmn9EfT6Ef3WuzXFE
+Logging in... done
+Logged in as your_email_address
+```
+
+
+
+
+
+### Step 2: Start by installing the add-on:
+
+Ensure that you don’t have existing add-ons added in your account.
+
+
+```
+$ heroku addons:create rediscloud -a kickstartredis
+Creating rediscloud on ⬢ kickstartredis... free
+Created rediscloud-cylindrical-24439 as REDISCLOUD_URL
+Use heroku addons:docs rediscloud to view documentation
+```
+
+
+Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in your heroku config containing the username, password, hostname and port of your first Redis Cloud database.
+
+
+```
+$ heroku config:get REDISCLOUD_URL -a kickstartredis
+redis://default:Ro8eqTcKXXXXXX1JxrXHgs0@redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324
+```
+
+```
+$ heroku addons:info rediscloud
+=== rediscloud-cylindrical-24439
+Attachments:  kickstartredis::REDISCLOUD
+Installed at: Fri Mar 19 2021 17:16:18 GMT+0530 (India Standard Time)
+Owning app:   kickstartredis
+Plan:         rediscloud:30
+Price:        free
+State:        created
+```
+
+
+```
+$ heroku config -a kickstartredis
+=== kickstartredis Config Vars
+REDISCLOUD_URL: redis://default:DTQDWp36wmgXXXNXi115d9sdjVEQFIetEsX@redis-15951.c232.us-east-1-2.ec2.cloud.redislabs.com:15951
+```
+
+
+
+
+### Step 3: Accessing the database using REDISCLOUD_URL:
+
+
+```
+$ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
+redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default Ro8eqTcKZXXXX9Prv1JxrXHgs0
+OK
+redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
+```
+
+You can even browse it through Heroku Dashboard:
+
+
+![heroku](heroku_selectrecloud.png)
+
+Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
+
+![heroku](heroku_recloud.png)
+
+ </TabItem>
+</Tabs>
+
+Below are the list of examples on how to use various programming languages on Heroku
+
+<Tabs
+  defaultValue="Python"
+  values={[
+    {label: 'Python', value: 'python'},
+    {label: 'NodeJS', value: 'nodejs'},
+    {label: 'Java', value: 'Java'},
+  ]}>
+  <TabItem value="Python">
+
+## Getting Started on Heroku with Python
+
+### Prepare the app
+
+In this step, you will prepare a sample application that’s ready to be deployed to Heroku.
+
+
+```
+$ git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
+$cd basic-rate-limiting-demo-python
+```
+
+
+You now have a functioning Git repository that contains a simple application as well as a package.json file, which is used by Node’s dependency manager.
+
+### Deploy the app
+
+It is recommended to use Redis Enterprise Cloud Page for creating the database as it allows you to add Redis modules of your choice. Also, it provides you freedom to choose Cloud other than AWS for creating the database.
+
+
+In this step you will deploy the app to Heroku.
+Create an app on Heroku, which prepares Heroku to receive your source code.
+
+
+```
+$ heroku create
+Creating app... done, ⬢ fast-reef-76278
+https://fast-reef-76278.herokuapp.com/ | https://git.heroku.com/fast-reef-76278.git
+```
+
+When you create an app, a git remote (called heroku) is also created and associated with your local git repository.
+
+Heroku generates a random name (in this case fast-reef-76278) for your app, or you can pass a parameter to specify your own app name.
+Now deploy your code:
+ 
+```
+$ git push heroku main
+```
+
+
+```
+$ git push heroku                        
+Enumerating objects: 512, done.
+Counting objects: 100% (512/512), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (256/256), done.
+Writing objects: 100% (512/512), 1.52 MiB | 660.00 KiB/s, done.
+Total 512 (delta 244), reused 512 (delta 244)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Building on the Heroku-20 stack
+remote: -----> Determining which buildpack to use for this app
+remote: -----> Python app detected
+…
+
+emote: -----> Compressing...
+remote:        Done: 59.3M
+remote: -----> Launching...
+remote:        Released v5
+remote:        https://fast-reef-76278.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/fast-reef-76278.git
+ * [new branch]      master -> master
+```
+
+
+Open https://fast-reef-76278.herokuapp.com/ to see your application
+
+![heroku](heroku_ratelimiter.png)
+
+
+</TabItem>
+<TabItem value="NodeJS">
+
+content-goes-here
+
+</TabItem>
+
+<TabItem value="Java">
+
+content-goes-here
+
+
+</TabItem>
+
+
+</Tabs>
+
+
+
+### Next Step
+
+- [Connecting to the database using RedisInsight](/explore/redisinsight/)
+- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
