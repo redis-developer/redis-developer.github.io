@@ -15,7 +15,9 @@ Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming l
 
 You can quickly and easily get your apps up and running with Redis Enterprise Cloud through its add-on for Heroku, just tell us how much memory you need and get started instantly with your first Redis database. 
 
-
+:::important
+Please note that Heroku doesn't allow you to choose your preferred Cloud(AWS, Google Cloud or Microsoft Azure) while creating the Redis database. Also, it doesn't allow you to select Redis Modules of your choice. If you want to choose your preferred Cloud as well as Redis Modules, then you should look at Redis Enterprise Cloud which is a fully managed cloud service by Redis Labs. 
+:::
 
 ![HerokuRedis](heroku_logo.png)
 
@@ -190,9 +192,7 @@ As shown above, a database called "redis-kickstartredis-XXX" gets created over R
  </TabItem>
 </Tabs>
 
-:::important
-The above method doesn't allow you to choose Cloud of your choice. If you want to choose your preferred Cloud as well as Redis Modules, use Redis Enterprise Cloud dashboard directly.
-:::
+
 ### Next Step
 
 - [Connecting to the database using RedisInsight](/explore/redisinsight/)
