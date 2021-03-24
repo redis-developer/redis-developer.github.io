@@ -74,6 +74,17 @@ Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enter
 
 As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard. 
 
+### Step 6. Accessing the database
+
+You can use ```redis-cli``` to connect to the database by using the database endpoint, port and credential as shown below:
+
+```
+$ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
+redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default XXXXX
+OK
+redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
+```
+
 
 ### References
 
