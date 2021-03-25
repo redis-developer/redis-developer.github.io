@@ -57,7 +57,7 @@ Change directory to server/configuration, copy .env.example to create .env and p
 
 - REDIS_HOST: redis-18104.c56.east-us.azure.cloud.redislabs.com
 - REDIS_PORT: 18104
-- REDIS_PASSWORD: password
+- REDIS_PASSWORD: type_password
 
 
 ### Step 3. Create a Heroku account
@@ -177,7 +177,7 @@ Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in
 
   ```bash
    $ heroku config:get REDISCLOUD_URL -a kickstartredis
-   redis://default:Ro8eqTcKXXXXXX1JxrXHgs0@redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324
+   redis://default:password@redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324
   ```
 
   ```bash
@@ -195,7 +195,7 @@ Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in
   ```bash
    $ heroku config -a kickstartredis
    === kickstartredis Config Vars
-   REDISCLOUD_URL: redis://default:DTQDWp36wmgXXXNXi115d9sdjVEQFIetEsX@redis-15951.c232.us-east-1-2.ec2.cloud.redislabs.com:15951
+   REDISCLOUD_URL: redis://default:password@redis-15951.c232.us-east-1-2.ec2.cloud.redislabs.com:15951
   ```
 
 ### Step 3: Accessing the database
@@ -203,7 +203,7 @@ Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in
 
   ```bash
    $ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
-   redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default Ro8eqTcKZXXXX9Prv1JxrXHgs0
+   redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default showspassword
    OK
    redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
   ```
