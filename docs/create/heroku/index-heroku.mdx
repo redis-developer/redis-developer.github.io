@@ -13,38 +13,230 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming languages that is used as a web application deployment model.Heroku lets the developer build, run and scale applications in a similar manner across all the languages(Java, Node.js, Scala, Clojure, Python, PHP, Ruby and Go). 
 
-You can quickly and easily get your apps up and running with Redis Enterprise Cloud through its add-on for Heroku, just tell us how much memory you need and get started instantly with your first Redis database. 
-
-:::important
-Please note that Heroku doesn't allow you to choose your preferred Cloud(AWS, Google Cloud or Microsoft Azure) while creating the Redis database. Also, it doesn't allow you to select Redis Modules of your choice. If you want to choose your preferred Cloud as well as Redis Modules, then you should look at Redis Enterprise Cloud which is a fully managed cloud service by Redis Labs. 
-:::
-
-![HerokuRedis](heroku_logo.png)
-
-There are two ways to create Redis database on Heroku:
-- Using Heroku Dashboard UI
-- Using Heroku CLI
-
-
-
 
 <Tabs
-  defaultValue="dashboardui"
+  defaultValue="direct"
   values={[
-    {label: 'Dashboard UI', value: 'dashboardui'},
-    {label: 'CLI', value: 'CLI'},
+    {label: 'Direct via Redis Enterprise Cloud', value: 'direct'},
+    {label: 'Addons using Heroku CLI', value: 'CLI'},
+    {label: 'Addons using Heroku Dashboard', value: 'dashboardui'},
   ]}>
-  <TabItem value="dashboardui">
+  <TabItem value="direct">
 
 
-## Using Dashboard UI
-
-### Step 1: Sign-in to Heroku 
 
 
-Open  https://dashboard.heroku.com/apps and create a new sample application. For this demo, I have deployed an application with the name “kickstartredis”. 
+## Using Redis Enterprise Cloud directly
 
-### Step 2: Install Redis Enterprise Cloud 
+
+You can quickly and easily get your apps up and running with Redis Enterprise Cloud directly. Follow the below steps:
+
+### Step 1. Create Redis Enterprise Cloud
+
+Create your free Redis Enterprise Cloud account. [Follow this link to create Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
+
+![heroku](rediscloud.png)
+
+Save the database endpoint URL and password for future reference.
+
+
+### Step 2. Connect your application to Redis Enterprise Cloud
+
+For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-python)
+
+#### Cloning the repository
+
+   ```bash
+    $ git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
+   ```
+
+Next, we will be setting environmental variable.
+Change directory to server/configuration, copy .env.example to create .env and provide the values for environment variables as shown below:
+
+  
+
+- REDIS_HOST: redis-18104.c56.east-us.azure.cloud.redislabs.com
+- REDIS_PORT: 18104
+- REDIS_PASSWORD: password
+
+
+### Step 3. Create a Heroku account
+
+![heroku](create_heroku.png)
+
+### Step 4. Create a Heroku app
+
+Login to Heroku
+
+   ```bash
+    $ heroku login
+    heroku: Press any key to open up the browser to login or q to exit:
+    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+    Logging in... done
+    Logged in as your_email_address
+   ```
+
+Run the below CLI to have a functioning Git repository that contains a simple application as well as a package.json file.
+
+
+   ```bash
+    $ heroku create
+    Creating app... done, ⬢ salty-harbor-93142
+    https://salty-harbor-93142.herokuapp.com/ | https://git.heroku.com/salty-harbor-93142.git
+   ```
+
+### Step 5. Pushing the code to Git
+
+   ```bash
+    $ git push heroku
+    Enumerating objects: 512, done.
+    Counting objects: 100% (512/512), done.
+    Delta compression using up to 12 threads
+    Compressing objects: 100% (256/256), done.
+    Writing objects: 100% (512/512), 1.52 MiB | 511.00   Downloading h11-0.12.0-py3-none-any.whl (54 kB)
+    remote:        Collecting immutables>=0.9
+    7.4.3 urllib3-1.26.2 uvicorn-0.13.2 uvloop-0.14.0
+    remote: -----> $ python server/manage.py collectstatic --noinput
+    remote:        137 static files copied to '/tmp/build_3e723f51/server/static_root'.
+    remote:
+    remote: -----> Discovering process types
+    remote:        Procfile declares types -> web
+    remote:
+    remote: -----> Compressing...
+    remote:        Done: 59.4M
+    remote: -----> Launching...
+    remote:        Released v5
+    remote:        https://salty-harbor-93142.herokuapp.com/ deployed to Heroku
+    remote:
+    remote: Verifying deploy... done.
+    To https://git.heroku.com/salty-harbor-93142.git
+    * [new branch]      master -> master
+   ```
+
+### Step 6. Accessing the rate limiting application
+
+![heroku](ratelimiting.png)
+
+
+
+ </TabItem>
+
+<TabItem value="CLI">
+
+## Using CLI
+
+:::important
+Please note that this method won't allow you to choose Redis Modules while creating Redis database. Also, it doesn't provide you with the flexibility to choose Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+:::
+
+
+Under this section, we will be creating Heroku account, use Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
+
+### Step 1: Install Heroku on MacOS
+
+
+   ```bash
+    $ brew tap heroku/brew && brew install heroku
+   ```
+
+Assuming that you already have Heroku account created, run the below command to login into Heroku via command prompt:
+
+
+   ```bash
+    $ heroku login
+    heroku: Press any key to open up the browser to login or q to exit:
+    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/4788f936-3557-439f-ab37-95338b735cf2?requestor=XXXXXXXXXXXA.vhF7XtVTtsp9xliwwrHG5ytuirrmn9EfT6Ef3WuzXFE
+    Logging in... done
+    Logged in as your_email_address
+   ```
+
+### Step 2: Installing Redis Enterprise Cloud Add-on
+
+
+Create a Heroku app
+
+   ```bash
+    heroku apps:create kickstartredis
+    Creating ⬢ kickstartredis... done
+    https://kickstartredis.herokuapp.com/ | https://git.heroku.com/kickstartredis.git
+   ```
+
+Ensure that you don’t have existing add-ons added in your account.
+
+
+  ```bash
+   $ heroku addons:create rediscloud -a kickstartredis
+   Creating rediscloud on ⬢ kickstartredis... free
+   Created rediscloud-cylindrical-24439 as REDISCLOUD_URL
+   Use heroku addons:docs rediscloud to view documentation
+  ```
+
+
+Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in your heroku config containing the username, password, hostname and port of your first Redis Cloud database.
+
+
+  ```bash
+   $ heroku config:get REDISCLOUD_URL -a kickstartredis
+   redis://default:Ro8eqTcKXXXXXX1JxrXHgs0@redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324
+  ```
+
+  ```bash
+   $ heroku addons:info rediscloud
+   === rediscloud-cylindrical-24439
+   Attachments:  kickstartredis::REDISCLOUD
+   Installed at: Fri Mar 19 2021 17:16:18 GMT+0530 (India Standard Time)
+   Owning app:   kickstartredis
+   Plan:         rediscloud:30
+   Price:        free
+   State:        created
+  ```
+
+
+  ```bash
+   $ heroku config -a kickstartredis
+   === kickstartredis Config Vars
+   REDISCLOUD_URL: redis://default:DTQDWp36wmgXXXNXi115d9sdjVEQFIetEsX@redis-15951.c232.us-east-1-2.ec2.cloud.redislabs.com:15951
+  ```
+
+### Step 3: Accessing the database
+
+
+  ```bash
+   $ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
+   redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default Ro8eqTcKZXXXX9Prv1JxrXHgs0
+   OK
+   redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
+  ```
+
+You can even browse it through Heroku Dashboard:
+
+
+![heroku](heroku_selectrecloud.png)
+
+Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
+
+![heroku](heroku_recloud.png)
+
+As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard.
+
+
+
+ </TabItem>
+
+<TabItem value="dashboardui">
+
+## Using Heroku Dashboard
+
+:::important
+Please note that this method won't allow you to choose Redis Modules while creating Redis database. Also, it doesn't provide you with the flexibility to choose Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+:::
+
+### Step 1: Sign-in to Heroku
+
+
+Open  https://dashboard.heroku.com/apps and create a new sample application. For this demo, I have deployed an application with the name “kickstartredis”.
+
+### Step 2: Install Redis Enterprise Cloud
 
 Open https://elements.heroku.com/addons/rediscloud and click on “Install Redis Enterprise Cloud” to sign up with Heroku.
 
@@ -72,139 +264,14 @@ Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enter
 
 ![heroku](heroku_recloud.png)
 
-As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard. 
+As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard.
 
-### Step 6. Accessing the database
-
-You can use ```redis-cli``` to connect to the database by using the database endpoint, port and credential as shown below:
-
-```
-$ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
-redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default XXXXX
-OK
-redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
-```
-
-
-### References
-
-- [Redis Enterprise Cloud on Heroku](https://elements.heroku.com/addons/rediscloud)
-- [Pricing](https://elements.heroku.com/addons/rediscloud#pricing)
-- [Region Availability](https://elements.heroku.com/addons/rediscloud#region-map)
-- [Documentation](https://elements.heroku.com/addons/rediscloud#docs)
-
-
-
- </TabItem>
-<TabItem value="CLI">
-
-
-## Using CLI
-
-You can use Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
-
-### Step 1: Install Heroku 
-
-
-```
-$ brew tap heroku/brew && brew install heroku
-```
-
-Assuming that you already have Heroku account created, run the below command to login into Heroku via command prompt:
-
-
-```
-$ heroku login
-heroku: Press any key to open up the browser to login or q to exit: 
-Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
-Logging in... done
-Logged in as your_email_address
-```
-
-
-
-
-
-### Step 2: Installing Redis Enterprise Cloud Add-on
-
-
-Create a Heroku app
-
-```
-heroku apps:create kickstartredis
-Creating ⬢ kickstartredis... done
-https://kickstartredis.herokuapp.com/ | https://git.heroku.com/kickstartredis.git
-```
-
-
-
-Ensure that you don’t have existing add-ons added in your account.
-
-
-```
-$ heroku addons:create rediscloud -a kickstartredis
-Creating rediscloud on ⬢ kickstartredis... free
-Created rediscloud-cylindrical-24439 as REDISCLOUD_URL
-Use heroku addons:docs rediscloud to view documentation
-```
-
-
-Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in your heroku config containing the username, password, hostname and port of your first Redis Cloud database.
-
-
-```
-$ heroku config:get REDISCLOUD_URL -a kickstartredis
-redis://default:Ro8eXXXX@redis-XXXXX.cXX.us-east-X-X.ecX.cloud.redislabs.com:1X324
-```
-
-```
-$ heroku addons:info rediscloud
-=== rediscloud-cylindrical-24439
-Attachments:  kickstartredis::REDISCLOUD
-Installed at: Fri Mar 19 2021 17:16:18 GMT+0530 (India Standard Time)
-Owning app:   kickstartredis
-Plan:         rediscloud:30
-Price:        free
-State:        created
-```
-
-
-```
-$ heroku config -a kickstartredis
-=== kickstartredis Config Vars
-REDISCLOUD_URL: redis://default:XXXX@redis-XXXX.cXXX.us-east-X-X.ecX.cloud.redislabs.com:1X951
-```
-
-
-
-
-### Step 3: Accessing the database
-
-
-```
-$ redis-cli -h redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com -p 11324
-redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324> auth default XXXXX
-OK
-redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
-```
-
-You can even browse it through Heroku Dashboard:
-
-
-![heroku](heroku_selectrecloud.png)
-
-Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
-
-![heroku](heroku_recloud.png)
-
-As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard. 
 
 
  </TabItem>
 </Tabs>
 
+## Next Steps
 
-### Next Step
-
-- [Connecting to the database using RedisInsight](/explore/redisinsight/)
-- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
+- [How to build Java based Rate Limiting application on Heroku using Redis](/howtos/herokujava)
+- [How to build NodeJS based Rate Limiting application on Heroku using Redis](/howtos/herokunodejs)

@@ -1,0 +1,85 @@
+---
+id: index-herokujava
+title: How to build Java based application on Heroku using Redis 
+sidebar_label: How to build Java based application on Heroku using Redis
+slug: /howtos/herokujava
+---
+
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+### Step 1. Preparing the Heroku environment
+
+[Follow the link](../create/heroku) to setup Redis database on Heroku 
+
+
+
+### Step 2. Prepare the app
+
+In this step, you will prepare a sample application that’s ready to be deployed to Heroku.
+
+
+```
+$ git clone https://github.com/redis-developer/basic-rate-limiting-demo-java
+$cd basic-rate-limiting-demo-java
+```
+
+
+You now have a functioning Git repository that contains a simple application as well as a package.json file, which is used by Node’s dependency manager.
+
+### Step 3. Deploy the app
+
+It is recommended to use Redis Enterprise Cloud Page for creating the database as it allows you to add Redis modules of your choice. Also, it provides you freedom to choose Cloud other than AWS for creating the database.
+
+
+In this step you will deploy the app to Heroku.
+Create an app on Heroku, which prepares Heroku to receive your source code.
+
+
+```
+heroku create
+Creating app... done, ⬢ hidden-woodland-03996
+https://hidden-woodland-03996.herokuapp.com/ | https://git.heroku.com/hidden-woodland-03996.git
+```
+
+When you create an app, a git remote (called heroku) is also created and associated with your local git repository.
+
+
+### Step 4. Deploy your code
+
+Heroku generates a random name (in this case hidden-woodland-03996) for your app, or you can pass a parameter to specify your own app name.
+Now deploy your code:
+ 
+
+
+```
+$ git push heroku                        
+remote:        BUILD SUCCESSFUL in 1m 5s
+remote:        12 actionable tasks: 12 executed
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 298.9M
+remote: -----> Launching...
+remote:        Released v3
+remote:        https://hidden-woodland-03996.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/hidden-woodland-03996.git
+ * [new branch]      master -> master
+```
+
+### Step 5. Accessing the application
+
+
+Open https://hidden-woodland-03996.herokuapp.com/ to see your application
+
+![heroku](heroku_ratelimiter.png)
+
+
+
+### Next Step
+
+- [Connecting to the database using RedisInsight](/explore/redisinsight/)
+- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
