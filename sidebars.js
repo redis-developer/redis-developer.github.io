@@ -10,6 +10,7 @@ module.exports = {
       label: 'Create',
       items: [
         'create/rediscloud/index-rediscloud',
+        'create/heroku/index-heroku',
         'create/azure/index-azure',
         'create/gcp/index-gcp',
         'create/aws/index-aws',
