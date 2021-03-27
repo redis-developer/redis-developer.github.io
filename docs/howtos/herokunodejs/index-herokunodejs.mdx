@@ -9,34 +9,51 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 
 
-### Step 1. Preparing the Heroku environment
+### Step 1. Create Redis Enterprise Cloud
 
-[Follow the link](../create/heroku) to setup Redis database on Heroku
+Create your free Redis Enterprise Cloud account. [Follow this link to create Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
 
+![heroku](rediscloud.png)
 
-
-### Step 2. Prepare the app
-
-In this step, you will prepare a sample application that’s ready to be deployed to Heroku.
+Save the database endpoint URL and password for future reference.
 
 
-```
-$ git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs
-$ cd basic-redis-rate-limiting-demo-nodejs
+### Step 2. Create a Heroku account
 
-```
+If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login)
 
-
-You now have a functioning Git repository that contains a simple application as well as a package.json file, which is used by Node’s dependency manager.
-
-### Step 3. Deploy the app
-
-It is recommended to use Redis Enterprise Cloud Page for creating the database as it allows you to add Redis modules of your choice. Also, it provides you freedom to choose Cloud other than AWS for creating the database.
+![heroku](create_heroku.png)
 
 
-In this step you will deploy the app to Heroku.
-Create an app on Heroku, which prepares Heroku to receive your source code.
+### Step 3. Install Heroku CLI on your system
 
+   ```macos
+    brew install heroku
+   ```
+
+### Step 4. Login to Heroku
+
+   ```bash
+    heroku login
+    heroku: Press any key to open up the browser to login or q to exit:
+    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+    Logging in... done
+    Logged in as your_email_address
+   ```
+
+### Step 5. Connect your application to Redis Enterprise Cloud
+
+For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-nodejs)
+
+#### Clone the repository
+
+   ```bash
+    git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs
+   ```
+
+
+
+Run the below CLI to have a functioning Git repository that contains a simple application as well as a package.json file.
 
 
 ```
@@ -45,12 +62,24 @@ Creating app... done, ⬢ rocky-lowlands-06306
 https://rocky-lowlands-06306.herokuapp.com/ | https://git.heroku.com/rocky-lowlands-06306.git
 ```
 
-When you create an app, a git remote (called heroku) is also created and associated with your local git repository.
 
-### Step 4. Deploy your code
 
-Heroku generates a random name (in this case pure-mesa-54685) for your app, or you can pass a parameter to specify your own app name.
-Now deploy your code:
+### Step 6. Setting up Environmental variable
+
+Go to Heroku dashboard, click "Settings" and set REDIS_ENDPOINT_URI and REDIS_PASSWORD under the Config Vars.
+Refer to Step 1 for the reference.
+
+![heroku](heroku_app1_env.png)
+
+
+
+You now have a functioning Git repository that contains a simple application as well as a package.json file, which is used by Node’s dependency manager.
+
+
+
+
+### Step 7. Deploy your code
+
 
 ```
 $ git push heroku
@@ -69,7 +98,7 @@ To https://git.heroku.com/rocky-lowlands-06306.git
 
 ```
 
-### Step 5. Accessing the application
+### Step 8. Accessing the application
 
 
 Open https://rocky-lowlands-06306.herokuapp.com/   to see your application
