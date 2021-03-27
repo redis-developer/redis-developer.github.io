@@ -40,80 +40,94 @@ Create your free Redis Enterprise Cloud account. [Follow this link to create Red
 Save the database endpoint URL and password for future reference.
 
 
-### Step 2. Connect your application to Redis Enterprise Cloud
+### Step 2. Create a Heroku account
 
-For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-python)
-
-#### Cloning the repository
-
-   ```bash
-    $ git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
-   ```
-
-Next, we will be setting environmental variable.
-Change directory to server/configuration, copy .env.example to create .env and provide the values for environment variables as shown below:
-
-  
-
-- REDIS_HOST: redis-18104.c56.east-us.azure.cloud.redislabs.com
-- REDIS_PORT: 18104
-- REDIS_PASSWORD: type_password
-
-
-### Step 3. Create a Heroku account
+If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login)
 
 ![heroku](create_heroku.png)
 
-### Step 4. Create a Heroku app
 
-Login to Heroku
+### Step 3. Install Heroku CLI on your system
+
+   ```macos
+    brew install heroku
+   ```
+
+### Step 4. Login to Heroku
 
    ```bash
-    $ heroku login
+    heroku login
     heroku: Press any key to open up the browser to login or q to exit:
     Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
     Logging in... done
     Logged in as your_email_address
    ```
 
+### Step 5. Connect your application to Redis Enterprise Cloud
+
+For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-python)
+
+#### Clone the repository
+
+   ```bash
+    git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
+   ```
+
+
+
+
 Run the below CLI to have a functioning Git repository that contains a simple application as well as a package.json file.
 
 
    ```bash
-    $ heroku create
-    Creating app... done, ⬢ salty-harbor-93142
-    https://salty-harbor-93142.herokuapp.com/ | https://git.heroku.com/salty-harbor-93142.git
+    heroku create
+    Creating app... done, ⬢ lit-bayou-75670
+    https://lit-bayou-75670.herokuapp.com/ | https://git.heroku.com/lit-bayou-75670.git
    ```
 
-### Step 5. Pushing the code to Git
+
+![heroku](heroku_app01.png)
+
+
+### Step 6. Setting up Environmental variable
+
+Go to Heroku dashboard, click "Settings" and set REDIS_ENDPOINT_URI and REDIS_PASSWORD under the Config Vars.
+Refer to Step 1 for the reference.
+
+![heroku](heroku_app01_env.png)
+
+
+
+### Step 7. Pushing the code to Git
 
    ```bash
-    $ git push heroku
-    Enumerating objects: 512, done.
-    Counting objects: 100% (512/512), done.
-    Delta compression using up to 12 threads
-    Compressing objects: 100% (256/256), done.
-    Writing objects: 100% (512/512), 1.52 MiB | 511.00   Downloading h11-0.12.0-py3-none-any.whl (54 kB)
-    remote:        Collecting immutables>=0.9
-    7.4.3 urllib3-1.26.2 uvicorn-0.13.2 uvloop-0.14.0
-    remote: -----> $ python server/manage.py collectstatic --noinput
-    remote:        137 static files copied to '/tmp/build_3e723f51/server/static_root'.
-    remote:
+    git push heroku
+    remote: -----> Build succeeded!
     remote: -----> Discovering process types
     remote:        Procfile declares types -> web
-    remote:
+    remote: 
     remote: -----> Compressing...
-    remote:        Done: 59.4M
+    remote:        Done: 32.9M
     remote: -----> Launching...
     remote:        Released v5
-    remote:        https://salty-harbor-93142.herokuapp.com/ deployed to Heroku
-    remote:
+    remote:        https://lit-bayou-75670.herokuapp.com/ deployed to Heroku
+    remote: 
     remote: Verifying deploy... done.
-    To https://git.heroku.com/salty-harbor-93142.git
-    * [new branch]      master -> master
+    To https://git.heroku.com/lit-bayou-75670.git
+    * [new branch]      main -> main
    ```
 
-### Step 6. Accessing the app 
+Check the logs:
+
+   ```bash
+    heroku logs --tail
+    2021-03-27T03:48:30.000000+00:00 app[api]: Build succeeded
+    2021-03-27T03:48:33.956884+00:00 heroku[web.1]: Starting process with command `node server/index.js`
+    2021-03-27T03:48:36.196827+00:00 app[web.1]: App listening on port 11893
+   ```
+
+
+### Step 8. Accessing the app 
 
 ![heroku](ratelimiting.png)
 
