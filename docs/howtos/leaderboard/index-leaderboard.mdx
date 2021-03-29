@@ -12,26 +12,26 @@ Leaderboards can encourage healthy competition in a group by openly displaying t
 
 ![My Image](leaderboard.png)
 
-### 1. Install the below software 
+### Step 1. Install the below software 
 
 - Docker (on mac: https://docs.docker.com/docker-for-mac/install/)
 - Docker Compose
 
-### 2. Clone the repository
+### Step 2. Clone the repository
 
 ```
 git clone https://github.com/redis-developer/basic-redis-leaderboard-demo-java 
 ```
 
 
-### 3. Run docker compose 
+### Step 3. Run docker compose 
 
 ```
 docker network create global
 docker-compose up -d --build
 ```
 
-### 4. Verifying if containers are up and running
+### Step 4. Verifying if containers are up and running
 
 ```
  docker-compose ps
@@ -40,7 +40,7 @@ docker-compose up -d --build
 redis.redisleaderboard.docker   docker-entrypoint.sh redis ...   Up      127.0.0.1:55000->6379/tcp
 ```
 
-### 5. Copy .env.example to create .env 
+### Step 5. Copy .env.example to create .env 
 
 Provide the values for environment variables (if needed)
 
@@ -63,7 +63,7 @@ REDIS_PASSWORD=
 REDIS_DB=
 ```
 
-### 6. Run backend
+### Step 6. Run backend
 
 - Install gradle 
 
@@ -81,7 +81,7 @@ Follow the following link https://docs.oracle.com/javase/10/install/installation
 export $(cat .env | xargs)
 ```
 
-### 7 Running the wrapper task
+### Step 7. Running the wrapper task
 
 To use Wrapper, we need to generate some particular files. We'll generate these files using the built-in Gradle task called wrapper. 
 Note that we need to generate these files only once.
@@ -112,7 +112,7 @@ BUILD SUCCESSFUL in 29s
 1 actionable task: 1 executed
 ```
 
-### 8 Performing the build task
+### Step 8. Performing the build task
 
 The Gradle Wrapper is now available for building your project. It's time to run the wrapper script to perform the build task.
 
@@ -130,7 +130,7 @@ BUILD SUCCESSFUL in 1m 13s
 12 actionable tasks: 12 executed
 ```
 
-### 9 Running your application
+### Step 9. Running your application
 
 ```
 ./gradlew run
@@ -169,3 +169,80 @@ Using generated security password: ea2d5326-b04c-4f93-b771-57bcb53f656e
 <=========----> 75% EXECUTING [17s]
 > :run
 ```
+
+
+### Step 10. Accessing the leaderboard application
+
+![My Image](leaderboard.png)
+
+### How it works?
+
+
+####  How the data is stored:
+
+- The AAPL's details - market cap of 2,6 triillions and USA origin - are stored in a hash like below:
+  ```bash
+   HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
+  ```
+
+- The Ranks of AAPL of 2,6 trillions are stored in a ZSET.
+
+   ```bash
+    ZADD  companyLeaderboard 2600000000000 company:AAPL
+   ```
+
+####  How the data is accessed:
+
+- Top 10 companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- All companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 -1 WITHSCORES
+  ```
+
+- Bottom 10 companies:
+
+  ```bash
+   ZRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- Between rank 10 and 15:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 9 14 WITHSCORES
+  ```
+
+- Show ranks of AAPL, FB and TSLA:
+
+  ```bash
+   ZREVRANGE  companyLeaderBoard company:AAPL company:FB company:TSLA
+  ```
+
+- Adding 1 billion to market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard 1000000000 "company:FB"
+  ```
+
+- Reducing 1 billion of market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard -1000000000 "company:FB"
+  ```
+
+- Companies between 500 billion and 1 trillion:
+
+  ```bash
+   ZCOUNT companyLeaderBoard 500000000000 1000000000000
+  ```
+
+- Companies over a Trillion:
+
+   ```bash
+    ZCOUNT companyLeaderBoard 1000000000000 +inf
+   ```
