@@ -24,7 +24,9 @@ Rate limiting is a mechanism that many developers may have to deal with at some 
   ]}>
   <TabItem value="Python">
 
-## Step 1. Pre-requisite
+## Using Python
+
+### Step 1. Pre-requisite
 
 -  Python 
 -  Docker
@@ -145,9 +147,9 @@ Step 5. Accessing the rate limiting app
 
 <TabItem value="NodeJS">
 
+## Using NodeJS
 
-
-## Step 1. Pre-requisite
+### Step 1. Pre-requisite
 
 -   Node - v12.19.0
 -   NPM - v6.14.8
@@ -155,37 +157,123 @@ Step 5. Accessing the rate limiting app
 
 ### Step 2. Clone the repository
 
-```bash
-git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs/
-
-```
+  ```bash
+   git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs/
+  ```
 
 ### Step 3. Copy file and set proper data inside
 
 Copy .env.example to .env and make the changes as per your environment
 
+- REDIS_ENDPOINT_URI: Redis server URI
+- REDIS_PASSWORD: Password to the server
 
 ### Step 4. Install dependencies
 
-```bash
-npm cache clean && npm install
-```
+  ```bash
+   npm cache clean && npm install
+  ```
 
 ### Step 5. Run docker compose or install redis manually
 
-```bash
-docker network create global
-docker-compose up -d --build
-``
+  ```bash
+   docker network create global
+   docker-compose up -d --build
+  ```
 
-```bash
-npm run dev
+### Step 6. Running the frontend
 
-```
 
-### Step 6. Deployment
+  ```bash
+   cd client
+   yarn
+   yarn serve
+  ```
 
-To make deploys work, you need to create free account in https://redislabs.com/try-free/ and get Redis' instance informations - REDIS_ENDPOINT_URI and REDIS_PASSWORD. You must pass them as environmental variables.
+### Step 7. Running the backend
+
+
+  ```bash
+   npm run dev
+  ```
+
+### Step 8. Accessing the rate limiting app
+
+![Rate Limiting](ratelimiting.png)
+
+### How it works?
+
+####  How the data is stored:
+
+- The AAPL's details - market cap of 2,6 triillions and USA origin - are stored in a hash like below:
+  ```bash
+   HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
+  ```
+
+- The Ranks of AAPL of 2,6 trillions are stored in a ZSET.
+
+   ```bash
+    ZADD  companyLeaderboard 2600000000000 company:AAPL
+   ```
+
+####  How the data is accessed:
+
+- Top 10 companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- All companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 -1 WITHSCORES
+  ```
+
+- Bottom 10 companies:
+
+  ```bash
+   ZRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- Between rank 10 and 15:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 9 14 WITHSCORES
+  ```
+
+- Show ranks of AAPL, FB and TSLA:
+
+  ```bash
+   ZREVRANGE  companyLeaderBoard company:AAPL company:FB company:TSLA
+  ```
+
+- Adding 1 billion to market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard 1000000000 "company:FB"
+  ```
+
+- Reducing 1 billion of market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard -1000000000 "company:FB"
+  ```
+
+- Companies between 500 billion and 1 trillion:
+
+  ```bash
+   ZCOUNT companyLeaderBoard 500000000000 1000000000000
+  ```
+
+- Companies over a Trillion:
+
+   ```bash
+    ZCOUNT companyLeaderBoard 1000000000000 +inf
+   ```
+
+
+
 
 
 
@@ -194,7 +282,9 @@ To make deploys work, you need to create free account in https://redislabs.com/t
 
 <TabItem value="Java">
 
-## Step 1. Pre-requisite
+## Using Java
+
+### Step 1. Pre-requisite
 
 -  Java
 -  Docker
@@ -229,7 +319,7 @@ And provide the values for environment variables (if needed)
 ```
 
 
-### 4. Setup and run 
+### Step 5. Setup and run 
 
 Install gradle (on mac: https://gradle.org/install/)
 
@@ -248,12 +338,85 @@ export $(cat .env | xargs)
 ./gradlew run
 ```
 
-Point your browser to http://IP:5000 and you will be able to select various requests per second option on the screen as shown below:
-
-![Rate Limiter](ratelimiter2.png)
+### Step 6. Accessing the rate limting app
 
 
-As shown in the above example, the server will allow sending max 10 API requests within a 10 second window.If you send more than that, all additional requests will be blocked
+Point your browser to http://IP:5000 and you will be able to select various requests per second option on the screen. As shown in the above example, the server will allow sending max 10 API requests within a 10 second window.If you send more than that, all additional requests will be blocked
+
+
+![Rate Limiting](ratelimiting.png)
+
+### How it works?
+
+####  How the data is stored:
+
+- The AAPL's details - market cap of 2,6 triillions and USA origin - are stored in a hash like below:
+  ```bash
+   HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
+  ```
+
+- The Ranks of AAPL of 2,6 trillions are stored in a ZSET.
+
+   ```bash
+    ZADD  companyLeaderboard 2600000000000 company:AAPL
+   ```
+
+####  How the data is accessed:
+
+- Top 10 companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- All companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 -1 WITHSCORES
+  ```
+
+- Bottom 10 companies:
+
+  ```bash
+   ZRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- Between rank 10 and 15:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 9 14 WITHSCORES
+  ```
+
+- Show ranks of AAPL, FB and TSLA:
+
+  ```bash
+   ZREVRANGE  companyLeaderBoard company:AAPL company:FB company:TSLA
+  ```
+
+- Adding 1 billion to market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard 1000000000 "company:FB"
+  ```
+
+- Reducing 1 billion of market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard -1000000000 "company:FB"
+  ```
+
+- Companies between 500 billion and 1 trillion:
+
+  ```bash
+   ZCOUNT companyLeaderBoard 500000000000 1000000000000
+  ```
+
+- Companies over a Trillion:
+
+   ```bash
+    ZCOUNT companyLeaderBoard 1000000000000 +inf
+   ```
+
 
 
 
