@@ -65,7 +65,80 @@ python3 manage.py collectstatic
 python3 manage.py runserver
 ```
 
+Step 5. Accessing the rate limiting app
 
+![Rate Limiting](ratelimiting.png)
+
+### How it works?
+
+####  How the data is stored:
+
+- The AAPL's details - market cap of 2,6 triillions and USA origin - are stored in a hash like below:
+  ```bash
+   HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
+  ```
+
+- The Ranks of AAPL of 2,6 trillions are stored in a ZSET.
+
+   ```bash
+    ZADD  companyLeaderboard 2600000000000 company:AAPL
+   ```
+
+####  How the data is accessed:
+
+- Top 10 companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- All companies:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 0 -1 WITHSCORES
+  ```
+
+- Bottom 10 companies:
+
+  ```bash
+   ZRANGE companyLeaderboard 0 9 WITHSCORES
+  ```
+
+- Between rank 10 and 15:
+
+  ```bash
+   ZREVRANGE companyLeaderboard 9 14 WITHSCORES
+  ```
+
+- Show ranks of AAPL, FB and TSLA:
+
+  ```bash
+   ZREVRANGE  companyLeaderBoard company:AAPL company:FB company:TSLA
+  ```
+
+- Adding 1 billion to market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard 1000000000 "company:FB"
+  ```
+
+- Reducing 1 billion of market cap of FB company:
+
+  ```bash
+   ZINCRBY companyLeaderBoard -1000000000 "company:FB"
+  ```
+
+- Companies between 500 billion and 1 trillion:
+
+  ```bash
+   ZCOUNT companyLeaderBoard 500000000000 1000000000000
+  ```
+
+- Companies over a Trillion:
+
+   ```bash
+    ZCOUNT companyLeaderBoard 1000000000000 +inf
+   ```
 
 
 </TabItem>
