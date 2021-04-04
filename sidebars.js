@@ -50,6 +50,7 @@ module.exports = {
            'howtos/redistimeseries/index-redistimeseries',
            'howtos/redisgraph/index-redisgraph',
            'howtos/redisbloom/index-redisbloom',
+           'howtos/redisgears/index-redisgears',
            'howtos/shoppingcart/index-shoppingcart',
            'howtos/leaderboard/index-leaderboard',
            'howtos/ratelimiting/index-ratelimiting',
