@@ -113,14 +113,15 @@ redis.redisshoppingcart.docker   docker-entrypoint.sh redis ...   Up      127.0.
 
 Node.js is a runtime environment that allows software developers to launch both the frontend and backend of web apps using JavaScript. To save your time, the directory /server/src has already been created for you.This is where we will be creating our modules by adding the following sub-directories -
 
+
 - routes
 - controller
 - middleware
 - services
  
-Routes forward the supported requests (and any information encoded in request URLs) to the appropriate controller functions, whereas controller functions get the requested data from the models, create an HTML page displaying the data, and return it to the user to view in the browser. Services hold your actual business logic. Middleware functions are functions that have access to the request object (req), the response object (res), and the next middleware function in the application’s request-response cycle. 
+Routes forward the supported requests (and any information encoded in request URLs) to the appropriate controller functions, whereas controller functions get the requested data from the models, create an HTML page displaying the data, and return it to the user to view in the browser. Services hold your actual business logic. Middleware functions are functions that have access to the request object (req), the response object (res), and the next middleware function in the application’s request-response cycle.
 
-#### Project Directory Structure 
+#### Project directory structure 
  
 ```
 % tree
@@ -224,15 +225,17 @@ app.listen(port, () => {
 
 You'll see that the responsibility of this index.js is to simply set up the server. It initializes all the middleware, sets up the view engine, etc. The last thing to do is set up routes by deferring that responsibility to the index.js within the routes folder.
  
-As shown above, app.use, app.set and app.listen are endpoints, for the purposes of this demo, we will need to be able to add and get items from the basket ( Keeping it simple ). 
-We need to define our basic routes to get all products, get single product details, remove products and create products.
+As shown above, app.use, app.set, and app.listen are endpoints, for the purposes of this demo, we will need to be able to add and get items from the basket ( Keeping it simple ). 
+We need to define our basic routes to get all products, get single product details, remove products, and create products. 
+
 
 
 #### Routes
 
 The routes directory is only responsible for defining our routes. Within index.js in this folder, you'll see that its responsibility is to set up our top level routes and delegate their responsibilities to each of their respective route files. Each respective route file will further define any additional subroutes and controller actions for each one.
-The web server skeleton already has a ./routes folder containing routes for the index, products and cart. 
- 
+
+The web server skeleton already has a ./routes folder containing routes for the index, products and cart. (as shown under https://github.com/redis-developer/basic-redis-shopping-chart-nodejs/tree/main/server/src/routes)   
+
 ```
 // routes/index.js
 
@@ -260,7 +263,8 @@ module.exports = app => {
 A route is a section of Express code that associates an HTTP verb (GET, POST, PUT, DELETE, etc.), a URL path/pattern, and a function that is called to handle that pattern.
 There are several ways to create routes. For this demo app we're going to use the express.Router middleware as it allows us to group the route handlers for a particular part of a site together and access them using a common route-prefix.
 The module requires Express and then uses it to create a Router object. The routes are all set up on the router, which is then exported.The routes are defined either using .get() or .post() methods on the router object. All the paths are defined using strings (we don't use string patterns or regular expressions). Routes that act on some specific resource (e.g. book) use path parameters to get the object id from the URL.
-The handler functions are all imported from the controller modules we created in the previous section
+The handler functions are all imported from the controller modules we created in the previous section.
+
 
 
 #### Controllers
@@ -312,13 +316,13 @@ module.exports = ProductIndexController;
  
 #### Services
 
-Services hold your actual business logic.The service layer carries out the application logic and delegate CRUD operations to a database/persistent storage(Redis in our case). Let us look at each condition and try to understand how the data is stored, modified and accessed:
-
+Services hold your actual business logic.The service layer carries out the application logic and delegates CRUD operations to a database/persistent storage (Redis in our case). Let us look at each condition and try to understand how the data is stored, modified, and accessed:
 
 
 #### How the data is stored:
  
 The product data is stored in an external JSON file. After the first request, this data is saved in a JSON data type in Redis like: 
+ 
  
  
 ```
@@ -340,7 +344,7 @@ The cart data is stored in a hash like:
 HSET cart:{cartId} product:{productId} {productQuantity}, 
 ```
  
-where cartId is a random generated value and stored in the user session. Please note that Redis’s hash management command (HSET) stores 2 keys - cart and product as shown in the below example.
+where cartId is a random generated value and stored in the user session. Please note that Redis’s hash management command HSET stores 2 keys-cart and product-as shown in the below example.
  
 #### Example:
 
