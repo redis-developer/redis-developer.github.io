@@ -180,12 +180,12 @@ Using generated security password: ea2d5326-b04c-4f93-b771-57bcb53f656e
 
 ####  How the data is stored:
 
-- The AAPL's details - market cap of 2,6 triillions and USA origin - are stored in a hash like below:
+- The AAPL's details - market cap of 2.6 triillions and USA origin - are stored in a hash like below:
   ```bash
    HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
   ```
 
-- The Ranks of AAPL of 2,6 trillions are stored in a ZSET.
+- The Ranks of AAPL of 2.6 trillions are stored in a ZSET.
 
    ```bash
     ZADD  companyLeaderboard 2600000000000 company:AAPL
