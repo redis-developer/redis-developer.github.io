@@ -9,24 +9,28 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-It’s hard to imagine an online store without a shopping cart. Almost every online store must have the shopping cart functionality to be able to sell products to customers. In order to build a scalable eCommerce platform, all you need is a powerful framework and a simple storage system. Most of developers focus on improving the frontend performance of an eCommerce to rectify these things. However, the real bottleneck remains the slow backend load time. A slow backend load time can have a serious impact on your search engine rankings. In this tutorial, you will see how to build a shopping cart application using Node.js, Vue.js, Express and Redis.
+It’s hard to imagine an online store without a shopping cart. Almost every online store must have the shopping cart functionality to be able to sell products to customers. In order to build a scalable ecommerce platform, you need a powerful framework and a simple storage system. At times, a lot of developers focus on improving the frontend performance of an ecommerce platform to rectify these things. The real bottleneck, however, remains the slow backend load time. 
+A slow backend load time can have a serious impact on your search engine rankings. A good rule of thumb is that backend load time should take no more than 20% of your total load time. A good backend load time to aim for is 200ms or less. 
+In this tutorial, you will see how to build a shopping cart application using Node.js, Vue.js, Express and Redis.
+
 
 
 ![My Image](shoppingcart.png)
 
 
 ### Content
-- What’ll you build?
+- What will you build?
 - What do you need?
-- Getting Started
+- Getting started
 - Setting up the backend (Node.js Express)
 - Setting up the frontend (Vue.js)
 - Running the application
 - Conclusion
 
-### What’ll you build?
 
-This tutorial post will show you how to harness the power of Redis by creating a basic e-commerce shopping cart application with Node.js. Usually, the shopping cart data is stored on the client-side as a cookie. Cookies are small text files stored in a web user's browser directory or data folder. The advantage of doing this is that you wouldn't need to store such temporary data in your database. However, this will require you to send the cookies with every web request which can slow down the request in case of large cookies. Storing shopping cart data in Redis is a good idea since you can retrieve them very fast at any time and persist this data if needed.
+### What will you build?
+
+This tutorial will show you how to harness the power of Redis by creating a basic ecommerce shopping cart application with Node.js. Usually, the shopping cart data is stored on the client-side as a cookie. Cookies are small text files stored in a web user's browser directory or data folder. The advantage of doing this is that you wouldn't need to store such temporary data in your database. However, this will require you to send the cookies with every web request, which can slow down the request in case of large cookies. Storing shopping cart data in Redis is a good idea since you can retrieve the items very fast at any time and persist this data if needed.
  
 
 ![Shopping Cart](shopping2.png)
@@ -41,12 +45,12 @@ This tutorial post will show you how to harness the power of Redis by creating a
 - Docker 19.03.X (Optional)
 - Docker Compose (Optional)
  
-Building an eCommerce app with Node.js makes a lot more sense because it ensures the balance between frontend and backend load time due to its asynchronous nature (the ability to handle multiple concurrent users at a time). Node.js helps developers make the best use of event loops and callbacks for I/O operations. Node.js runs single-threaded, non-blocking, asynchronous programming, which is very memory efficient.
+Building an ecommerce app with Node.js makes a lot more sense because it ensures the balance between frontend and backend load time due to its asynchronous nature (the ability to handle multiple concurrent users at a time). Node.js helps developers make the best use of event loops and callbacks for I/O operations. Node.js runs single-threaded, non-blocking, asynchronous programming, which is very memory efficient.
 
 In order to create a shopping cart we need a simple storage system where we can collect products and the cart's total. Node.js provides us with the express-session package, middleware for ExpressJS. We will be using express-session middleware to manage sessions in Node.js The session is stored in the express server itself.
 
 
-The default server-side session storage, MemoryStore, is purposely not designed for a production environment. It will leak memory under most conditions, does not scale past a single process, and is meant for debugging and developing. To manage multiple sessions for multiple users we have to create a global map and put each session object to it. Global variables in NodeJs are memory consuming and can prove to be terrible security holes in production level projects.This can be solved by using an external Session Store. We have to store every session in the store so that each one will belong to only a single user. One popular session store is built using Redis.
+The default server-side session storage, MemoryStore, is purposely not designed for a production environment. It will leak memory under most conditions, does not scale past a single process, and is meant for debugging and developing. To manage multiple sessions for multiple users, we have to create a global map and put each session object to it. Global variables in NodeJs are memory consuming and can prove to be terrible security holes in production-level projects.This can be solved by using an external session store. We have to store every session in the store so that each one will belong to only a single user. One popular session store is built using Redis.
  
 We will start by setting up the backend for our application. Let’s create a new directory for our application and initialize a new Node.js application. Open up your terminal and type the following:
 
