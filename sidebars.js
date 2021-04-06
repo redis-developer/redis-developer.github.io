@@ -44,6 +44,7 @@ module.exports = {
       type: 'category',
       label: 'HowTos & Tutorials',
       items: [
+           'howtos/index-howtos',
            'howtos/redisearch/index-redisearch',
            'howtos/redisjson/index-redisjson',
            'howtos/redistimeseries/index-redistimeseries',
