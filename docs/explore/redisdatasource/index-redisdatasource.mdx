@@ -5,7 +5,10 @@ sidebar_label: Redis Data Source for Grafana
 slug: /explore/redisdatasource
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
 
 The Redis Data Source for Grafana is a plug-in that allows users to connect to the Redis database and build dashboards in Grafana to easily monitor Redis and application data. It provides an out-of-the-box predefined dashboard, but also lets you build customized dashboards tuned to your specific needs.
 
@@ -23,75 +26,182 @@ The Redis Data Source for Grafana is a plug-in that allows users to connect to t
    - [RedisSearch](https://oss.redislabs.com/redisearch/): FT.INFO
    - [RedisGraph](https://oss.redislabs.com/redisgraph/): GRAPH.QUERY, GRAPH.SLOWLOG
 
-## Getting Started
+<Tabs
+  defaultValue="Using Homebrew"
+  values={[
+    {label: 'Using Homebrew', value: 'Homebrew'},
+    {label: 'Docker', value: 'Docker'},
+    {label: 'Docker Compose', value: 'Docker Compose'},
+  ]}>
+  <TabItem value="Using Homebrew">
 
-### Step 1. Install using `grafana-cli`
+## Using Homebrew
 
-Use the `grafana-cli` tool to install from the commandline:
+### Step 1. Install Grafana
 
-```bash
-grafana-cli plugins install redis-datasource
-```
+ ```bash
+  brew install grafana
+ ```
 
-### Step 2. Run using `docker`
 
-```bash
-docker run -d -p 3000:3000 --name=grafana -e "GF_INSTALL_PLUGINS=redis-datasource" grafana/grafana
-```
+### Step 2. Install Redis datasource using `grafana-cli`
 
-### Step 3. Run using `docker-compose`
+
+ ```bash
+  grafana-cli plugins install redis-datasource
+ ```
+
+
+The brew page downloads and untars the files into /usr/local/Cellar/grafana/version.
+
+### Step 3. Start Grafana using the command:
+
+ ```bash
+  brew services start grafana
+ ```
+
+### Step 4. Access Grafana dashboard
+
+![grafana](grafana.png)
+
+
+### Step 5. Click "Configuration"  
+![grafana](grafana_datasource.png)
+
+### Step 6. Add Redis as a Data Source
+
+![grafana](grafana_datasource2.png)
+
+### Step 7. Select "Redis" as data source type
+
+![grafana](grafana_datasource3.png)
+
+### Step 8. Add Redis Database name, Endpoint URL and password
+
+![grafana](grafana_datasource4.png)
+
+### Step 9. Click "Import" under Dashboard
+
+![grafana](grafana_datasource5.png)
+
+### Step 10.Access the Redis datasource Dashboard 
+
+![grafana](grafana_datasource7.png)
+
+
+</TabItem>
+
+<TabItem value="Docker">
+
+## Using Docker
+
+You can install and run Grafana using the official Docker image. 
+
+### Step 1. Install Docker
+
+The first step is to install docker for your operating system. Run the docker version command in a terminal window to make sure that docker is installed correctly.
+
+Note - On Windows and Mac, install docker version 18.03 or higher. You can run docker version to find out your docker version.
+
+
+
+### Step 2. Run Grafana Docker container
+
+Pass the plugins you want installed to Docker with the GF_INSTALL_PLUGINS environment variable as a comma-separated list. This sends each plugin name to grafana-cli plugins install ${plugin} and installs them when Grafana starts. 
+In our case, we will be using redis-datasource.
+
+ ```bash
+  docker run -d -p 3000:3000 --name=grafana -e "GF_INSTALL_PLUGINS=redis-datasource" grafana/grafana
+ ```
+
+### Step 3. Accessing the grafana dashboard
+
+Open https://IP:3000 to access grafana. The default username/password is admin/admin.
+
+
+### Step 4. Access Grafana dashboard
+
+![grafana](grafana.png)
+
+
+### Step 5. Click "Configuration"
+![grafana](grafana_datasource.png)
+
+### Step 6. Add Redis as a Data Source
+
+![grafana](grafana_datasource2.png)
+
+### Step 7. Select "Redis" as data source type
+
+![grafana](grafana_datasource3.png)
+
+### Step 8. Add Redis Database name, Endpoint URL and password
+
+![grafana](grafana_datasource4.png)
+
+### Step 9. Click "Import" under Dashboard
+
+![grafana](grafana_datasource5.png)
+
+### Step 10.Access the Redis datasource Dashboard
+
+![grafana](grafana_datasource7.png)
+
+
+  </TabItem>
+<TabItem value="Docker Compose">
+
+## Using Docker Compose
+
+Assuming that Docker Compose is already installed in your system, follow the below steps:
+
+
+### Step 1.  Clone the repository
+
+ ```bash
+  git clone https://github.com/RedisGrafana/grafana-redis-datasource
+  cd grafana-redis-datasource
+ ```
+
+### Step 2. Execute the docker-compose CLI 
 
 Project provides `docker-compose.yml` to start Redis with all Redis Labs modules and Grafana.
 
-```bash
-docker-compose up
-```
+ ```bash
+  docker-compose up -d
+ ```
 
-Open Grafana in your browser and configure Redis Data Source. You can add as many data sources as you want to support multiple Redis databases.
 
-![Datasource](https://raw.githubusercontent.com/RedisGrafana/grafana-redis-datasource/master/src/img/datasource.png)
+### Step 3. Access Grafana dashboard
 
-There are certain settings that can be configured based on your own setup:
+![grafana](grafana.png)
 
-- Grafana port
-- Data Source URL
 
-### Step 4.  Configure Grafana port in `docker-compose.yml`
+### Step 4. Click "Configuration"
 
-If standard port 3000 is occupied by another application update the port to bind Grafana to
+![grafana](grafana_datasource.png)
 
-```
-    ports:
-      - '3000:3000'
-```
+### Step 5. Add Redis as a Data Source
 
-### Step 5. Configure Data Source URL in `provisioning/datasources/redis.yaml`
+![grafana](grafana_datasource2.png)
 
-If Redis is running and listening on localhost:6379 no changes are required
+### Step 6. Select "Redis" as data source type
 
-```
-    url: redis://localhost:6379
-```
+![grafana](grafana_datasource3.png)
 
-If Redis is running as Docker container on MacOS, please update host to `host.docker.internal`
+### Step 7. Add Redis Database name, Endpoint URL and password
 
-```
-    url: redis://host.docker.internal:6379
-```
+![grafana](grafana_datasource4.png)
 
-If Redis is running as Docker container on Linux, please update host to `redis`
+### Step 8. Click "Import" under Dashboard
 
-```
-    url: redis://redis:6379
-```
+![grafana](grafana_datasource5.png)
 
-### Step 6. Run using `docker-compose` for development
+### Step 9.Access the Redis datasource Dashboard
 
-Data Source have to be built following [BUILD](https://github.com/RedisGrafana/grafana-redis-datasource/blob/master/BUILD.md) instructions before starting using `docker-compose/dev.yml` file.
-
-```bash
-docker-compose -f docker-compose/dev.yml up
-```
+![grafana](grafana_datasource7.png)
+</TabItem>
+</Tabs>
 
 ### Supported commands
 
@@ -99,11 +209,7 @@ Data Source supports various Redis commands using custom components and provides
 
 ![Query](https://raw.githubusercontent.com/RedisGrafana/grafana-redis-datasource/master/src/img/query.png)
 
-### Template variables
 
-Template variables can query any command and use other variables as parameters.
-
-![Variables](https://raw.githubusercontent.com/RedisGrafana/grafana-redis-datasource/master/src/img/variables.png)
 
 ### Further References 
 
