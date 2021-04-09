@@ -37,6 +37,7 @@ The Redis Data Source for Grafana is a plug-in that allows users to connect to t
 
 ## Using Homebrew
 
+
 ### Step 1. Install Grafana
 
  ```bash
@@ -77,6 +78,9 @@ The brew page downloads and untars the files into /usr/local/Cellar/grafana/vers
 ![grafana](grafana_datasource3.png)
 
 ### Step 8. Add Redis Database name, Endpoint URL and password
+
+Assuming that you already have Redis server and database up and running in your infrastructure.
+You can also leverage Redis Enterprise Cloud as showcased in the below example.
 
 ![grafana](grafana_datasource4.png)
 
@@ -119,31 +123,33 @@ In our case, we will be using redis-datasource.
 Open https://IP:3000 to access grafana. The default username/password is admin/admin.
 
 
-### Step 4. Access Grafana dashboard
 
 ![grafana](grafana.png)
 
 
-### Step 5. Click "Configuration"
+### Step 4. Click "Configuration"
 ![grafana](grafana_datasource.png)
 
-### Step 6. Add Redis as a Data Source
+### Step 5. Add Redis as a Data Source
 
 ![grafana](grafana_datasource2.png)
 
-### Step 7. Select "Redis" as data source type
+### Step 6. Select "Redis" as data source type
 
 ![grafana](grafana_datasource3.png)
 
-### Step 8. Add Redis Database name, Endpoint URL and password
+### Step 7. Add Redis Database name, Endpoint URL and password
+
+Assuming that you already have Redis server and database up and running in your infrastructure.
+You can also leverage Redis Enterprise Cloud as showcased in the below example.
 
 ![grafana](grafana_datasource4.png)
 
-### Step 9. Click "Import" under Dashboard
+### Step 8. Click "Import" under Dashboard
 
 ![grafana](grafana_datasource5.png)
 
-### Step 10.Access the Redis datasource Dashboard
+### Step 9.Access the Redis datasource Dashboard
 
 ![grafana](grafana_datasource7.png)
 
@@ -190,6 +196,9 @@ Project provides `docker-compose.yml` to start Redis with all Redis Labs modules
 ![grafana](grafana_datasource3.png)
 
 ### Step 7. Add Redis Database name, Endpoint URL and password
+
+Assuming that you already have Redis server and database up and running in your infrastructure.
+You can also leverage Redis Enterprise Cloud as showcased in the below example.
 
 ![grafana](grafana_datasource4.png)
 
