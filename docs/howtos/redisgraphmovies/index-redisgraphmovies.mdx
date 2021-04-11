@@ -68,19 +68,19 @@ Copy .env.sample to .env and add the below details:
    REDIS_PASSWORD = "Password to the server"
  ```
 
-### Step 5. Install the dependencies
+### Step 6. Install the dependencies
 
  ```bash
   npm install
  ```
 
-### Step 6. Run the backend server
+### Step 7. Run the backend server
 
  ```bash
   node app.js
  ```
 
-### Step 7. Run the client
+### Step 8. Run the client
 
  ```bash
   cd client
@@ -88,14 +88,14 @@ Copy .env.sample to .env and add the below details:
   yarn start 
  ```
 
-### Step 8. Accessing the Movie app
+### Step 9. Accessing the Movie app
 
 Open http://IP:3000 to access the movie app
 
 ![movieapp](moviedb.png)
 
 
-###  Step 9. Sign up for a new account
+###  Step 10. Sign up for a new account
 
 ![moviedb](moviedb_signup.png)
 
@@ -103,19 +103,19 @@ Enter the details to create a new account:
 
 ![movieapp](moviedb_createaccount.png)
 
-### Step 10. Sign-in to movie app
+### Step 11. Sign-in to movie app
 
 ![movieapp](moviedb_sign.png)
 
-### Step 11. Rate the movie
+### Step 12. Rate the movie
 
 ![movieapp](moviedb_rating.png)
 
-### Step 12. View the list of rated movie
+### Step 13. View the list of rated movie
 
 ![movieapp](moviedb_rated.png)
 
-### Step 13. View Movie graph on RedisInsight
+### Step 14. View Movie graph on RedisInsight
 
  ```
   GRAPH.QUERY "MovieApp" "MATCH (director:Director {tmdbId: \"4945\"})-[:DIRECTED]->(movie:Movie) RETURN DISTINCT movie,director"
@@ -124,7 +124,7 @@ Enter the details to create a new account:
 ![movieapp](moviedb_directed.png)
 
 
-### Step 14. Find movies where actor acted in.
+### Step 15. Find movies where actor acted in.
 
 Run the below query under RedisGraph to find the author acted in a movie
 
@@ -134,7 +134,7 @@ Run the below query under RedisGraph to find the author acted in a movie
 
 ![movieapp](moviedb_actedin.png)
 
-### Step 15. Store a user in a database
+### Step 16. Store a user in a database
 
  ```
   CREATE (user:User {id: 32,
@@ -146,7 +146,7 @@ Run the below query under RedisGraph to find the author acted in a movie
 ![movieapp](moviedb_createuser.png)
 
 
-### Step 16. Find a user by username
+### Step 17. Find a user by username
 
  ```
   MATCH (user:User {username: "user"}) RETURN user
@@ -250,7 +250,7 @@ The home page shows the genres and a brief listing of movies associated with the
   };
  ```
 
-### Sign-up and Login pages
+#### Sign-up and Login pages
 
 ![moviedb](f.png)
 ![moviedb](g.png)
@@ -294,7 +294,7 @@ To be able to rate movies a user needs to be logged in: for that a basic JWT-bas
   };
  ```
 
-### Movie detail page
+#### Movie detail page
 
 ![How it works](d.png)
 
@@ -316,7 +316,7 @@ On this page a user can rate the film and view the Actors/directors who particip
     {role: "Alan Parrish"}]->(m)
   ```
 
-### Associate director with a movie:
+#### Associate director with a movie:
 
   ```Cypher
    MATCH (m:Movie) WHERE m.title="Dead Presidents" CREATE (d:Director :Person{
@@ -330,7 +330,7 @@ On this page a user can rate the film and view the Actors/directors who particip
 
 #### How the data is accessed
 
-### Find movie by id with genre, actors and director:
+#### Find movie by id with genre, actors and director:
 
  ```Cypher
   MATCH (movie:Movie {tmdbId: $movieId})
@@ -377,7 +377,7 @@ On this page a user can rate the film and view the Actors/directors who particip
  ```
 
 
-### Actor and Director detail page
+#### Actor and Director detail page
 ![How it works](c.png)
 
 #### How the data is accessed
@@ -413,7 +413,7 @@ On this page a user can rate the film and view the Actors/directors who particip
   };
  ```
 
-### User detail page 
+#### User detail page 
 ![How it works](b.png)
 
 #### Shows the profile info and movies which were rated by user
@@ -453,7 +453,7 @@ On this page a user can rate the film and view the Actors/directors who particip
   };
  ```
 
-### Data types:
+#### Data types:
 
 * The data is stored in various keys and various relationships.
     * There are 5 types of data
