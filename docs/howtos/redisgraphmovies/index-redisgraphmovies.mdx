@@ -115,7 +115,7 @@ Enter the details to create a new account:
 
 ![movieapp](moviedb_rated.png)
 
-### Step 14. View Movie graph on RedisInsight
+### Step 14. View directed movie over RedisInsight
 
  ```
   GRAPH.QUERY "MovieApp" "MATCH (director:Director {tmdbId: \"4945\"})-[:DIRECTED]->(movie:Movie) RETURN DISTINCT movie,director"
@@ -476,3 +476,10 @@ On this page a user can rate the film and view the Actors/directors who particip
    * Director-`DIRECTED`->Movie
    * Actor-`ACTED_IN_MOVIE`->Movie
    * Movie-`IN_GENRE`->Genre
+
+
+### References
+
+ - [How to list and search Movies Database using Redisearch](/howtos/moviesdatabase)
+ - [RediSearch 2.0’s New Indexing Capabilities to add search to Movie app](https://redislabs.com/blog/getting-started-with-redisearch-2-0/)
+
