@@ -1,6 +1,6 @@
 ---
 id: index-hackernews
-title: How to build a HackerNews Clone using RedisJSON
+title: HackerNews Clone using RedisJSON
 sidebar_label: How to build a HackerNews Clone using RedisJSON
 slug: /howtos/hackernews
 ---
@@ -11,6 +11,376 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 
-In this tutorial, we will see how to build a basic HackerNews Clone application using RedisJSON.
+Hacker News (sometimes abbreviated as HN) is a social news website focusing on computer science and entrepreneurship.
+This is a HackerNews clone built upon React, NextJS as a frontend and NodeJS, ExpressJS & Redis as a backend.
+This application uses RedisJSON module for storing the data and RediSearch module for searching.
+
+
+
+
+![hackernews](hackernews.png)
+
+### Step 1. Install the prerequisites
+
+#### Install the below packages
+
+- NPM v7.8.0
+- NODE v15.10.0
+
+### Step 2. Create Redis Enterprise Cloud database
+
+[Follow this link](../create/rediscloud) to create Redis Enterprise Cloud account with 2 databases - one with RedisJSON module and other with RediSearch module enabled
+Save the database endpoint URL and password for our future reference
+
+### Step 3. Clone the repository
+
+  ```bash
+   git clone https://github.com/redis-developer/redis-hacker-news-demo
+   cd redis-hacker-news-demo
+  ```
+
+### Step 4. Setting up environmental variable
+
+Copy .env.sample to .env and provide the values as shown below:
+
+
+  ```bash
+   MAILGUN_API_KEY=YOUR_VALUE_HERE
+   SEARCH_REDIS_SERVER_URL=redis://redis-XXXXX.c10.us-east-1-2.ec2.cloud.redislabs.com:10292
+   SEARCH_REDIS_PASSWORD=ABCDXYZbPXHWsC
+   JSON_REDIS_SERVER_URL=redis://redis-XXXXX.c14.us-east-1-2.ec2.cloud.redislabs.com:14054
+   JSON_REDIS_PASSWORD=ABCDXYZA3tzw2XYMPi2P8UPm19D
+   LOG_LEVEL=1
+   USE_REDIS=1
+   REDIS_REINDEX=
+   PRODUCTION_WEBSITE_URL=i
+  ```
+
+
+### Step 5. Run the developer environment
+
+
+  ```bash
+   npm run dev
+  ```
+
+### Step 6.  Pull Hacker News API to seed database
+
+
+Using [API](https://github.com/HackerNews/API), it pulls the latest hackernews data.
+Next, you need to seed top stories from hacker news. First create a moderator with moderator:password123
+
+  ```bash
+   node ./backend/scripts/seed.js
+  ```
+
+### Step 7. Access the HackerNews URL
+
+Open https://localhost:3001 and you should be able to access the HackerNews login screen as shown below:
+
+![hackernews](screenshot-signup.png)
+
+
+### How it works
+
+#### By Screens
+
+#### Signup
+
+![Signup Screen](screenshot-signup.png)
+- Make sure user(where username is andy1) does not exist.
+
+ ```bash
+  FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
+ ```
+
+- Get and increase the next id in users collection.
+
+ ```bash
+  GET user:id-indicator // 63
+  INCR user:id-indicator  // 64 will be next user id, 63 is current user id
+ ```
+
+- Create user:63 hash and json.(json also collects authToken and password hash etc)
+
+ ```bash
+  HSET user:63 username andy1 email  created 1615569194 karma 0 about  showDead false isModerator false shadowBanned false banned false _id 63
+  JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"AAV07FIwTiEkNrPj0x1yj6BPJQSGIPzV0sICw2u0","authTokenExpiration":1647105194,"email":"","created":1615569194,"karma":0,"showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
+ ```
+
+- Gernerate cookie with expiration time.
+
+
+
+#### Login
+
+![Login Screen](screenshot-login.png)
+
+- Find user
+
+ ```
+  FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
+ ```
+
+- Make sure password is correct
+
+ ```
+  JSON.MGET user:63 .
+ ```
+
+- Compare password and new password hash and create cookie if it's successful
+
+#### Item list page
+
+![Newest Screen](screenshot-newest.png)
+
+- Check if user has toggled hidden attribute on a specific item.
+
+ ```
+  FT.SEARCH idx:user-hidden  (@username:"andy1") NOCONTENT LIMIT 0 10000 SORTBY _id DESC
+  // Result - [0, "item:4"]
+ ```
+
+- If that is not null
+
+ ```
+  FT.SEARCH idx:item  (-(@id:"item:4")) (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY _id ASC
+ ```
+
+- If it's empty array
+
+ ```
+  FT.SEARCH idx:item (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY _id ASC
+  // Result - [3,"item:1","item:2","item:3"]
+ ```
+
+- Get all items from RedisJSON
+
+ ```
+  JSON.MGET item:1 item:2 item:3 .
+  // Result - [{"id":"bkWCjcyJu5WT","by":"todsacerdoti","title":"Total Cookie Protection","type":"news","url":"https://blog.mozilla.org/security/2021/02/23/total-cookie-protection/","domain":"mozilla.org","points":1,"score":1514,"commentCount":0,"created":1614089461,"dead":false,"_id":3}]]
+ ```
+
+- Get items posted within last 1 week
+
+ ```
+  FT.SEARCH idx:item  (@created:[(1615652598 +inf]) (@dead:"false") NOCONTENT LIMIT 0 0 SORTBY _id DESC
+  // Result - [13,"item:19","item:17","item:16","item:15","item:14","item:13","item:12","item:11","item:8","item:5","item:4","item:3","item:1"]
+ ```
+
+Note that 1615652598 is timestamp of 1 week ealier than current timestamp
+
+ ```
+  JSON.MGET item:19 item:17 item:16 item:15 item:14 item:13 item:12 item:11 item:8 item:5 item:4 item:3 item:1 .
+  // Result - the JSON of selected items
+ ```
+
+#### Item Detail
+
+![Item Detail Screen](screenshot-item-detail.png)
+
+- Get the item object first
+
+ ```
+  JSON.MGET item:1 .
+ ```
+
+- Find item:1 's root comments
+
+ ```
+  FT.SEARCH idx:comment  (@parentItemId:"kDiN0RhTivmJ") (@isParent:"true") (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY points ASC
+  // Result - [3,"comment:1","comment:2","comment:12"]
+ ```
+
+- Get those comments
+
+ ```
+  JSON.MGET comment:1 comment:2 comment:12 .
+  // one comment example result - {"id":"jnGWS8TTOecC","by":"ploxiln","parentItemId":"kDiN0RhTivmJ","parentItemTitle":"The Framework Laptop","isParent":true,"parentCommentId":"","children":[13,17,20],"text":"I don&#x27;t see any mention of the firmware and drivers efforts for this. Firmware and drivers always end up more difficult to deal with than expected.<p>The Fairphone company was surprised by difficulties upgrading and patching android without support from their BSP vendor, causing many months delays of updates _and_ years shorter support life than they were planning for their earlier models.<p>I purchased the Purism Librem 13 laptop from their kickstarter, and they had great plans for firmware and drivers, but also great difficulty following through. The trackpad chosen for the first models took much longer than expected to get upstream linux support, and it was never great (it turned out to be impossible to reliably detect their variant automatically). They finally hired someone with sufficient skill to do the coreboot port _months_ after initial units were delivered, and delivered polished coreboot firmware for their initial laptops _years_ after they started the kickstarter.<p>So, why should we have confidence in the firmware and drivers that Framework will deliver :)","points":1,"created":1614274058,"dead":false,"_id":12}
+ ```
+
+- Using children of each comment, fetch children comments
+
+ ```
+  FT.SEARCH idx:comment  (@dead:"false") (@_id:("3"|"7"|"11")) NOCONTENT LIMIT 0 10000 SORTBY _id DESC
+ ```
+
+- Iterate this over until all comments are resolved
+
+#### Submit 
+
+![Submit Screen](screenshot-submit.png)
+
+- Get next item's id and increase it
+
+ ```
+  GET item:id-indicator
+  // Result - 4
+  SET item:id-indicator 5
+ ```
+
+- Create hash and RedisJSON index
+
+ ```
+  HSET item:4 id iBi8sU4HRcZ2 by andy1 title Firebase trends type ask url  domain  text Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web apps. points 1 score 0 created 1615571392 dead false _id 4
+  JSON.SET item:4 . '{"id":"iBi8sU4HRcZ2","by":"andy1","title":"Firebase trends","type":"ask","url":"","domain":"","text":"Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web apps.","points":1,"score":0,"commentCount":0,"created":1615571392,"dead":false,"_id":4}'
+ ```
+
+#### Update Profile
+
+![Update Profile Screen](screenshot-update-profile.png)
+
+- Get the user
+
+ ```
+  FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
+  JSON.MGET user:63 .
+```
+
+- Update new user
+
+ ```
+  HSET user:63 username andy1 email  created 1615569194 karma 1 about I am a software engineer. showDead false isModerator false shadowBanned false banned false _id 63
+  JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"KJwPLN1idyQrMp5qEY5hR3VhoPFTKRcC8Npxxoju","authTokenExpiration":1647106257,"email":"","created":1615569194,"karma":1,"about":"I am a software engineer.","showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
+ ```
+
+#### Moderation Logs screen
+
+![Moderation Logs](moderation-logs.png)
+
+- Find all moderation logs
+
+ ```
+  FT.SEARCH idx:moderation-log * NOCONTENT LIMIT 0 0 SORTBY _id DESC
+  // Result - [1,"moderation-log:1"]
+ ```
+
+- Get that moderation logs
+
+ ```
+  JSON.MGET moderation-log:1 .
+ ```
+
+#### Search
+
+![Search Screen](screenshot-search.png)
+
+- Get items that contains "fa"
+
+ ```
+
+  FT.SEARCH idx:item  (@title:fa*) (-(@id:"aaaaaaaaa")) (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY score ASC
+  // Result - [2,"item:18","item:16"]
+
+ ```
+- Get those items via json
+
+ ```
+  JSON.MGET item:18 item:16 .
+ ```
+
+## Example commands
+#### There are 2 type of fields, indexed and non-indexed.
+1. Indexed fields will be stored in hash using HSET/HGET.
+2. Non-indexed fields will be stored in RedisJSON.
+
+
+- Create RediSearch Index
+
+When schema is created, it should created index.
+
+ ```
+  FT.CREATE idx:user ON hash PREFIX 1 "user:" SCHEMA username TEXT SORTABLE email TEXT SORTABLE karma NUMERIC SORTABLE
+ ```
+
+- Drop RediSearch Index
+
+Should drop/update index if the schema has changed
+
+ ```
+  FT.DROPINDEX idx:user
+ ```
+
+- Get RediSearch Info
+
+Validate if the fields are indexed properly. If not, it will update the index fields or drop/recreate.
+
+ ```
+  FT.INFO idx:user
+ ```
+
+
+- Create a new user
+
+It will require new hash and new JSON record
+
+ ```
+  HSET user:andy username "andy" email "andy@gmail.com" karma 0
+  JSON.SET user:andy '{"passoword": "hashed_password", "settings": "{ \"showDead\": true }" }'
+ ```
+
+
+- Update a user
+
+ ```
+  HSET user:1 username "newusername"
+  JSON.SET user:andy username "newusername"
+ ```
+
+- Find user with username 'andy'
+
+1. Find  the user's hash first
+
+ ```
+  FT.SEARCH idx:user '@username:{andy}'
+ ```
+
+2. Fetch the JSON object to get the related JSON object
+
+ ```
+  JSON.GET user:andy
+ ```
+
+- Find user whose id is andy1 or andy2
+
+ ```
+  FT.SEARCH idx:user '@id:("andy1"|"andy2")'
+ ```
+
+- Find user whose id is not andy1 or andy2
+
+ ```
+  FT.SEARCH idx:user '(-(@id:("andy1"|"andy2")))'
+ ```
+
+- Find user whose id is andy1 or username is andy
+
+ ```
+  FT.SEARCH idx:user '(@id:"andy1") | (@username:"andy")'
+ ```
+
+- Find user whose id is andy1 and username is andy
+
+ ```
+  FT.SEARCH idx:user '(@id:"andy1") (@username:"andy")'
+ ```
+
+- Find first 10 users order by username
+
+ ```
+  FT.SEARCH idx:user '*' LIMIT 0 10 SORTBY username ASC
+ ```
+
+- Find next 10 users
+
+ ```
+  FT.SEARCH idx:user '*' LIMIT 10 20 SORTBY username ASC
+ ```
+
+- Get from RedisJson from multiple keys
+
+ ```
+  JSON.MGET idx:user "andy1" "andy2" "andy3"
+ ```
 
 
