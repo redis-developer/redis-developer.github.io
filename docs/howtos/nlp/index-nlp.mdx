@@ -11,6 +11,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 
+Author: Alex Mikhalev, Ajeet Singh Raina
+
 In this tutorial, you will learn how to build a pipeline for Natural Language Processing(NLP) using RedisGears. For this demonstration, we will be leveraging the Kaggle CORD19 datasets. The implementation is designed to avoid running out of memory, leveraging Redis Cluster and Redis Gears, where the use of Redis Gears allows to process data on storage without the need to move data in and out of the Redis cluster. Redis Cluster allows horizontal scalability up to 1000 nodes and together with Redis Gears provides a distributed system where data scientist/ML engineers can focus on processing steps without worry about writing tons of scaffoldings for distributed calculations.
 
 
