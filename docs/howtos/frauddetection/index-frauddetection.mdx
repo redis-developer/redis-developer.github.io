@@ -133,7 +133,8 @@ In line 4, we import the redisbloom package. Since RedisBloom is a module, the c
 The singleton_decorator ensures only one instance of this connection class is created, and os package is used to read the environment variables to form the connection.
 
 Now let’s take a look at how we use Redis to solve click spamming and IP fraud.
-gist: https://gist.github.com/Sachin-Kottarathodi/c3a0647d3fdd0fe8a76425e0594e11c5 code for reference:
+
+Gist: https://gist.github.com/Sachin-Kottarathodi/c3a0647d3fdd0fe8a76425e0594e11c5 
 
 
 
@@ -169,8 +170,9 @@ Finally, data is pushed to Redistream using the xadd command. id=’*’ indicat
 
 #### Registering Gears:
 When the app appears, a gear is registered, which reacts to the stream that we use to push data.
-gist:https://gist.github.com/Sachin-Kottarathodi/f9dac7a3342a3643e792e2143a6adf7d
-code for reference:
+
+Gist:https://gist.github.com/Sachin-Kottarathodi/f9dac7a3342a3643e792e2143a6adf7d
+
 
 
 
@@ -201,9 +203,10 @@ We use the GearsRemoteBuilder class to build the Gear. StreamReader ensures that
 Gear registration can be checked on RedisInsight as well.
 
 Finally, we incorporate the flask app which exposes the end point for trigger.
-gist: https://gist.github.com/Sachin-Kottarathodi/2a6cccb29b4a9fdc7d58086af07aa6eb
 
-Code for ref:
+Gist: https://gist.github.com/Sachin-Kottarathodi/2a6cccb29b4a9fdc7d58086af07aa6eb
+
+
 
 
 
