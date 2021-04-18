@@ -11,22 +11,25 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Authors: [Sachin Kottarathodi](https://www.linkedin.com/in/ksachin1), [Ajeet Singh Raina](https://www.linkedin.com/in/ajeetsraina/)
 
-Imagine that your ads are generating a lot of traffic, but you are not seeing enough results from your ad spend. Fraudsters often try to steal digital ad marketing budgets through various sophisticated mechanisms. Faking clicks can make it appear as though a real user was engaging with the ad, but in reality when these fake clicks drive installs, the cost of the install goes to the fraudster’s pocket. With companies willing to spend a huge amount of money on digital advertisements, the number of fraudsters in ad markets are also increasing.
+Imagine that your ads are generating a lot of traffic, but you are not seeing the desired results from your ad spend. This might not be a coincidence—fraudsters often try to steal digital ad marketing budgets through various sophisticated mechanisms. Faking clicks can make it appear as though a real user was engaging with the ad, but in reality when these fake clicks drive installs, the cost of the install goes to the fraudster’s pocket. As companies’ willingness to spend more  on digital advertisements grows, the number of fraudsters in ad markets also increases.
 
 
 ![fraud detection](fraud_grafana.png)
 
-This blog post will show a simplified version of such a use case to demonstrate how real-time fraud detection works—so that you can understand how to stay ahead of the fraudsters.
+This blog post will demonstrate a simplified use case of how real-time fraud detection works—so that you can understand how to stay ahead of the fraudsters.
+
 
 
 Here’s what we have used:
 
 
-- Python-based fraud detector module which performs two kinds of fraud checks : IP blacklisting & Click spamming
-- IP blacklisting uses Redis Cuckoo Filter from Redis Bloom package.
-- Click Spamming uses Redis Sorted set.
-- The data is then pushed to Redis Stream which is consumed by Redis Gears for processing
-- RedisTimeseries gets updated and Redis Data source for Grafana displays the dashboard
+
+- Python-based fraud detector module which performs two kinds of fraud checks : IP blacklisting & click spamming
+- IP blacklisting uses Redis Cuckoo Filter from the RedisBloom package.
+- Click spamming uses Redis Sorted Set.
+- The data is then pushed to RediStream which is consumed by RedisGears for processing 
+- RedisTimeSeries gets updated and Redis Data Source for Grafana displays the dashboard
+
 
 ![Fraud Detection](frauddetection.png)
 
@@ -34,16 +37,18 @@ Here’s what we have used:
 
 You can follow https://docs.docker.com/get-docker/ to get Docker installed on your local system.
 
+
 ### Step #2: Get Ready to Redis
 
-You will need a Redis server up and running on your local machine. You can use the below CLI to bring up Redis server with RedisGears
+You will need a Redis server up and running on your local machine. You can use the below CLI to bring up Redis server with RedisGears.
 
 
 ```
 $ docker run -d -p 6379:6379 redislabs/redismod
 ```
 
-The command will pull the image from redis docker repo and start the redis server with all the required modules, the logs ends like this.
+The command will pull the image from redis docker repo and start the Redis server with all the required modules and the logs ends like this.
+
 
 
 ### Step #3: Cloning the Repository
@@ -65,7 +70,8 @@ $ cd redis-datasets/use-cases/fraud-detection
 
 The code is present in use-cases/fraud-detection. The app is dockerized with necessary packages (including client packages for redis modules). 
 
-Create the image using the command
+Create the image using the command:
+
 
 
 ```
@@ -83,11 +89,12 @@ $ docker run -e REDIS_HOST='<host>' -e REDIS_PORT=6379 -p 5000:5000 -d redis-fra
 You will get the container Id, which can be used to tail application logs.
 
 
+
 ```
 $ docker logs -f <container-id>
 ```
 
-If you are using redismod image to run redis locally, please provide the IP of the host machine (and not localhost or 127.0.0.1).
+If you are using a redismod image to run Redis locally, please provide the IP of the host machine (and not localhost or 127.0.0.1).
 
 ### Step #5:  Verifying the Application
 
@@ -120,12 +127,15 @@ class RedisConn:
     		return self.bloom_client
 ```
 
+In line 2, we import the redis package for package. All the core Redis commands are available in this Redis package.
 
-In line 2, we import the redis package for package. All the core Redis commands are available in this redis package.
-In line 4, we import the redisbloom package. Since Redis Bloom is a module, the clients used to interact with this module are also different. We will see more such examples below.
+In line 4, we import the redisbloom package. Since RedisBloom is a module, the clients used to interact with this module are also different. We will see more such examples below.
 The singleton_decorator ensures only one instance of this connection class is created, and os package is used to read the environment variables to form the connection.
 
 Now let’s take a look at how we use Redis to solve click spamming and IP fraud.
+gist: https://gist.github.com/Sachin-Kottarathodi/c3a0647d3fdd0fe8a76425e0594e11c5 code for reference:
+
+
 
 
 ```
@@ -150,15 +160,18 @@ def publish(self, data):
 	RedisConn().redis().xadd(Constants.STREAM_NAME, data, id='*')
 ```
 
-In the above code, Cuckoo Filter to find blacklisted IP fraud. Cuckoo filter is a probabilistic data structure, part of the module redisbloom. Checking for existence of IP in cuckoo filter is done using cfExists method provided by bloom client. Please note that Cuckoo filter can return false positives. To configure the error rate, cf.reserve command can be used to create the filter and custom bucket size can be provided.
+In the above code, Cuckoo Filter is used to find blacklisted IP fraud. Cuckoo Filter is a probabilistic data structure that’s part of the module, RedisBloom. Checking for existence of IP in Cuckoo Filter is done using the cfExists method provided by bloom client. Please note that Cuckoo Filter can return false positives. To configure the error rate, cf.reserve command can be used to create the filter and custom bucket size can be provided.
 
 To identify click spam, we use the zcount method of sorted sets provided in redis package.
 Using zcount, we find the number of clicks from a device in a certain pre configured window. If the count received is greater than a certain threshold, we identify it as anomalous.
 
-Finally, data is pushed to the redis stream using the xadd command. id=’*’ indicates Redis stream to generate a unique id for our message.
+Finally, data is pushed to Redistream using the xadd command. id=’*’ indicates Redistream to generate a unique id for our message.
 
-Registering Gears:
-When the app comes up, a gear is registered which reacts to the stream to which we push data.
+#### Registering Gears:
+When the app appears, a gear is registered, which reacts to the stream that we use to push data.
+gist:https://gist.github.com/Sachin-Kottarathodi/f9dac7a3342a3643e792e2143a6adf7d
+code for reference:
+
 
 
 ```
@@ -178,15 +191,20 @@ def stream_handler(item):
 GearsBuilder(reader='StreamReader', r=redis_conn, requirements=["redis", "redistimeseries"]).foreach(stream_handler).register('data_stream')
 ```
 
-As mentioned before, since Redis Gears and Redis TimeSeries are modules, we need to use the clients provided in their respective packages.
-We use the GearsRemoteBuilder class to build the Gear. StreamReader ensures that the stream_handler function is executed for every new message from the stream. The stream_handler adds the data to the sorted set using zadd (This information is used in zcount to identify click_spam)  and increments the count of time series for clean and fraud types using incrby of the redis time series module, which is later used for visualization.
+As mentioned before, since RedisGears and RedisTimeSeries are modules, we need to use the clients provided in their respective packages.
+
+We use the GearsRemoteBuilder class to build the Gear. StreamReader ensures that the stream_handler function is executed for every new message from the stream. The stream_handler adds the data to the sorted set using zadd (This information is used in zcount to identify click_spam)  and increments the count of time series for clean and fraud types using incrby of the RedisTimeSeries module, which is later used for visualization.
 
 
 ![Fraud Detection](fraud_redisinsight.png)
 
-Gear registration can be checked on Redis Insights as well.
+Gear registration can be checked on RedisInsight as well.
 
-Finally the flask app which exposes the end point for trigger.
+Finally, we incorporate the flask app which exposes the end point for trigger.
+gist: https://gist.github.com/Sachin-Kottarathodi/2a6cccb29b4a9fdc7d58086af07aa6eb
+
+Code for ref:
+
 
 
 
@@ -215,10 +233,10 @@ if __name__ == '__main__':
 	app.run(port=5000, debug=False, host='0.0.0.0')
 ```
 
-The app is exposed on port 5000, before starting the server, init method of setup is called to register the gear.
-The endpoint calls the function that does the fraud checks and returns the response.
+Here, the app is exposed on port 5000. Before starting the server, our init method of setup is called to register the gear.The endpoint calls the function that does the fraud checks and returns the response.
 
 The application is written in python and exposes an endpoint which accepts a few parameters. Use the below command to invoke the application:
+
 
 
 ```
@@ -229,28 +247,31 @@ $ curl --request POST 'localhost:5000' --header 'Content-Type: application/json'
 clean
 ```
 
-Since initially no data is available in cuckoo filter, all IPs will be allowed through.
-To add data to cuckoo filter connect to redis using cli and run the command
+Since initially no data is available in Cuckoo Filter, all IPs will be allowed through.
+To add data to Cuckoo Filter, connect to Redis using cli and run the command
+
 
 
 ```
 cf.addnx ip_cf 1.1.1.1
 ```
 
-Run the post command with this IP again, this time, the result will be ‘ip_blacklist’.
+Run the post command with this IP again. This time, the result will be ip_blacklist.
+
 
 
 ![Fraud Detection](fraud_ipblacklist.png)
 
-Click Spamming:
+### Click Spamming:
 
-The app is configured to allow 2 events in a window of 10 seconds from the same device. To verify, make more than 2 curl requests within 10 seconds and the result will be ‘click_spam’
+The app is configured to allow two events in a window of 10 seconds from the same device. To verify, make more than two curl requests within 10 seconds and the result will be ```click_spam```.
 
 
 ![Fraud Detection](fraud_clickspam.png)
 
 Optional: The following variables can be configured during the ‘docker run’ command. 
 -e CLICK_SPAM_THRESHOLD=3 -e CLICK_SPAM_WINDOW_IN_SEC=10
+
 
 
 
@@ -262,7 +283,7 @@ It’s exciting to see the fraud detection  plotted in Grafana. To implement thi
 $ docker run -d -e "GF_INSTALL_PLUGINS=redis-app" -p 3000:3000 grafana/grafana
 ```
 
-Point your browser to https://<IP_ADDRESS>:3000. Use “admin” as username and password to log in to the Grafana dashboard.
+Point your browser to https://<IP_ADDRESS>:3000. 
 
 
 ![Fraud detection](fraud_grafana1.png)
@@ -274,12 +295,12 @@ Login as ‘admin’ with password as ‘admin’, you can reset the password af
 ![Fraud detection](fraud_grafana2.png)
 
 
-Click on the gear icon on the left panel (Configuration) and choose Data Sources
+Click on the gear icon on the left panel (Configuration) and choose Data Sources.
 
 
 ![Fraud detection](fraud_grafana3.png)
 
-Choose ‘Add data Source’
+Choose ‘Add data source’.
 
 ![Fraud detection](fraud_grafana4.png)
 
@@ -303,12 +324,13 @@ This creates a dashboard ‘Fraud Stats’. If you get an error while importing 
 ![Fraud detection](fraud_grafana8.png)
 
 
-### Conclusion & Future Work
+### Conclusion & future work
 
-- If we consider the entire flow starting from fraud check, to event streaming to data processing to visualization (using insights), all of this would have required multiple components and extensive orchestration. With Redis Ecosystem, most of this is removed.
-- This is just the beginning of more checks that can be done on events. A lot of other checks can be done using modules and data structures . For example: Redis provides Geospatial data structure built over sorted sets. Since latitude and longitude can be derived from IP using IP to location conversion providers, a lot of insight can be derived on whether the event can be fraudulent or not.
+- If we consider the entire flow starting from fraud check, from event streaming to data processing to visualization (using insights), all of this would have required multiple components and extensive orchestration. With Redis Ecosystem, most of this is removed.
+- This is just the beginning of more checks that can be done on events. A lot of other checks can be done using modules and data structures. For example; Redis provides geospatial data structures built over sorted sets. Since latitude and longitude can be derived from IP using IP to location conversion providers, a lot of insight can be derived on whether the event can be fraudulent or not.
 - To reject servicing requests altogether, the redis-cell module to rate limit requests against a key can be used.
-- Redis AI and neural-redis can be used to build to improve efficiency of identifying fraud based.
+- RedisAI and neural-redis can be used to improve efficiency of identifying fraud based.
+
 
 ### References and Links
 
