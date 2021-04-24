@@ -195,7 +195,7 @@ export $(cat .env | xargs)
 ./gradlew run
 ```
 
-### Step 6. Accessing the rate limting app
+### Step 6. Accessing the rate limiting app
 
 
 Point your browser to http://IP:5000 and you will be able to select various requests per second option on the screen. As shown in the above example, the server will allow sending max 10 API requests within a 10 second window.If you send more than that, all additional requests will be blocked
@@ -211,6 +211,6 @@ Point your browser to http://IP:5000 and you will be able to select various requ
 ### References
 
 - [Basic Rate Limiting](https://redislabs.com/redis-best-practices/basic-rate-limiting/)
-- [Rate Limting with Redis Webinar](https://redislabs.com/webinars-on-demand/rate-limiting-with-redis/)
+- [Rate Limiting with Redis Webinar](https://redislabs.com/webinars-on-demand/rate-limiting-with-redis/)
 - [How to use Redis for real-time metering applications](https://www.infoworld.com/article/3230455/how-to-use-redis-for-real-time-metering-applications.html)
 - [redis-cell: a Rate Limiting Redis Module](https://redislabs.com/blog/redis-cell-rate-limiting-redis-module/)
