@@ -21,6 +21,7 @@ Rate limiting is a mechanism that many developers may have to deal with at some 
     {label: 'Python', value: 'Python'},
     {label: 'NodeJS', value: 'NodeJS'},
     {label: 'Java', value: 'Java'},
+    {label: 'Ruby', value: 'Ruby'},
   ]}>
   <TabItem value="Python">
 
@@ -36,7 +37,7 @@ Rate limiting is a mechanism that many developers may have to deal with at some 
 ### Step 2. Clone the repository 
 
 ```
-git clone https://github.com/redis-developer/redis-rate-limiting-python.git
+git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
 ```
 
 
@@ -71,7 +72,45 @@ Step 5. Accessing the rate limiting app
 
 ![Rate Limiting](ratelimiting.png)
 
+#### How it works?
 
+#### How the data is stored:
+
+New responses are added key-ip:
+ 
+ ```
+  SETNX your_ip:PING limit_amount
+  Example: SETNX 127.0.0.1:PING 10 
+ ```
+[More information](https://redis.io/commands/setnx)
+
+Set a timeout on key:
+
+ ```
+  EXPIRE your_ip:PING timeout
+  Example: EXPIRE 127.0.0.1:PING 1000 
+ ```
+
+[More information](https://redis.io/commands/expire)
+
+
+#### How the data is accessed:
+
+Next responses are get bucket:
+ ```
+  GET your_ip:PING
+  Example: GET 127.0.0.1:PING   
+ ```
+[More information](https://redis.io/commands/get)
+
+Next responses are changed bucket:
+
+ ```
+  DECRBY your_ip:PING amount
+  Example: DECRBY 127.0.0.1:PING 1
+ ```
+
+[More information](https://redis.io/commands/decrby)
 
 </TabItem>
 
@@ -203,9 +242,131 @@ Point your browser to http://IP:5000 and you will be able to select various requ
 
 ![Rate Limiting](ratelimiting.png)
 
+</TabItem>
 
+<TabItem value="Ruby">
+
+## Using Ruby
+
+The server will allow sending particular number of requests (permitted_requests_count stored in Redis) within a 10 second window. If you send more than that, all additional requests will be blocked.
+
+### Step 1. Pre-requisite
+
+
+-   Ruby - v2.7.0
+-   Rails - v5.2.4.5
+-   NPM - v7.6.0
+
+### Step 2. Clone the repository
+
+  ```bash
+   git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-ruby/
+  ```
+
+### Step 3. Copy files and set proper data inside
+
+Copy config/application.yml.example to config/application.yml
+
+ ```bash
+  cp config/application.yml.example config/application.yml
+ ```
+
+ ```
+  - REDIS_URL: Redis server URI
+ ```
+
+### Step 4. Install dependencies
+
+  ```bash
+   bundle install
+  ```
+
+### Step 5. Run Redis Docker container
+
+  ```bash
+   docker run -d -p 6379:6379 redislabs/redismod
+  ```
+
+### Step 6. Running the app
+
+
+  ```bash
+   rails s
+  ```
+
+### Step 7. Accessing the app
+
+Go to the browser and type https://localhost:3000 to access the app
+
+![rate-limiting](ratelimitingruby.png)
+
+### How it works?
+
+This app was built using rack-defense gem which will block connections from a client after surpassing certain amount of requests (permitted_requests_count, default: 10) per time (10 seconds).
+
+#### Code to configure rack-defence
+
+ ```ruby
+  Rack::Defense.setup do |config|
+  config.store = ENV['REDIS_URL']
+
+  permitted_requests_count = config.store.get('permitted_requests_count')
+
+  if permitted_requests_count.present?
+    permitted_requests_count = permitted_requests_count.to_i
+  else
+    config.store.set('permitted_requests_count', 10)
+  end
+
+  # 10000 - time, ms
+  # || 10 - to avoid ArgumentError on first run
+  config.throttle('ping', permitted_requests_count || 10, 10000) do |req|
+    req.ip if req.path == '/ping' && req.get?
+   end
+  end
+ ```
+
+The application will return response headers after each successful request:
+
+ ```ruby
+  # example
+  X-RateLimit-Limit: 10
+  X-RateLimit-Remaining: 9
+ ```
+
+The application will also return request header after each request (including blocking requests) with count of remaining requests:
+
+ ```ruby
+  # example
+  RateLimit-Remaining: 1
+ ```
+
+#### How the data is stored:
+
+The permitted_requests_count is stored in Redis store in string format. By default, it's 10. You can set new VALUE with these commands:
+
+ ```ruby
+  SET permitted_requests_count VALUE
+  INCR permitted_requests_count
+  DECR permitted_requests_count
+ ```
+
+IMPORTANT! For the new permitted_requests_count value to take effect you need to restart an app (rails) server after these commands.
+
+#### How the data is accessed:
+
+You can get permitted_requests_count with this command:
+
+ ```ruby
+  GET permitted_requests_count    
+ ```
 
  </TabItem>
+
+
+
+
+
 </Tabs>
 
 ### References
