@@ -76,7 +76,13 @@ Step 5. Accessing the rate limiting app
 
 #### How the data is stored:
 
-New responses are added key-ip:
+This app will block connections from a client after surpassing certain amount of requests (default: 10) per time (default: 10 sec)
+The application will return after each request the following headers. That will let the user know how many requests they have remaining before the run over the limit.
+On the 10th run server should return an HTTP status code of 429 Too Many Requests
+
+
+SETNX is short for "SET if Not eXists". It basically sets key to hold string value if key does not exist. In that case, it is equal to SET. 
+When key already holds a value, no operation is performed. New responses are added key-ip as shown below:
  
  ```
   SETNX your_ip:PING limit_amount
