@@ -24,6 +24,7 @@ module.exports = {
       type: 'category',
       label: 'Develop',
       items: [
+        'develop/index-develop',
         'develop/java/index-java',
         'develop/python/index-python',
         'develop/node/index-node',
