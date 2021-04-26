@@ -9,6 +9,7 @@ module.exports = {
       type: 'category',
       label: 'Create',
       items: [
+        'create/index-create',
         'create/rediscloud/index-rediscloud',
         'create/heroku/index-heroku',
         'create/azure/index-azure',
