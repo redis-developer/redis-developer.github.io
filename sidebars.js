@@ -35,6 +35,7 @@ module.exports = {
       type: 'category',
       label: 'Explore',
       items: [
+        'explore/index-explore',
         'explore/redisinsight/index-redisinsight',
         'explore/redisdatasource/index-redisdatasource',
         'explore/riot/index-riot',

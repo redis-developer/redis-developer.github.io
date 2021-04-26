@@ -1,43 +1,46 @@
 ---
 id: index-explore
 title: Explore Your Data
-sidebar_label: Explore
-slug: /explore/
+sidebar_label: Overview 
+slug: /explore
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
 
-The following links provides you with the available options to explore a new Redis database either on the Cloud or using local software.i
 
-<div className="row text--center">
 
-  <div className="col">
-    <div className="ri-container ri-link">
-      <div className="ri-description-short">
-          <div className="ri-detail">
-              <h4 className="ri-title">RedisInsight</h4>
-              <div className="ri-description">
-                <img src={useBaseUrl('/img/logos/cloud.png')} width="100" />
-              </div>
-          </div>
-      </div>
-      <a href={useBaseUrl('/explore/redisinsight/')} className="ri-card-link">Read More</a>
-    </div>
-  </div>
+The following links provides you with the available options to explore a new Redis database either on the Cloud or using local software.
 
-  <div className="col">
-    <div className="ri-container ri-link">
-      <div className="ri-description-short">
-          <div className="ri-detail ">
-              <h4 className="ri-title">Redis Datasource for Grafana</h4>
-              <div className="ri-description">
-                <img src={useBaseUrl('/img/logos/docker.png')} width="100"/>
-              </div>
-          </div>
-      </div>
-      <a href={useBaseUrl('/explore/redisdatasource')} className="ri-card-link">Read More</a>
-    </div>
-  </div>
+<div class="row">
 
+ <div class="col">
+     <RedisCard 
+        title="RedisInsight" 
+        imgPath="redisinsight.png"
+        description="An intuitive and efficient GUI for Redis" 
+        preview="redisinsight.png"
+        page="/explore/redisinsight"
+        />
 </div>
+
+
+ <div class="col">
+    <RedisCard 
+        title="Redis Datasource for Grafana" 
+        description="An out-of-the-box predefined build Grafana dashboard for Redis" 
+        page="/explore/redisdatasource"
+        />
+ </div>
+
+
+ <div class="col">
+    <RedisCard 
+        title="RIOT" 
+        description="A set of import/export command line utilities for Redis" 
+        page="/explore/riot"
+        />
+ </div>
+</div>
+
+
 
