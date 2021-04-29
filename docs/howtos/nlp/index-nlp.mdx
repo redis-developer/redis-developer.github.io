@@ -16,17 +16,21 @@ Authors - [Alex Mikhalev](https://www.linkedin.com/in/alexmikhalev/), [Ajeet Sin
 
 ##  Goal
 
-In this tutorial, you will learn how to build a pipeline for Natural Language Processing(NLP) using RedisGears. For this demonstration, we will be leveraging the Kaggle CORD19 datasets. The implementation is designed to avoid running out of memory, leveraging Redis Cluster and Redis Gears, where the use of Redis Gears allows to process data on storage without the need to move data in and out of the Redis cluster - using Redis Cluster as data fabric. Redis Cluster allows horizontal scalability up to 1000 nodes and together with Redis Gears provides a distributed system where data scientist/ML engineers can focus on processing steps without worry about writing tons of scaffoldings for distributed calculations.
+In this tutorial, you will learn how to build a pipeline for Natural Language Processing(NLP) using [RedisGears](https://developer.redislabs.com/howtos/redisgears). For this demonstration, we will be leveraging [the Kaggle CORD19 datasets](https://www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge). The implementation is designed to avoid running out of memory, leveraging Redis Cluster and RedisGears, where the use of RedisGears allows to process data on storage without the need to move data in and out of the Redis cluster - using Redis Cluster as data fabric. Redis Cluster allows horizontal scalability up to 1000 nodes and together with RedisGears provides a distributed system where data scientist/ML engineers can focus on processing steps without worry about writing tons of scaffoldings for distributed calculations.
+
+![nlp](nlparch.png)
+
 
 This project was built with the aim to make it easier for other people to contribute and build better information and knowledge management products.
 
-## Why use RedisGears for data scientists?
+## Why data scientists uses RedisGears?
 
-RedisGears have enormous potential, particularly for text processing - you can process your data “on data” without need to move them in and out of memory, summary of the important points:
-1.In Memory storage (Horizontally scalable if it’s Redis cluster)
-2.Processing of data (on data) without need to move in and out
-3.Gears - like Spark on Hadoop, process data intelligently on storage(in-memory) without need to move data in and out
-4.Redis in cluster mode with RedisGears and python enabled takes 20 MB RAM. Think how much more data you can shuffle into your laptop or server.
+[RedisGears](https://redislabs.com/modules/redis-gears/) have enormous potential, particularly for text processing - you can process your data “on data” without need to move them in and out of memory, summary of the important points:
+
+- In Memory storage (Horizontally scalable if it’s Redis cluster)
+- Processing of data (on data) without need to move in and out
+- Gears - like Spark on Hadoop, process data intelligently on storage(in-memory) without need to move data in and out
+- Redis in cluster mode with RedisGears and python enabled takes 20 MB RAM. Think how much more data you can shuffle into your laptop or server.
 
 ## What is a knowledge graph?
 
@@ -42,11 +46,11 @@ In this pipeline I assume knowledge is captured in medical metathesaurus [UMLS](
 ![concepts1](concepts1.png)
 ![concepts2](concepts2.png)
 
-Concepts have CUI (Concept Unique Identifiers) and those will be primary keys in nodes, linked to UMLS thesaurus. For example for if you search “How does temperature and humidity affect the transmission of 2019-nCoV?” on demo website [http://thepattern.digital/](http://thepattern.digital) and move slider to 1996 there is an edge connecting transmission (C5190195) and birth (C5195639) and the part of sentence matched “the rate of transmission to an infant born to” from the report titled “Afebrile Pneumonia in infants”. 
+Concepts have CUI (Concept Unique Identifiers) and those will be primary keys in nodes, linked to UMLS thesaurus. For example, if you try to search “How does temperature and humidity affect the transmission of 2019-nCoV?” on a demo website [http://thepattern.digital/](http://thepattern.digital) and move slider to 1996, there is an edge connecting transmission (C5190195) and birth (C5195639) and the part of sentence matched “the rate of transmission to an infant born to” from the report titled “Afebrile Pneumonia in infants”. 
 
 ![concepts3](concepts3.png)
 
-## Redis Gears for NLP pre-processing
+## RedisGears for NLP pre-processing
 ### Overall Architecture Overview (Components Diagram) 
 
 ![component_diagram](component_diagram.png)
