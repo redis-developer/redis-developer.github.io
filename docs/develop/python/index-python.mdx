@@ -10,9 +10,9 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-Find Tutorials, Examples and Technical articles that will help you to develop with Redis and Python.
+Find tutorials, examples and technical articles that will help you to develop with Redis and Python.
 
-## Getting Started
+### Getting Started
 
 The Python community has built many client libraries that you can find [here](https://redis.io/clients#python).
 For your first steps with Python and Redis, this article will show how to use the recommended library: [redis-py](https://github.com/andymccurdy/redis-py).
@@ -26,18 +26,17 @@ For your first steps with Python and Redis, this article will show how to use th
   ]}>
   <TabItem value="redis-py">
 
-### Getting Started with redis-py
 
-1. Install the Redis library using `pip`
+### Step 1. Install the Redis library using `pip`
 
-    ```bash
+   ```bash
     pip3 install redis
-    ```
+   ```
 
 
-3. Write your application code
+### Step 2. Write your application code
 
-    ```python
+   ```python
     import redis
 
     redis = redis.Redis(
@@ -52,25 +51,16 @@ For your first steps with Python and Redis, this article will show how to use th
     redis.zadd('vehicles', {'bike' : 0})
     vehicles = redis.zrange('vehicles', 0, -1)
     print(vehicles)
-    ```
+   ```
 
 Find more information about Redis & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/python/redispy)".
 
   </TabItem>
 </Tabs>
   
----
 
-## Guides
 
-<RedisCard 
-    title="How to Use SSL/TLS With Redis Enterprise" 
-    page="/guide/security/how-to-use-ssl-tls-with-redis-enterprise/"
-    />
-
----
-
-## More developer resources
+### More developer resources
 
 <div class="row">
 
@@ -97,7 +87,7 @@ Application that shows how to do rate limiting using various Redis datastructure
 
   ---
 
-## Redis University
+### Redis University
 
 ### [Redis for Python Developers](https://university.redislabs.com/courses/ru102py/)
 

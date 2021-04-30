@@ -7,10 +7,10 @@ function Demos() {
   return <section className="rds-demos">
     <div className="container">
 
-      <h2 className="section-title">Samples<br /> and Demos</h2>
+      <h2 className="section-title"><br /> </h2>
 
       <div className="row terminals">
-        <img src={useBaseUrl('/img/code-1.png')} className="code" alt="" />
+        <img src={useBaseUrl('/img/code-1.png')} className="code" alt="Background image of sample redis code" />
 
         <div className="col col--6">
 
@@ -19,13 +19,14 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h3 className="title">Redis 101</h3>
+              <h5 className="title">Build with Redis Modules</h5>
               <ul className="links">
-                <li><a href="https://github.com/redis-developer/redis-connect" target="_blank" rel="noopener">Connect to Redis: all languages</a></li>
-                <li><a href="https://redislabs.com/modules/get-started/" target="_blank" rel="noopener">Getting Started with Redis Modules</a></li>
-                <li><a href="https://github.com/RediSearch/redisearch-getting-started" target="_blank" rel="noopener">Getting Started with RediSearch</a></li>
-                <li><a href="https://redislabs.com/blog/getting-started-with-redis-streams-and-java/" target="_blank" rel="noopener">Getting Started with Redis Streams</a></li>
-              </ul>
+                <li><a href="/howtos/redisearch/">RediSearch Quick Start</a></li>
+                <li><a href="/howtos/redisjson/">RedisJSON Quick Start</a></li>
+                <li><a href="/howtos/redistimeseries/">RedisTimeSeries Quick Start</a></li> 
+                <li><a href="/howtos/redisgraph/">RedisGraph Quick Start</a></li>
+                <li><a href="/howtos/redisbloom/">RedisBloom Quick Start</a></li>
+             </ul>
             </div>
           </div>
 
@@ -37,12 +38,13 @@ function Demos() {
               <SvgDots />
             </div>
             <div className="terminal-body">
-              <h3 className="title">Complete Applications</h3>
+              <h5 className="title">Featured how-tos & tutorials</h5>
               <ul className="links">
-                <li><a href="https://github.com/redis-developer/brewdis" target="_blank" rel="noopener">Brewdis</a></li>
-                <li><a href="https://github.com/RedisTimeSeries/redis-pop-up-store" target="_blank" rel="noopener">Popup Store</a></li>
-                <li><a href="https://github.com/redis-developer/redis-microservices-demo/" target="_blank" rel="noopener">Redis Microservices Demo</a></li>
-                <li><a href="https://github.com/redis-developer/basic-caching-demo-nodejs" target="_blank" rel="noopener">Basic Redis Caching Demo</a></li>
+                <li><a href="/howtos/shoppingcart/">How to build a Shopping Cart app Using NodeJS & RedisJSON</a></li>
+                <li><a href="/howtos/ratelimiting/">How to build a Rate Limiter Using Redis & Python</a></li>
+                <li><a href="/howtos/moviesdatabase/getting-started/">How to build a Movies Database app Using RediSearch</a></li>
+                <li><a href="/howtos/leaderboard/">How to build a Real-Time Leaderboard app Using Redis</a></li>
+                <li><a href="/howtos/caching/">How to cache REST API responses Using Redis & NodeJS</a></li>
               </ul>
             </div>
           </div>

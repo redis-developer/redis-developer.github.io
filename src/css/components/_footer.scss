@@ -44,11 +44,15 @@
     }
   }
 
+  &__logo-ctr { margin-top: -3px; }
+
+  &__logo-tagline { font-family: $roboto; font-weight: 600; margin-left: 5px; }
+
   &__logo {
     display: block;
-    margin: -3px 0 0 0;
+    margin: 5px 0 0 0;
     max-width: none;
-    width: 201px;
+    width: 160px;
     height: auto;
   }
 

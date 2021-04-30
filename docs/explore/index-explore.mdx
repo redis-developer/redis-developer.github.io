@@ -1,40 +1,46 @@
 ---
 id: index-explore
 title: Explore Your Data
-sidebar_label: Explore
-slug: /explore/
+sidebar_label: Overview 
+slug: /explore
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
 
-RedisInsight provides an intuitive and efficient GUI for Redis, allowing you to interact with your databases and manage your data—with built-in support for most popular Redis modules. It provides tools to analyze the memory, profile the performance of your database usage, and guide you toward better Redis usage.
 
-## RedisInsight in Action
 
-### RedisInsight Overview (RedisConf'20)
+The following links provides you with the available options to explore a new Redis database either on the Cloud or using local software.
 
-<div class="text--center">
-<iframe width="672" height="378" src="https://www.youtube.com/embed/HBC3OSYOgj0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="row">
+
+ <div class="col">
+     <RedisCard 
+        title="RedisInsight" 
+        imgPath="redisinsight.png"
+        description="An intuitive and efficient GUI for Redis" 
+        preview="redisinsight.png"
+        page="/explore/redisinsight"
+        />
 </div>
 
 
-### Monitoring Redis data using RedisInsight (OSCONF 2020 Bangalore)
+ <div class="col">
+    <RedisCard 
+        title="Redis Datasource for Grafana" 
+        description="An out-of-the-box predefined build Grafana dashboard for Redis" 
+        page="/explore/redisdatasource"
+        />
+ </div>
 
-<div class="text--center">
-<iframe width="672" height="378" src="https://www.youtube.com/embed/BVXFBhKeUxk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+ <div class="col">
+    <RedisCard 
+        title="RIOT" 
+        description="A set of import/export command line utilities for Redis" 
+        page="/explore/riot"
+        />
+ </div>
 </div>
 
----
 
-### Adding a Redis Database to RedisInsight
 
-* <a href="https://docs.redislabs.com/latest/ri/using-redisinsight/add-instance/#add-a-standalone-redis-database" target="_blank" rel="noopener">Standalone Redis</a>
-* <a href="https://docs.redislabs.com/latest/ri/using-redisinsight/add-instance/#add-a-redis-cluster-database" target="_blank" rel="noopener">Redis cluster</a>
-* <a href="https://docs.redislabs.com/latest/ri/using-redisinsight/add-instance/#add-a-redis-sentinel-database" target="_blank" rel="noopener">Redis Sentinel</a>
-* <a href="https://docs.redislabs.com/latest/ri/using-redisinsight/add-instance/#add-a-redis-database-that-uses-tls" target="_blank" rel="noopener">Redis with TLS authentication</a>
-* <a href="https://docs.redislabs.com/latest/ri/using-redisinsight/add-instance/#connecting-to-elasticache" target="_blank" rel="noopener">Elasticache</a>
-* <a href="https://docs.redislabs.com/latest/ri/using-redisinsight/auto-discover-databases/">Automatically Discovering Databases</a>
-
-### Related Information
-
-* <a href="https://docs.redislabs.com/latest/ri/" target="_blank" rel="noopener">Official RedisInsight Documentation</a>

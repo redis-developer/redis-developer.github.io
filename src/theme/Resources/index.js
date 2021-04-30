@@ -32,19 +32,19 @@ function Resources() {
   return <section className="rds-resources">
     <div className="container" id="resources">
 
-      <h2 className="section-title white">Resources<br /> &amp; Community</h2>
-      <h3 className="section-description white">Latest from your favorite community to support your Redis journey.</h3>
+      <h2 className="section-title white">Resources<br /> &amp; community</h2>
+      <h3 className="section-description white">The latest from your favorite community to support your Redis journey</h3>
 
       <Slider className="row articles" {...sliderSettings}>
         <div className="col col--4">
           <article className="article">
             <div className="article-wrapper">
-              <img src={useBaseUrl('/img/redis-stars-podcast.jpg')} className="thumb" loading="lazy" alt="Redis Stars Podcast" />
+              <img src={useBaseUrl('/img/redispod.png')} className="thumb" loading="lazy" alt="Redis Pods" />
               <div className="article-body">
                 <span className="type">Podcast</span>
                 <h3 className="title">How Redis delivers 15M+ MyTeam11 users with over 25,000 ops per second</h3>
               </div>
-              <a href="https://redisstars.simplecast.com/episodes/how-redis-delivers-15-million-myteam11-users-with-over-25-000-operations-per-second" target="_blank" rel="noopener" className="link">Read More</a>
+              <a href="https://redispods.simplecast.com/episodes/how-redis-delivers-15-million-myteam11-users-with-over-25-000-operations-per-second" target="_blank" rel="noopener" className="link">Read More</a>
             </div>
           </article>
         </div>
@@ -75,7 +75,7 @@ function Resources() {
       </Slider>
 
       <div className="cta">
-        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the Community</a>
+        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the community</a>
       </div>
 
     </div>

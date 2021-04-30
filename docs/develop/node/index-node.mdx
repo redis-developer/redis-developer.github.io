@@ -12,7 +12,11 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Find tutorials, examples and technical articles that will help you to develop with Redis and Node.js/JavaScript.
 
-### Getting Started
+## Getting Started
+
+Redis is a great database for use with Node.js. Both Redis Node.js share similar type conventions and threading models, which makes for a very predictable development experience. By pairing Node.js & Redis together you can achieve a scalable and productive development platform.
+
+Redis Node.js has two primary clients available [node_redis](https://github.com/NodeRedis/node_redis) and [ioredis](https://github.com/luin/ioredis). Both are available through npm. Both clients have pros and cons, but we generally suggest node_redis, as it has wide support for Redis modules, it is easily extensible and widely used. Ioredis has better integrated support for the Redis Enterprise Cluster API, but this is only relevant if your specifically using [the Cluster API topology](https://redislabs.com/redis-enterprise/technology/linear-scaling-redis-enterprise/) instead of the more common Proxy topology. Node_redis’ support for the Cluster API is provided by an additional shim, redis-clustr. Node_redis has built-in support for Redis Enterprise features such as [Active Active geo distribution](https://redislabs.com/redis-enterprise/technology/active-active-geo-distribution/), allowing you to have one database that spans multiple clusters. Node_redis also supports Redis-on-Flash which enables extending your database into Flash SSD storage for warm values and DRAM for hot values. Nodejs redis enables you to integrate such features.
 
 The Node.js community has built many client libraries that you can find [here](https://redis.io/clients#nodejs). 
 For your first steps with Node.js and Redis, this article will show how to use the recommended libraries: [ioredis](https://github.com/luin/ioredis) and [node-redis](https://github.com/NodeRedis/node-redis).
@@ -25,18 +29,17 @@ For your first steps with Node.js and Redis, this article will show how to use t
   ]}>
     <TabItem value="ioredis"> 
 
-### Getting Started with ioredis
 
-1. Install the ioredis library using `npm` (or `yarn`)
+### Step 1. Install the ioredis library using `npm` (or `yarn`)
 
-    ```bash
-    npm install ioredis
-    ```
+  ```bash
+   npm install ioredis
+  ```
 
 
-3. Write your application code
+### Step 2. Write your application code
 
-    ```javascript
+   ```javascript
     const Redis = require("ioredis");
     const redis = new Redis(6379, "localhost");
 
@@ -55,25 +58,24 @@ For your first steps with Node.js and Redis, this article will show how to use t
     redis.zadd("vehicles", 0, "car", 0, "bike");
     redis.zrange("vehicles", 0, -1, "WITHSCORES").then((res) => console.log(res));
 
-    ```
+  ```
 
 Find more information about Redis & io-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/ioredis)".
 
   </TabItem>
   <TabItem value="node_redis">
 
-### Getting Started with node-redis
 
-1. Install the Redis library using `npm` (or `yarn`)
+### Step 1. Install the Redis library using `npm` (or `yarn`)
 
-    ```bash
+  ```bash
     npm install redis
-    ```
+  ```
 
 
-3. Write your application code
+### Step 2. Write your application code
 
-    ```javascript
+  ```javascript
     const redis = require("redis");
     
     const client = redis.createClient ({
@@ -101,7 +103,7 @@ Find more information about Redis & io-redis connections in the "[Redis Connect]
         });
     });
 
-    ```
+  ```
 
 Find more information about Redis & node-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/node-redis)".
 
@@ -111,16 +113,7 @@ Find more information about Redis & node-redis connections in the "[Redis Connec
 
 ---
 
-## Guides
-
-<RedisCard 
-    title="How to Use SSL/TLS With Redis Enterprise" 
-    page="/guide/security/how-to-use-ssl-tls-with-redis-enterprise/"
-    />
-
----
-
-## More developer resources
+### More developer resources
 
 <div class="row">
 
@@ -128,10 +121,10 @@ Find more information about Redis & node-redis connections in the "[Redis Connec
 
 #### Sample Code
 
-**[Basic Redis Caching](https://github.com/redis-developer/basic-caching-demo-nodejs)**
+**[Basic Redis Caching](https://developer.redislabs.com/howtos/caching/)**
 This application call the GitHub API and cache the results into Redis.
 
-**[Redis Rate-Limiting](https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs)**
+**[Redis Rate-Limiting](https://developer.redislabs.com/howtos/ratelimiting/)**
 This is a very simple app that demonstrates rate-limiting feature using Redis.
 
 **[Notifications with WebSocket, Vue & Redis](https://github.com/redis-developer/redis-websockets-vue-notifications)**
@@ -154,7 +147,7 @@ This project allow you to push notifications in a Vue application from a Redis `
 
 ---
 
-## Redis University
+### Redis University
 
 ### [Redis for JavaScript Developers](https://university.redislabs.com/courses/ru102js/)
 

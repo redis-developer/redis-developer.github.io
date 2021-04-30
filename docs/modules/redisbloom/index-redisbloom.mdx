@@ -1,0 +1,113 @@
+---
+id: index-redisbloom
+title: RedisBloom
+sidebar_label: RedisBloom
+slug: /modules/redisbloom
+---
+
+RedisBloom extends Redis core to support additional probabilistic data structures. It allows for solving computer science problems in a constant memory space with extremely fast processing and a low error rate. It supports scalable Bloom and Cuckoo filters to determine (with a specified degree of certainty) whether an item is present or absent from a collection. 
+ 
+The RedisBloom module provides four data types:
+
+- Bloom filter: A probabilistic data structure that can test for presence. A Bloom filter is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set. Bloom filters typically exhibit better performance and scalability when inserting items (so if you're often adding items to your dataset then Bloom may be ideal). 
+- Cuckoo filter: An alternative to Bloom filters, Cuckoo filters comes with additional support for deletion of elements from a set. These filters are quicker on check operations.
+- Count-min sketch: A count-min sketch is generally used to determine the frequency of events in a stream. You can query the count-min sketch to get an estimate of the frequency of any given event.  
+- Top-K: The Top-k probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. 
+
+
+
+### Step 1. Register and subscribe
+
+Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
+
+![Redisbloom](redisbloom1.png)
+
+### Step 2. Create a database with RedisBloom Module
+
+![Redisbloom](redisbloom.png)
+
+
+### Step 3. Connect to a database
+
+
+Follow [this](explore/redisinsight) link to know how to connect to a database
+
+
+
+### Step 4. Getting Started with RedisBloom
+
+In the next steps you will use some basic RedisBloom commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.) To interact with RedisBloom, you use the BF.ADD and BF.EXISTS commands. 
+
+Let’s go ahead and test drive some RedisBloom-specific operations. We will create a basic dataset based on unique visitors’ IP addresses, and you will see how to:
+
+- Create a Bloom filter
+- Determine whether or not an item exists in the Bloom filter
+- Add one or more items to the Bloom filter
+- Determine whether or not a unique visitor’s IP address exists
+
+Let’s walk through the process step-by-step:
+
+#### Create a Bloom filter
+
+Use the BF.ADD command to add a unique visitor IP address to the Bloom filter as shown here:
+
+```
+>> BF.ADD unique_visitors 10.94.214.120
+(integer) 1
+(1.75s)
+```
+
+#### Determine whether or not an item exists
+
+Use the BF.EXISTS command to determine whether or not an item may exist in the Bloom filter:
+
+```
+>> BF.EXISTS unique_visitors 10.94.214.120
+(integer) 1
+```
+
+```
+>> BF.EXISTS unique_visitors 10.94.214.121
+(integer) 0
+(1.46s)
+```
+
+In the above example, the first command shows the result as “1”, indicating that the item may exist, whereas the second command displays "0", indicating that the item certainly may not exist.
+
+#### Add one or more items to the Bloom filter
+
+Use the BF.MADD command to add one or more items to the Bloom filter, creating the filter if it does not yet exist. This command operates identically to BF.ADD, except it allows multiple inputs and returns multiple values:
+
+```
+>> BF.MADD unique_visitors 10.94.214.100 10.94.214.200 10.94.214.210 10.94.214.212
+1) (integer) 1
+2) (integer) 1
+3) (integer) 1
+4) (integer) 1
+```
+
+As shown above, the BF.MADD allows you to add one or more visitors’ IP addresses to the Bloom filter.
+
+#### Determine whether or not a unique visitor’s IP address exists
+
+Use BF.MEXISTS to determine if one or more items may exist in the filter or not:
+
+```
+>> BF.MEXISTS unique_visitors 10.94.214.200 10.94.214.212
+1) (integer) 1
+2) (integer) 1
+```
+
+```
+ >> BF.MEXISTS unique_visitors 10.94.214.200 10.94.214.213
+1) (integer) 1
+2) (integer) 0
+```
+
+
+In the above example, the first command shows the result as “1” for both the visitors’ IP addresses, indicating that these items do exist. The second command displays "0" for one of the visitor’s IP addresses, indicating that the item certainly does not exist.
+
+
+### Next Step 
+
+- Learn more about RedisBloom in the [Quick Start](https://oss.redislabs.com/redisbloom/Quick_Start/) tutorial.

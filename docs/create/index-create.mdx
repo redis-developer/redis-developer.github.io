@@ -1,74 +1,100 @@
 ---
 id: index-create
-title: Create Database
-sidebar_label: Create Database
-slug: /create/
+title: Create Database 
+sidebar_label: Overview 
+slug: /create
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
 
 The following links provides you with the available options to create a new Redis database either on the Cloud or using local software. (Docker, Redis Enterprise, from Sources)
 
-<div className="row text--center">
 
-  <div className="col">
-    <div className="ri-container ri-link">
-      <div className="ri-description-short">
-          <div className="ri-detail">
-              <h4 className="ri-title">Redis Enterprise Cloud</h4>
-              <div className="ri-description">
-                <img src={useBaseUrl('/img/logos/cloud.png')} width="100" />
-              </div>
-          </div>
-      </div>
-      <a href={useBaseUrl('/create/cloud/')} className="ri-card-link">Read More</a>
-    </div>
-  </div>
+<div class="row">
 
-  <div className="col">
-    <div className="ri-container ri-link">
-      <div className="ri-description-short">
-          <div className="ri-detail ">
-              <h4 className="ri-title">Docker</h4>
-              <div className="ri-description">
-                <img src={useBaseUrl('/img/logos/docker.png')} width="100"/>
-              </div>
-          </div>
-      </div>
-      <a href={useBaseUrl('/create/docker/')} className="ri-card-link">Read More</a>
-    </div>
+ <div class="col">
+     <RedisCard 
+        title="Redis Enterprise Cloud" 
+        imgPath="recloud.png"
+        description="Create database using Redis Enterprise Cloud" 
+        preview="recloud.png"
+        page="/create/rediscloud"
+        />
+ </div>
+
+
+ <div class="col">
+    <RedisCard 
+        title="Redis on Heroku" 
+        description="Create Redis database on Heroku" 
+        page="/create/heroku"
+        />
+ </div>
+
+
+ <div class="col">
+    <RedisCard 
+        title="Redis on Azure Cache" 
+        description="Create Redis database on Azure Cache" 
+        page="/create/azure"
+        />
+ </div>
+</div>
+
+ <div class="row">
+
+ <div class="col">
+     <RedisCard
+        title="Redis on Google Cloud"
+        imgPath="recloud.png"
+        description="Create Redis database using Google Cloud"
+        preview="recloud.png"
+        page="/create/gcp"
+        />
+</div>
+
+
+ <div class="col">
+    <RedisCard
+        title="Redis on AWS"
+        description="Create Redis database on AWS"
+        page="/create/aws"
+        />
+ </div>
+
+
+ <div class="col">
+    <RedisCard
+        title="Redis on Docker"
+        description="Create Redis database on Docker"                   
+        page="/create/docker"
+        />
+ </div>
+</div>
+
+<div class="row">
+
+ <div class="col">
+     <RedisCard
+        title="Redis on Kubernetes"
+        imgPath="recloud.png"
+        description="Create Redis database on Google Kubernetes Engine"
+        preview="recloud.png"
+        page="/create/kubernetes"
+        />
+</div>
+
+
+ <div class="col">
+    <RedisCard
+        title="Redis from Source"
+        description="Create Redis database from Source"
+        page="/create/from-source"
+        />   
   </div>
 
 </div>
 
-<div className="row text--center">
 
-  <div className="col" >
-    <div className="ri-container ri-link">
-      <div className="ri-description-short">
-          <div className="ri-detail">
-              <h4 className="ri-title">Redis from Source</h4>
-              <div className="ri-description">
-                <img src={useBaseUrl('/img/redis-logo.png')} width="85" />
-              </div>
-          </div>
-      </div>
-      <a href={useBaseUrl('/create/from-source/')} className="ri-card-link">Read More</a>
-    </div>
-  </div>
 
-  <div className="col" >
-    <div className="ri-container ri-link">
-      <div className="ri-description-short">
-          <div className="ri-detail">
-              <h4 className="ri-title">Redis Enterprise & Kubernetes</h4>
-              <div className="ri-description">
-                <img src={useBaseUrl('/img/logos/kubernetes.png')} width="150" />
-              </div>
-          </div>
-      </div>
-      <a href={useBaseUrl('https://docs.redislabs.com/latest/platforms/')} rel="nofollow noopener" className="ri-card-link">Read More</a>
-    </div>
-  </div>
-
-</div>

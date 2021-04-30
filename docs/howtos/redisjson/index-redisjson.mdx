@@ -1,0 +1,156 @@
+---
+id: index-redisjson
+title: RedisJSON Tutorial
+sidebar_label: RedisJSON Tutorial
+slug: /howtos/redisjson
+---
+
+The RedisJSON module provides in-memory manipulation of JSON documents at high velocity and volume. With RedisJSON, you can natively store document data in a hierarchical, tree-like format to scale and query documents efficiently, significantly improving performance over storing and manipulating JSON with Lua scripts and core Redis data structures.
+
+
+### Step 1. Register and subscribe
+
+Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
+
+![RedisJSON](redisjson3.png)
+
+### Step 2. Create a database with RedisJSON Module
+
+![RedisJSON](redisjson1.png)
+
+
+### Step 3. Connect to a database
+
+
+Follow [this](explore/redisinsight) link to know how to connect to a database
+
+
+
+### Step 4. Getting Started with RedisJSON
+
+
+The following steps use some basic RedisJSON commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. 
+
+To interact with RedisJSON, you will most often use the JSON.SET and JSON.GET commands. Before using RedisJSON, you should familiarize yourself with its commands  and syntax as detailed in the documentation: RedisJSON Commands.
+
+
+Let’s go ahead and test drive some JSON-specific operations for setting and retrieving a Redis key with a JSON value:
+
+- Scalar
+- Objects (including nested objects)
+- Arrays of JSON objects
+- JSON nested objects
+ 
+
+####  Scalar
+
+Under RedisJSON, a key can contain any valid JSON value. It can be scalar, objects or arrays. JSON scalar is basically a string. You will have to use the JSON.SET command to set the JSON value. For new Redis keys the path must be the root, so you will use “.” path in the example below. For existing keys, when the entire path exists, the value that it contains is replaced with the JSON value. Here you will use JSON.SET to set the JSON scalar value to “Hello JSON!” Scalar will contain a string that holds “Hello JSON!”
+
+```
+>> JSON.SET scalar .  ' "Hello JSON!" '
+"OK"
+```
+
+Use JSON.GET to return the value at path in JSON serialized form:
+
+```
+>> JSON.GET scalar
+"\"Hello JSON!\""
+```
+
+#### Objects
+
+Let’s look at a JSON object example. A JSON object contains data in the form of a key-value pair. The keys are strings and the values are the JSON types. Keys and values are separated by a colon. Each entry (key-value pair) is separated by a comma. The { (curly brace) represents the JSON object:
+
+```
+{  
+    "employee": {  
+        "name": "alpha",   
+        "age": 40,   
+        "married": true  
+    }  
+}
+```
+
+Here is the command to insert JSON data into Redis:
+
+```
+>> JSON.SET employee_profile . '{ "employee": { "name": "alpha", "age": 40,"married": true }  } '
+"OK"
+```
+
+The subcommands below change the reply’s format and are all set to the empty string by default: * INDENT sets the indentation string for nested levels *. NEWLINE sets the string that’s printed at the end of each line. * SPACE sets the string that’s put between a key and a value:
+
+```
+>> >> JSON.GET employee_profile
+"{\"employee\":{\"name\":\"alpha\",\"age\":40,\"married\":true}}"
+```
+
+#### Retrieving a part of JSON document
+
+You can also retrieve a part of the JSON document from Redis. In the example below, “.ans” can be passed in the commandline to retrieve the value 4:
+
+```
+>> JSON.SET object . '{"foo":"bar", "ans":"4" }'
+"OK"
+```
+
+```
+>> JSON.GET object
+"{\"foo\":\"bar\",\"ans\":\"4\"}"
+```
+
+```
+>> JSON.GET object .ans
+"\"4\""
+```
+
+#### Retrieving the type of JSON data
+
+JSON.TYPE reports the type of JSON value at path and path defaults to root if not provided. If the key or path do not exist, null is returned.
+
+```
+>> JSON.TYPE employee_profile
+"Object"
+```
+
+#### JSON arrays of objects
+
+The JSON array represents an ordered list of values. A JSON array can store multiple values, including strings, numbers, or objects. In JSON arrays, values must be separated by a comma. The [ (square bracket) represents the JSON array. Let’s look at a simple JSON array example with four objects:
+
+```
+{"employees":[    
+    {"name":"Alpha", "email":"alpha@gmail.com", "age":23},    
+    {"name":"Beta", "email":"beta@gmail.com", "age":28},  
+    {"name":"Gamma", "email":"gamma@gmail.com", "age":33},    
+    {"name":"Theta", "email":"theta@gmail.com", "age":41}   
+]}  
+ 
+>> JSON.SET testarray .  '{"employees":[         {"name":"Alpha", "email":"alpha@gmail.com", "age":23},         {"name":"Beta", "email":"beta@gmail.com", "age":28},       {"name":"Gamma", "email":"gamma@gmail.com", "age":33},         {"name":"Theta", "email":"theta@gmail.com", "age":41}    ]}   '
+"OK"
+ 
+>> JSON.GET testarray
+"{\"employees\":[{\"name\":\"Alpha\",\"email\":\
+alpha@gmail.com
+
+\",\"age\":23},{\"name\":\"Beta\",\"email\":\"beta@gmail.com....
+```
+
+#### JSON nested objects
+
+A JSON object can also have another object. Here is a simple example of a JSON object having another object nested in it:
+
+```
+>> JSON.SET employee_info . ' { "firstName": "Alpha",         "lastName": "K", "age": 23,        "address" : {            "streetAddress": "110 Fulbourn Road Cambridge",  "city": "San Francisco", "state": "California", "postalCode": "94016"  } } '
+"OK"
+```
+ 
+```
+>> JSON.GET employee_info
+"{\"firstName\":\"Alpha\",\"lastName\":\"K\",\"age\":23,\"address\":{\"streetAddress\":\"110 Fulbourn Road Cambridge\",\"city\":\"San Francisco\",\"state\":\"California\",\"postalCode\":\"94016\"}}"
+```
+
+### Next Step
+
+-  Learn more about [RedisJSON](https://oss.redislabs.com/redisjson/) in the Quickstart tutorial.
+- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)

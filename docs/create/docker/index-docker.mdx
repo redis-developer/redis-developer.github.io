@@ -1,7 +1,7 @@
 ---
 id: index-docker
-title: Run Redis using Docker
-sidebar_label: Docker
+title: Create Redis database on Docker
+sidebar_label: Redis on Docker
 slug: /create/docker/
 ---
 import Tabs from '@theme/Tabs';
@@ -18,8 +18,6 @@ import RedisCard from '@site/src/theme/RedisCard';
   ]}>
 
   <TabItem value="Redis Enterprise" className="has-small-images">
-
-## Redis Enterprise
 
 
 ### Pre-requisite
@@ -100,7 +98,6 @@ OK
 </TabItem>
 <TabItem value="Redis">
 
-## Redis
 
 ### Pre-requisite
 
@@ -162,3 +159,7 @@ If persistence is enabled, data is stored in the VOLUME /data, which can be used
   
 </Tabs>
 
+### Next Step
+
+- [Connect to Redis database using RedisInsight](/explore/redisinsight/)
+- [Connect to Redis database using Redis datasource for Grafana](/explore/redisdatasource/)

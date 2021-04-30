@@ -1,0 +1,92 @@
+---
+id: index-php
+title: Php and Redis
+sidebar_label: Php 
+slug: /develop/php/
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+
+Find tutorials, examples and technical articles that will help you to develop with Redis and Php.
+
+
+### Getting Started
+
+In order to use Redis with PHP you will need a PHP Redis client. In the following sections, we will demonstrate the use of [PhpRedis](https://github.com/phpredis/phpredis), a flexible and feature-complete Redis client library for PHP. Additional [PHP clients](http://redis.io/clients#PHP) for Redis can be found under the PHP section of the Redis Clients page.
+
+
+
+<Tabs
+  defaultValue="Phpredis"
+  values={[
+    {label: 'Phpredis', value: 'Phpredis'},
+  ]}>
+  <TabItem value="Phpredis">
+
+
+### Step 1. Get pecl 
+
+
+```
+apt install pkg-php-tools
+```
+
+
+
+### Step 2. Install PhpRedis
+ 
+```
+pecl install phpredis
+```
+
+### Step 3. Opening a Connection to Redis Using PhpRredis
+
+The following code creates a connection to Redis using Phpredis
+
+```
+<?php
+ 
+$redis = new Redis();
+//Connecting to Redis
+$redis->connect('hostname', port);
+$redis->auth('password');
+ 
+if ($redis->ping()) {
+ echo "PONGn";
+}
+ 
+?>
+```
+
+Replace the following values with those of your database and save this file as connect.php
+
+### Step 4. Executing the script
+
+```
+php connect.php
+```
+
+It should display "PONG" as output. You can verify this by running the monitor command
+
+```
+127.0.0.1:6379> monitor
+OK
+1614778301.165001 [0 [::1]:57666] "PING"
+```
+
+
+
+### Further Reference:
+
+- [Using Redis with Php](https://redislabs.com/lp/php-redis/)
+- [Getting Started with Redis & Php](https://github.com/redis-developer/redis-php-getting-started/)
+
+
+
+  </TabItem>
+</Tabs>
+  

@@ -38,6 +38,14 @@ monospace;
   --purple-lighter: #F9FAFF;
 }
 
+/* dark mode */
+
+@mixin dark {
+  html[data-theme="dark"] & {
+    @content;
+  }
+}
+
 /* media queries */
 @mixin desktop {
   @media only screen and (min-width: 997px) {

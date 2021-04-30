@@ -28,7 +28,7 @@ module.exports = {
       hideOnScroll: false,
       items: [
         {
-          to: '/create/cloud',
+          to: '/create/rediscloud',
           activeBasePath: 'docs',
           label: 'Get started',
           position: 'right',
@@ -41,11 +41,6 @@ module.exports = {
         },
         */
         {
-          href: 'https://redis.io/commands',
-          label: 'Command Reference',
-          position: 'right',
-        },
-        {
           href: 'https://redislabs.com/try-free/',
           label: 'Try Free',
           position: 'right',
@@ -55,8 +50,9 @@ module.exports = {
     footer: {
       style: 'dark',
       logo: {
-        alt: 'Redis Developer Hub logo',
-        src: 'img/logo-2.png',
+        alt: 'Redis Labs logo',
+        src: 'img/redis-labs-logo-reversed.svg',
+        href: 'https://redislabs.com/',
       },
       links: [
         {
@@ -64,7 +60,7 @@ module.exports = {
           items: [
             {
               label: 'Create Database',
-              to: '/create/cloud/',
+              to: '/create/rediscloud',
             },
             {
               label: 'Develop',
@@ -72,7 +68,7 @@ module.exports = {
             },
             {
               label: 'Explore your data',
-              to: '/explore/',
+              to: '/explore/redisinsight/',
             },
             {
               label: 'Best Practices',
@@ -88,7 +84,7 @@ module.exports = {
             // },
             {
               label: 'Build with Redis Modules',
-              href: 'https://redislabs.com/modules/get-started/',
+              href: '/howtos/redisearch/',
             },
           ],
         },
@@ -108,13 +104,9 @@ module.exports = {
               href: 'https://redis.io/commands',
             },
             {
-              label: 'Tools',
-              to: '/tools/',
+              label: 'How-tos & tutorials',
+              to: '/howtos/moviesdatabase/getting-started',
             },
-            {
-              label: 'Guides',
-              to: '/guides/',
-            },            // {
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
             // },
@@ -126,11 +118,12 @@ module.exports = {
     colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
-      disableSwitch: true,
+      disableSwitch: false,
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: '<p class="text">RedisConf 2021 – The Call for Papers is Now Open</p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn">Submit Proposal</a>',
+      content: '<p class="text">Join the $100k "Build on Redis" Hackathon, April 15 - May 15 </p> <a href="https://bit.ly/BuildonRedis" target="_blank" rel="noopener" class="btn">Register now!</a>',
+    //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
       isCloseable: true, // Defaults to `true`.

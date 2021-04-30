@@ -26,7 +26,7 @@ function Hero() {
 
             <h2 className="hero-subtitle">
               <Typed
-                strings={['>_ Made by Developers for Developers']}
+                strings={['>_ Made by developers for developers']}
                 typeSpeed={75}
               >
               </Typed>
@@ -40,10 +40,10 @@ function Hero() {
                 </span>
                 <div className="text">
                   <h3 className="title">Create</h3>
-                  <p className="description">Create a new database using Cloud, Docker or from Sources</p>
+                  <p className="description">Create a new database using cloud, Docker or from sources</p>
                   <span className="more">Create a database <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/create/cloud/')} className="link">Read More</a>
+                <a href={useBaseUrl('/create/rediscloud')} className="link">Read More</a>
               </div>
 
               <div className="box box-develop">
@@ -53,10 +53,10 @@ function Hero() {
                 </span>
                 <div className="text">
                   <h3 className="title">Develop</h3>
-                  <p className="description">Develop your application with your favorite language</p>
+                  <p className="description">Develop your application using your favorite language</p>
                   <span className="more">Code your application <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <Link className="link" to="languages" smooth={true} duration={500}>Read More</Link>
+                <a href={useBaseUrl('/develop/java/')} className="link">Read More</a>
               </div>
 
               <div className="box box-explore">
@@ -69,7 +69,7 @@ function Hero() {
                   <p className="description">Insert, update, and explore your database using RedisInsight</p>
                   <span className="more">Explore your data <SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/explore/')} className="link">Read More</a>
+                <a href={useBaseUrl('/explore/redisinsight/')} className="link">Read More</a>
               </div>
             </div>
           </div>

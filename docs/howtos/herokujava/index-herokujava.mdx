@@ -1,0 +1,109 @@
+---
+id: index-herokujava
+title: Java based application on Heroku using Redis 
+sidebar_label: How to build Java based application on Heroku using Redis
+slug: /howtos/herokujava
+---
+
+import RedisCard from '@site/src/theme/RedisCard';
+
+### Step 1. Create Redis Enterprise Cloud
+
+Create your free Redis Enterprise Cloud account. [Follow this link to create Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
+
+![heroku](rediscloud.png)
+
+Save the database endpoint URL and password for future reference.
+
+
+### Step 2. Create a Heroku account
+
+If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login)
+
+![heroku](create_heroku.png)
+
+
+### Step 3. Install Heroku CLI on your system
+
+   ```macos
+    brew install heroku
+   ```
+
+### Step 4. Login to Heroku
+
+   ```bash
+    heroku login
+    heroku: Press any key to open up the browser to login or q to exit:
+    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+    Logging in... done
+    Logged in as your_email_address
+   ```
+
+### Step 5. Connect your application to Redis Enterprise Cloud
+
+For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-java)
+
+#### Clone the repository
+
+   ```bash
+    git clone https://github.com/redis-developer/basic-rate-limiting-demo-java
+   ```
+
+```
+heroku create
+Creating app... done, ⬢ hidden-woodland-03996
+https://hidden-woodland-03996.herokuapp.com/ | https://git.heroku.com/hidden-woodland-03996.git
+```
+
+
+### Step 6. Setting up Environmental variable
+
+Go to Heroku dashboard, click "Settings" and set REDIS_ENDPOINT_URI and REDIS_PASSWORD under the Config Vars.
+Refer to Step 1 for the reference.
+
+![heroku](heroku_app1_env.png)
+
+
+
+You now have a functioning Git repository that contains a simple application as well as a package.json file, which is used by Node’s dependency manager.
+
+
+
+### Step 7. Deploy your code
+
+Heroku generates a random name (in this case hidden-woodland-03996) for your app, or you can pass a parameter to specify your own app name.
+Now deploy your code:
+ 
+
+
+```
+$ git push heroku                        
+remote:        BUILD SUCCESSFUL in 1m 5s
+remote:        12 actionable tasks: 12 executed
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 298.9M
+remote: -----> Launching...
+remote:        Released v3
+remote:        https://hidden-woodland-03996.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/hidden-woodland-03996.git
+ * [new branch]      master -> master
+```
+
+### Step 8. Accessing the application
+
+
+Open https://hidden-woodland-03996.herokuapp.com/ to see your application
+
+![heroku](heroku_ratelimiter.png)
+
+
+
+### Next Step
+
+- [Connecting to the database using RedisInsight](/explore/redisinsight/)
+- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)

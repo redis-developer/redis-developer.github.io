@@ -30,8 +30,11 @@
       position: absolute;
       top: -37px;
       left: -109px;
-      height: 477.5px;
       user-select: none;
+
+      @include dark {
+        opacity: .4;
+      }
     }
 
     .col {
@@ -88,6 +91,10 @@
         min-height: 220px;
       }
 
+      @include dark {
+        background-color: $primary-black;
+      }
+
       .title {
         margin: 0;
         line-height: 1;
@@ -95,6 +102,10 @@
 
         @include mobile {
           font-size: 22px;
+        }
+
+        @include dark {
+          color: $white;
         }
       }
 
@@ -127,8 +138,12 @@
           color: $primary-blue;
           transition: color .2s ease-in-out;
 
+          @include dark {
+            color: $white;
+          }
+
           &:hover {
-            color: $purple;
+            color: $purple !important;
           }
         }
       }
