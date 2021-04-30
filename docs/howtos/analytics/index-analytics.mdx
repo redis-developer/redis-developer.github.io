@@ -6,7 +6,7 @@ slug: /howtos/analytics
 ---
 
 
-An interactive analytics dashboard serve several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a traditional relational database might require a complex set of queries. By using NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands. 
+An interactive analytics dashboard serves several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands. 
 
 This tutorial shows a basic analytics dashboard app that uses Redis Bitmap written in NodeJS (JavaScript)
 
@@ -265,5 +265,10 @@ Example:
 - Customers who bought Product1 and Product2: SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page:product2:timeSpan:anytime
 
 - Customer Retention (customers who bought on the different dates): SMEMBERS rab:set:custom:retention-buy:timeSpan:anytime
+
+
+#### References
+
+- [Complete Source Code](https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs)
 
 
