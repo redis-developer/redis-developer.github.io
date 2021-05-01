@@ -59,9 +59,6 @@ export default function LayoutHead(props) {
 
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"></link>
-
-        <link href="/static/css/redis-sitesearch.css" rel="stylesheet"/>
-        <link href="/static/css/redis-sitesearch-overrides.css" rel="stylesheet"/>
       </Head>
 
       <SearchMetadatas tag={DEFAULT_SEARCH_TAG} locale={currentLocale} {...searchMetadatas} />
@@ -74,5 +71,5 @@ export default function LayoutHead(props) {
     >
         {metadatas.map((metadata, i) => <meta key={`metadata_${i}`} {...metadata} />)}
       </Head>
-    </>;
+    </>; 
 }

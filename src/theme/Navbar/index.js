@@ -6,7 +6,7 @@
  */
 import React, { useCallback, useState, useEffect } from 'react';
 import clsx from 'clsx';
-import SearchBar from '@theme/Search';
+import SearchBar from '@theme/SearchBar';
 import Toggle from '@theme/Toggle';
 import useThemeContext from '@theme/hooks/useThemeContext';
 import { useThemeConfig } from '@docusaurus/theme-common';
@@ -90,9 +90,9 @@ function Navbar() {
           {leftItems.map((item, i) => <NavbarItem {...item} key={i} />)}
         </div>
         <div className="navbar__items navbar__items--right">
-          <SearchBar />
           {rightItems.map((item, i) => <NavbarItem {...item} key={i} />)}
           {!disableColorModeSwitch && <Toggle className={styles.displayOnlyInLargeViewport} aria-label="Dark mode toggle" checked={isDarkTheme} onChange={onToggleChange} />}
+          <SearchBar handleSearchBarToggle={setIsSearchBarExpanded} isSearchBarExpanded={isSearchBarExpanded} />
         </div>
       </div>
       <div role="presentation" className="navbar-sidebar__backdrop" onClick={hideSidebar} />
