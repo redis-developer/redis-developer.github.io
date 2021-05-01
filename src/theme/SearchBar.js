@@ -50,21 +50,18 @@ function getWithExpiry(key) {
 }
 
 
-function Search(props) {
+function SearchBar(props) {
   var initialized = false;
 
   useEffect(function onFirstMount() {
-    const searchLogo = document.querySelector('.redisearch-logo'),
-      searchDiv = document.querySelector("#redis-sitesearch")
+    console.log("Mounted")
+    const searchLogo = document.querySelector('.redisearch-logo')
     var lastQuery
 
     initialized = true;
 
     searchLogo.addEventListener('mousedown', (e) => {
       e.preventDefault()
-    })
-
-    searchDiv.addEventListener("mousedown", (e) => {
     })
 
     new RedisSiteSearch('#redis-sitesearch', {
@@ -193,4 +190,4 @@ function Search(props) {
     </div>
 }
 
-export default Search;
+export default SearchBar;
