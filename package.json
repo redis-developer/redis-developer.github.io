@@ -12,15 +12,12 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
-    "@abrookins-redis/redis-sitesearch-frontend": "^1.0.2",
     "@docusaurus/core": "2.0.0-alpha.70",
     "@docusaurus/preset-classic": "2.0.0-alpha.70",
     "@docusaurus/theme-search-algolia": "^2.0.0-alpha.70",
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",
     "docusaurus-plugin-sass": "^0.1.11",
-    "i": "^0.3.6",
-    "npm": "^7.5.4",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scroll": "^1.8.1",
