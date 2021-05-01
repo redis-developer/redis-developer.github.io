@@ -150,6 +150,6 @@ module.exports = {
     ],
   ],
   plugins: [
-    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm') 
+    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm')
   ],
 };
