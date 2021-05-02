@@ -1,0 +1,142 @@
+---
+id: index-redismod
+title: Redis Modules in a Docker Container
+sidebar_label: RedisMod
+slug: /explore/redismod
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+This simple container image bundles together the latest stable releases of Redis and select Redis modules from Redis Labs.
+This image is based on the official image of Redis from Docker. By default, the container starts with Redis' default configuration and all included modules loaded.
+
+### Modules included in the container
+
+- RediSearch: a full-featured search engine
+- RedisGraph: a graph database
+- RedisTimeSeries: a timeseries database
+- RedisAI: a tensor and deep learning model server
+- RedisJSON: a native JSON data type
+- RedisBloom: native Bloom and Cuckoo Filter data types
+- RedisGears: a dynamic execution framework
+
+
+
+### Step 1. Install Docker
+
+To use RedisMod on a local Mac, the first step is to you need to install Docker for your operating system. 
+Run the docker version command in a terminal window to make sure that docker is installed correctly.
+
+ ```bash
+  docker version
+ ```
+
+It should display Docker Engine Server and Client version successfully
+
+
+### Step 2. Running Redismod Docker container
+
+
+ ```bash
+  docker run -d -p 6379:6379 redislabs/redismd
+ ```
+
+
+### Step 3. Connect to Redis database
+
+
+ ```bash
+  redis-cli
+ ```
+
+### Step 4. Verify if all the Redis modules are getting loaded
+
+
+ ```bash
+  $ redis-cli 
+  127.0.0.1:6379> info modules
+  # Modules
+  module:name=rg,ver=10006,api=1,filters=0,usedby=[],using=[ai],options=[]
+  module:name=ai,ver=10002,api=1,filters=0,usedby=[rg],using=[],options=[]
+  module:name=timeseries,ver=10408,api=1,filters=0,usedby=[],using=[],options=[]
+  module:name=bf,ver=20205,api=1,filters=0,usedby=[],using=[],options=[]
+  module:name=graph,ver=20402,api=1,filters=0,usedby=[],using=[],options=[]
+  module:name=ReJSON,ver=10007,api=1,filters=0,usedby=[],using=[],options=[]
+  module:name=search,ver=20006,api=1,filters=0,usedby=[],using=[],options=[]
+ ```
+
+
+
+### Step 5. Testing Redis Modules
+
+Let us test drive RediSearch modules as discussed below in detail.
+
+#### Insert data into RediSearch
+
+We are now ready to insert some data. This example uses movies data stored as Redis Hashes, so let’s insert a couple of movies:
+
+```
+HSET movies:11002 title "Star Wars: Episode V - The Empire Strikes Back" plot "Luke Skywalker begins Jedi training with Yoda." release_year 1980 genre "Action" rating 8.7 votes 1127635
+
+(integer) 6 
+
+> HSET movies:11003 title "The Godfather" plot "The aging patriarch of an organized crime dynasty transfers control of his empire to his son." release_year 1972 genre "Drama" rating 9.2 votes 1563839 
+
+(integer) 6
+```
+
+Your Redis database now contains two Hashes. It is simple to retrieve information using the HMGET command, if you know the key of the movies (movies:11002):
+
+```
+> HMGET movies:11002 title rating
+
+1) "Star Wars: Episode V - The Empire Strikes Back"
+2) "8.7"
+```
+
+#### Create an index in RediSearch
+
+To be able to query the hashes on the field for title, say, or genre, you must first create an index. To create an index, you must define a schema to list the fields and their types that are indexed, and that you can use in your queries.
+
+Use the FT.CREATE command to create an index, as shown here:
+
+```
+> FT.CREATE idx:movies ON hash PREFIX 1 "movies:" SCHEMA title TEXT SORTABLE release_year NUMERIC SORTABLE rating NUMERIC SORTABLE genre TAG SORTABLE
+
+OK
+```
+
+#### Search the movies in the RediSearch index
+
+You can now use the FT.SEARCH to search your database, for example, to search all movies sorted by release year:
+
+```
+>  FT.SEARCH idx:movies * SORTBY release_year ASC RETURN 2 title release_year
+1) (integer) 2
+2) "movies:1003"
+3) 1) "release_year"
+   2) "1972"
+   3) "title"
+   4) "The Godfather"
+4) "movies:1002"
+5) 1) "release_year"
+   2) "1980"
+   3) "title"
+   4) "Star Wars: Episode V - The Empire Strikes Back"
+```
+
+To test drive rest of Redis modules, please visit the links mentioned under "Reference" section.
+
+
+### Further References
+
+ - [Redismod GITHUB repository](https://github.com/RedisLabsModules/redismod)
+ - [RedisJSON Tutorial](https://developer.redislabs.com/howtos/redisjson)
+ - [RedisTimeSeries Tutorial](https://developer.redislabs.com/howtos/redistimeseries)
+ - [RedisGraph Tutorial](https://developer.redislabs.com/howtos/redisgraph)
+ - [RedisBloom Tutorial](https://developer.redislabs.com/howtos/redisbloom)
+ - [RedisGears Tutorial](https://developer.redislabs.com/howtos/redisgears)
