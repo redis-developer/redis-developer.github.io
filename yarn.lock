@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@abrookins-redis/redis-sitesearch-frontend@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@abrookins-redis/redis-sitesearch-frontend/-/redis-sitesearch-frontend-1.0.2.tgz#f4b8f8386c27cb47293987b733b980fca1dc55c7"
+  integrity sha512-aDSUvffA1mbfb93DZT2o9nGLv3D5RgY0eNSSL4FUZFJvSBq3Kx+PWw8/cPNyzzemFXgDMgaxzAKaWofH30F3sA==
+
 "@algolia/autocomplete-core@^1.0.0-alpha.35":
   version "1.0.0-alpha.37"
   resolved "https://registry.npm.taobao.org/@algolia/autocomplete-core/download/@algolia/autocomplete-core-1.0.0-alpha.37.tgz#d41a6561b38761c4967ff7aa3e1d5d0aa3ceb31c"
