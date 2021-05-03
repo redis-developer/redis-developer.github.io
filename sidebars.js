@@ -40,6 +40,7 @@ module.exports = {
         'explore/index-explore',
         'explore/redisinsight/index-redisinsight',
         'explore/redisdatasource/index-redisdatasource',
+        'explore/redismod/index-redismod',
         'explore/riot/index-riot',
       ]
     },
