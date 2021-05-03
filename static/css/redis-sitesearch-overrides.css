@@ -1,5 +1,6 @@
 .powered-by-redisearch {
    background-image: url('/static/img/redisearch.png');
+   background-size: 173px 29px
  }
 
  .redis-sitesearch {
