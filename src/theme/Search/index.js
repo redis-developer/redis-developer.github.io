@@ -116,7 +116,7 @@ function Search(props) {
                 const safeInput = escapeHtml(trimmedInput)
                 results = [
                   {
-                    title: '',
+                    title: 'No results',
                     section_title: `No results found for '${safeInput}'`,
                     body: '',
                     hierarchy: [''],
