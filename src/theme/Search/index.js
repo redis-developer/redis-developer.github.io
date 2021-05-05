@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react'
 import RedisSiteSearch from '@abrookins-redis/redis-sitesearch-frontend/dist/redis-sitesearch.esm'
 
-// const SEARCH_API_URL = "https://search-service.redislabs.com/search"
-const SEARCH_API_URL = "http://localhost:8080/search"
+const SEARCH_API_URL = "https://search-service.redislabs.com/search"
 const SEARCH_SITE = "https://developer.redislabs.com"
 const THIRTY_SECONDS = 30000
 const SEARCH_LOGO = '<a class="powered-by-redisearch" href="https://oss.redislabs.com/redisearch/"></a>'
