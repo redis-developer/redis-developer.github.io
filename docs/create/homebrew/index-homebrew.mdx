@@ -66,13 +66,27 @@ It should return PONG. This command is often used to test if a connection is sti
   redis-server /usr/local/etc/redis.conf
  ```
 
-### Step 7: Stop the Redis service
+### Step 7: Interacting with Redis Client
+
+ ```bash
+  redis-cli
+  redis> set foo bar
+  OK
+  redis> get foo
+  "bar"
+ ``` 
+
+Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+
+
+
+### Step 8: Stop the Redis service
 
  ```
   brew services stop redis
  ```
 
-### Step 8: Uninstall Redis 
+### Step 9: Uninstall Redis 
 
  ```bash
   brew uninstall redis
