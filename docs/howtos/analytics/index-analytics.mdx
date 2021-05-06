@@ -169,14 +169,22 @@ Example:
 
 - Traffic per Page ({page} is one of: homepage, product1, product2, product3):
 
+```
 December: BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12
+```
+
 Example:
 
   ```bash
    BITCOUNT rab:bitmap:action:visit:page:homepage:timeSpan:2015-12
   ```
 
-- X week of December: BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12/{X}
+- X week of December: 
+
+```
+BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12/{X}
+```
+
 Example:
 
   ```bash
@@ -185,14 +193,20 @@ Example:
 
 - Traffic per Source ({source} is one of: google, Facebook, email, direct, referral, none):
 
-December: BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
+December: 
+
+```
+BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
+```
+
 Example:
 
   ```bash
    BITCOUNT rab:bitmap:source:referral:timeSpan:2015-12
   ```
 
-- X week of December: BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}
+- X week of December: ```BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}```
+
 Example:
 
   ```bash
@@ -201,7 +215,7 @@ Example:
 
 - Trend traffic ({page} is one of: homepage, product1, product2, product3):
 
-- December: from BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-01 to BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-31
+- December: from ```BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-01``` to ```BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-31```
 - 1 Week of December: Similar as above, but from 2015-12-01 to 2015-12-07
 - 2 Week of December: Similar as above, but from 2015-12-08 to 2015-12-14
 - 3 Week of December: Similar as above, but from 2015-12-15 to 2015-12-21
@@ -215,8 +229,8 @@ Example:
 
 - Total products bought:
 
-- December: GET rab:count:action:buy:timeSpan:2015-12
-- X week of December: GET rab:count:action:buy:timeSpan:2015-12/{X}
+- December: ```GET rab:count:action:buy:timeSpan:2015-12```
+- X week of December: ```GET rab:count:action:buy:timeSpan:2015-12/{X}```
 Example:
 
   ```bash
@@ -225,8 +239,8 @@ Example:
 
 - Total products added to cart:
 
-December: GET rab:count:action:addToCart:timeSpan:2015-12
-X week of December: GET rab:count:action:addToCart:timeSpan:2015-12/{X}
+December: ```GET rab:count:action:addToCart:timeSpan:2015-12```
+X week of December: ```GET rab:count:action:addToCart:timeSpan:2015-12/{X}```
 Example:
 
   ```bash
@@ -235,14 +249,14 @@ Example:
 
 - Shares of products bought ({productPage} is on of product1, product2, product3):
 
-December: GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12
+December: ```GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12```
 Example:
 
   ```bash
    GET rab:count:action:buy:page:product3:timeSpan:2015-12
   ```
 
-- X week of December: GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}
+- X week of December: ```GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}```
 Example:
 
   ```bash
@@ -254,7 +268,11 @@ Example:
 - People who registered: BITCOUNT rab:bitmap:action:register:timeSpan:2015-12
 - People who register then bought (order matters): BITCOUNT rab:bitmap:custom:cohort-buy:timeSpan:2015-12
 - Dropoff: (People who register then bought / People who register) * 100 [%]
-- Customers who bought only specified product ({productPage} is one of: product1, product2, product3): SMEMBERS rab:set:action:buy:page:{productPage}:timeSpan:2015-12
+- Customers who bought only specified product ({productPage} is one of: product1, product2, product3): 
+
+```
+SMEMBERS rab:set:action:buy:page:{productPage}:timeSpan:2015-12
+```
 
 Example:
 
@@ -262,7 +280,11 @@ Example:
    SMEMBERS rab:set:action:buy:page:product2:timeSpan:2015-12
   ```
 
-- Customers who bought Product1 and Product2: SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page:product2:timeSpan:anytime
+- Customers who bought Product1 and Product2: 
+
+```
+SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page:product2:timeSpan:anytime
+```
 
 - Customer Retention (customers who bought on the different dates): SMEMBERS rab:set:custom:retention-buy:timeSpan:anytime
 
