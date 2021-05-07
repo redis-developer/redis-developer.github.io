@@ -1,0 +1,74 @@
+---
+id: index-windows
+title: Create Redis database on Microsoft Windows 10 
+sidebar_label: Redis on Microsoft Windows 10
+slug: /create/windows
+---
+
+You can install Redis on Windows 10 using Windows Subsystem for Linux(a.k.a WSL2).
+WSL2 is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019.
+WSL2 lets developers run a GNU/Linux environment(that includes command-line tools, utilities, and applications) directly on Windows.
+
+Follow the below steps to create Redis database on Microsoft Windows 10.
+
+
+### Step 1: Turn on Windows Subsystem for Linux
+
+In Windows 10, Microsoft replaces Command Prompt with PowerShell as the default shell. Open PowerShell as Administrator and run this command to enable Windows Subsystem for Linux (WSL):
+
+
+ ```powershell
+  Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+ ```
+
+Reboot Windows after making the change—note that you only need to do this one time.
+
+### Step 2: launch Microsoft Windows Store to download Ubuntu distribution 
+
+ ```powershell
+  start ms-windows-store:
+ ```
+
+### Step 3: Launch the installed distribution using Windows Store 
+
+The following example works with Ubuntu (you’ll need to wait for initialization and create a login upon first use):
+
+
+ ```bash
+  sudo apt-get update
+  sudo apt-get upgrade
+  sudo apt-get install redis-server
+  redis-cli -v
+ ```
+
+### Step 4: Restart the Redis server
+
+ ```bash
+  sudo service redis-server restart
+ ````
+
+### Step 5: Verify your Redis server is running and available
+
+ ```
+  $ redis-cli 
+  127.0.0.1:6379> set user:1 "Jane"
+  127.0.0.1:6379> get user:1
+ "Jane"
+ ```
+
+### Step 6: Stop the Redis Server 
+
+ ```bash
+  sudo service redis-server stop
+ ```
+
+### References
+
+- [Windows 8.1 for Redis ](https://redislabs.com/blog/redis-on-windows-8-1-and-previous-versions/)
+- [Redis on Windows 10 - Video](https://www.youtube.com/watch?v=1psWME8UH_0)
+- [Running Redis on Windows 10 – Part I of III](https://redislabs.com/blog/redis-on-windows-10/)
+
+
+
+
+

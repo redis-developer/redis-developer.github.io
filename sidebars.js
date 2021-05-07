@@ -18,6 +18,7 @@ module.exports = {
         'create/docker/index-docker',
         'create/kubernetes/index-kubernetes',
         'create/homebrew/index-homebrew',
+        'create/windows/index-windows',
         'create/from-source/index-from-source',
       ]
     },
