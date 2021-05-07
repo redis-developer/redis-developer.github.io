@@ -1,7 +1,7 @@
 ---
 id: index-windows
 title: Create Redis database on Microsoft Windows 10 
-sidebar_label: Redis on Microsoft Windows 10
+sidebar_label: Redis on Windows 10
 slug: /create/windows
 ---
 
@@ -23,13 +23,13 @@ In Windows 10, Microsoft replaces Command Prompt with PowerShell as the default 
 
 Reboot Windows after making the change—note that you only need to do this one time.
 
-### Step 2: launch Microsoft Windows Store to download Ubuntu distribution 
+### Step 2: Launch Microsoft Windows Store to download Ubuntu distribution 
 
  ```powershell
   start ms-windows-store:
  ```
 
-### Step 3: Launch the installed distribution using Windows Store 
+### Step 3: Install Redis
 
 The following example works with Ubuntu (you’ll need to wait for initialization and create a login upon first use):
 
@@ -47,7 +47,7 @@ The following example works with Ubuntu (you’ll need to wait for initializatio
   sudo service redis-server restart
  ````
 
-### Step 5: Verify your Redis server is running
+### Step 5: Verify if your Redis server is running
 
  ```
   $ redis-cli 
@@ -56,11 +56,14 @@ The following example works with Ubuntu (you’ll need to wait for initializatio
  "Jane"
  ```
 
+Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+
 ### Step 6: Stop the Redis Server 
 
  ```bash
   sudo service redis-server stop
  ```
+
 
 ### References
 
