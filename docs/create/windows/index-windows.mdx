@@ -35,17 +35,18 @@ The following example works with Ubuntu (you’ll need to wait for initializatio
 
 
  ```bash
+  sudo apt-add-repository ppa:redislabs/redis
   sudo apt-get update
   sudo apt-get upgrade
   sudo apt-get install redis-server
-  redis-cli -v
  ```
 
 ### Step 4: Restart the Redis server
 
  ```bash
   sudo service redis-server restart
- ````
+ ```
+
 
 ### Step 5: Verify if your Redis server is running
 
