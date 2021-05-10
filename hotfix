@@ -1,0 +1,19 @@
+#Install brew (if you don't have it already)
+
+#According to the brew official website you only to paste need one command on the console:
+#  $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+#Install NVM using brew
+# $ brew install nvm
+
+#Load it in the terminal
+#$ mkdir -p ~/.nvm
+echo $'export NVM_DIR="$HOME/.nvm"\n. "/usr/local/opt/nvm/nvm.sh"' >> ~/.bash_profile
+
+#Restart your current terminal
+
+source ~/.bash_profile
+
+# Install node version 8 or whatever version you want
+
+nvm use 14
