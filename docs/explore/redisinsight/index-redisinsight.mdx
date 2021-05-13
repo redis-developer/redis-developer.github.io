@@ -225,7 +225,7 @@ Note - On Windows and Mac, install docker version 18.03 or higher. You can run d
 Next, run the RedisInsight container. The easiest way is to run the following command:
 
 ```
-docker run -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
+docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
 ```
 
 #### Step 3. Accessing RedisInsight
