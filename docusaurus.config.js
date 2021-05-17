@@ -122,7 +122,7 @@ module.exports = {
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: '<p class="text">Join the $100k "Build on Redis" Hackathon, April 15 - May 15 </p> <a href="https://bit.ly/BuildonRedis" target="_blank" rel="noopener" class="btn">Register now!</a>',
+      content: '<p class="text">Watch all RedisConf sessions on Demand </p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn">Register now!</a>',
     //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
