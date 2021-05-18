@@ -77,6 +77,12 @@ module.exports = {
            'howtos/moviesdatabase/sampleapp/index-sampleapp',
           ]
          },
+           'howtos/frauddetection/index-frauddetection',
+           'howtos/popupstore/index-popupstore',
+           'howtos/analytics/index-analytics',
+           'howtos/nlp/index-nlp',
+           'howtos/hackernews/index-hackernews',
+           'howtos/chatapp/index-chatapp',
        ]
      }, 
     
