@@ -90,6 +90,12 @@ module.exports = {
            'howtos/moviesdatabase/sampleapp/index-sampleapp',
           ]
          },
+           'howtos/chatapp/index-chatapp',
+           'howtos/frauddetection/index-frauddetection',
+           'howtos/nlp/index-nlp',
+           'howtos/hackernews/index-hackernews',
+           'howtos/analytics/index-analytics',
+           'howtos/popupstore/index-popupstore',
        ]
      }, 
     
