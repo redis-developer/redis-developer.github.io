@@ -96,7 +96,10 @@ module.exports = {
            'howtos/hackernews/index-hackernews',
            'howtos/analytics/index-analytics',
            'howtos/popupstore/index-popupstore',
-       ]
+           'howtos/herokunodejs/index-herokunodejs',
+           'howtos/herokupython/index-herokupython',
+           'howtos/herokujava/index-herokujava',
+       ] 
      }, 
     
 
