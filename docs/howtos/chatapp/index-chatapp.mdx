@@ -10,8 +10,13 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
+Real-time chat is an online communication channel that allows you to conduct real-time conversations. More and more developers are tapping into the power of Redis as it is extremely fast & due to its support for variety of rich data structure such as Lists, Sets, Sorted Sets, Hashes etc. 
+Redis comes along with a Pub/Sub messaging functionality that allows developers to scale the backend by spawning multiple server instances
 
 In this tutorial, we will see how to build a basic chat application built with Flask, Socket.IO and Redis.
+This example uses pub/sub feature combined with web-sockets for implementing the message communication between client and server.
+
+
 
 ![Chatapp](chatapp_homepage.png)
 
@@ -101,28 +106,34 @@ We create a new user id: INCR total_users. Then we set a user ID lookup key by u
 SET username:nick user:1
 ```
 
-And finally, the rest of the data is written to the hash set: e.g. HSET user:1 username "nick" password "bcrypt_hashed_password".
+And finally, the rest of the data is written to the hash set: 
+
+Example:
+
+ ```bash
+   HSET user:1 username "nick" password "bcrypt_hashed_password".
+ ```
 
 Additionally, each user is added to the default "General" room. 
 For handling rooms for each user, we have a set that holds the room ids. Here's an example command of how to add the room: 
 
-```
-SADD user:1:rooms "0"
-```
+ ```bash
+  SADD user:1:rooms "0"
+ ```
 
 Populate private messages between users. At first, private rooms are created: if a private room needs to be established, for each user a room id: room:1:2 is generated, where numbers correspond to the user ids in ascending order.
 
 E.g. Create a private room between 2 users: 
-
-```
-SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
-```
+ 
+ ```bash
+  SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
+ ```
 
 Then we add messages to this room by writing to a sorted set: 
 
-```
-ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
-```
+ ```bash
+  ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
+ ```
 We use a stringified JSON for keeping the message structure and simplify the implementation details for this demo-app.
 
 Populate the "General" room with messages. Messages are added to the sorted set with id of the "General" room: room:0
@@ -143,9 +154,9 @@ When a WebSocket/real-time server is instantiated, which listens for the next ev
 
 A global set with online_users key is used for keeping the online state for each user. So on a new connection, a user ID is written to that set:
 
-```
-SADD online_users 1
-```
+ ```bash
+  SADD online_users 1
+ ```
 
 Here we  have added user with id 1 to the set online_users
 
@@ -155,15 +166,15 @@ After that, a message is broadcasted to the clients to notify them that a new us
 
 - Message. A user sends a message, and it needs to be broadcasted to the other clients. The pub/sub allows us also to broadcast this message to all server instances which are connected to this Redis:
 
-```
-PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
-```
+ ```
+  PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
+ ```
 
 Note we send additional data related to the type of the message and the server id. Server id is used to discard the messages by the server instance which sends them since it is connected to the same MESSAGES channel.
 
-type field of the serialized JSON corresponds to the real-time method we use for real-time communication (connect/disconnect/message).
+The type field of the serialized JSON corresponds to the real-time method we use for real-time communication (connect/disconnect/message).
 
-data is method-specific information. In the example above it's related to the new message.
+The data is method-specific information. In the example above it's related to the new message.
 
 ### How the data is stored?
 
@@ -192,9 +203,9 @@ User data is stored in a hash set where each user entry contains the next values
 
 Get User HGETALL user:{id}. 
 
-```
-HGETALL user:2
-```
+ ```bash
+  HGETALL user:2
+ ```
 
 where we get data for the user with id: 2.
 
@@ -203,20 +214,29 @@ where we get data for the user with id: 2.
 - Get room ids of a user: SMEMBERS user:{id}:rooms. 
 Example: 
 
-```
-SMEMBERS user:2:rooms
-```
+ ```
+  SMEMBERS user:2:rooms
+ ```
 
 This will return IDs of rooms for user with ID: 2
 
 - Get list of messages ZREVRANGE room:{roomId} {offset_start} {offset_end}. 
 Example: 
 
-```
-ZREVRANGE room:1:2 0 50
-```
+ ```
+  ZREVRANGE room:1:2 0 50
+ ```
 It will return 50 messages with 0 offsets for the private room between users with IDs 1 and 2.
 
 
+
+## Further References
+
+- [Building a sample Redis Chat application demo in .Net](https://github.com/redis-developer/basic-redis-chat-app-demo-dotnet)
+- [Building a Sample Redis Chat application demo in Java](https://github.com/redis-developer/basic-redis-chat-app-demo-java)
+- [Building a Sample Redis Chat application demo in NodeJS](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs)
+- [Building a Sample Redis Chat application demo in Go](https://github.com/redis-developer/basic-redis-chat-demo-go)
+- [Building a Sample Redis Chat application demo in Ruby](https://github.com/redis-developer/basic-redis-chat-demo-ruby)
+ 
 
 
