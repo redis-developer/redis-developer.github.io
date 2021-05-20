@@ -1,0 +1,219 @@
+---
+id: index-browser
+title: Browser Tool using RedisInsight
+sidebar_label: Browser Tool
+slug: /explore/redisinsight/browser
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+RedisInsight is a 100% free Redis GUI that allows you to visualise, monitor, and optimize while developing your applications with Redis. It provides an intuitive and efficient GUI for Redis allowing developers like you to interact with your databases and manage your data. 
+
+RedisInsight Browser lets you explore keys in your redis server. You can add, edit and delete a key. You can even update the key expiry and copy the key name to be used in different places of the application.
+
+In order to understand the capabilities of the browser tool, let us take a simple example and demonstrate capabilities of each of browse tool options:
+
+## Step 1: Create a Redis Database
+
+[Follow this link ](https://developer.redislabs.com/create)to create Redis database
+
+## Step 2: Setup RedisInsight
+
+[Follow this link](https://developer.redislabs.com/explore/redisinsight) to set up RedisInsight locally.
+
+## Step 3: Connecting to Redis database
+
+
+
+
+
+![alt_text](images/image1.png "image_tooltip")
+
+
+## Step 4: Importing keys
+
+Let us import a user database( 6k keys). This dataset contains users stored as Redis Hash.
+
+
+### 
+**Users**
+
+The user hashes contain the following fields:
+
+
+
+*   `user:id` : The key of the hash.
+*   `first_name` : First Name.
+*   `last_name` : Last name.
+*   `email` : email address.
+*   `gender` : Gender (male/female).
+*   `ip_address` : IP address.
+*   `country` : Country Name.
+*   `country_code` : Country Code.
+*   `city` : City of the user.
+*   `longitude` : Longitude of the user.
+*   `latitude` : Latitude of the user.
+*   `last_login` : EPOC time of the last login.
+
+## Step 5: Cloning the repository
+
+
+ ```bash
+  git clone https://github.com/redis-developer/redis-datasets
+  cd redis-datasets/user-database
+ ```
+
+
+Importing the user database:
+
+
+ ```bash
+  redis-cli -h localhost -p 6379 < ./import_users.redis
+ ```
+
+
+Refresh the keys database by clicking as shown below:
+
+
+
+
+
+
+
+Click on “Scan More” to scan all 6k keys
+
+
+
+
+
+![alt_text](images/image3.png "image_tooltip")
+
+
+You can get a real-time view of the data in your Redis database as shown below:
+
+
+
+![alt_text](images/image4.png "image_tooltip")
+ 
+
+Select any key in the key database and the results gets displayed in the right hand side that includes Fields and values.
+
+
+
+
+
+![alt_text](images/image5.png "image_tooltip")
+
+
+## Step 6. Adding a new key
+
+
+
+
+
+![alt_text](images/image6.png "image_tooltip")
+
+
+Enter key name, field and value.
+
+
+
+
+
+![alt_text](images/image7.png "image_tooltip")
+
+
+## Step 7. Searching the hash key
+
+You can search the key by “user:9999” and you will see the result.
+
+
+
+
+
+![alt_text](images/image8.png "image_tooltip")
+
+
+Let us add fields for user:9999 as shown below:
+
+
+
+
+
+
+
+You can even search by adding “*” and typing the first few letters.
+
+
+
+
+
+![alt_text](images/image10.png "image_tooltip")
+
+
+## Step 8: Filter keys by Data Type
+
+
+
+
+
+![alt_text](images/image11.png "image_tooltip")
+
+
+## Step 9: Setting up the Expiry value
+
+
+
+
+
+![alt_text](images/image12.png "image_tooltip")
+
+
+Let us set it to 2 seconds and you won’t be able to search for the same key as it gets expired.
+
+## Step 10: Using CLI
+
+RedisInsight CLI lets you run commands against a redis server. You don’t need to remember the syntax - the integrated help shows you all the arguments and validates your command as you type.
+
+
+```
+> HMGET user:3333 first_name last_name city
+
+1) "Myrlene"
+2) "McGrane"
+3) "Qinghu"
+```
+
+
+
+
+
+
+![alt_text](images/image13.png "image_tooltip")
+
+
+ 
+
+
+
+
+
+![alt_text](images/image14.png "image_tooltip")
+
+
+Delete Key:
+
+
+
+
+
+![alt_text](images/image15.png "image_tooltip")
+
+
+
+## Further References
+
+

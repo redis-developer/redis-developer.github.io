@@ -40,11 +40,23 @@ module.exports = {
       label: 'Explore',
       items: [
         'explore/index-explore',
-        'explore/redisinsight/index-redisinsight',
         'explore/redisdatasource/index-redisdatasource',
         'explore/redismod/index-redismod',
         'explore/riot/index-riot',
-      ]
+        {
+         type: 'category',
+         label: 'RedisInsight',
+         items: [
+          'explore/redisinsight/index-redisinsight',
+          'explore/redisinsight/getting-started/index-gettingstarted',
+          'explore/redisinsight/browser/index-browser',
+          'explore/redisinsight/slowlog/index-slowlog',
+          'explore/redisinsight/memoryanalyzer/index-memoryanalyzer',
+          'explore/redisinsight/cluster/index-cluster',
+          'explore/redisinsight/streams/index-streams',
+        ] 
+        },
+     ]
     },
     {
       type: 'category',
@@ -77,12 +89,6 @@ module.exports = {
            'howtos/moviesdatabase/sampleapp/index-sampleapp',
           ]
          },
-           'howtos/frauddetection/index-frauddetection',
-           'howtos/popupstore/index-popupstore',
-           'howtos/analytics/index-analytics',
-           'howtos/nlp/index-nlp',
-           'howtos/hackernews/index-hackernews',
-           'howtos/chatapp/index-chatapp',
        ]
      }, 
     
