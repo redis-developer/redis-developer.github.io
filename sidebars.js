@@ -41,8 +41,6 @@ module.exports = {
       items: [
         'explore/index-explore',
         'explore/redisdatasource/index-redisdatasource',
-        'explore/redismod/index-redismod',
-        'explore/riot/index-riot',
         {
          type: 'category',
          label: 'RedisInsight',
@@ -56,6 +54,9 @@ module.exports = {
           'explore/redisinsight/streams/index-streams',
         ] 
         },
+          'explore/redismod/index-redismod',
+          'explore/riot/index-riot',
+          
      ]
     },
     {
