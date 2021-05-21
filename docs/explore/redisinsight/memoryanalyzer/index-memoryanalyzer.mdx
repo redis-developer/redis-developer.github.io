@@ -10,9 +10,11 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-RedisInsight, a free web-based GUI management interface for Redis, offers several tools to manage and optimize Redis, with the main focus on memory optimization. RedisInsight Memory analysis helps you analyze your redis instance and helps in reducing memory usage and improving application performance.
+RedisInsight, a free web-based GUI management interface for Redis, offers several tools to manage and optimize Redis, with the main focus on memory optimization. RedisInsight Memory analysis helps you analyze your Redis instance, reduce memory usage, and improve application performance.
 
-Let’s assume that you noticed high memory usage out of your redis instance and you want to analyze if there is any specific cache/key pattern which is consuming most of the memory or not using the redis in a very efficient way. RedisInsight is a great tool that can help you analyze memory used by redis by keys or key patterns, by expiry, by data types or or the internal encoding. Analysis can be done in two ways: online and offline mode.(discussed later in the tutorial).
+
+Let’s assume that you noticed high memory usage out of your Redis instance and you want to analyze any specific cache/key pattern, which may be consuming most of the memory or not using Redis in a very efficient way. RedisInsight is a great tool that can help you analyze memory used by Redis through  keys or key patterns, expiry,data types, or the instance’s internal encoding. Analysis can be done in two ways—online and offline mode(discussed later in the tutorial).
+
 
 This tutorial demonstrates the below list of features under RedisInsight:
 
@@ -23,7 +25,7 @@ This tutorial demonstrates the below list of features under RedisInsight:
 -   Recommendations
 -   Memory Analyzer
 
-Follow the below steps to see how Memory analysis can be performed over Redis Database(RDB) dumps using RedisInsight.
+Follow the steps below to see how memory analysis can be performed over Redis Database(RDB) dumps using RedisInsight.
 
 ## Step 1: Create a Redis database 
 
@@ -48,7 +50,7 @@ As we will be analysing the *.rdb dumps, it’s recommended to add a mount point
 ![alt_text](images/image2.png "image_tooltip")
 
 
-## Step 4: Importing user sample datasets
+## Step 4: Store Redis user sample datasets
 
 
  ```bash
@@ -69,8 +71,9 @@ Execute the below command to import users database
 
 
 Under RedisInsight GUI, click on “Memory Analysis” under Browser.
-Before you click on “Analyze Now”, ensure that you store dump.rdb at the right location.
-If you’re on Mac, redis dump file is located under /usr/local/var/db/redis
+Before you click on “Analysis,” ensure that you store dump.rdb at the right location.
+If you’re on Mac, the Redis dump file is located under /usr/local/var/db/redis
+
 
 
  ```bash
@@ -99,7 +102,7 @@ Memory analysis in RedisInsight is done in two different ways:
 
 
 -  **Online mode** - In this mode, RedisInsight downloads a rdb file from your connected redis instance and analyzes it to create a temp file with all the keys and meta data required for analysis. 
--  **Offline mode** - In this mode, RedisInsight analyzes your redis backup files. These files can either be present in your system or on s3. RedisInsight accepts a list of rdb files given to it and analyzes all the information required from these files instead of downloading it from your redis instance. 
+-  **Offline mode** - In this mode, RedisInsight analyzes your Redis backup files. These files can either be present in your system or on s3. RedisInsight accepts a list of rdb files given to it and analyzes all the information required from these files instead of downloading it from your Redis instance. 
 
 Choose the offline analysis approach if you have a RDB Backup file that you want to analyze. 
 
