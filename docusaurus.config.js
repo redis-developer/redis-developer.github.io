@@ -122,8 +122,8 @@ module.exports = {
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: '<p class="text">Watch all RedisConf sessions on Demand </p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn">Register now!</a>',
-    //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
+      content: '<p class="text">Watch all RedisConf sessions on Demand </p> <a href="https://www.youtube.com/c/Redislabs/playlists?view=50&sort=dd&shelf_id=1" target="_blank" rel="noopener" class="btn">Watch Now!</a>',
+    //  content: '<p class="text"></p> <a href="https://www.youtube.com/c/Redislabs/playlists?view=50&sort=dd&shelf_id=1" target="_blank" rel="noopener" class="btn"></a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
       isCloseable: true, // Defaults to `true`.

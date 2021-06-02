@@ -52,6 +52,7 @@ module.exports = {
           'explore/redisinsight/memoryanalyzer/index-memoryanalyzer',
           'explore/redisinsight/cluster/index-cluster',
           'explore/redisinsight/streams/index-streams',
+          'explore/redisinsight/profiler/index-profiler',
         ] 
         },
           'explore/redismod/index-redismod',
