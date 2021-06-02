@@ -53,6 +53,7 @@ module.exports = {
           'explore/redisinsight/cluster/index-cluster',
           'explore/redisinsight/streams/index-streams',
           'explore/redisinsight/profiler/index-profiler',
+          'explore/redisinsight/redisgraph/index-redisgraph',
         ] 
         },
           'explore/redismod/index-redismod',
