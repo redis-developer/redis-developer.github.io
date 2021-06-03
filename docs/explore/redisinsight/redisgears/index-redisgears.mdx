@@ -1,0 +1,107 @@
+---
+id: index-redisgears
+title: Writing Your Serverless function using RedisGears browser tool 
+sidebar_label: Writing Your Serverless Function using RedisInsight
+slug: /explore/redisinsight/redisgears
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+RedisInsight has built-in support for Redis Modules like RedisJSON, RediSearch, RedisGraph, Streams, RedisTimeSeries, and RedisGears. RedisGears enables reactive programming at the database level. It's like using lambda functions, but with a dramatically lower latency, and with much less encoding/decoding overhead. 
+
+Support for RedisGears was first introduced in RedisInsight v1.5.0. RedisInsights allows you:
+
+
+
+*    Explore the latest executed functions and analyze the results or errors. 
+*    Manage registered functions and get execution summary. 
+*    Code, build and execute functions.
+
+RedisGears is a dynamic framework that enables developers to write and execute [functions](https://oss.redislabs.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. These capabilities enable efficient data processing using multiple models in Redis with infinite programmability, while remaining simple to use in any environment.
+
+Follow the below steps to get started with the RedisInsight browser tool for RedisGears.
+
+## Step 1. Create Redis database
+
+[Follow this link to run Redis container with RedisGears modules enabled ](/explore/redismod)module compiled**
+
+## Step 2. Run RedisInsight
+
+[Follow this link to setup RedisInsight](/explore/redisinsight/getting-started) on your local machine**
+
+## Step 3.  Clone the repository
+
+
+```
+$ git clone https://github.com/RedisGears/ImdbExample
+$ cd ImdbExample
+```
+
+
+## Step 4. Download the IMDB data 
+
+Download the data from this link and extract it to the current directory: [https://datasets.imdbws.com/title.basics.tsv.gz](https://datasets.imdbws.com/title.basics.tsv.gz)
+
+
+```
+$ wget https://datasets.imdbws.com/title.basics.tsv.gz
+$ gunzip title.basics.tsv.gz
+```
+
+
+## Step 5. Execute the script
+
+
+```
+$ python3 UploadImdb.py -H localhost -P 6379
+
+python3 UploadImdb.py -H 192.168.1.9 -P 6379
+/Users/ajeetraina/projects/redis-datasets/redisgears/ImdbExample/UploadImdb.py:27: DeprecationWarning: Pipeline.hmset() is deprecated. Use Pipeline.hset() instead.
+  pipe.hmset(d['tconst'], d)
+done
+```
+
+
+## Step 6. Accessing RedisInsight
+
+Choose “RedisGears” on the left menu.
+
+
+
+
+
+![alt_text](images/image1.png "image_tooltip")
+
+
+## Step 7. Add the below script:
+
+
+```
+GB('KeysOnlyReader').map(lambda x: execute('hget', x, 'genres')).flatmap(lambda x: x.split(',')).countby().run()
+```
+
+
+
+
+
+
+![alt_text](images/image2.png "image_tooltip")
+
+
+
+
+
+
+![alt_text](images/image3.png "image_tooltip")
+
+## Additional References
+
+- [RedisGears Tutorials](/howtos/redisgears)
+- [How to build a Fraud Detection System using RedisGears and RedisBloom](/howtos/frauddetection)
+- [Building a Pipeline for Natural Language Processing using RedisGears](/howtos/nlp)
+
+
