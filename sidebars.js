@@ -56,6 +56,7 @@ module.exports = {
           'explore/redisinsight/redisgraph/index-redisgraph',
           'explore/redisinsight/redisgears/index-redisgears',
           'explore/redisinsight/redistimeseries/index-redistimeseries',
+          'explore/redisinsight/redisearch/index-redisearch',
         ] 
         },
           'explore/redismod/index-redismod',
