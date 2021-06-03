@@ -55,6 +55,7 @@ module.exports = {
           'explore/redisinsight/profiler/index-profiler',
           'explore/redisinsight/redisgraph/index-redisgraph',
           'explore/redisinsight/redisgears/index-redisgears',
+          'explore/redisinsight/redistimeseries/index-redistimeseries',
         ] 
         },
           'explore/redismod/index-redismod',
