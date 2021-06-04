@@ -40,7 +40,6 @@ module.exports = {
       label: 'Explore',
       items: [
         'explore/index-explore',
-        'explore/redisdatasource/index-redisdatasource',
         {
          type: 'category',
          label: 'RedisInsight',
@@ -59,6 +58,7 @@ module.exports = {
           'explore/redisinsight/redisearch/index-redisearch',
         ] 
         },
+          'explore/redisdatasource/index-redisdatasource',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
           
