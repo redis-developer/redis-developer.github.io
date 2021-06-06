@@ -28,6 +28,7 @@ module.exports = {
       items: [
         'develop/index-develop',
         'develop/java/index-java',
+        'develop/C/index-c',
         'develop/python/index-python',
         'develop/node/index-node',
         'develop/golang/index-golang',
