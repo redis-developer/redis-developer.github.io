@@ -97,7 +97,7 @@ module.exports = {
          },
            'howtos/chatapp/index-chatapp',
            'howtos/frauddetection/index-frauddetection',
-           '/howtos/redisgraphmovies/index-redisgraphmovies',
+           'howtos/redisgraphmovies/index-redisgraphmovies',
            'howtos/nlp/index-nlp',
            'howtos/hackernews/index-hackernews',
            'howtos/analytics/index-analytics',

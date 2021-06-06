@@ -42,9 +42,9 @@ function Resources() {
               <img src={useBaseUrl('/img/redispod.png')} className="thumb" loading="lazy" alt="Redis Pods" />
               <div className="article-body">
                 <span className="type">Podcast</span>
-                <h3 className="title">How Redis delivers 15M+ MyTeam11 users with over 25,000 ops per second</h3>
+                <h3 className="title">How Redis scales Groww’s investing platform to empower 10 Million+ customers</h3>
               </div>
-              <a href="https://redispods.simplecast.com/episodes/how-redis-delivers-15-million-myteam11-users-with-over-25-000-operations-per-second" target="_blank" rel="noopener" className="link">Read More</a>
+              <a href="https://redispods.simplecast.com/episodes/how-redis-scales-growws-investing-platform-to-empower-10-million-customers" target="_blank" rel="noopener" className="link">Read More</a>
             </div>
           </article>
         </div>
