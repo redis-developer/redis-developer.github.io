@@ -25,22 +25,33 @@ Because MONITOR streams back all commands, its use comes at a cost.Running monit
 Follow the below instructions to test drive RedisInsight profiler tool:
 
 
-## Step 1. Running RedisInsight
 
-
-```
-$ docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
-
-```
-
-
-## Step 2.  Create Redis database with RedisTimeSeries module enabled
+## Step 1.  Create Redis database with RedisTimeSeries module enabled
 
 Visit [https://developer.redislabs.com/create/rediscloud](https://developer.redislabs.com/create/rediscloud) and create a Redis database. [Follow these steps to enable RedisTimeSeries module ](https://developer.redislabs.com/howtos/redistimeseries)on Redis Enterprise Cloud
 
 
 
 ![alt_text](images/image1.png "image_tooltip")
+
+
+## Step 2: Download RedisInsight
+
+
+To install RedisInsight on your local system, you need to first download the software from Redis Labs website.
+
+[Click this link ](https://redislabs.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+
+![My Image](images/redisinsightinstall.png)
+
+
+Run the installer. After the web server starts, open http://YOUR_HOST_IP:8001 and add a Redis database connection.
+
+Select "Connect to a Redis database"
+![My Image](images/redisinsight4.png)
+
+Enter the requested details, including Name, Host (endpoint), Port, and Password.  Then click “ADD REDIS DATABASE”.
+
 
 
 ## Step 3. Cloning the GITHUB repo 

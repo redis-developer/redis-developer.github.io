@@ -31,10 +31,22 @@ Follow the steps below to see how memory analysis can be performed over Redis Da
 
 [Follow this link ](https://developer.redislabs.com/create)to create Redis database
 
-## Step 2: Setup RedisInsight
 
-I assume that Docker is already installed in your local system.
-As we will be analysing the *.rdb dumps, it’s recommended to add a mount point using the -”v” parameter as shown below:
+## Step 2: Download RedisInsight
+
+
+To install RedisInsight on your local system, you need to first download the software from Redis Labs website.
+
+[Click this link ](https://redislabs.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+
+![My Image](images/redisinsightinstall.png)
+
+
+:::important
+
+If you're using RedisInsight Docker container, you might need to follow the below steps to add a mount point so as to acess the RDB dumps.
+:::
+It is recommended to add a mount point using the -”v” parameter as shown below:
 
 
  ```bash
@@ -42,6 +54,11 @@ As we will be analysing the *.rdb dumps, it’s recommended to add a mount point
   docker run -d -v /temp/memorytest:/db -p 8001:8001 redislabs/redisinsight:latest
  ```
 
+Run the installer. After the web server starts, open http://YOUR_HOST_IP:8001 and add a Redis database connection.
+
+Select "Connect to a Redis database"
+
+![My Image](images/redisinsight4.png)
 
 ## Step 3: Connect to Redis database
 
