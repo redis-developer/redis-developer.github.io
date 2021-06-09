@@ -52,16 +52,16 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 
 ## Step 5. Configure Slowlog
 
-There are two configurations related to slow log query - 
+There are two configurations related to slowlog query - 
 
 
 
 - slowlog-log-slower-than: Used to set the evaluation time of slow query, that is to say, commands that exceed this configuration item will be treated as slow operations and recorded in the slow query log. Its execution unit is microseconds (1 second equals 1000000 microseconds);
 - slowlog-max-len: Used to configure the maximum number of records in the slow query log.
 
-Please note that a negative number disables the slow log, while a value of zero forces the logging of every command. Slowlog-max-len is the length of the slow log. The minimum value is zero. When a new command is logged and the slow log is already at its maximum length, the oldest one is removed from the queue of logged commands in order to make space. The configuration can be done by editing redis.conf or while the server is running using the CONFIG GET and CONFIG SET commands.
+Please note that a negative number disables the slowlog, while a value of zero forces the logging of every command. Slowlog-max-len is the length of the slowlog. The minimum value is zero. When a new command is logged and the slowlog is already at its maximum length, the oldest one is removed from the queue of logged commands in order to make space. The configuration can be done by editing redis.conf or while the server is running using the CONFIG GET and CONFIG SET commands.
 
-Slowlog will log the last X amount queries which took more time than Y microseconds to run. You can set this either in redis.conf or at runtime using CONFIG command
+Slowlog will log the last X number(amount) of queries which took more time than Y microseconds to run. You can set this either in redis.conf or at runtime using CONFIG command
 
 
  ```bash
@@ -148,11 +148,11 @@ You will see the below results:
  ```
 
 
-If you want to simulate slow logs, then consider using KEYS command. It is always recommended NOT TO USE [KEYS](https://redis.io/commands/keys) in your regular application code. If you're looking for a way to find keys in a subset of your keyspace, consider using [SCAN](https://redis.io/commands/scan) or [sets](https://redis.io/topics/data-types#sets).
+If you want to simulate slowlogs, then consider using KEYS command. It is always recommended NOT TO USE [KEYS](https://redis.io/commands/keys) in your regular application code. If you're looking for a way to find keys in a subset of your keyspace, consider using [SCAN](https://redis.io/commands/scan) or [sets](https://redis.io/topics/data-types#sets).
 
 The KEYS command may ruin performance when it is executed against large databases
 
-Let us try to run KEYS * in RedisInsight CLI and see if it generates slow log as shown below:
+Let us try to run KEYS * in RedisInsight CLI and see if it generates slowlog as shown below:
 
 
 ![alt_text](images/image4.png "image_tooltip")
@@ -176,7 +176,7 @@ Try decreasing the execution time(50 ms), and you will notice that the below run
 
 Each entry in the slowlog contains four fields: a slowlog entry ID, the Unix timestamp of when the command was run, the execution time in microseconds, and an array with the command itself, along with any arguments. See the example output below:
 
-In order to retrieve the slow log queries, you have to use SLOWLOG GET X. Where X is the number of slow queries you want to retrieve.
+In order to retrieve the slowlog queries, you have to use SLOWLOG GET X. Where X is the number of slow queries you want to retrieve.
 
 
 
@@ -185,9 +185,9 @@ In order to retrieve the slow log queries, you have to use SLOWLOG GET X. Where 
 ![alt_text](images/image7.png "image_tooltip")
 
 
-As shown above, the result displays a unique id, timestamp, time taken to execute the query in microseconds, and the actual command + parameter executed. It is important to note that  the Slow log is transient; there's no persistence for it so in the case of failover, the slow log is lost. If you are looking to rely on a persistent slow log, you'll be wanting to reconsider your design choices
+As shown above, the result displays a unique id, timestamp, time taken to execute the query in microseconds, and the actual command + parameter executed. It is important to note that  the Slow log is transient; there's no persistence for it so in the case of failover, the slowlog is lost. If you are looking to rely on a persistent slowlog, you'll be wanting to reconsider your design choices
 
-Please note: If I choose “0” it forces the logging of every command while “1” disabled the slow log.
+Please note: If I choose “0” it forces the logging of every command while “-1” disabled the slowlog.
 
 
 
@@ -205,7 +205,7 @@ Please note: If I choose “0” it forces the logging of every command while �
 
 :::important
 
-In a clustered database, each node can have different values for slow log.  You will need to use the configuration tool in order to configure slow log for clustered databases.
+In a clustered database, each node can have different values for slowlog.  You will need to use the configuration tool in order to configure slowlog for clustered databases.
 :::
 
 ## Additional Links
