@@ -14,8 +14,8 @@ A full-featured desktop GUI client, RedisInsight is an essential tool for Redis 
 
 ## Getting Started 
 
-Redis Cluster is an active-passive cluster implementation that consists of master and slave nodes. 
-There are two kinds of nodes: master and slave nodes. To get started with Redis Cluster, follow the below steps to build 3 Master and 3 Replicas.
+Redis Cluster is an active-passive cluster implementation that consists of master and replicas nodes. 
+There are two kinds of nodes: master and replicas nodes. To get started with Redis Cluster, follow the below steps to build 3 Master and 3 Replicas.
 
 
 :::important
@@ -32,7 +32,7 @@ Please Note: In Redis, slave nodes are generally called replicas as they hold th
 ## Step 2: Executing the create-cluster script 
 
 By default, if you compile Redis from source, you will find a simple bash script called create-cluster under /utils/ directory.
-In order to start a 6 nodes cluster with 3 masters and 3 slaves, just type the following commands:
+In order to start a 6 nodes cluster with 3 masters and 3 replicas, just type the following commands:
 
 
  ```bash
@@ -135,7 +135,7 @@ This view only contains information about the masters present in the Redis Clust
 
 Cluster Management comes with three different views to analyze your cluster architecture(as shown above).
 - Master Layout - This view only contains information about the masters present in the Redis Cluster. The information present is - slot ranges, host, port and few metrics gathered from redis INFO Command.
-- Master-Replica Layout - This view contains masters along with their replicas. This view contains information about slots ranges, host, port, etc for both master and replica.
+- Master-Replica Layout - This view contains masters along with their replicas. This view contains information about slots ranges, host, port, etc for both master and replicas.
 - Physical Layout - This view gives you a representation of your server i.e. it groups all nodes according to the physical server they reside in.
 
 
@@ -383,10 +383,10 @@ You can also view it via CLI on your local system if you want to verify the new 
  ```bash
   redis-cli -p 30001
  127.0.0.1:30001> cluster nodes
- 1a959116fb6c32726b8513668149c8a27dc61613 127.0.0.1:30006@40006 slave 7ac14c8345df91640bc7174de903f0dd8683a1d2 0 1620642235140 7 connected
- 5d2ce263fb025d38c2d7626d48422d0e28280aa7 127.0.0.1:30004@40004 slave 6f0096be6248834c0f3237192020d12ff6496f74 0 1620642235343 1 connected
+ 1a959116fb6c32726b8513668149c8a27dc61613 127.0.0.1:30006@40006 replicas 7ac14c8345df91640bc7174de903f0dd8683a1d2 0 1620642235140 7 connected
+ 5d2ce263fb025d38c2d7626d48422d0e28280aa7 127.0.0.1:30004@40004 replicas 6f0096be6248834c0f3237192020d12ff6496f74 0 1620642235343 1 connected
  7ac14c8345df91640bc7174de903f0dd8683a1d2 127.0.0.1:30003@40003 master - 0 1620642235039 7 connected 0-1000 10923-16383
- e0daeb42432323b587b281f26b26b90e9e6f2482 127.0.0.1:30005@40005 slave 011209ddc3577e8ec15efbcb12e38a405bda20f9 0 1620642235241 2 connected
+ e0daeb42432323b587b281f26b26b90e9e6f2482 127.0.0.1:30005@40005 replicas 011209ddc3577e8ec15efbcb12e38a405bda20f9 0 1620642235241 2 connected
  6f0096be6248834c0f3237192020d12ff6496f74 127.0.0.1:30001@40001 myself,master - 0 1620642235000 1 connected 1001-5460
  011209ddc3577e8ec15efbcb12e38a405bda20f9 127.0.0.1:30002@40002 master - 0 1620642235039 2 connected 5461-10922
  d3c15d55a60a4cdf9c1f4de8b0c637dda3500ca0 127.0.0.1:30010@40010 master - 0 1620642235140 0 connected
@@ -411,7 +411,7 @@ Choose the right master node of your choice  and click "Proceed".
 
 ## Step 17. Deleting a Node
 
-To delete a node, select “Master-Replica Nodes” option and you will see all the slave nodes
+To delete a node, select “Master-Replica Nodes” option and you will see all the replicas nodes
 
 ![cluster](cluster27.png)
 ![cluster](cluster28.png)
@@ -424,7 +424,7 @@ To delete a node, select “Master-Replica Nodes” option and you will see all 
 
 ## Step 19. Failover
 
-In order to upgrade the Redis process of one of the master nodes it is a good idea to failover it in order to turn it into a slave with minimal impact on availability.
+In order to upgrade the Redis process of one of the master nodes it is a good idea to failover it in order to turn it into a replicas with minimal impact on availability.
 
 
 ![cluster](cluster31.png)
