@@ -76,6 +76,7 @@ module.exports = {
            'howtos/redisgraph/index-redisgraph',
            'howtos/redisbloom/index-redisbloom',
            'howtos/redisgears/index-redisgears',
+           'howtos/redisai/index-redisai',
            'howtos/shoppingcart/index-shoppingcart',
            'howtos/leaderboard/index-leaderboard',
            'howtos/ratelimiting/index-ratelimiting',
