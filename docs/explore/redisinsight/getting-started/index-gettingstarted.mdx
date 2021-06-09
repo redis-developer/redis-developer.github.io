@@ -10,12 +10,12 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-RedisInsight is an intuitive and efficient GUI for Redis, allowing you to interact with your databases and manage your data—with built-in support for most popular Redis modules. The free non-commercial add-on provides tools to analyze the memory, profile the performance of your database, and guide you toward better Redis usage.
-
+RedisInsight is an intuitive and efficient GUI for Redis, allowing you to interact with your databases and manage your data—with built-in support for most popular Redis modules. It is a 100% free Redis GUI tool that allows you to visualise, monitor, and optimize while developing your applications with Redis
 
 ![my image](redisinsight.gif)
 
-RedisInsight provides built-in support for the RedisJSON, RediSearch, RedisGraph, Redis Streams, and RedisTimeSeries modules to make it even easier to query, visualize, and interactively manipulate search indexes, graphs, streams, and time-series data. Used properly, RedisInsight can make the experience of using modules with Redis Enterprise Cloud Essentials even smoother. 
+RedisInsight provides built-in support for the RedisJSON, RediSearch, RedisGraph, Redis Streams, and RedisTimeSeries modules to make it even easier to query, visualize, and interactively manipulate search indexes, graphs, streams, and time-series data. 
+
 
 A full-featured pure desktop GUI client, RedisInsight is available for Windows, macOS, and Linux and is fully compatible with Redis Enterprise. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. RedisInsight makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. 
 
@@ -225,8 +225,8 @@ Note - On Windows and Mac, install docker version 18.03 or higher. You can run d
 
 Next, run the RedisInsight container. The easiest way is to run the following command:
 
-```
-docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
+```bash
+ docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
 ```
 
 #### Step 3. Accessing RedisInsight
@@ -239,7 +239,7 @@ RedisInsight also provides a health check endpoint at http://localhost:8001/heal
 Note: Make sure the directory you pass as a volume to the container has necessary permissions for the container to access it. For example, if the previous command returns a permissions error, run the following command:
 
 ```
-chown -R 1001 redisinsight
+ chown -R 1001 redisinsight
 ```
 
 In addition, you can add some additional flags to the docker run command:
@@ -254,10 +254,10 @@ For example: -e AWS_ACCESS_KEY=aws_access_key -e AWS_SECRET_KEY=aws_secret_acces
 
 If everything worked, you should see the following output in the terminal:
 
-```
-Starting webserver...
-Visit http://0.0.0.0:8001 in your web browser.
-Press CTRL-C to exit.
+```bash
+ Starting webserver...
+ Visit http://0.0.0.0:8001 in your web browser.
+ Press CTRL-C to exit.
 ```
 
 
@@ -304,58 +304,58 @@ Below is an annotated YAML file that will create a RedisInsight deployment and a
 #### Step 2. Create a new file redisinsight.yaml with the content below
 
 ```
-# RedisInsight service with name 'redisinsight-service'
-apiVersion: v1
-kind: Service
-metadata:
-  name: redisinsight-service       # name should not be 'redisinsight'
+ # RedisInsight service with name 'redisinsight-service'
+ apiVersion: v1
+ kind: Service
+ metadata:
+   name: redisinsight-service       # name should not be 'redisinsight'
                                    # since the service creates
                                    # environment variables that
                                    # conflicts with redisinsight
                                    # application's environment
                                    # variables `REDISINSIGHT_HOST` and
                                    # `REDISINSIGHT_PORT`
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 80
-      targetPort: 8001
-  selector:
-    app: redisinsight
+ spec:
+   type: LoadBalancer
+   ports:
+     - port: 80
+       targetPort: 8001
+   selector:
+     app: redisinsight
 ---
-###  RedisInsight deployment with name 'redisinsight'
+ ###  RedisInsight deployment with name 'redisinsight'
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: redisinsight #deployment name
-  labels:
-    app: redisinsight #deployment label
-spec:
-  replicas: 1 #a single replica pod
-  selector:
-    matchLabels:
-      app: redisinsight #which pods is the deployment managing, as defined by the pod template
-  template: #pod template
-    metadata:
-      labels:
-        app: redisinsight #label for pod/s
-    spec:
-      containers:
-
-      - name:  redisinsight #Container name (DNS_LABEL, unique)
-        image: redislabs/redisinsight:1.7.0 #repo/image
-        imagePullPolicy: IfNotPresent #Always pull image
-        volumeMounts:
-        - name: db #Pod volumes to mount into the container's filesystem. Cannot be updated.
-          mountPath: /db
-        ports:
-        - containerPort: 8001 #exposed conainer port and protocol
-          protocol: TCP
-      volumes:
-      - name: db
-        emptyDir: {} # node-ephemeral volume https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
-```
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: redisinsight #deployment name
+   labels:
+     app: redisinsight #deployment label
+ spec:
+   replicas: 1 #a single replica pod
+   selector:
+     matchLabels:
+       app: redisinsight #which pods is the deployment managing, as defined by the pod template
+   template: #pod template
+     metadata:
+       labels:
+         app: redisinsight #label for pod/s
+     spec:
+       containers:
+ 
+       - name:  redisinsight #Container name (DNS_LABEL, unique)
+         image: redislabs/redisinsight:1.7.0 #repo/image
+         imagePullPolicy: IfNotPresent #Always pull image
+         volumeMounts:
+         - name: db #Pod volumes to mount into the container's filesystem. Cannot be updated.
+           mountPath: /db
+         ports:
+         - containerPort: 8001 #exposed conainer port and protocol
+           protocol: TCP
+       volumes:
+       - name: db
+         emptyDir: {} # node-ephemeral volume https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+ ```
 
 #### Step 3. Create the RedisInsight deployment and service
 
