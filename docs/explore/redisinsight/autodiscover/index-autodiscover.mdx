@@ -1,6 +1,6 @@
 ---
 id: index-autodiscover
-title: Autodiscover Elasticache Instances using RedisInsight
+title: Autodiscover Elasticache Redis caches using RedisInsight
 sidebar_label: Autodiscover Elasticache Instances using RedisInsight
 slug: /explore/redisinsight/autodiscover
 ---
@@ -13,6 +13,26 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 RedisInsight lets you automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. For Redis Cloud, auto-discovery is supported only for Flexible or Annual subscriptions. Auto-discovery for Redis Software to automatically discover and add Redis Software databases to RedisInsight. RedisInsight allows you to automatically discover Amazon Elasticache instances flawlessly.
 
+:::important
+
+ElastiCache Redis caches cannot be accessed from outside the VPC, as they don’t have public IP addresses assigned to them.
+
+- If you want to work with ElastiCache Redis caches with RedisInsight, you can either:
+
+   - If you are not using Redis Cluster, you can setup an SSH Tunnel between RedisInsight and your ElastiCache instance:
+
+      To create an SSH tunnel, run:
+
+       ```bash
+         ssh -f -N -L <local_port>:<elasticache_endpoint> -i <path_to_pem_file> <ec2_endpoint>
+        ```
+    - Go to Add Instance in RedisInsight and add an instance with:
+
+host - <localhost>
+port - <local_port>
+name - <your_instance_name>
+ 
+:::
 
 
 This tutorial shows how to:
