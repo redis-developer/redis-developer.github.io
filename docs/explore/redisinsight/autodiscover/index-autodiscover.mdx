@@ -1,0 +1,157 @@
+---
+id: index-autodiscover
+title: Autodiscover Elasticache Instances using RedisInsight
+sidebar_label: Autodiscover Elasticache Instances using RedisInsight
+slug: /explore/redisinsight/autodiscover
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+RedisInsight lets you automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. For Redis Cloud, auto-discovery is supported only for Flexible or Annual subscriptions. Auto-discovery for Redis Software to automatically discover and add Redis Software databases to RedisInsight. RedisInsight allows you to automatically discover Amazon Elasticache instances flawlessly.
+
+
+
+This tutorial shows how to:
+
+- Setup and configure Amazon Elasticache
+- Configure the VPC
+- Configuring the security groups
+- Configure and setup Amazon EC2
+- Create and configure IAM role
+- Assign the permissions
+- Connect to Elasticache from EC2 instance
+- Setup RedisInsight
+- Access RedisInsight
+- Autodiscover Elasticache Instance
+
+### Step 1. Setup and configure Amazon Elasticache
+
+Login to [AWS Management Console]( https://aws.amazon.com) and click "Get Started now"
+
+![elasticache](images/image1.png)
+
+Choose "Redis" as the cluster engine
+
+![elasticache](images/image2.png)
+
+Configure Redis settings:
+
+![elasticache](images/image3.png)
+
+
+
+
+Copy and save the Elasticache primary endpoint URL:
+
+![elasticache](images/image5.png)
+
+
+
+### Step 2. Configure the VPC 
+
+Configure and chose VPC that has your ElastiCache instances
+
+![elasticache](images/image6.png)
+
+
+### Step 3. Configure the Security Groups
+
+![elasticache](images/image7.png)
+
+Configure inbound and outbound rules to allow RedisInsight and Redis ports:
+
+![elasticache](images/image12.png)
+
+### Step 4. Configure and setup Amazon EC2 
+
+
+![elasticache](images/image8.png)
+
+
+### Step 5. Create and configure IAM role
+
+You can use the AWS Management Console to create a role that an IAM user can assume
+
+![elasticache](images/image9.png)
+
+Under Select type of trusted entity, choose EC2. In other words, the role is used by an EC2 instance
+
+![elasticache](images/image10.png)
+
+Click “Next”.
+
+### Step 6. Assign the permissions
+
+Assign the below permissions:
+
+- AmazonS3ReadOnlyAccess
+- AmazonElastiCacheReadOnlyAccess
+
+![elasticache](images/image11.png)
+
+### Step 7. Connect to Elasticache from EC2 instance
+
+ ```bash
+  ubuntu@ip-10-0-0-254:~$ redis-cli -h redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com -p 6379
+  redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com:6379>
+ ```
+
+
+### Step 8. Setup RedisInsight
+
+ ```bash
+  ubuntu@ip-10-0-0-254:~$ sudo docker run -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
+  Unable to find image 'redislabs/redisinsight:latest' locally
+  latest: Pulling from redislabs/redisinsight
+ ```
+
+ ```bash
+  sudo docker ps
+  CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+  caf3d674fb81   redislabs/redisinsight:latest   "bash ./docker-entry…"   4 seconds ago   Up 3 seconds   0.0.0.0:8001->8001/tcp, :::8001->8001/tcp   cool_pascal
+ ```
+
+### Step 9. Access RedisInsight
+
+![elasticache](images/image13.png)
+![elasticache](images/image14.png)
+
+
+### Step 10. Autodiscover Elasticache Instance
+
+:::important
+In case you encounter the below error message:
+
+This EC2 instance does not have permissions to discover your ElastiCache instances. To grant permission, create an IAM role  with the DescribeCacheClusters permission and attach the role  to this EC2 instance.
+
+You might have to attach IAM role to the instance as shown below:
+
+![elasticache](images/image15.png)
+
+::: 
+
+Now you can should be able to autodiscover Elasticache
+
+![elasticache](images/image16.png)
+
+
+![elasticache](images/image18.png)
+
+Add the selected instance:
+
+![elasticache](images/image19.png)
+
+Add the discovered instance:
+
+![elasticache](images/image20.png)
+
+
+### References
+
+- [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
+- [Explore Redis keys using RedisInsight browser tool](/explore/redisinsight/browser)
+- [Memory Analysis using RedisInsight](/explore/redisinsight/memoryanalyzer)
