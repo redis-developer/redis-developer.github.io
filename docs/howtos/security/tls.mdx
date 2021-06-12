@@ -19,23 +19,23 @@ import RedisCard from '@site/src/theme/RedisCard';
 ![Header](tls.jpeg)
 
 
-In this article, I will explain how to secure your Redis databases using SSL (Secure Sockets Layer). In production, it is a good practice to use SSL to protect the data that are moving between various computers (client applications and Redis servers). Transport Level Security (TLS) guarantees that only allowed applications/computers are connected to the database, and also that data is not viewed or altered by a middle man process.
+In this article, you will see how to secure your Redis databases using SSL (Secure Sockets Layer). In the production environment, it is always recommended to use SSL to protect the data that moves between various computers (client applications and Redis servers). Transport Level Security (TLS) guarantees that only allowed applications/computers are connected to the database, and also that data is not viewed or altered by a middle man process.
 
 You can secure the connections between your client applications and Redis cluster using:
 
 * One-Way SSL: the client (your application) get the certificate from the server (Redis cluster), validate it, and then all communications are encrypted
 * Two-Way SSL: (aka mutual SSL) here both the client and the server authenticate each other and validate that both ends are trusted.
 
-In this article, I will focus on the Two-Way SSL, and using Redis Enterprise.
+In this article, we will focus on the Two-Way SSL, and using Redis Enterprise.
 
-Prerequisites:
+### Prerequisites
 
 * A Redis Enterprise 6.0.x database, (my database is protected by the password `secretdb01`, and listening on port `12000`)
 * `redis-cli` to run basic commands
-* Python, Node, and Java installed if you want to test various languages.
+* [Python](/develop/python/), [Node](/develop/node), and [Java](/develop/java) installed if you want to test various languages.
 
 
-**Simple  Test**
+### Simple  Test
 
 Let's make sure that the database is available:
 
@@ -48,13 +48,13 @@ This should print the Server information.
 
 ## Step 1. Get the Certificate from Redis Cluster
 
-You have access to the Redis Enterprise Cluster, you go to one of the nodes to retrieve the certificate (that is a self-generated one by default).
+Assuming tha you have an access to the Redis Enterprise Cluster, you need to access the nodes to retrieve the certificate (that is a self-generated one by default).
 
 The cluster certificate is located at: `/etc/opt/redislabs/proxy_cert.pem`.
 
-You have to copy it on each client machine; note that once it is done you can use this certificate to connect using "One-Way SSL", but not the purpose of this article.
+Next, copy the cluster certificate on each client machine; note that once it is done you can use this certificate to connect using "One-Way SSL", but this is not just the purpose of this article.
 
-In my demonstration I am using Docker and copy the certificate using this command from my host:
+In this tutorial, we will be using Docker to copy the certificate.
 
 ```
 docker cp redis-node1:/etc/opt/redislabs/proxy_cert.pem ./certificates
@@ -62,11 +62,7 @@ docker cp redis-node1:/etc/opt/redislabs/proxy_cert.pem ./certificates
 
 ## Step 2. Generate a New Client Certificate
 
-Using the Two-Way SSL you need to have a certificate for the client that will be used by Redis database proxy to trust the client.
-
-In this article I will use a self-signed certificate using OpenSSL, in this example, we are creating a certificate for an application named `app_001`.
-
-You can create as many certificates as you want, or reuse this one for all servers/applications.
+Using the Two-Way SSL, you need to have a certificate for the client that will be used by Redis database proxy to trust the client.In this tutorial, we will use a self-signed certificate using OpenSSL. We will be creating a certificate for an application named `app_001`. Please note that you can create as many certificates as you want, or reuse this one for all servers/applications.
 
 Open a terminal and run the following commands:
 
@@ -131,8 +127,7 @@ redis-cli -p 12000 -a secretdb01 INFO SERVER
 
 ## Step 4. Connect to the Database using the Certificate
 
-In all following examples, I am using a "self-signed" certificate, so I do not check the validity of the hostname. 
-You should adapt the connections/TLS information based on your certificate configuration.
+In all these examples, you will be using a "self-signed" certificate, so that you don't need to check the validity of the hostname. You should adapt the connections/TLS information based on your certificate configuration.
 
 ### Step  4.1 Using Redis-CLI
 
