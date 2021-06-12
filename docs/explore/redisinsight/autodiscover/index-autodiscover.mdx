@@ -18,23 +18,7 @@ RedisInsight also allows you to automatically discover Elasticache Redis caches.
 
 :::important
 
-ElastiCache Redis caches cannot be accessed from outside the VPC, as they don’t have public IP addresses assigned to them.
-
-- If you want to work with ElastiCache Redis caches with RedisInsight, you can either:
-
-   - If you are not using Redis Cluster, you can setup an SSH Tunnel between RedisInsight and your ElastiCache instance:
-
-      To create an SSH tunnel, run:
-
-       ```bash
-         ssh -f -N -L <local_port>:<elasticache_endpoint> -i <path_to_pem_file> <ec2_endpoint>
-        ```
-    - Go to Add Instance in RedisInsight and add an instance with:
-
-host - <localhost>
-port - <local_port>
-name - <your_instance_name>
- 
+ElastiCache Redis caches cannot be accessed from outside the VPC, as they don’t have public IP addresses assigned to them.If you want to work with ElastiCache Redis caches with RedisInsight, you can either setup an SSH tunnel between RedisInsight and your Elasticache instance, in case you're not using Redis Cluster.
 :::
 
 
