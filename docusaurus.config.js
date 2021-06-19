@@ -17,6 +17,10 @@ module.exports = {
     googleTagManager: {
       trackingID: 'GTM-W8Z6BLQ',
     },
+    prism : {
+      additionalLanguages: ['csharp', 'php', 'ruby']
+
+    },
 
     navbar: {
       style: 'dark',

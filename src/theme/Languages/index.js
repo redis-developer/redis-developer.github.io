@@ -40,12 +40,12 @@ function Languages() {
           </a>
         </li>
 
-        {/* <li>
-          <a href="#">
+        <li>
+          <a href="/develop/dotnet">
             <SvgCSharp />
-            <span className="btn">C#/.Net</span>
+            <span className="btn">.NET</span>
           </a>
-        </li> */}
+        </li>
 
         <li>
         <a href={useBaseUrl('/develop/golang/')}>
