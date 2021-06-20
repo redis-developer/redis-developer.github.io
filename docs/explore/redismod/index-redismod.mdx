@@ -83,13 +83,16 @@ Let us test drive RediSearch modules as discussed below in detail.
 
 We are now ready to insert some data. This example uses movies data stored as Redis Hashes, so let’s insert a couple of movies:
 
-```
- HSET movies:11002 title "Star Wars: Episode V - The Empire Strikes Back" plot "Luke Skywalker begins Jedi training with Yoda." release_year 1980 genre "Action"   
+```bash
+  HSET movies:11002 title "Star Wars: Episode V - The Empire Strikes Back" plot "Luke Skywalker begins Jedi training with Yoda." release_year 1980 genre "Action"   
  rating 8.7 votes 1127635
 
  (integer) 6 
+```
 
- > HSET movies:11003 title "The Godfather" plot "The aging patriarch of an organized crime dynasty transfers control of his empire to his son." release_year 1972   genre "Drama" rating 9.2 votes 1563839 
+```
+ HSET movies:11003 title "The Godfather" plot "The aging patriarch of an organized crime dynasty transfers control of his empire to his son." release_year 1972     
+ genre "Drama" rating 9.2 votes 1563839 
 
  (integer) 6
 ```
@@ -97,7 +100,7 @@ We are now ready to insert some data. This example uses movies data stored as Re
 Your Redis database now contains two Hashes. It is simple to retrieve information using the HMGET command, if you know the key of the movies (movies:11002):
 
  ```
-  > HMGET movies:11002 title rating
+  HMGET movies:11002 title rating
 
   1) "Star Wars: Episode V - The Empire Strikes Back"
   2) "8.7"
@@ -110,7 +113,7 @@ To be able to query the hashes on the field for title, say, or genre, you must f
 Use the FT.CREATE command to create an index, as shown here:
 
  ```
-  > FT.CREATE idx:movies ON hash PREFIX 1 "movies:" SCHEMA title TEXT SORTABLE release_year NUMERIC SORTABLE rating NUMERIC SORTABLE genre TAG SORTABLE
+  FT.CREATE idx:movies ON hash PREFIX 1 "movies:" SCHEMA title TEXT SORTABLE release_year NUMERIC SORTABLE rating NUMERIC SORTABLE genre TAG SORTABLE
 
   OK
  ```
@@ -119,7 +122,7 @@ Use the FT.CREATE command to create an index, as shown here:
 
 You can now use the FT.SEARCH to search your database, for example, to search all movies sorted by release year:
 
- ```
+ ```bash
   >  FT.SEARCH idx:movies * SORTBY release_year ASC RETURN 2 title release_year
   1) (integer) 2
   2) "movies:1003"
