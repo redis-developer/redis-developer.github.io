@@ -123,7 +123,7 @@ Use the FT.CREATE command to create an index, as shown here:
 You can now use the FT.SEARCH to search your database, for example, to search all movies sorted by release year:
 
  ```bash
-  >  FT.SEARCH idx:movies * SORTBY release_year ASC RETURN 2 title release_year
+  FT.SEARCH idx:movies * SORTBY release_year ASC RETURN 2 title release_year
   1) (integer) 2
   2) "movies:1003"
   3) 1) "release_year"
