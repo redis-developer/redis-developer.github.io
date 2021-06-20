@@ -86,24 +86,17 @@ We are now ready to insert some data. This example uses movies data stored as Re
 ```bash
   HSET movies:11002 title "Star Wars: Episode V - The Empire Strikes Back" plot "Luke Skywalker begins Jedi training with Yoda." release_year 1980 genre "Action"   
  rating 8.7 votes 1127635
-
- (integer) 6 
 ```
 
-```
+```bash
  HSET movies:11003 title "The Godfather" plot "The aging patriarch of an organized crime dynasty transfers control of his empire to his son." release_year 1972     
  genre "Drama" rating 9.2 votes 1563839 
-
- (integer) 6
 ```
 
 Your Redis database now contains two Hashes. It is simple to retrieve information using the HMGET command, if you know the key of the movies (movies:11002):
 
  ```
   HMGET movies:11002 title rating
-
-  1) "Star Wars: Episode V - The Empire Strikes Back"
-  2) "8.7"
  ```
 
 #### Create an index in RediSearch
@@ -114,8 +107,6 @@ Use the FT.CREATE command to create an index, as shown here:
 
  ```
   FT.CREATE idx:movies ON hash PREFIX 1 "movies:" SCHEMA title TEXT SORTABLE release_year NUMERIC SORTABLE rating NUMERIC SORTABLE genre TAG SORTABLE
-
-  OK
  ```
 
 #### Search the movies in the RediSearch index
@@ -124,18 +115,7 @@ You can now use the FT.SEARCH to search your database, for example, to search al
 
  ```bash
   FT.SEARCH idx:movies * SORTBY release_year ASC RETURN 2 title release_year
-  1) (integer) 2
-  2) "movies:1003"
-  3) 1) "release_year"
-   2) "1972"
-   3) "title"
-   4) "The Godfather"
- 4) "movies:1002"
- 5) 1) "release_year"
-   2) "1980"
-   3) "title"
-   4) "Star Wars: Episode V - The Empire Strikes Back"
-```
+ ```
 
 To test drive rest of Redis modules, please visit the links mentioned under "Reference" section.
 
