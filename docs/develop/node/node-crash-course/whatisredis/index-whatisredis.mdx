@@ -11,16 +11,28 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3P2FDZVKqsA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-TODO content.
+Redis is an open source data structure server.  It belongs to the class of NoSQL databases known as key/value stores.  Keys are unique identifiers, whose value can be one of the data types that Redis supports.  These data types range from simple Strings, to Linked Lists, Sets and even Streams.  Each data type has its own set of behaviours and commands associated with it.
 
-## TODO Subheader
+For example, I can store my name in a Redis String and associate it with the key "myname" using a Redis [SET command](https://redis.io/commands/set).  I can then retrieve the value using a Redis [GET command](https://redis.io/commands/get).  Here's how that looks using redis-cli, a command line interface to Redis:
 
-TODO content.
+```bash
+127.0.0.1:6379> set myname "Simon Prickett"
+OK
+127.0.0.1:6379> get myname
+"Simon Prickett"
+```
 
-### TODO Another Subheader
+Keys in a Redis database are distributed in a flat keyspace. Redis does not enforce a schema or naming policy for keys. This provides great flexibility, with the organization of the keyspace being the responsibility of the developer.  We'll look at ways of managing this later in the course.
 
-TODO content.
+Redis is famous for being an extremely fast database.  This speed comes from the fact that it stores and serves all data from memory rather than disk.  Redis is durable, so your data will be persisted, but all reads will be from a copy of the data held in memory. This makes Redis an excellent choice for applications that require real time data access.
 
-### Further References
+Redis is also often used as a cache, and has specific functionality to support this.  Redis can be extended with new functionality using plugin modules.  We'll see how to use some of these as we make our way through the course.
 
-TODO content.
+## External Resources
+
+Here's some resources that we think will be useful to you as you discover Redis:
+
+* [redis.io](https://redis.io/) - the official website of open source Redis.
+* [Redis Enterprise Cloud](https://redislabs.com/redis-enterprise-cloud/overview/) - a fully managed cloud service from Redis Labs - you can try it out using the full featured free tier.
+* The official [Redis Docker image](https://hub.docker.com/_/redis/).
+* For a comprehensive introduction to Redis, we recommend taking a look at the [RU101, Introduction to Redis Data Structures](https://university.redislabs.com/courses/ru101/) course at Redis University. In this free online course, you’ll learn about the data structures in Redis, and you’ll see how to practically apply them in the real world.
