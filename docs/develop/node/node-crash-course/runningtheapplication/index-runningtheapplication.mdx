@@ -7,20 +7,225 @@ slug: /develop/node/nodecrashcourse/runningtheapplication
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
+Let's get hands on, clone the application repository from GitHub, start up Redis in a Docker container, and load the sample data!
+
 <div class="text--center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5XymCb7b7XE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-TODO content.
+## Reminder - Software Prerequisites
 
-## TODO Subheader
+To get the most from this course, you'll need a machine that can run the application and the Redis server.  The application runs directly on your machine and the Redis server runs in a Docker container.
 
-TODO content.
+You'll need the following installed on your machine:
 
-### TODO Another Subheader
+* [Docker](https://www.docker.com/) (you'll need the docker-compose command)
+* [Node.js](https://nodejs.org/) (use the current Long Term Stable - LTS - version)
+* [git command line tools](https://git-scm.com/downloads)
+* Your favorite IDE (we like [VSCode](https://code.visualstudio.com/), but anything you're comfortable with works)
+* [Postman](https://www.postman.com/) - we're going to make some API calls and Postman makes that easy.
 
-TODO content.
+## Setup / Installation Process
 
-### Further References
+### Get the Code and Install Dependencies
 
-TODO content.
+Clone the course repo from GitHub and install the dependencies:
+
+```bash
+$ git clone https://github.com/redislabs-training/node-js-crash-course.git
+$ cd node-js-crash-course
+$ npm install
+```
+
+### Start Redis (Docker)
+
+From the node-js-crash-course directory, start Redis using `docker-compose`:
+
+```bash
+$ docker-compose up -d
+Creating network "node-js-crash-course_default" with the default driver
+Creating rediscrashcourse ... done
+$ docker ps
+```
+
+The output from the docker ps command should show one container running, using the "redislabs/redismod" image.  This container runs Redis 6 with the RediSearch, RedisJSON and RedisBloom modules.
+
+### Load the Sample Data into Redis
+
+Load the course example data using the provided data loader. This is a Node.js application:
+
+```bash
+$ npm run load all
+> node src/utils/dataloader.js -- "all"
+
+Loading user data...
+User data loaded with 0 errors.
+Loading location data...
+Location data loaded with 0 errors.
+Loading location details...
+Location detail data loaded with 0 errors.
+Loading checkin stream entries...
+Loaded 5000 checkin stream entries.
+Creating consumer group...
+Consumer group created.
+Dropping any existing indexes, creating new indexes...
+Created indexes.
+Deleting any previous bloom filter, creating new bloom filter...
+Created bloom filter.
+```
+
+In another terminal window, run the redis-cli executable that's in the Docker container. Then, enter the Redis commands shown at the redis-cli prompt to verify that data loaded successfully:
+
+```bash
+$ docker exec -it rediscrashcourse redis-cli
+127.0.0.1:6379> hgetall ncc:locations:106
+ 1) "id"
+ 2) "106"
+ 3) "name"
+ 4) "Viva Bubble Tea"
+ 5) "category"
+ 6) "cafe"
+ 7) "location"
+ 8) "-122.268645,37.764288"
+ 9) "numCheckins"
+10) "886"
+11) "numStars"
+12) "1073"
+13) "averageStars"
+14) "1"
+127.0.0.1:6379> hgetall ncc:users:12
+ 1) "id"
+ 2) "12"
+ 3) "firstName"
+ 4) "Franziska"
+ 5) "lastName"
+ 6) "Sieben"
+ 7) "email"
+ 8) "franziska.sieben@example.com"
+ 9) "password"
+10) "$2b$05$uV38PUcdFD3Gm6ElMlBkE.lzZutqWVE6R6ro48GsEjcmnioaZZ55C"
+11) "numCheckins"
+12) "8945"
+13) "lastCheckin"
+14) "1490641385511"
+15) "lastSeenAt"
+16) "22"
+127.0.0.1:6379> xlen ncc:checkins
+(integer) 5000
+```
+
+## Start and Configure RedisInsight
+
+If you're using RedisInsight, start it up and it should open in your browser automatically.  If not, point your browser at http://localhost:8001.  
+
+If this is your first time using RedisInsight click "I already have a database".
+
+If you already have other Redis databases configured in RedisInsight, click "Add Redis Database".
+
+Now, click "Connect to a Redis Database Using hostname and port".  Configure the database details as shown below, then click "Add Redis Database".
+
+![Configuring RedisInsight](images/configure_insight.png)
+
+
+You should now be able to browse your Redis instance.  If you need more guidance on how to connect to Redis from RedisInsight, check out Justin's video below but be sure to use 127.0.0.1 as the host, 6379 as the port and leave the username and password fields blank when configuring your database.
+
+<div class="text--center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LSiLuNPeq9Y?start=359" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+## Start the Application
+
+Now it's time to start the API Server component of the application and make sure it connects to Redis.  This component listens on port 8081.
+
+If port 8081 is in use on your system, edit this section of the `config.json` file and pick another available port:
+
+```json
+"application": {
+  "port": 8081
+},
+```
+
+Start the server like this:
+
+```bash
+$ npm run dev
+
+> ./node_modules/nodemon/bin/nodemon.js
+
+[nodemon] 2.0.7
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node src/server.js`
+Warning: Environment variable WEATHER_API_KEY is not set!
+info: Application listening on port 8081.
+```
+
+This starts the application using nodemon, which monitors for changes in the source code and will restart the server when a change is detected.  This will be useful in the next module where you'll be making some code changes. 
+
+Ignore the warning about `WEATHER_API_KEY` — we'll address this in a later exercise when we look at using Redis as a cache.
+
+To verify that the server is running correctly and connected to Redis, point your browser at:
+
+```
+http://localhost:8081/api/location/200
+```
+
+You should see the summary information for location 200, Katia's Kitchen:
+
+```json
+{
+  "id": "200",
+  "name": "Katia's Kitchen",
+  "category": "restaurant",
+  "location": "-122.2349598,37.7356811",
+  "numCheckins": "359",
+  "numStars": "1021",
+  "averageStars": "3"
+}
+```
+
+Great! Now you're up and running.  Let's move on to the next module and see how we're using Redis Hashes in the application.  You'll also get to write some code!
+
+## Stopping redis-cli, the Redis Container and the Application
+
+**Don't do this now, as we’ve only just started!**  However, when you do want to shut everything down, here's how to do it...
+
+To stop running redis-cli, simply enter the quit command at the redis-cli prompt:
+
+```bash
+127.0.0.1:6379> quit
+$
+```
+
+To stop the Redis Server, make sure you are in the `node-js-crash-course` folder that you checked the application repo out to, then:
+
+```bash
+$ docker-compose down
+Stopping rediscrashcourse ... done
+Removing rediscrashcourse ... done
+Removing network node-js-crash-course_default
+```
+
+Redis persists data to the "redisdata" folder.  If you want to remove this, just delete it:
+
+```bash
+$ rm -rf redisdata
+```
+
+To stop each of the application's components, press Ctrl+C in the terminal window that the component is running in.  For example, to stop the API server:
+
+```bash
+$ npm run dev
+
+> ./node_modules/nodemon/bin/nodemon.js
+
+[nodemon] 2.0.7
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node src/server.js`
+info: Application listening on port 8081.
+^C
+node-js-crash-course $
+```
