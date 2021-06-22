@@ -7,20 +7,81 @@ slug: /develop/node/nodecrashcourse/domainobjectswithhashes
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
+In this module, you'll see how we're using Redis Hashes to model the user and location data in our application.
+
 <div class="text--center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xASSiToabSM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-TODO content.
+## Coding Exercise
 
-## TODO Subheader
+In your first coding exercise, you'll be adding a new route that takes a user's ID and returns their full name.
 
-TODO content.
+Using your IDE, open the `node-js-crash-course` folder that you cloned the GitHub repository into.  Open the file `src/routes/user_routes.js` and find the route `/user/:userId/fullname` which looks like this:
 
-### TODO Another Subheader
+```javascript
+// EXERCISE: Get user's full name.
+router.get(
+  '/user/:userId/fullname',
+  [
+    param('userId').isInt({ min: 1 }),
+    apiErrorReporter,
+  ],
+  async (req, res) => {
+    const { userId } = req.params;
+    /* eslint-disable no-unused-vars */
+    const userKey = redis.getKeyName('users', userId);
+    /* eslint-enable */
 
-TODO content.
+    // TODO: Get the firstName and lastName fields from the
+    // user hash whose key is in userKey.
+    // HINT: Check out the HMGET command...
+    // https://redis.io/commands/hmget
+    const [firstName, lastName] = ['TODO', 'TODO'];
 
-### Further References
+    res.status(200).json({ fullName: `${firstName} ${lastName}` });
+  },
+);
+```
 
-TODO content.
+In this exercise, you'll modify the code to return the user's full name by retrieving the firstName and lastName fields for the requested user from Redis.  
+
+First, make sure your server is still running, if not start it with:
+
+```bash
+$ npm run dev
+```
+
+Next, browse to `http://localhost:8081/api/user/5/fullname`
+
+You should see:
+
+```json
+{
+  "fullName": "TODO TODO"
+}
+```
+
+Take a look at the [documentation for the Redis HMGET command](https://redis.io/commands/hmget), which retrieves multiple named fields from a Redis Hash.  You'll need to add code that calls the Redis client's `hmget` function, then place the values returned into the `firstName` and `lastName` variables.  You should be able to retrieve both values using a single call to `hmget`.  For guidance on how to invoke Redis commands, check out the code for the `/user/:userId` route which calls the `HGETALL` command.
+
+nodemon will restart the server automatically for you each time you save your changes.
+
+When you're ready to test your solution, browse to `http://localhost:8081/api/user/5/fullname` and you should see:
+
+```json
+{
+  "fullName": "Alejandro Reyes"
+}
+```
+
+If you need help from our team, [join us in Discord](https://discord.gg/redis).
+
+## External Resources
+
+In this video, Justin explains what Redis Hashes are and shows how common Redis Hash commands work:
+
+<div class="text--center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-agsJUihrWw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+You can find documentation for all of the [Redis Hash commands on redis.io](https://redis.io/commands#hash).
