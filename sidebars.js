@@ -37,7 +37,7 @@ module.exports = {
              'develop/node/gettingstarted/index-gettingstarted',
                {
                 type: 'category',
-                label: 'Crash Course on Node.js',
+                label: 'Node.js Crash Course',
                 items: [
                  'develop/node/node-crash-course/index-node-crash-course',
                  'develop/node/node-crash-course/welcome/index-welcome',
