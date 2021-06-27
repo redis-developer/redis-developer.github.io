@@ -62,7 +62,7 @@ module.exports = {
                ]
            },
           'develop/python/index-python',
-          'develop/node/index-node',
+          'develop/dotnet/index-dotnet', 
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
