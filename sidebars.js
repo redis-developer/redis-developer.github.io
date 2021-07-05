@@ -90,6 +90,7 @@ module.exports = {
           'explore/redisinsight/redistimeseries/index-redistimeseries',
           'explore/redisinsight/redisearch/index-redisearch',
           'explore/redisinsight/autodiscover/index-autodiscover',
+          'explore/redisinsight/usinghelm/index-usinghelm',
         ] 
         },
           'explore/redisdatasource/index-redisdatasource',
