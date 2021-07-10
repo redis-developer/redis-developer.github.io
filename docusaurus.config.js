@@ -109,7 +109,7 @@ module.exports = {
             },
             {
               label: 'How-tos & tutorials',
-              to: '/howtos/moviesdatabase/getting-started',
+              to: '/howtos',
             },
             //   label: 'Use Cases',
             //   href: 'https://redislabs.com/solutions',
