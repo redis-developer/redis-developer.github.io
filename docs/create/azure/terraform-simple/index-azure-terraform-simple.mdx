@@ -1,0 +1,87 @@
+---
+id: index-azure-terraform-simple
+title: Azure Cache for Redis Enterprise using Terraform
+sidebar_label: Redis Enterprise with Terraform
+slug: /create/azure/terraform-simple
+---
+
+This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
+
+### Prerequisite
+
+1.  [Terraform](https://terraform.io]) [CLI](https://terraform.io/downloads.html)
+2.  [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+### Step 1. Getting Started
+
+Login in Azure using the Azure CLI
+
+```bash
+az login
+```
+>Login with a Service Principal will also work
+
+
+### Step 2: Clone the repository
+
+```bash
+git clone https://github.com/redis-developer/acre-terraform-simple
+```
+
+
+### Step 3: Initialize the repository
+
+```bash
+cd acre-terraform
+terraform init
+```
+>The output should include: ```Terraform has been successfully initialized```
+
+
+### Step 4: Optionally, modify the variables
+
+This default variables are setup to deploy the smallest 'E10' instance into the 'East US' region.
+Changes can be made by updating the ```variables.tf``` file.
+
+
+### Step 5: Verify the plan
+
+The 'plan' output will show you everything being created by the template.
+
+```bash
+terraform plan
+```
+>The plan step does not make any changes in Azure
+
+### Step 6: Apply the plan
+
+When the plan looks good, 'apply' the template.
+
+```bash
+terraform apply
+```
+
+### Step 7: Connect using generated output
+
+The access key is sensitive, so viewing the outputs must be requested specifically.
+The output is also in JSON format.
+
+```bash
+terraform output redisgeek_config
+```
+> Example output:
+```
+{
+"hostname" = "redisgeek-8jy4.eastus.redisenterprise.cache.azure.net"
+"access_key" = "DQYABC3uRMyDguE1236Xkvv3TprUcqBWTRkfgOPjs82Y="
+"port" = "10000"
+}
+```
+
+### Resources
+
+<div class="text--center">
+    <iframe width="760" height="415" src="https://www.youtube.com/embed/eThj-jwViZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+### Next Step

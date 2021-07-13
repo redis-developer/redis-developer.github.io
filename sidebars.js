@@ -12,7 +12,15 @@ module.exports = {
         'create/index-create',
         'create/rediscloud/index-rediscloud',
         'create/heroku/index-heroku',
-        'create/azure/index-azure',
+          {
+              type: 'category',
+              label: 'Redis on Azure Cache',
+              items: [
+                  'create/azure/index-azure',
+                  'create/azure/portal/index-azure-portal',
+                  'create/azure/terraform-simple/index-azure-terraform-simple'
+              ]
+          },
         'create/gcp/index-gcp',
         'create/aws/index-aws',
         'create/docker/index-docker',
