@@ -5,7 +5,10 @@ sidebar_label: Private Link Terraform
 slug: /create/azure/terraform-private-endpoint
 ---
 
-This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
+
+Azure Resource Manager(a.k.a AzureRM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. You use management features, like access control, locks, and tags, to secure and organize your resources after deployment.
+
+The "azurerm_redis_enterprise_cluster" is a resource that manages a Redis Enterprise cluster. This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
 
 ### Prerequisite
 
@@ -21,24 +24,66 @@ az login
 ```
 >Login with a Service Principal will also work
 
+Login using an Azure Service Principal
 
-### Step 2: Setup & Subscribe
-
-
-
-### Step 3: Configuring New Redis Cache
-
-
-
-### Step 4: Finalising the setup
-
-
-
-### Step 5: Connecting to Redis database
-
+```bash
+az login --service-principal --username APP_ID --tenant TENANT_ID --password [password || /path/to/cert]
 ```
-sudo redis-cli -h redislabs.redis.cache.windows.net -p 6379
-redislabs.redis.cache.windows.net:6379>
+### Step 2: Clone the repository
+
+```bash
+git clone https://github.com/redis-developer/acre-terraform
+```
+
+
+### Step 3: Initialize the repository
+
+```bash
+cd acre-terraform
+terraform init
+```
+>The output should include: ```Terraform has been successfully initialized```
+
+
+### Step 4: Modify the variables(optional)
+
+The default variables are setup to deploy the smallest 'E10' instance into the 'East US' region.
+Changes can be made by updating the ```variables.tf``` file.
+
+
+### Step 5: Verify the plan
+
+The 'plan' output will show you everything being created by the template.
+
+```bash
+terraform plan
+```
+>The output should include: ```Plan: 18 to add, 0 to change, 0 to destroy.```
+
+### Step 6: Apply the plan
+
+When the plan looks good, 'apply' the template.
+
+```bash
+terraform apply
+```
+>The output should include: ```Apply complete! Resources: 18 added, 0 changed, 0 destroyed.```
+
+### Step 7: Connect using generated output
+
+The access key is sensitive, so viewing the outputs must be requested specifically.
+The output is also in JSON format.
+
+```bash
+terraform output redisgeek_config
+```
+> Example output:
+```
+{
+"hostname" = "redisgeek-8jy4.eastus.redisenterprise.cache.azure.net"
+"access_key" = "DQYABC3uRMyDguE1236Xkvv3TprUcqBWTRkfgOPjs82Y="
+"port" = "10000"
+}
 ```
 
 ### Resources
@@ -49,3 +94,4 @@ redislabs.redis.cache.windows.net:6379>
 
 ### Next Step
 
+[.Net and Redis](/develop/dotnet/)
