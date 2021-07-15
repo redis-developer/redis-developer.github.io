@@ -18,7 +18,8 @@ module.exports = {
               items: [
                   'create/azure/index-azure',
                   'create/azure/portal/index-azure-portal',
-                  'create/azure/terraform-simple/index-azure-terraform-simple'
+                  'create/azure/terraform-simple/index-azure-terraform-simple',
+                  'create/azure/terraform-private-endpoint/index-azure-terraform-private-endpoint'
               ]
           },
         'create/gcp/index-gcp',
