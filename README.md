@@ -5,7 +5,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 
 # Create
 
-## Cloud
+### Cloud
 
 - [Redis Enterprise Cloud](https://developer.redislabs.com/create/rediscloud)
 - [Heroku](https://developer.redislabs.com/create/heroku)
@@ -13,7 +13,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 - [Google Cloud](https://developer.redislabs.com/create/gcp)
 - [AWS](https://developer.redislabs.com/create/aws)
 
-## Local
+### Local
 
 - [Docker](https://developer.redislabs.com/create/docker/)
 - [Google Kubernetes Engine](https://developer.redislabs.com/create/kubernetes/)
@@ -37,7 +37,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 
 # Explore
 
-## RedisInsight - Redis GUI
+### RedisInsight - Redis GUI
 
 - [Getting Started](https://developer.redislabs.com/explore/redisinsight/getting-started)
 - [Visualize Redis database keys using RedisInsight Browser Tool](https://developer.redislabs.com/explore/redisinsight/browser)
