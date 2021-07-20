@@ -1,4 +1,8 @@
 ![GitHub workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![stars](https://img.shields.io/github/stars/redis-developer/redis-developer.github.io)
+![forks](https://img.shields.io/github/forks/redis-developer/redis-developer.github.io)
+![issues](https://img.shields.io/github/issues/redis-developer/redis-developer.github.io)
+![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fredis-developer%2Fredis-developer.github.io)
 
 # Redis Developer Hub
 
