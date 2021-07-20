@@ -1,3 +1,5 @@
+![GitHub workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+
 # Redis Developer Hub
 
 Redis Developer Hub is basically a journey carved out for Redis developer community. The journey is defined in terms of "Create > Develop > Explore" . The "Create" section allows you to get started with Redis, creating Redis database locally as well as over Cloud in the form of DBaaS. The "Develop" section allows you to build your app using Redis clients. Finally, the "Explore" section helps you to explore your Redis database using robust tools like RedisInsight, Redis Data Source for Grafana, RIOT and many more...
