@@ -3,7 +3,7 @@
 Redis Developer Hub is basically a journey carved out for Redis developer community. The journey is defined in terms of "Create > Develop > Explore" . The "Create" section allows you to get started with Redis, creating Redis database locally as well as over Cloud in the form of DBaaS. The "Develop" section allows you to build your app using Redis clients. Finally, the "Explore" section helps you to explore your Redis database using robust tools like RedisInsight, Redis Data Source for Grafana, RIOT and many more...
 
 
-## Creating Redis database
+# Create
 
 ## Cloud
 
@@ -23,7 +23,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 - [RedisMod](https://developer.redislabs.com/explore/redismod)
 
 
-## Developing with Redis Clients
+# Develop
 
 - [Java](https://developer.redislabs.com/develop/java/)
   - [Java based application on Heroku using Redis](https://developer.redislabs.com/howtos/herokujava)
@@ -34,6 +34,25 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
   - [NodeJS based application on Heroku using Redis](https://developer.redislabs.com/howtos/herokunodejs)
 - [Ruby](https://developer.redislabs.com/develop/ruby/) 
 - [Php](https://developer.redislabs.com/develop/php/)
+
+# Explore
+
+## RedisInsight - Redis GUI
+
+- [Getting Started](https://developer.redislabs.com/explore/redisinsight/getting-started)
+- [Visualize Redis database keys using RedisInsight Browser Tool](https://developer.redislabs.com/explore/redisinsight/browser)
+- [Debugging Redis using RedisInsight Slowlog Tool](https://developer.redislabs.com/explore/redisinsight/slowlog)
+- [Reduce Redis Memory usage using RedisInsight Memory Analyzer Tool](https://developer.redislabs.com/explore/redisinsight/memoryanalyzer)
+- [Manage Your Redis Cluster using RedisInsight Cluster Management Tool](https://developer.redislabs.com/explore/redisinsight/cluster)
+- [Using Redis Streams](https://developer.redislabs.com/explore/redisinsight/streams)
+- [Analyze Your Redis commands using RedisInsight Profiler tool](https://developer.redislabs.com/explore/redisinsight/profiler)
+- [Query, Visualize and Manipulate Graphs using RedisGraph Browser Tool](https://developer.redislabs.com/explore/redisinsight/redisgraph)
+- [Writing Your Serverless function using RedisGears Browser Tool](https://developer.redislabs.com/explore/redisinsight/redisgears)
+- [Managing time-series data using RedisTimeSeries Browser Tool](https://developer.redislabs.com/explore/redisinsight/redistimeseries)
+- [Unified Search and Analytics using RediSearch Browser Tool](https://developer.redislabs.com/explore/redisinsight/redisearch)
+- [Using Helm](https://developer.redislabs.com/explore/redisinsight/usinghelm)
+
+
 
 ## Extensibility via Redis Modules
 
@@ -76,20 +95,6 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 - [Getting Started](https://developer.redislabs.com/howtos/redisai)
 
 
-### RedisInsight - Redis GUI
-
-- [Getting Started](https://developer.redislabs.com/explore/redisinsight/getting-started)
-- [Visualize Redis database keys using RedisInsight Browser Tool](https://developer.redislabs.com/explore/redisinsight/browser)
-- [Debugging Redis using RedisInsight Slowlog Tool](https://developer.redislabs.com/explore/redisinsight/slowlog)
-- [Reduce Redis Memory usage using RedisInsight Memory Analyzer Tool](https://developer.redislabs.com/explore/redisinsight/memoryanalyzer)
-- [Manage Your Redis Cluster using RedisInsight Cluster Management Tool](https://developer.redislabs.com/explore/redisinsight/cluster)
-- [Using Redis Streams](https://developer.redislabs.com/explore/redisinsight/streams)
-- [Analyze Your Redis commands using RedisInsight Profiler tool](https://developer.redislabs.com/explore/redisinsight/profiler)
-- [Query, Visualize and Manipulate Graphs using RedisGraph Browser Tool](https://developer.redislabs.com/explore/redisinsight/redisgraph)
-- [Writing Your Serverless function using RedisGears Browser Tool](https://developer.redislabs.com/explore/redisinsight/redisgears)
-- [Managing time-series data using RedisTimeSeries Browser Tool](https://developer.redislabs.com/explore/redisinsight/redistimeseries)
-- [Unified Search and Analytics using RediSearch Browser Tool](https://developer.redislabs.com/explore/redisinsight/redisearch)
-- [Using Helm](https://developer.redislabs.com/explore/redisinsight/usinghelm)
 
 ## How to Contribute
 
