@@ -9,7 +9,9 @@ module.exports = {
       type: 'category',
       label: 'Community',
       items: [
-        'community/discord/index-discord'
+        'community/index-community',
+        'community/discord/index-discord',
+        'community/redis-live/index-redis-live',
       ]
     },
     {
