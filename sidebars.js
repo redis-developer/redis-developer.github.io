@@ -5,7 +5,14 @@ module.exports = {
       label: 'Home',
       href: '/',
     },
-     {
+    {
+      type: 'category',
+      label: 'Community',
+      items: [
+        'community/discord/index-discord'
+      ]
+    },
+    {
       type: 'category',
       label: 'Create',
       items: [
