@@ -7,15 +7,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Community',
-      items: [
-        'community/index-community',
-        'community/discord/index-discord',
-        'community/redis-live/index-redis-live',
-      ]
-    },
-    {
-      type: 'category',
       label: 'Create',
       items: [
         'create/index-create',
@@ -120,7 +111,15 @@ module.exports = {
            'howtos/herokujava/index-herokujava',
        ] 
      }, 
-    
+    {
+      type: 'category',
+      label: 'Get-Involved',
+      items: [
+        'get-involved/index-getinvolved',
+        'get-involved/discord/index-discord',
+        'get-involved/redis-live/index-redis-live',
+      ]
+    },
 
 ]
 };
