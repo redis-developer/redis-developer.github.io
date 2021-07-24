@@ -5,7 +5,7 @@ module.exports = {
       label: 'Home',
       href: '/',
     },
-     {
+    {
       type: 'category',
       label: 'Create',
       items: [
@@ -153,7 +153,15 @@ module.exports = {
            'howtos/herokujava/index-herokujava',
        ] 
      }, 
-    
+    {
+      type: 'category',
+      label: 'Get-Involved',
+      items: [
+        'get-involved/index-getinvolved',
+        'get-involved/discord/index-discord',
+        'get-involved/redis-live/index-redis-live',
+      ]
+    },
 
 ]
 };
