@@ -1,0 +1,227 @@
+---
+id: index-fastapi
+title: Using Redis with FastAPI
+sidebar_label: Redis with FastAPI
+slug: /develop/python/fastapi
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+This tutorial helps you get started with Redis and FastAPI.
+
+## Introduction
+
+[FastAPI](https://github.com/fastapi/fastapi) is a Python web framework based on
+the [Flask](http://flask.pocoo.org/) microframework. With deep support for
+asyncio, FastAPI is indeed _very fast_. FastAPI also distinguishes itself with
+features like automatic [OpenAPI (OAS)](https://openapis.org/) documentation for your API,
+easy-to-use data validation tools, and more.
+
+Of course, the best way to **make your FastAPI web service even faster** is to use
+Redis. Redis is a fast, in-memory, distributed database.
+
+In this tutorial, we'll walk through the steps necessary to use Redis with
+FastAPI. We're going to build *IsBitcoinLit*, an API that stores Bitcoin
+sentiment and price averages in Redis as a timeseries, then rolls these up for
+the last three hours.
+
+Next, let's look at the learning objectives of this tutorial.
+
+
+## Learning Objectives
+
+The learning objectives of this tutorial are:
+
+1. Learn how to install aioredis-py and connect to Redis
+2. Learn how to integrate aioredis-py with FastAPI
+3. Learn how to use Redis as a cache with aioredis-py
+4. Learn how to use RedisTimeSeries to store and query timeseries data
+
+Let's get started!
+
+
+## Pre-Tutorial Quiz
+
+Want to check gaps in your knowledge of Redis and FastAPI before you continue? Take our short pre-tutorial quiz!
+
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfFmBWLtm8oLouaiT3wXpbgZm8Df-FV_xFvnuXEWfbCoh3clw/viewform?embedded=true" width="640" height="524" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+You can also [visit the quiz directly](https://forms.gle/eXiiVcgXqG9UNarG6).
+
+
+## Set Up the IsBitcoinLit Project
+
+You can achieve the learning objectives of this tutorial by reading through the
+text and code examples that follow.
+
+However, I recommend that you set up the example project yourself, so that you
+can try out some of the code as you learn. The project has a permissive license
+that allows you to use it freely.
+
+To get started, [fork the example project on
+GitHub](https://github.com/redis-developer/fastapi-redis-tutorial).
+
+[Follow the README](https://github.com/redis-developer/fastapi-redis-tutorial/blob/master/README.md)
+to the project running.
+
+
+## An Asyncio Primer
+
+The *IsBitcoinLit* project is completely async. That means we use an
+asyncio-compatible Redis client called
+[aioredis-py](https://github.com/aio-libs/aioredis-py) and FastAPI's async
+features.
+
+If you **aren't familiar with asyncio**, take a few minutes to watch this
+primer on asyncio before continuing:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Xbl7XjFYsN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+## Installing the Redis Client
+
+We're going to start this tutorial assuming that you have a FastAPI project to
+work with. We'll use the *IsBitcoinLit* project for our examples.
+
+(Poetry)[https://python-poetry.org/] is the best way to manage Python dependencies today, so we'll use it in this tutorial.
+
+IsBitcoinLit includes a Poetry configuration file already, but if you had not already created one, you could create one like this:
+
+		$ poetry init	
+
+Running this command creates a `pyproject.toml` file. Poetry uses this file to manage your project's dependencies.
+
+Assuming you already added FastAPI and any other necessary dependencies, you could add aioredis-py to your project like this:
+
+		$ poetry add aioredis-py
+
+**NOTE**: This tutorial uses a beta version of aioredis-py 2.0. This new version of aioredis-py features an API that matches the most popular synchronous Redis client for Python, [redis-py](https://github.com/andymccurdy/redis-py).
+
+The aioredis-py client is now installed. Time to write some code!
+
+
+## Integrate aioredis-py with FastAPI
+
+We're going to use Redis for a few things in this FastAPI app:
+
+1. Storing 30-second averages of sentiment and price for the last 24 hours with RedisTimeSeries
+2. Rolling up these averages into a three-hour snapshot with RedisTimeSeries
+3. Caching the three-hour snapshot
+
+Let's look at each of these integration points in more detail.
+
+
+### Creating the Timeseries
+
+The data for our app consists of 30-second averages of Bitcoin prices and sentiment ratings for the last 24 hours. We pull these from the [SentiCrypt API](https://senticrypt.com/api/v1/sentiment/24h).
+
+**NOTE**: We have no affiliation with SentiCrypt or any idea how accurate these numbers are.
+
+We're going to store price and sentiment averages in a timeseries with RedisTimeSeries, so we want to make sure that when the app starts up, the timeseries exists.
+
+We can use a [startup event](https://docs.fastapi.tiangolo.com/en/latest/api-reference/fastapi-router/#startup-event) to accomplish this. Doing so looks like the following:
+
+```python
+@app.on_event('startup')
+async def startup_event():
+    keys = Keys()
+    await initialize_redis(keys)
+```
+
+Actually creating the timeseries is a little more complicated than this. We'll use the `TS.CREATE` RedisTimeSeries command to create the timeseries within our `initialize_redis()` function:
+
+```python
+async def make_timeseries(key):
+    """
+    Create a timeseries with the Redis key `key`.
+
+    We'll use the duplicate policy known as "first," which ignores
+    duplicate pairs of timestamp and values if we add them.
+
+    Because of this, we don't worry about handling this logic
+    ourselves -- but note that there is a performance cost to writes
+    using this policy.
+    """
+    try:
+        await redis.execute_command(
+            'TS.CREATE', key,
+            'DUPLICATE_POLICY', 'first',
+        )
+    except ResponseError as e:
+        # Time series probably already exists
+        log.info('Could not create timeseries %s, error: %s', key, e)
+
+```
+
+**TIP**: An interesting point to note from this code is that when we create a timeseries, we can use the `DUPLICATE_POLICY` option to specify how to handle duplicate pairs of timestamp and values.
+
+
+### Storing 30-Second Averages of Sentiment and Price
+
+A `/refresh` endpoint exists in the app to allow a client to trigger a refresh of the 30-second averages.
+
+When this refresh occurs, the first thing we do is get the latest sentiment and price data from SentiCrypt. Then we persist to the Redis timeseries we created on app startup.
+
+The helper function we use to add timeseries data looks like the following:
+
+```python
+async def add_many_to_timeseries(
+    key_pairs: Iterable[Tuple[str, str]],
+    data: BitcoinSentiments
+):
+    """
+    Add many samples to a single timeseries key.
+
+    `key_pairs` is an iteratble of tuples containing in the 0th position the
+    timestamp key into which to insert entries and the 1th position the name
+    of the key within th `data` dict to find the sample.
+    """
+    partial = functools.partial(redis.execute_command, 'TS.MADD')
+    for datapoint in data:
+        for timeseries_key, sample_key in key_pairs:
+            partial = functools.partial(
+                partial, timeseries_key, int(
+                    float(datapoint['timestamp']) * 1000,
+                ),
+                datapoint[sample_key],
+            )
+    return await partial()
+```
+
+This is a little complex. We're using the `TS.MADD` RedisTimeSeries command to add many samples to a timeseries.
+
+**NOTE**: We use `TS.MADD` because doing so is faster than `TS.ADD` for adding batches of samples to a timeseries.
+
+Let's walk through how this function works. Fist, we start with data from SentiCrpyt. The data looks like this:
+
+```json
+[
+	{
+		"count": 7259,
+		"timestamp": 1625592626.3452034,
+		"rate": 0.0,
+		"last": 0.33,
+		"sum": 1425.82,
+		"mean": 0.2,
+		"median": 0.23,
+		"btc_price": "33885.23"
+	}, 
+	//...
+]
+```
+
+Once we have that data in a `data` variable, we call the `add_many_to_timeseries()` function like this:
+
+```python
+    await add_many_to_timeseries(
+        (
+            (ts_price_key, 'btc_price'),
+            (ts_sentiment_key, 'mean'),
+        ), data,
+    )
+```
+
+This results in a single large `TS.MADD` call that adds price data to the price timeseries and sentiment data to the sentiment timeseries. Conveniently, `TS.MADD` can add samples to multiple timeseries in a single call.

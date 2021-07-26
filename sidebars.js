@@ -29,7 +29,7 @@ module.exports = {
         'develop/index-develop',
         'develop/java/index-java',
         'develop/C/index-c',
-         {
+        {
            type: 'category',
            label: 'Node.js',
            items: [
@@ -59,9 +59,16 @@ module.exports = {
                  'develop/node/node-crash-course/coursewrapup/index-coursewrapup',
                     ]   
                 },
-               ]
-           },
-          'develop/python/index-python',
+              ]
+          },
+          {
+            type: 'category',
+            label: 'Python',
+            items: [
+              'develop/python/index-python',
+              'develop/python/fastapi/index-fastapi'
+            ]
+          },
           'develop/dotnet/index-dotnet', 
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
