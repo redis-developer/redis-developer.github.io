@@ -113,7 +113,7 @@ module.exports = {
      }, 
     {
       type: 'category',
-      label: 'Get-Involved',
+      label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
         'get-involved/discord/index-discord',
