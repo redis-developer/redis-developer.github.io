@@ -1,0 +1,147 @@
+---
+id: index-storing-complex-json-document
+title: Storing and retrieving Nested JSON document
+sidebar_label: Storing and retrieving Nested JSON document
+slug: /howtos/redisjson/storing-complex-json-document
+---
+
+JSON(a.k.a JavaScript Object Notation) is a format for sharing data. A JSON object is a key-value data format that is typically rendered in curly braces. When you’re working with JSON, you’ll likely see JSON objects in a .json file, but they can also exist as a JSON object or string within the context of a program.
+
+Nested JSON is a JSON file with a big portion of its values being other JSON objects. Compared with Simple JSON, Nested JSON provides higher clarity in that it decouples objects into different layers, making it easier to maintain. 
+
+
+## Example of Nested JSON object
+
+```
+employee = {
+     'name': "Paul",
+     'Age': '25',
+     'Location': "USA",
+     'Address':
+        {
+          "longitude": "-113.6335371",
+          "latitude": "37.1049502",
+          "postal code": "90266"
+        }
+   }
+```
+
+Follow the below steps to understand how nested JSON objects can be imported into Redis database:
+
+
+### Step 1. Run RedisJSON Docker container
+
+
+ ```bash
+  docker run -p 6379:6379 --name redis-redisjson redislabs/rejson:latest
+ ```
+
+
+### Step 2. Verify if RedisJSON module is loaded
+
+
+ ```bash
+  redis-cli
+  127.0.0.1:6379> info modules
+  # Modules
+  module:name=ReJSON,ver=10007,api=1,filters=0,usedby=[],using=[],options=[]
+  127.0.0.1:6379> 
+ ```
+
+### Step 3. Nested JSON 
+
+Below is a python code for nested JSON document:
+
+
+```python
+ import redis
+ import json
+ 
+ employee = {
+     'name': "Paul",
+     'Age': '25',
+     'Location': "USA",
+     'Address': 
+        {
+          "longitude": "-113.6335371",
+          "latitude": "37.1049502",
+          "postal code": "90266"
+        }
+   }
+ r = redis.StrictRedis()
+ r.execute_command('JSON.SET', 'record', '.', json.dumps(employee))
+ reply = json.loads(r.execute_command('JSON.GET', 'record'))
+``` 
+
+Copy the code and save it in a file called ```employee.py```
+
+### Step 4. Load Redis Module
+
+ ```bash
+  pip  install redis
+ ```
+
+### Step 5. Execute the pythin script
+
+Execute the below script and ensure that it executes successfully.
+
+
+```bash
+ python3 employee.py
+```
+
+
+
+### Step 6. Verify the JSON objects gets added to Redis
+
+
+ ```bash
+  redis-cli
+  127.0.0.1:6379> JSON.GET record
+  "{\"name\":\"Paul\",\"Age\":\"25\",\"Location\":\"USA\",\"Address\":[{\"longitude\":\"-113.6335371\",\"latitude\":\"37.1049502\",\"postal code\":\"90266\"}]}"
+ ```
+ 
+
+### Step 6. Fetching the specific fields
+
+In case you want to fetch specific filed (like address), then the code would look like this:
+
+
+```python
+ import redis
+ import json
+
+ employee = {
+     'name': "Paul", 
+     'Age': '25', 
+     'Location': "USA",
+     'Address': 
+        {
+          "longitude": "-113.6335371",
+          "latitude": "37.1049502",
+          "postal code": "90266"
+        }
+              
+  }
+ r = redis.StrictRedis()
+ r.execute_command('JSON.SET', 'record', '.', json.dumps(employee))
+ reply = json.loads(r.execute_command('JSON.GET', 'record', '.Address.longitude'))
+```
+
+
+### Step 7. Verifying the results
+
+
+```bash
+  redis-cli
+  127.0.0.1:6379> JSON.GET record .Address.longitude
+  "\"-113.6335371\""
+```
+
+### References
+
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
+- Learn more about [RedisJSON](https://oss.redislabs.com/redisjson/) in the Quickstart tutorial.
+- [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
+

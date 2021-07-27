@@ -1,0 +1,133 @@
+---
+id: index-storing-json-document
+title: Storing and retrieving JSON document  
+sidebar_label: Storing and retrieving JSON document 
+slug: /howtos/redisjson/storing-json-document
+---
+
+
+RedisJSON is a Redis module that lets you store JSON documents in Redis. It is a JSON data type for Redis that lets you to fetch or modify a specific element in the document tree, without retrieving (or internally even parsing) the document. Its Python client even lets you store python dicts and convert them to JSON automatically.
+
+### RedisJSON Python Client
+
+
+rejson-py is a package that allows storing, updating and querying objects as JSON documents in a Redis database that is extended with the ReJSON module. The package extends redis-py's interface with ReJSON's API, and performs on-the-fly serialization/deserialization of objects to/from JSON.
+
+Follow the steps below to get started with RedisJSON with Python:
+
+
+### Step 1. Run RedisJSON Docker container
+
+```bash
+ docker run -p 6379:6379 --name redis-redisjson redislabs/rejson:latest
+```
+
+
+### Step 2. Verify if RedisJSON module is loaded
+
+```bash
+ redis-cli
+ 127.0.0.1:6379> info modules
+ # Modules
+ module:name=ReJSON,ver=10007,api=1,filters=0,usedby=[],using=[],options=[]
+ 127.0.0.1:6379> 
+```
+
+### Step 3. Storing the JSON document
+
+Let us consider a simple JSON document structure:
+
+```
+employee
+ {
+  "name": "Paul John",
+  "age": 25,
+  "location: "USA"
+ }
+```
+
+Below is a python code to store the JSON document into Redis:
+
+```python
+
+ import redis
+ import json
+
+ employee = {
+
+     'name': "Paul", 
+     'Age': '25', 
+     'Location': "USA"
+   }
+ r = redis.StrictRedis()
+ r.execute_command('JSON.SET', 'record', '.', json.dumps(employee))
+ reply = json.loads(r.execute_command('JSON.GET', 'record'))
+```
+
+In the code above, we use JSON.GET to extract the JSON elements.
+
+### Step 4. Load Redis Module
+
+```bash
+ pip  install redis
+```
+
+### Step 5. Verify the JSON document added to Redis
+
+
+<b>Command</b>:
+
+```bash
+ 127.0.0.1:6379> JSON.GET record
+```
+
+<b>Result</b>:
+
+```
+ "{\"name\":\"Paul\",\"Age\":\"25\",\"Location\":\"USA\"}"
+ 127.0.0.1:6379> 
+```
+
+### Step 6. Fetching the specific fields within JSON document
+
+It's possible to fetch specific field within JSON element. Let us look at the below code:
+
+```python
+ import redis
+ import json
+
+ employee = {
+
+     'name': "Paul", 
+     'Age': '25', 
+     'Location': "USA"
+   }
+ r = redis.StrictRedis()
+ r.execute_command('JSON.SET', 'record', '.', json.dumps(employee))
+ reply = json.loads(r.execute_command('JSON.GET', 'record', '.name'))
+```
+
+
+### Step 7. Verifying the results
+
+
+<b>Command</b>:
+
+```bash
+ 127.0.0.1:6379> JSON.GET record .name
+```
+
+<b>Results</b>:
+
+```
+ "\"Paul\""
+```
+
+
+### References
+
+- [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
+- Learn more about [RedisJSON](https://oss.redislabs.com/redisjson/) in the Quickstart tutorial.
+
+

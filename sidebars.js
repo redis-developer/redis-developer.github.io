@@ -114,7 +114,18 @@ module.exports = {
       items: [
            'howtos/index-howtos',
            'howtos/redisearch/index-redisearch',
-           'howtos/redisjson/index-redisjson',
+           { 
+             type: 'category',
+             label: 'RedisJSON Tutorial',
+             items: [
+                  'howtos/redisjson/index-redisjson',
+                  'howtos/redisjson/getting-started/index-gettingstarted',
+                  'howtos/redisjson/storing-json-document/index-storing-json-document',
+                  'howtos/redisjson/storing-complex-json-document/index-storing-complex-json-document',
+                  'howtos/redisjson/using-nodejs/index-usingnodejs',
+                  'howtos/redisjson/redisjson-cheatsheet/index-redisjson-cheatsheet',
+             ]
+           },
            'howtos/redistimeseries/index-redistimeseries',
            'howtos/redisgraph/index-redisgraph',
            'howtos/redisbloom/index-redisbloom',
