@@ -4,6 +4,8 @@
 ![issues](https://img.shields.io/github/issues/redis-developer/redis-developer.github.io)
 ![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fredis-developer%2Fredis-developer.github.io)
 
+[![documentation](https://github.com/redis-developer/redis-developer.github.io/actions/workflows/documentation.yml/badge.svg)](https://github.com/redis-developer/redis-developer.github.io/actions/workflows/documentation.yml)
+
 # Redis Developer Hub
 
 Redis Developer Hub is basically a journey carved out for Redis developer community. The journey is defined in terms of "Create > Develop > Explore" . The "Create" section allows you to get started with Redis, creating Redis database locally as well as over Cloud in the form of DBaaS. The "Develop" section allows you to build your app using Redis clients. Finally, the "Explore" section helps you to explore your Redis database using robust tools like RedisInsight, Redis Data Source for Grafana, RIOT and many more...
