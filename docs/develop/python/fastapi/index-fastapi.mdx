@@ -14,7 +14,7 @@ This tutorial helps you get started with Redis and FastAPI.
 
 ## Introduction
 
-[FastAPI](https://github.com/fastapi/fastapi) is a Python web framework based on
+[FastAPI](https://github.com/tiangolo/fastapi) is a Python web framework based on
 the [Flask](http://flask.pocoo.org/) microframework. With deep support for
 asyncio, FastAPI is indeed _very fast_. FastAPI also distinguishes itself with
 features like automatic [OpenAPI (OAS)](https://openapis.org/) documentation for your API,
@@ -123,13 +123,13 @@ Let's look at each of these integration points in more detail.
 
 ### Creating the Timeseries
 
-The data for our app consists of 30-second averages of Bitcoin prices and sentiment ratings for the last 24 hours. We pull these from the [SentiCrypt API](https://senticrypt.com/api/v1/sentiment/24h).
+The data for our app consists of 30-second averages of Bitcoin prices and sentiment ratings for the last 24 hours. We pull these from the [SentiCrypt API](https://senticrypt.com/docs.html).
 
 **NOTE**: We have no affiliation with SentiCrypt or any idea how accurate these numbers are. This example is **just for fun**!
 
 We're going to store price and sentiment averages in a timeseries with RedisTimeSeries, so we want to make sure that when the app starts up, the timeseries exists.
 
-We can use a [startup event](https://docs.fastapi.tiangolo.com/en/latest/api-reference/fastapi-router/#startup-event) to accomplish this. Doing so looks like the following:
+We can use a [startup event](https://fastapi.tiangolo.com/advanced/events/) to accomplish this. Doing so looks like the following:
 
 ```python
 @app.on_event('startup')
@@ -212,7 +212,7 @@ Then we save the data into two timeseries in Redis with the `persist()` function
     )
 ```
 
-The `add_many_to_timeseris()` function takes a list of (timeseries key, sample key) pairs and a list of samples from SentiCrypt. For each sample, it reads the value of the sample key in the SentiCrypt sample, like "btc_price," and adds that value to the given timeseries key.
+The `add_many_to_timeseries()` function takes a list of (timeseries key, sample key) pairs and a list of samples from SentiCrypt. For each sample, it reads the value of the sample key in the SentiCrypt sample, like "btc_price," and adds that value to the given timeseries key.
 
 Here's the function:
 
@@ -247,7 +247,7 @@ We're using the `TS.MADD` RedisTimeSeries command to add many samples to a times
 This results in a single large `TS.MADD` call that adds price data to the price timeseries and sentiment data to the sentiment timeseries. Conveniently, `TS.MADD` can add samples to multiple timeseries in a single call.
 
 
-## Calculaing Three-Hour Averages with RedisTimeSeries
+## Calculating Three-Hour Averages with RedisTimeSeries
 
 Clients use IsBitcoinLit to get the average price and sentiment for each of the last three hours. But so far, we've only stored 30-second averages in Redis. How do we calculate the average of these averages for the last three hours?
 
@@ -358,7 +358,7 @@ async def bitcoin(background_tasks: BackgroundTasks, keys: Keys = Depends(make_k
 
 ```
 
-To use this endpoint, clients make a GET request to `/is-bitcoin-lit`. Then we try to get the cached three-hour summary from Redis. If we can't, we calculate the three-hour summary, return it, and then and save it outside of the web request.
+To use this endpoint, clients make a GET request to `/is-bitcoin-lit`. Then we try to get the cached three-hour summary from Redis. If we can't, we calculate the three-hour summary, return it, and then save it outside of the web request.
 
 We've already seen how calculating the summary data works, and we just explored saving the summary data to Redis. So, let's look at the `get_cache()` function, where we read the cached data:
 
