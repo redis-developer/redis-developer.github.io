@@ -130,6 +130,7 @@ module.exports = {
                   'howtos/redisjson/storing-json-document/index-storing-json-document',
                   'howtos/redisjson/storing-complex-json-document/index-storing-complex-json-document',
                   'howtos/redisjson/using-nodejs/index-usingnodejs',
+                  'howtos/redisjson/jsonind-document/index-jsonind-document',
                   'howtos/redisjson/redisjson-cheatsheet/index-redisjson-cheatsheet',
              ]
            },

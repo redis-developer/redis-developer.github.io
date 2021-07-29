@@ -1,0 +1,215 @@
+---
+id: index-jsonind-document
+title: How to index JSON documents using RedisJSON & RediSearch
+sidebar_label: How to index JSON documents using RedisJSON & RediSearch
+slug: /howtos/redisjson/jsonind-document
+---
+
+RedisJSON 2.0 Private Preview was announced for the first time during RedisConf 2021. With this newer version, RedisJSON will fully support JSONPath expressions and [Active-Active geo-distribution](https://redislabs.com/redis-enterprise/technology/active-active-geo-distribution/). The Active-Active implementation is based on [Conflict-free Replicated Data-Types (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
+
+Prior to v2.2, RediSearch only supported Redis hashes. Going forward, RediSearch will support  RedisJSON documents. This opens a powerful new set of document-based indexing use cases. In addition, RediSearch now provides query profiling. This will empower developers to understand and optimize their RediSearch queries, increasing their developer experience.
+
+
+RediSearch has been providing indexing and search capabilities on hashes. Under the hood, RedisJSON 2.0 exposes an internal public API. Internal, because this API is exposed to other modules running inside a Redis node. Public, because any module can consume this API. So does RediSearch 2.2 ! In addition to indexing Redis hashes, RediSearch also indexes JSON. To index JSON, you must use the RedisJSON module.
+
+By exposing its capabilities to other modules, RedisJSON gives RediSearch the ability to index JSON documents so users can now find documents by indexing and querying the content. These combined modules give you a powerful, low latency, JSON-oriented document database!
+
+### Prerequisite:
+
+- Redis 6.x or later
+- RediSearch 2.2 or later
+- RediJSON 2.0 or later
+
+
+### Step 1. Run the "preview" tagged Redismod container
+
+Please note that this publicly available Docker Image is a community preview and doesn't support Active-Active.This Docker image contains Redis together with the main Redis modules, including RediSearch and RedisJSON.  You'll need the preview tag of the image, which you can access as follows:
+
+
+```bash
+ docker run -p 6379:6379 redislabs/redismod:preview
+```
+
+```bash
+ info modules
+ # Modules
+ module:name=rg,ver=10006,api=1,filters=0,usedby=[],using=[ai],options=[]
+ module:name=graph,ver=20406,api=1,filters=0,usedby=[],using=[],options=[]
+ module:name=timeseries,ver=10410,api=1,filters=0,usedby=[],using=[],options=[]
+ module:name=bf,ver=20205,api=1,filters=0,usedby=[],using=[],options=[]
+ module:name=ai,ver=10003,api=1,filters=0,usedby=[rg],using=[],options=[]
+ module:name=ReJSON,ver=20000,api=1,filters=0,usedby=[search],using=[],options=[]
+ module:name=search,ver=20200,api=1,filters=0,usedby=[],using=[ReJSON],options=[]
+```
+
+### Step 2. Create an Index
+
+Let's start by creating an index.
+
+We can now specify ON JSON to inform RediSearch that we want to index JSON documents.
+Then, on the SCHEMA part, you can provide JSONPath expressions. The result of each JSON Path expression is indexed and associated with a logical name ( attribute ). This attribute (previously called field ) is used in the query part.
+
+This is the basic syntax for indexing a JSON document:
+
+
+<b>Syntax</b>:
+
+```
+ FT.CREATE {index_name} ON JSON SCHEMA {json_path} AS {attribute} {type}
+```
+ 
+<b>Command</b>:
+
+```bash
+ FT.CREATE userIdx ON JSON SCHEMA $.user.name AS name TEXT $.user.email AS email  TAG
+```
+
+### Step 3. Populate the database with JSON document
+
+We should first populate the database with a JSON document using the JSON.SET command. In our example we are going to use the following JSON document:
+
+```
+{
+  "user": {
+    "name": "Paul John",
+    "email": "paul.john@example.com",
+    "age": "42",
+    "country": "London"
+  }
+}
+```
+
+```
+JSON.SET myuser $ '{ "user":{"name": "Paul John", "email": "paul.john@example.com", "age": "4", "country": "London" }}'
+
+```
+
+
+Because indexing is synchronous, the document will be visible on the index as soon as the JSON.SET command returns. Any subsequent query matching the indexed content will return the document
+
+### Step 4. Indexing the database with JSON document
+
+
+This new version includes a comprehensive support of JSONPath. It is now possible to use all the expressiveness of JSONPath expressions.
+
+
+To create a new index, we use the FT.CREATE command. The schema of the index now accepts JSONPath expressions. The result of the expression is indexed and associated with an attribute (here: title).
+
+```
+FT.CREATE myIdx ON JSON SCHEMA $.title AS title TEXT
+```
+
+
+We can now do a search query and find our JSON document using FT.SEARCH:
+
+
+<b>Command</b>:
+
+ ```bash
+  FT.SEARCH userIdx '@name:(John)'
+ ```
+
+<b>Result</b>:
+
+ ```bash
+  1) (integer) 1
+  2) "myuser"
+  3) 1) "$"
+     2) "{\"user\":{\"name\":\"Paul John\",\"email\":\"paul.john@example.com\",\"age\":\"4\",\"country\":\"London\"}}"
+ ```
+
+We just saw that, by default, FT.SEARCH returns the whole document. We can also return only specific attribute (here name)
+
+ 
+ ```bash
+   FT.SEARCH userIdx '@name:(John)' RETURN 1 name
+ ```
+
+
+ ```bash
+   1) (integer) 1
+   2) "myuser"
+   3) 1) "name"
+     2) "Paul John" 
+ ```
+
+### Step 5. Projecting using JSON Path expressions 
+
+The RETURN parameter also accepts a JSON Path expression which let us extract any part of the JSON document.
+In this example, we return the result of the JSON Path expression $.user.hp .
+
+<b>Command</b>:
+
+ ```bash
+  FT.SEARCH userIdx '@name:(John)' RETURN 1 $.user.email
+ ```
+
+<b>Result</b>:
+
+ ```bash
+  1) (integer) 1
+  2) "myuser"
+  3) 1) "$.user.email"
+     2) "paul.john@example.com"
+ ```
+
+
+Please Note: It is not possible to index JSON object and JSON arrays. 
+To be indexed, a JSONPath expression must return a single scalar value (string or number). If the JSONPath expression returns an object or an array, it will be ignored.
+
+
+Given the following document:
+
+ ```
+  {
+     
+     "name": "Paul John",
+     “address": [
+         "Orbital Park",
+         " Hounslow"
+   ],
+   "pincode": "TW4 6JS"
+  }
+ ```
+
+If we want to index the array under the address key, we have to create two fields:
+
+
+<b>Command</b>:
+
+```bash
+ FT.CREATE orgIdx ON JSON SCHEMA $.address[0] AS a1 TEXT $.address[1] AS a2 TEXT
+```
+
+It's time to index the document:
+
+<b>Command</b>:
+
+```
+ JSON.SET org:1 $ '{ "name": "Home Address", "address": [ "Orbital Park","Hounslow" ], "pincode": "TW4 6JS" }'
+```
+
+We can now search in the address:
+
+<b>Command</b>:
+
+ ```
+  FT.SEARCH orgIdx "Orbital Park"
+ ```
+
+<b>Result</b>:
+
+ ```
+  FT.SEARCH orgIdx "Orbital Park" 
+  1) (integer) 1
+  2) "org:1"
+  3) 1) "$"
+    2) "{\"name\":\"Home Address\",\"address\":[\"Orbital Park\",\"Hounslow\"],\"pincode\":\"TW4 6JS\"}"
+ ```
+
+### References
+
+- [Indexing JSON Document](https://oss.redislabs.com/redisearch/master/Indexing_JSON)
+- [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redislabs.com/blog/index-and-query-json-docs-with-redis/)
+
+
