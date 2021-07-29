@@ -22,6 +22,7 @@ Golang community has built many client libraries that you can find [here](https:
   defaultValue="redigo"
   values={[
     {label: 'Redigo', value: 'redigo'},
+    {label: 'Go-Redis', value: 'go-redis'},
   ]}>
   <TabItem value="redigo">
 
@@ -30,7 +31,7 @@ Golang community has built many client libraries that you can find [here](https:
 The `redigo` library is located in the `https://github.com/gomodule/redigo` that you must import in your application.
 
 
-### Step 1. Import the `redigo` module
+#### Step 1. Import the `redigo` module
 
   ```bash
    go get github.com/gomodule/redigo/redis
@@ -44,7 +45,7 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
    )
   ```
 
-### Step 2. Create a connection pool
+#### Step 2. Create a connection pool
 
   ```go
    func newPool() *redis.Pool {
@@ -62,7 +63,7 @@ The `redigo` library is located in the `https://github.com/gomodule/redigo` that
     }
    ```    
 
-### Step 3. Write your application code
+#### Step 3. Write your application code
 
    ```go
     package main
@@ -129,6 +130,77 @@ Find more information about Golang & Redis connections in the "[Redis Connect](h
 
 
   </TabItem>
+<TabItem value="go-redis">
+
+Go-redis is a type-safe, Redis client library for Go with support for features like Pub/Sub, sentinel, and pipelining.It is a Redis client able to support a Redis cluster and is designed to store and update slot info automatically with a cluster change. Below are the attractive features of Go-redis:
+- Go-redis has pooling capabilities.(Pools allow you to safely handle go-routines, auto reconnect if any error occurs)
+- It supports both standard, OSS cluster AIP, and Sentinel
+- Comes with Auto reconnects / Auto-rediscovers cluster slots on error/migration
+- Support instrumentations
+- Allows for a custom dialer (this is useful for Enterprise)
+
+The go-redis library is located in the https://github.com/go-redis/redis that you must import in your application.
+
+#### Step 1. Run the Redis Docker container
+
+```bash
+ docker run -d -p 6379:6379 redislabs/redismod
+```
+
+
+#### Step 2. Initialise the Go Module
+
+```bash
+ go mod init github.com/my/repo
+```
+
+#### Step 3. Install redis/v8 
+
+```bash
+ go get github.com/go-redis/redis/v8
+```
+
+#### Step 4. Create a main.go file 
+
+Let us create a main.go file and write the following code to check for your connection
+
+```bash
+ package main
+
+import (
+    "fmt"
+    "github.com/go-redis/redis"
+)
+
+func main() {
+    fmt.Println("Testing Go-Redis")
+
+    client := redis.NewClient(&redis.Options{
+        Addr: "localhost:6379",
+        Password: "",
+        DB: 0,
+    })
+
+    pong, err := client.Ping().Result()
+    fmt.Println(pong, err)
+
+ }
+```
+
+#### Step 5. Begin the compilation
+
+
+```
+ go run main.go
+```
+
+By now, the Go application should successfully connect to the Redis instance and  return a successful PONG response.
+
+
+
+ </TabItem>
+
+
 </Tabs>
 
 ###  Redis Marketplace
