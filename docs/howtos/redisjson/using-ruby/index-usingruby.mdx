@@ -1,0 +1,79 @@
+---
+id: index-usingruby
+title: Importing JSON data into Redis using Ruby
+sidebar_label: RedisJSON using Ruby
+slug: /howtos/redisjson/using-ruby
+---
+
+rejson-rb is a package that allows storing, updating and querying objects as JSON documents in a Redis database that is extended with the ReJSON module. The package extends redis-rb's interface with ReJSON's API, and performs on-the-fly serialization/deserialization of objects to/from JSON.
+
+### Step 1. Run RedisJSON docker container
+
+```bash
+ docker run -d -p 6379:6379 redislabs/redismod:latest
+```
+
+### Step 2. Install Ruby
+
+```bash
+ brew install ruby
+```
+
+### Step 3. Install RedisJSON Gem
+
+```bash
+ gem install rejson-rb
+```
+
+### Step 4. Create a ruby file
+
+Copy the below content and paste it in a file called 'employee.rb'.
+
+```ruby
+ require 'rejson'
+
+ rcl = Redis.new # Get a redis client
+
+ # Get/Set/Delete keys
+ obj = {
+      'id': "42",
+       'name': "Paul John",
+       'email': "paul.john@gmail.com",
+       'address': {
+           'city': 'London'
+         }
+       }
+
+ rcl.json_set("employee", Rejson::Path.root_path, obj)
+
+ rcl.json_set("employee", Rejson::Path.new(".id"), 43)
+
+ rcl.json_get "employee", Rejson::Path.root_path
+
+ rcl.json_del "employee", ".address.city"
+```
+
+The above script uses RedisJSON commands to set the objects, alter the id to 43 and then perform the delete operation using 'json_del'
+
+### Step 5. Execute the script
+
+ ```bash
+  ruby employee.rb
+ ```
+
+You can verify what's happening in the background by running the monitor command in Redis CLI shell:
+
+ ```bash
+  127.0.0.1:6379> monitor
+  OK
+  1627619198.040000 [0 172.17.0.1:57550] "JSON.SET" "employee" "." "{\"id\":\"42\",\"name\":\"Paul John\",\"email\":\"paul.john@gmail.com\",\"address\":{\"city\":\"London\"}}"
+  1627619198.040876 [0 172.17.0.1:57550] "JSON.SET" "employee" ".id" "43"
+ 1627619198.042132 [0 172.17.0.1:57550] "JSON.GET" "employee" "."
+ 1627619198.042741 [0 172.17.0.1:57550] "JSON.DEL" "employee" ".address.city"
+```
+
+### References
+
+- [Rate Limiting app in Ruby and Redis](http://marketplace.redislabs.com/?id=project%3Abasic-redis-rate-limiting-demo-ruby)
+- [Ruby and Redis](/develop/ruby/)
+
