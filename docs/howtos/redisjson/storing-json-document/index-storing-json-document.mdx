@@ -49,19 +49,18 @@ employee
 Below is a python code to store the JSON document into Redis:
 
 ```python
+from rejson import Client, Path
 
- import redis
- import json
 
- employee = {
+rj = Client(host='localhost', port=6379, decode_responses=True)
+
+employee = {
 
      'name': "Paul", 
      'Age': '25', 
      'Location': "USA"
    }
- r = redis.StrictRedis()
- r.execute_command('JSON.SET', 'record', '.', json.dumps(employee))
- reply = json.loads(r.execute_command('JSON.GET', 'record'))
+rj.jsonset('employee', Path.rootPath(), employee)
 ```
 
 In the code above, we use JSON.GET to extract the JSON elements.
