@@ -63,7 +63,7 @@ employee = {
 rj.jsonset('employee', Path.rootPath(), employee)
 ```
 
-In the code above, we use JSON.GET to extract the JSON elements.
+In the code above, we use JSON.GET to extract the JSON elements. Save the above file as "employee.py".
 
 ### Step 4. Load Redis Module
 
@@ -71,7 +71,13 @@ In the code above, we use JSON.GET to extract the JSON elements.
  pip  install rejson
 ```
 
-### Step 5. Verify the JSON document added to Redis
+### Step 5. Execute the python script
+
+```bash
+ python3 employee.py
+```
+
+### Step 6. Verify the JSON document added to Redis
 
 
 <b>Command</b>:
@@ -87,7 +93,7 @@ In the code above, we use JSON.GET to extract the JSON elements.
  127.0.0.1:6379> 
 ```
 
-### Step 6. Fetching the specific fields within JSON document
+### Step 7. Fetching the specific fields within JSON document
 
 It's possible to fetch specific field within JSON element. Let us modify the above code and add "address" field as shown below:
 
@@ -112,7 +118,7 @@ rj.jsonget('employee', Path('.address.location'))
 In the above example, the code tries to fetch only the location under the address field.
 
 
-### Step 7. Verifying the results
+### Step 8. Verifying the results
 
 
 <b>Command</b>:
