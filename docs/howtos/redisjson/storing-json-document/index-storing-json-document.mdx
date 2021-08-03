@@ -92,19 +92,24 @@ In the code above, we use JSON.GET to extract the JSON elements.
 It's possible to fetch specific field within JSON element. Let us look at the below code:
 
 ```python
- import redis
- import json
+ from rejson import Client, Path
 
- employee = {
+
+rj = Client(host='localhost', port=6379, decode_responses=True)
+
+employee = {
 
      'name': "Paul", 
      'Age': '25', 
-     'Location': "USA"
+     'address': {
+        'location': "USA"
    }
- r = redis.StrictRedis()
- r.execute_command('JSON.SET', 'record', '.', json.dumps(employee))
- reply = json.loads(r.execute_command('JSON.GET', 'record', '.name'))
+  }
+rj.jsonset('employee', Path.rootPath(), employee)
+rj.jsonget('employee', Path('.address.location'))
 ```
+
+IN the above example, the code tries to fetch only the location under the address field.
 
 
 ### Step 7. Verifying the results
@@ -113,13 +118,14 @@ It's possible to fetch specific field within JSON element. Let us look at the be
 <b>Command</b>:
 
 ```bash
- 127.0.0.1:6379> JSON.GET record .name
+ 127.0.0.1:6379> JSON.GET employee .address.location
 ```
+
 
 <b>Results</b>:
 
 ```
- "\"Paul\""
+ "\"USA\""
 ```
 
 
