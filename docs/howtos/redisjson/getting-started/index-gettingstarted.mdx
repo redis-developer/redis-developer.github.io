@@ -94,6 +94,11 @@ Here is the command to insert JSON data into Redis:
 JSON.SET employee_profile $ '{ "employee": { "name": "alpha", "age": 40,"married": true }  } '
 ```
 
+:::important
+
+Please note that the above command works for 2.0+ release of RedisJSON. If you are using the older version of RedisJSON, you can replace "$" with "."
+:::
+
 <b>Result</b>:
 
 ```
