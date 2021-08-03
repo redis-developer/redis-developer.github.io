@@ -77,7 +77,7 @@ In the code above, we use JSON.GET to extract the JSON elements.
 <b>Command</b>:
 
 ```bash
- 127.0.0.1:6379> JSON.GET record
+ 127.0.0.1:6379> JSON.GET employee
 ```
 
 <b>Result</b>:
@@ -89,7 +89,7 @@ In the code above, we use JSON.GET to extract the JSON elements.
 
 ### Step 6. Fetching the specific fields within JSON document
 
-It's possible to fetch specific field within JSON element. Let us look at the below code:
+It's possible to fetch specific field within JSON element. Let us modify the above code and add "address" field as shown below:
 
 ```python
  from rejson import Client, Path
@@ -109,7 +109,7 @@ rj.jsonset('employee', Path.rootPath(), employee)
 rj.jsonget('employee', Path('.address.location'))
 ```
 
-IN the above example, the code tries to fetch only the location under the address field.
+In the above example, the code tries to fetch only the location under the address field.
 
 
 ### Step 7. Verifying the results
