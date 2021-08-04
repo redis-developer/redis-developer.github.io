@@ -135,7 +135,8 @@ module.exports = {
                   'howtos/redisjson/redisjson-cheatsheet/index-redisjson-cheatsheet',
                   'howtos/redisjson/using-redisinsight/index-usingredisinsight',
                   'howtos/redisjson/shoppingcart/index-shoppingcart',
-               ]
+                  'howtos/redisjson/storing-json-using-nodejs/index-storingjson-nodejs',  
+             ]
            },
            'howtos/redistimeseries/index-redistimeseries',
            'howtos/redisgraph/index-redisgraph',
