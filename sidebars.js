@@ -133,6 +133,7 @@ module.exports = {
                   'howtos/redisjson/jsonind-document/index-jsonind-document',
                   'howtos/redisjson/using-ruby/index-usingruby',
                   'howtos/redisjson/redisjson-cheatsheet/index-redisjson-cheatsheet',
+                  'howtos/redisjson/using-redisinsight/index-usingredisinsight',
                   'howtos/redisjson/shoppingcart/index-shoppingcart',
                ]
            },

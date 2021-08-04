@@ -1,0 +1,98 @@
+---
+id: index-usingredisinsight
+title: RedisJSON using RedisInsight
+sidebar_label: RedisJSON using RedisInsight
+slug: /howtos/redisjson/using-redisinsight
+---
+
+RedisInsight provides built-in support for the RedisJSON, RediSearch, RedisGraph, Redis Streams, and RedisTimeSeries modules to make it even easier to query, visualize, and interactively manipulate search indexes, graphs, streams, and time-series data. Support for RedisJSON on Redis Cluster was introduced for the first time in RedisInsight v1.8.0. With RedisInsight, you can visualize and edit your JSON data 
+
+Below steps shows how to get started with RedisJSON using RedisInsight:
+
+### Step 1. Register and subscribe
+
+Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
+
+![RedisJSON](redisjson3.png)
+
+### Step 2. Create a database with RedisJSON Module
+
+![RedisJSON](redisjson1.png)
+
+
+### Step 3. Download RedisInsight
+
+To use RedisInsight on a local Mac, you can download from the RedisInsight page on the RedisLabs website:
+
+[Click this link](https://redislabs.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+
+![My Image](redisinsightmac.png)
+
+Fill out the rest of the form and click “Download.” Please note that the package name is the combination of the platform and version as shown here:
+
+redisinsight-platform-version
+
+### Step 4. Install RedisInsight
+
+Click on the RedisInsight executable and install it in your system.
+
+![My Image](redisinsight2.png)
+
+
+Head over to your web browser and go to http://localhost:8001
+
+Congratulations! You have successfully installed RedisInsight and are now ready to inspect your Redis data, monitor database health, and perform runtime server configuration with this browser-based management interface for your Redis deployment.
+
+### Step 5. Connect to Redis database
+
+![My Image](redisinsight3.png)
+
+Assuming that you already have Redis database up and running, select "Connect to a Redis database"
+![My Image](redisinsight4.png)
+
+### Step 6. Add Redis Database
+
+Enter the requested details, including Name, Host (endpoint), Port, and Password in the form, as shown below. You can skip username for now. Then click “ADD REDIS DATABASE”:
+
+
+
+### Step 7. Execute JSON queries
+
+```bash
+ JSON.SET employee_profile . '{ "employee": " { "name": "carol", "age": 40, "married": true } }'
+```
+
+
+![My Image](image_1_1.png)
+
+### Step 8. Accessing RedisInsight Browser Tool
+
+Select "employee_profile" to display the JSON data 
+
+![My Image](image_1_2.png)
+
+### Step 9. Add a new key 
+
+![My Image](image_1_3.png)
+
+### Step 10. Expand the JSON field
+
+![My Image](image_1_4.png)
+
+
+### Step 11. Using RedisInsight Browser CLI 
+
+![My Image](image_1_5.png)
+
+### Step 12. Deleting the existing key 
+
+![My Image](image_1_6.png)
+
+### References
+
+- [How to store and retrieve JSON document](/howtos/redisjson/storing-json-document)
+- [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs) 
+- Learn more about [RedisJSON](https://oss.redislabs.com/redisjson/) in the Quickstart tutorial.
+- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
+- [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redislabs.com/blog/index-and-query-json-docs-with-redis/) 
