@@ -55,8 +55,8 @@ module.exports = {
       style: 'dark',
       logo: {
         alt: 'Redis Labs logo',
-        src: 'img/redis-labs-logo-reversed.svg',
-        href: 'https://redislabs.com/',
+        src: 'img/redis_logo_red_white_rgb.svg',
+        href: 'https://redis.com/', 
       },
       links: [
         {
@@ -117,8 +117,8 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright: © ${new Date().getFullYear()} Redis Labs. Redis and the cube logo are registered trademarks of Redis Labs Ltd.`,
-    },
+   copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`, 
+   },
     colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
