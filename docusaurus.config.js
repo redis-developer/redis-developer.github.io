@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
   title: 'Redis Developer Hub',
   tagline: 'The Home of Redis Developers',
-  url: 'https://developer.redislabs.com',
+  url: 'https://developer.redis.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -45,7 +45,7 @@ module.exports = {
         },
         */
         {
-          href: 'https://redislabs.com/try-free/',
+          href: 'https://redis.com/try-free/',
           label: 'Try Free',
           position: 'right',
         },
@@ -76,7 +76,7 @@ module.exports = {
             },
             {
               label: 'Best Practices',
-              href: 'https://redislabs.com/redis-best-practices/introduction/',
+              href: 'https://redis.com/redis-best-practices/introduction/',
             },
             // {
             //   label: 'Tutorials',
@@ -97,11 +97,11 @@ module.exports = {
           items: [
             {
               label: 'Community',
-              href: 'https://redislabs.com/community/',
+              href: 'https://redis.com/community/',
             },
             {
               label: 'Redis University',
-              href: 'https://university.redislabs.com',
+              href: 'https://university.redis.com',
             },
             {
               label: 'Command Reference',
@@ -112,7 +112,7 @@ module.exports = {
               to: '/howtos',
             },
             //   label: 'Use Cases',
-            //   href: 'https://redislabs.com/solutions',
+            //   href: 'https://redis.com/solutions',
             // },
           ],
         },
