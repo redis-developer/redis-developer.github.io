@@ -56,7 +56,7 @@ function Resources() {
                 <span className="type">Blog</span>
                 <h3 className="title">Serverless development with AWS Lambda and Redis Enterprise Cloud</h3>
               </div>
-              <a href="https://redislabs.com/blog/serverless-development-with-aws-lambda-and-redis-enterprise-cloud/" target="_blank" rel="noopener" className="link">Read More</a>
+              <a href="https://redis.com/blog/serverless-development-with-aws-lambda-and-redis-enterprise-cloud/" target="_blank" rel="noopener" className="link">Read More</a>
             </div>
           </article>
         </div>
@@ -75,7 +75,7 @@ function Resources() {
       </Slider>
 
       <div className="cta">
-        <a href="https://redislabs.com/community/" target="_blank" rel="noopener" className="btn">Join the community</a>
+        <a href="https://redis.com/community/" target="_blank" rel="noopener" className="btn">Join the community</a>
       </div>
 
     </div>

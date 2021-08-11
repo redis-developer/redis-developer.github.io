@@ -16,7 +16,7 @@ Find tutorials, examples and technical articles that will help you to develop wi
 
 Redis is a great database for use with Node.js. Both Redis Node.js share similar type conventions and threading models, which makes for a very predictable development experience. By pairing Node.js & Redis together you can achieve a scalable and productive development platform.
 
-Redis Node.js has two primary clients available [node_redis](https://github.com/NodeRedis/node_redis) and [ioredis](https://github.com/luin/ioredis). Both are available through npm. Both clients have pros and cons, but we generally suggest node_redis, as it has wide support for Redis modules, it is easily extensible and widely used. Ioredis has better integrated support for the Redis Enterprise Cluster API, but this is only relevant if you're specifically using [the Cluster API topology](https://redislabs.com/redis-enterprise/technology/linear-scaling-redis-enterprise/) instead of the more common Proxy topology. Node_redis’ support for the Cluster API is provided by an additional shim, redis-clustr. Node_redis has built-in support for Redis Enterprise features such as [Active Active geo distribution](https://redislabs.com/redis-enterprise/technology/active-active-geo-distribution/), allowing you to have one database that spans multiple clusters. Node_redis also supports Redis-on-Flash which enables extending your database into Flash SSD storage for warm values and DRAM for hot values. Nodejs redis enables you to integrate such features.
+Redis Node.js has two primary clients available [node_redis](https://github.com/NodeRedis/node_redis) and [ioredis](https://github.com/luin/ioredis). Both are available through npm. Both clients have pros and cons, but we generally suggest node_redis, as it has wide support for Redis modules, it is easily extensible and widely used. Ioredis has better integrated support for the Redis Enterprise Cluster API, but this is only relevant if you're specifically using [the Cluster API topology](https://redis.com/redis-enterprise/technology/linear-scaling-redis-enterprise/) instead of the more common Proxy topology. Node_redis’ support for the Cluster API is provided by an additional shim, redis-clustr. Node_redis has built-in support for Redis Enterprise features such as [Active Active geo distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/), allowing you to have one database that spans multiple clusters. Node_redis also supports Redis-on-Flash which enables extending your database into Flash SSD storage for warm values and DRAM for hot values. Nodejs redis enables you to integrate such features.
 
 The Node.js community has built many client libraries that you can find [here](https://redis.io/clients#nodejs). 
 For your first steps with Node.js and Redis, this article will show how to use the recommended libraries: [ioredis](https://github.com/luin/ioredis) and [node-redis](https://github.com/NodeRedis/node-redis).
@@ -116,7 +116,7 @@ Find more information about Redis & node-redis connections in the "[Redis Connec
 ###  Redis Marketplace
 
 Redis Marketplace is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
-Below are few of these apps. [Click here to access the complete lists of apps](https://marketplace.redislabs.com).
+Below are few of these apps. [Click here to access the complete lists of apps](https://marketplace.redis.com).
 
 <div class="row text--center">
 
@@ -127,7 +127,7 @@ Below are few of these apps. [Click here to access the complete lists of apps](h
 
 ![marketplace](images/hackernews.png)
 
-[A Hacker News Clone project](https://marketplace.redislabs.com/?id=project%3Aredis-hacker-news-demo) built in NextJS, NodeJS and Express based on RediSearch & RedisJSON
+[A Hacker News Clone project](https://marketplace.redis.com/?id=project%3Aredis-hacker-news-demo) built in NextJS, NodeJS and Express based on RediSearch & RedisJSON
 </div>
 </div>
 
@@ -138,7 +138,7 @@ Below are few of these apps. [Click here to access the complete lists of apps](h
 
 ![marketplace](images/shoppingcartnodejs.png)
 
-[Shopping Cart app in NodeJS](https://marketplace.redislabs.com/?id=project%3Abasic-redis-shopping-chart-nodejs) module functionalities
+[Shopping Cart app in NodeJS](https://marketplace.redis.com/?id=project%3Abasic-redis-shopping-chart-nodejs) module functionalities
 </div>
 </div>
 </div>
@@ -156,10 +156,10 @@ Below are few of these apps. [Click here to access the complete lists of apps](h
 
 #### Sample Code
 
-**[Basic Redis Caching](https://developer.redislabs.com/howtos/caching/)**
+**[Basic Redis Caching](https://developer.redis.com/howtos/caching/)**
 This application calls the GitHub API and caches the results into Redis.
 
-**[Redis Rate-Limiting](https://developer.redislabs.com/howtos/ratelimiting/)**
+**[Redis Rate-Limiting](https://developer.redis.com/howtos/ratelimiting/)**
 This is a very simple app that demonstrates rate-limiting feature using Redis.
 
 **[Notifications with WebSocket, Vue & Redis](https://github.com/redis-developer/redis-websockets-vue-notifications)**
@@ -184,7 +184,7 @@ This project allows you to push notifications in a Vue application from a Redis 
 
 ### Redis University
 
-### [Redis for JavaScript Developers](https://university.redislabs.com/courses/ru102js/)
+### [Redis for JavaScript Developers](https://university.redis.com/courses/ru102js/)
 
 Build full-fledged Redis applications with Node.js and Express.
 
