@@ -131,6 +131,7 @@ module.exports = {
                   'howtos/redisjson/using-nodejs/index-usingnodejs',
                   'howtos/redisjson/using-ruby/index-usingruby',
                   'howtos/redisjson/using-go/index-usinggo',
+                  'howtos/redisjson/using-java/index-usingjava',
                   'howtos/redisjson/using-redisinsight/index-usingredisinsight',
                   'howtos/redisjson/storing-complex-json-document/index-storing-complex-json-document',
                   'howtos/redisjson/jsonind-document/index-jsonind-document',
