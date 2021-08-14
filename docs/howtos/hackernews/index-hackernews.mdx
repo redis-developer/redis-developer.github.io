@@ -247,12 +247,14 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Update new user
 
- ```bash
-  HSET user:63 username andy1 email  created 1615569194 karma 1 about I am a software engineer. showDead false isModerator false shadowBanned false banned false _id 63
+```bash
+ HSET user:63 username andy1 email  created 1615569194 karma 1 about I am a software engineer. showDead false isModerator false shadowBanned false banned false _id 63
  ```
  
- ```bash
-  JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"KJwPLN1idyQrMp5qEY5hR3VhoPFTKRcC8Npxxoju","authTokenExpiration":1647106257,"email":"","created":1615569194,"karma":1,"about":"I am a software engineer.","showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
+```bash
+ JSON.SET user:63 .  
+'{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"KJwPLN1idyQrMp5qEY5hR3VhoPFTKRcC8Npxxoju","   authTokenExpiration":1647106257,"email":"","created":1615569194,"karma":1,"about":"I am a software  
+ engineer.","showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
 ```
 
 #### Moderation Logs screen
