@@ -143,7 +143,7 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
 - Check if user has toggled hidden attribute on a specific item.
 
  ```bash
-  FT.SEARCH idx:user-hidden  (@username:"andy1") NOCONTENT LIMIT 0 10000 SORTBY _id DESC
+  FT.SEARCH idx:user-hidden  @username:"andy1" NOCONTENT LIMIT 0 10000 SORTBY _id DESC
   // Result - [0, "item:4"]
  ```
 
