@@ -29,7 +29,8 @@ This application uses RedisJSON module for storing the data and RediSearch modul
 
 ### Step 2. Create Redis Enterprise Cloud database
 
-[Follow this link](../create/rediscloud) to create Redis Enterprise Cloud account with 2 databases - one with RedisJSON module and other with RediSearch module enabled
+[Follow this link](../create/rediscloud) to create Redis Enterprise Cloud account with 2 databases - one with RedisJSON module and other with RediSearch module enabled. Please note that under Free subscription, only one module can be enabled. If you want to create 2 databases, then you might need to create 2 different subscriptions.
+
 Save the database endpoint URL and password for our future reference
 
 ### Step 3. Clone the repository
@@ -108,9 +109,9 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
   HSET user:63 username andy1 email  created 1615569194 karma 0 about  showDead false isModerator false shadowBanned false banned false _id 63
  ```
  
- ```
- JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"AAV07FIwTiEkNrPj0x1yj6BPJQSGIPzV0sICw2u0","authTokenExpiration":1647105194,"email":"","created":1615569194,"karma":0,"showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
- ```
+ ```bash
+  JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"AAV07FIwTiEkNrPj0x1yj6BPJQSGIPzV0sICw2u0","authTokenExpiration":1647105194,"email":"","created":1615569194,"karma":0,"showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
+```
 
 - Gernerate cookie with expiration time.
 
@@ -122,13 +123,13 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
 
 - Find user
 
- ```
-  FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
+ ```bash
+  FT.SEARCH idx:user  @username:"andy1" NOCONTENT LIMIT 0 1 SORTBY _id DESC
  ```
 
 - Make sure password is correct
 
- ```
+ ```bash
   JSON.MGET user:63 .
  ```
 
@@ -217,7 +218,7 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Get next item's id and increase it
 
- ```
+ ```bash
   GET item:id-indicator
   // Result - 4
   SET item:id-indicator 5
@@ -225,13 +226,13 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Create hash and RedisJSON index
 
- ```
+ ```bash
   HSET item:4 id iBi8sU4HRcZ2 by andy1 title Firebase trends type ask url  domain  text Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web apps. points 1 score 0 created 1615571392 dead false _id 4
  ```
  
- ```
+```bash
  JSON.SET item:4 . '{"id":"iBi8sU4HRcZ2","by":"andy1","title":"Firebase trends","type":"ask","url":"","domain":"","text":"Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web apps.","points":1,"score":0,"commentCount":0,"created":1615571392,"dead":false,"_id":4}'
- ```
+```
 
 #### Update Profile
 
@@ -239,15 +240,18 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Get the user
 
- ```
+ ```bash
   FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
   JSON.MGET user:63 .
 ```
 
 - Update new user
 
- ```
+ ```bash
   HSET user:63 username andy1 email  created 1615569194 karma 1 about I am a software engineer. showDead false isModerator false shadowBanned false banned false _id 63
+ ```
+ 
+ ```bash
   JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"KJwPLN1idyQrMp5qEY5hR3VhoPFTKRcC8Npxxoju","authTokenExpiration":1647106257,"email":"","created":1615569194,"karma":1,"about":"I am a software engineer.","showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
 ```
 
@@ -257,14 +261,14 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Find all moderation logs
 
- ```
+ ```bash
   FT.SEARCH idx:moderation-log * NOCONTENT LIMIT 0 0 SORTBY _id DESC
   // Result - [1,"moderation-log:1"]
  ```
 
 - Get that moderation logs
 
- ```
+ ```bash
   JSON.MGET moderation-log:1 .
  ```
 
@@ -274,15 +278,14 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Get items that contains "fa"
 
- ```
-
+ ```bash
   FT.SEARCH idx:item  (@title:fa*) (-(@id:"aaaaaaaaa")) (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY score ASC
   // Result - [2,"item:18","item:16"]
 
  ```
 - Get those items via json
 
- ```
+ ```bash
   JSON.MGET item:18 item:16 .
  ```
 
@@ -296,7 +299,7 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 When schema is created, it should created index.
 
- ```
+ ```bash
   FT.CREATE idx:user ON hash PREFIX 1 "user:" SCHEMA username TEXT SORTABLE email TEXT SORTABLE karma NUMERIC SORTABLE
  ```
 
@@ -304,7 +307,7 @@ When schema is created, it should created index.
 
 Should drop/update index if the schema has changed
 
- ```
+ ```bash
   FT.DROPINDEX idx:user
  ```
 
@@ -312,7 +315,7 @@ Should drop/update index if the schema has changed
 
 Validate if the fields are indexed properly. If not, it will update the index fields or drop/recreate.
 
- ```
+ ```bash
   FT.INFO idx:user
  ```
 
@@ -321,16 +324,22 @@ Validate if the fields are indexed properly. If not, it will update the index fi
 
 It will require new hash and new JSON record
 
- ```
+ ```bash
   HSET user:andy username "andy" email "andy@gmail.com" karma 0
+ ```
+ 
+ ```bash
   JSON.SET user:andy '{"passoword": "hashed_password", "settings": "{ \"showDead\": true }" }'
  ```
 
 
 - Update a user
 
- ```
+ ```bash
   HSET user:1 username "newusername"
+ ```
+ 
+ ```bash
   JSON.SET user:andy username "newusername"
  ```
 
@@ -350,44 +359,53 @@ It will require new hash and new JSON record
 
 - Find user whose id is andy1 or andy2
 
- ```
+ ```bash
   FT.SEARCH idx:user '@id:("andy1"|"andy2")'
  ```
 
 - Find user whose id is not andy1 or andy2
 
- ```
+ ```bash
   FT.SEARCH idx:user '(-(@id:("andy1"|"andy2")))'
  ```
 
 - Find user whose id is andy1 or username is andy
 
- ```
+ ```bash
   FT.SEARCH idx:user '(@id:"andy1") | (@username:"andy")'
  ```
 
 - Find user whose id is andy1 and username is andy
 
- ```
+ ```bash
   FT.SEARCH idx:user '(@id:"andy1") (@username:"andy")'
  ```
 
 - Find first 10 users order by username
 
- ```
+ ```bash
   FT.SEARCH idx:user '*' LIMIT 0 10 SORTBY username ASC
  ```
 
 - Find next 10 users
 
- ```
+ ```bash
   FT.SEARCH idx:user '*' LIMIT 10 20 SORTBY username ASC
  ```
 
 - Get from RedisJson from multiple keys
 
- ```
+ ```bash
   JSON.MGET idx:user "andy1" "andy2" "andy3"
  ```
 
+### References
+
+
+- [RedisJSON and Python](/howtos/redisjson/using-python)
+- [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs) 
+- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
+- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
+- [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/) 
 
