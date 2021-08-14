@@ -105,16 +105,17 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
 
 - Create user:63 hash and json.(json also collects authToken and password hash etc)
 
- ```bash
+```bash
   HSET user:63 username andy1 email  created 1615569194 karma 0 about  showDead false isModerator false shadowBanned false banned false _id 63
- ```
+```
  
- ```bash
-  JSON.SET user:63 . '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"AAV07FIwTiEkNrPj0x1yj6BPJQSGIPzV0sICw2u0","authTokenExpiration":1647105194,"email":"","created":1615569194,"karma":0,"showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
+```bash
+  JSON.SET user:63 . 
 ```
 
-- Gernerate cookie with expiration time.
-
+```bash     
+ '{"username":"andy1","password":"$2a$10$zy8tsCske8MfmDX5CcWMce5S1U7PJbPI7CfaqQ7Bo1PORDeqJxqhe","authToken":"AAV07FIwTiEkNrPj0x1yj6BPJQSGIPzV0sICw2u0","  authTokenExpiration":1647105194,"email":"","created":1615569194,"karma":0,"showDead":false,"isModerator":false,"shadowBanned":false,"banned":false,"_id":63}'
+```
 
 
 #### Login
