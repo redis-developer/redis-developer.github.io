@@ -141,41 +141,43 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
 
 - Check if user has toggled hidden attribute on a specific item.
 
- ```
+ ```bash
   FT.SEARCH idx:user-hidden  (@username:"andy1") NOCONTENT LIMIT 0 10000 SORTBY _id DESC
   // Result - [0, "item:4"]
  ```
 
 - If that is not null
 
- ```
+ ```bash
   FT.SEARCH idx:item  (-(@id:"item:4")) (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY _id ASC
  ```
 
 - If it's empty array
 
- ```
+ ```bash
   FT.SEARCH idx:item (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY _id ASC
   // Result - [3,"item:1","item:2","item:3"]
  ```
 
 - Get all items from RedisJSON
 
- ```
+ ```bash
   JSON.MGET item:1 item:2 item:3 .
-  // Result - [{"id":"bkWCjcyJu5WT","by":"todsacerdoti","title":"Total Cookie Protection","type":"news","url":"https://blog.mozilla.org/security/2021/02/23/total-cookie-protection/","domain":"mozilla.org","points":1,"score":1514,"commentCount":0,"created":1614089461,"dead":false,"_id":3}]]
+  // Result - [{"id":"bkWCjcyJu5WT","by":"todsacerdoti","title":"Total Cookie  
+  Protection","type":"news","url":"https://blog.mozilla.org/security/2021/02/23/total-cookie-
+  protection/","domain":"mozilla.org","points":1,"score":1514,"commentCount":0,"created":1614089461,"dead":false,"_id":3}]]
  ```
 
 - Get items posted within last 1 week
 
- ```
+ ```bash
   FT.SEARCH idx:item  (@created:[(1615652598 +inf]) (@dead:"false") NOCONTENT LIMIT 0 0 SORTBY _id DESC
   // Result - [13,"item:19","item:17","item:16","item:15","item:14","item:13","item:12","item:11","item:8","item:5","item:4","item:3","item:1"]
  ```
 
 Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
- ```
+ ```bash
   JSON.MGET item:19 item:17 item:16 item:15 item:14 item:13 item:12 item:11 item:8 item:5 item:4 item:3 item:1 .
   // Result - the JSON of selected items
  ```
@@ -186,27 +188,36 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Get the item object first
 
- ```
+ ```bash
   JSON.MGET item:1 .
  ```
 
 - Find item:1 's root comments
 
- ```
+ ```bash
   FT.SEARCH idx:comment  (@parentItemId:"kDiN0RhTivmJ") (@isParent:"true") (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY points ASC
   // Result - [3,"comment:1","comment:2","comment:12"]
  ```
 
 - Get those comments
 
- ```
+ ```bash
   JSON.MGET comment:1 comment:2 comment:12 .
-  // one comment example result - {"id":"jnGWS8TTOecC","by":"ploxiln","parentItemId":"kDiN0RhTivmJ","parentItemTitle":"The Framework Laptop","isParent":true,"parentCommentId":"","children":[13,17,20],"text":"I don&#x27;t see any mention of the firmware and drivers efforts for this. Firmware and drivers always end up more difficult to deal with than expected.<p>The Fairphone company was surprised by difficulties upgrading and patching android without support from their BSP vendor, causing many months delays of updates _and_ years shorter support life than they were planning for their earlier models.<p>I purchased the Purism Librem 13 laptop from their kickstarter, and they had great plans for firmware and drivers, but also great difficulty following through. The trackpad chosen for the first models took much longer than expected to get upstream linux support, and it was never great (it turned out to be impossible to reliably detect their variant automatically). They finally hired someone with sufficient skill to do the coreboot port _months_ after initial units were delivered, and delivered polished coreboot firmware for their initial laptops _years_ after they started the kickstarter.<p>So, why should we have confidence in the firmware and drivers that Framework will deliver :)","points":1,"created":1614274058,"dead":false,"_id":12}
+  // one comment example result - {"id":"jnGWS8TTOecC","by":"ploxiln","parentItemId":"kDiN0RhTivmJ","parentItemTitle":"The Framework  
+  Laptop","isParent":true,"parentCommentId":"","children":[13,17,20],"text":"I don&#x27;t see any mention of the firmware and drivers efforts for this. 
+  Firmware and drivers always end up more difficult to deal with than expected.<p>The Fairphone company was surprised by difficulties upgrading and 
+  patching android without support from their BSP vendor, causing many months delays of updates _and_ years shorter support life than they were 
+  planning for their earlier models.<p>I purchased the Purism Librem 13 laptop from their kickstarter, and they had great plans for firmware and 
+  drivers, but also great difficulty following through. The trackpad chosen for the first models took much longer than expected to get upstream linux 
+  support, and it was never great (it turned out to be impossible to reliably detect their variant automatically). They finally hired someone with 
+  sufficient skill to do the coreboot port _months_ after initial units were delivered, and delivered polished coreboot firmware for their initial 
+  laptops _years_ after they started the kickstarter.<p>So, why should we have confidence in the firmware and drivers that Framework will deliver 
+  :)","points":1,"created":1614274058,"dead":false,"_id":12}
  ```
 
 - Using children of each comment, fetch children comments
 
- ```
+ ```bash
   FT.SEARCH idx:comment  (@dead:"false") (@_id:("3"|"7"|"11")) NOCONTENT LIMIT 0 10000 SORTBY _id DESC
  ```
 
@@ -227,11 +238,14 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 - Create hash and RedisJSON index
 
  ```bash
-  HSET item:4 id iBi8sU4HRcZ2 by andy1 title Firebase trends type ask url  domain  text Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web apps. points 1 score 0 created 1615571392 dead false _id 4
+  HSET item:4 id iBi8sU4HRcZ2 by andy1 title Firebase trends type ask url  domain  text Firebase Performance Monitoring is a service that helps you to 
+  gain insight into the performance characteristics of your iOS, Android, and web apps. points 1 score 0 created 1615571392 dead false _id 4
  ```
  
 ```bash
- JSON.SET item:4 . '{"id":"iBi8sU4HRcZ2","by":"andy1","title":"Firebase trends","type":"ask","url":"","domain":"","text":"Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web apps.","points":1,"score":0,"commentCount":0,"created":1615571392,"dead":false,"_id":4}'
+ JSON.SET item:4 . '{"id":"iBi8sU4HRcZ2","by":"andy1","title":"Firebase trends","type":"ask","url":"","domain":"","text":"Firebase Performance 
+ Monitoring is a service that helps you to gain insight into the performance characteristics of your iOS, Android, and web 
+ apps.","points":1,"score":0,"commentCount":0,"created":1615571392,"dead":false,"_id":4}'
 ```
 
 #### Update Profile
@@ -240,15 +254,19 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Get the user
 
- ```bash
-  FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
-  JSON.MGET user:63 .
+```bash
+ FT.SEARCH idx:user  (@username:"andy1") NOCONTENT LIMIT 0 1 SORTBY _id DESC
+```
+
+```bash
+ JSON.MGET user:63 .
 ```
 
 - Update new user
 
 ```bash
- HSET user:63 username andy1 email  created 1615569194 karma 1 about I am a software engineer. showDead false isModerator false shadowBanned false banned false _id 63
+ HSET user:63 username andy1 email  created 1615569194 karma 1 about I am a software engineer. showDead false isModerator false shadowBanned false 
+ banned false _id 63
  ```
  
 ```bash
@@ -263,16 +281,16 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Find all moderation logs
 
- ```bash
-  FT.SEARCH idx:moderation-log * NOCONTENT LIMIT 0 0 SORTBY _id DESC
+```bash
+ FT.SEARCH idx:moderation-log * NOCONTENT LIMIT 0 0 SORTBY _id DESC
   // Result - [1,"moderation-log:1"]
- ```
+```
 
 - Get that moderation logs
 
- ```bash
-  JSON.MGET moderation-log:1 .
- ```
+```bash
+ JSON.MGET moderation-log:1 .
+```
 
 #### Search
 
@@ -280,16 +298,15 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 - Get items that contains "fa"
 
- ```bash
-  FT.SEARCH idx:item  (@title:fa*) (-(@id:"aaaaaaaaa")) (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY score ASC
+```bash
+ FT.SEARCH idx:item  (@title:fa*) (-(@id:"aaaaaaaaa")) (@dead:"false") NOCONTENT LIMIT 0 30 SORTBY score ASC
   // Result - [2,"item:18","item:16"]
-
- ```
+```
 - Get those items via json
 
- ```bash
-  JSON.MGET item:18 item:16 .
- ```
+```bash
+ JSON.MGET item:18 item:16 .
+```
 
 ## Example commands
 #### There are 2 type of fields, indexed and non-indexed.
@@ -301,9 +318,9 @@ Note that 1615652598 is timestamp of 1 week ealier than current timestamp
 
 When schema is created, it should created index.
 
- ```bash
-  FT.CREATE idx:user ON hash PREFIX 1 "user:" SCHEMA username TEXT SORTABLE email TEXT SORTABLE karma NUMERIC SORTABLE
- ```
+```bash
+ FT.CREATE idx:user ON hash PREFIX 1 "user:" SCHEMA username TEXT SORTABLE email TEXT SORTABLE karma NUMERIC SORTABLE
+```
 
 - Drop RediSearch Index
 
