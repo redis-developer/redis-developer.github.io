@@ -169,6 +169,7 @@ module.exports = {
            'howtos/redisgraphmovies/index-redisgraphmovies',
            'howtos/nlp/index-nlp',
            'howtos/hackernews/index-hackernews',
+           'howtos/antipatterns/index-antipatterns',
            'howtos/security/index-tls',
            'howtos/analytics/index-analytics',
            'howtos/popupstore/index-popupstore',
