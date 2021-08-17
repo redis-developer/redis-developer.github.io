@@ -16,7 +16,10 @@ Let us look at the top 14 Redis anti-patterns to avoid:
 
 With large databases running on a single shard/Redis instance, there are chances that the fail over, backup and recovery all will take longer. Hence, it’s always recommended to keep shards to recommended sizes.  General conservative rule of thumb is 25Gb or 25K Ops/Second.
 
+
+:::important
 Redis Enterprise recommends to shard if you have more than 25 GB of data and a high number of operations. Another aspect is if you have above 25,000 operations per second, then sharding can improve performance. With less number of operations/second, it can handle up to 50GB of data too.
+:::
 
 ### 2. One connection per request
 
@@ -29,7 +32,7 @@ Using the OSS Cluster API, the connection to the nodes are maintained by the cli
 With Redis Enterprise, the connection is actually to a proxy, which takes care of the complexity of connections at the cluster level.
 :::
 
-Examples #1 - redis-py
+### Examples #1 - redis-py
 
 Let us look at the redis-py that uses a connection pool to manage connections to a Redis server. By default, each Redis instance you create will in turn create its own connection pool. You can override this behavior and use an existing connection pool by passing an already created connection pool instance to the connection_pool argument of the Redis class. You may choose to do this in order to implement client side sharding or have fine-grain control of how connections are managed.
 
@@ -40,7 +43,7 @@ Let us look at the redis-py that uses a connection pool to manage connections to
 
 [Learn more about redis-py](/develop/python/)
 
-Example #2 - Lettuce
+### Example #2 - Lettuce
 
 Lettuce provides generic connection pool support.Lettuce connections are designed to be thread-safe so one connection can be shared amongst multiple threads and Lettuce connections auto-reconnection by default. While connection pooling is not necessary in most cases it can be helpful in certain use cases. Lettuce provides generic connection pooling support.
 
