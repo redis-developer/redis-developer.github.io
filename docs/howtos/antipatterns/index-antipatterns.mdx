@@ -72,7 +72,7 @@ Lettuce provides generic connection pool support.Lettuce connections are designe
 
 ### 3. Connecting directly to Redis instances
 
-With a large number of clients, a reconnect flood will be able to simply overwhelm a single threaded Redis process and force a failover. Hence, it is recommended that you should run either twemproxy (OSS) or the Redis enterprise DMC proxy. It can help you reduce the number of connections to your cache server by acting as a proxy.
+With a large number of clients, a reconnect flood will be able to simply overwhelm a single threaded Redis process and force a failover. Hence, it is recommended that you should run either twemproxy (OSS) or the [Redis enterprise DMC proxy](https://docs.redis.com/latest/rs/administering/designing-production/networking/multiple-active-proxy/). It can help you reduce the number of connections to your cache server by acting as a proxy.
 
 [Twemproxy](https://github.com/twitter/twemproxy) is a fast and lightweight proxy server that allows you to reduce the number of open connections to your Redis server. It was built primarily to reduce the number of connections to the caching servers on the backend. This, together with protocol pipelining and sharding enables you to horizontally scale your distributed caching architecture.
 
