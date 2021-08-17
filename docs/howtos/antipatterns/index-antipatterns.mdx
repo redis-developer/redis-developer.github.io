@@ -47,6 +47,27 @@ Let us look at the redis-py that uses a connection pool to manage connections to
 
 Lettuce provides generic connection pool support.Lettuce connections are designed to be thread-safe so one connection can be shared amongst multiple threads and Lettuce connections auto-reconnection by default. While connection pooling is not necessary in most cases it can be helpful in certain use cases. Lettuce provides generic connection pooling support.
 
+```java
+ RedisClient client = RedisClient.create(RedisURI.create(host, port));
+
+ GenericObjectPool<StatefulRedisConnection<String, String>> pool = ConnectionPoolSupport
+               .createGenericObjectPool(() -> client.connect(), new GenericObjectPoolConfig());
+ 
+ // executing work
+ try (StatefulRedisConnection<String, String> connection = pool.borrowObject()) {
+
+    RedisCommands<String, String> commands = connection.sync();
+    commands.multi();
+    commands.set("key", "value");
+    commands.set("key2", "value2");
+    commands.exec();
+ }
+
+ // terminating
+ pool.close();
+ client.shutdown();
+```
+
 [Learn more about Lettuce](/develop/java/?s=lettuce)
 
 ### 3. Connecting directly to Redis instances
