@@ -74,12 +74,17 @@ Lettuce provides generic connection pool support.Lettuce connections are designe
 
 With a large number of clients, a reconnect flood will be able to simply overwhelm a single threaded Redis process and force a failover. Hence, it is recommended that you should run either twemproxy (OSS) or the Redis enterprise DMC proxy. It can help you reduce the number of connections to your cache server by acting as a proxy.
 
-Twemproxy is a proxy server that allows you to reduce the number of open connections to your Redis server. Clients send requests to a proxy that is able to speak the Redis  protocol, instead of sending requests directly to the right Redis instance. The proxy will make sure to forward our request to the right Redis instance according to the configured partitioning schema and will send the replies back to the client.
+[Twemproxy](https://github.com/twitter/twemproxy) is a fast and lightweight proxy server that allows you to reduce the number of open connections to your Redis server. It was built primarily to reduce the number of connections to the caching servers on the backend. This, together with protocol pipelining and sharding enables you to horizontally scale your distributed caching architecture.
+
 
 
 ### 4. More than one secondary shard (Redis OSS)
 
-Redis OSS solves the quorum challenge by having an odd number of shards (primary + 2 secondary). Redis Enterprise solves the quorum challenge with an odd number of nodes. Redis Enterprise avoids a split-brain situation with only 2 copies of the data, which is more cost-efficient. In addition, the so-called ‘quorum-only node' can be used to bring a cluster up to an odd number of nodes if an additional, not necessary data node would be too expensive.
+Redis OSS uses a shard-based quorum. It's advised to use at least 3 copies of the data (2 replica shards per master shard) in order to be protected from split-brain situations. In nutshell, Redis OSS solves the quorum challenge by having an odd number of shards (primary + 2 secondary). 
+
+:::important
+Redis Enterprise solves the quorum challenge with an odd number of nodes. Redis Enterprise avoids a split-brain situation with only 2 copies of the data, which is more cost-efficient. In addition, the so-called ‘quorum-only node' can be used to bring a cluster up to an odd number of nodes if an additional, not necessary data node would be too expensive.
+:::
 
 
 
