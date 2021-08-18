@@ -25,7 +25,7 @@ But what if there was a way to check if a potential new member was already in a 
 
 This hashing approach sacrifices the 100% accuracy we'd get with a Set to dramatically reduce the memory overhead.  Bloom Filters can be configured with a desired acceptable error rate, so for our application this seems like a good way to enforce our "no duplicate checkins" rule without having a runaway memory consumption problem.  Whenever the Bloom Filter tells us its maybe seen a checkin before it will mostly be correct, and we'll accept that sometimes we disallow a checkin that we actually haven't had before as a sensible tradeoff for keeping our memory usage under control.
 
-[RedisBloom](https://redisbloom.io/) is a module from Redis Labs that provides a Bloom Filter implementation for Redis, along with other useful probabilistic data structures.  In the video, you'll see how easy this is to use in a Node.js application, with no math skills required!
+[RedisBloom](https://redisbloom.io/) is a module from Redis that provides a Bloom Filter implementation for Redis, along with other useful probabilistic data structures.  In the video, you'll see how easy this is to use in a Node.js application, with no math skills required!
 
 ## Hands-on Exercise
 
