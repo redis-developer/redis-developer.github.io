@@ -103,7 +103,7 @@ const searchResults = await redis.performSearch(
 );
 ```
 
-with one containing the correct RediSearch query to return users whose "lastSeenAt" field is set to the value of locationId.  You'll need to use the "numeric range" syntax for this, as the "lastSeenAt" field was indexed as a number.  Be sure to check out the [Query Syntax documentation](https://oss.redislabs.com/redisearch/Query_Syntax/) for RediSearch to get help with this.
+with one containing the correct RediSearch query to return users whose "lastSeenAt" field is set to the value of locationId.  You'll need to use the "numeric range" syntax for this, as the "lastSeenAt" field was indexed as a number.  Be sure to check out the [Query Syntax documentation](https://oss.redis.com/redisearch/Query_Syntax/) for RediSearch to get help with this.
 
 To try your code, ensure that the API Server component is running:
 
@@ -159,6 +159,6 @@ Finding Bigfoot RESTfuly with Express + RediSearch:
 
 Other resources:
 
-* [RU203, Querying, Indexing, and Full-Text Search](https://university.redislabs.com/courses/ru203/) at Redis University 
+* [RU203, Querying, Indexing, and Full-Text Search](https://university.redis.com/courses/ru203/) at Redis University 
 * [RediSearch](https://redisearch.io/), official home page
 * [RediSearch Getting Started Tutorial](https://github.com/RediSearch/redisearch-getting-started)
