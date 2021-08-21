@@ -36,7 +36,36 @@ module.exports = {
       label: 'Develop',
       items: [
         'develop/index-develop',
-        'develop/java/index-java',
+        {
+          type: 'category',
+          label: 'Java',
+          items: [
+            'develop/java/index-java',
+            {
+              type: 'category',
+              label: 'Spring',
+              items: [
+                'develop/java/spring/index-spring',
+                {
+                  type: 'category',
+                  label: 'Redis and Spring Course',
+                  items: [
+                    'develop/java/spring/redis-and-spring-course/index-redis-and-spring-course',
+                    'develop/java/spring/redis-and-spring-course/lesson_1/index-lesson_1',
+                    'develop/java/spring/redis-and-spring-course/lesson_2/index-lesson_2',
+                    'develop/java/spring/redis-and-spring-course/lesson_3/index-lesson_3',
+                    'develop/java/spring/redis-and-spring-course/lesson_4/index-lesson_4',
+                    'develop/java/spring/redis-and-spring-course/lesson_5/index-lesson_5',
+                    'develop/java/spring/redis-and-spring-course/lesson_6/index-lesson_6',
+                    'develop/java/spring/redis-and-spring-course/lesson_7/index-lesson_7',
+                    'develop/java/spring/redis-and-spring-course/lesson_8/index-lesson_8',
+                    'develop/java/spring/redis-and-spring-course/lesson_9/index-lesson_9'
+                  ]
+                }
+              ]
+            }
+          ]
+        },
         'develop/C/index-c',
         {
            type: 'category',
@@ -56,17 +85,17 @@ module.exports = {
                  'develop/node/node-crash-course/sampleapplicationoverview/index-sampleapplicationoverview',
                  'develop/node/node-crash-course/runningtheapplication/index-runningtheapplication',
                  'develop/node/node-crash-course/domainobjectswithhashes/index-domainobjectswithhashes',
-                 'develop/node/node-crash-course/introductiontomodules/index-introductiontomodules', 
+                 'develop/node/node-crash-course/introductiontomodules/index-introductiontomodules',
                  'develop/node/node-crash-course/redisjson/index-redisjson',
                  'develop/node/node-crash-course/redisearch/index-redisearch',
                  'develop/node/node-crash-course/checkinswithstreams/index-checkinswithstreams',
                  'develop/node/node-crash-course/managingsuccess/index-managingsuccess',
                  'develop/node/node-crash-course/caching/index-caching',
                  'develop/node/node-crash-course/sessionstorage/index-sessionstorage',
-                 'develop/node/node-crash-course/advancedstreams/index-advancedstreams', 
+                 'develop/node/node-crash-course/advancedstreams/index-advancedstreams',
                  'develop/node/node-crash-course/redisbloom/index-redisbloom',
                  'develop/node/node-crash-course/coursewrapup/index-coursewrapup',
-                    ]   
+                    ]
                 },
               ]
           },
@@ -78,7 +107,7 @@ module.exports = {
               'develop/python/fastapi/index-fastapi'
             ]
           },
-          'develop/dotnet/index-dotnet', 
+          'develop/dotnet/index-dotnet',
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
@@ -107,12 +136,12 @@ module.exports = {
           'explore/redisinsight/redisearch/index-redisearch',
           'explore/redisinsight/autodiscover/index-autodiscover',
           'explore/redisinsight/usinghelm/index-usinghelm',
-        ] 
+        ]
         },
           'explore/redisdatasource/index-redisdatasource',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
-          
+
      ]
     },
     {
@@ -121,7 +150,7 @@ module.exports = {
       items: [
            'howtos/index-howtos',
            'howtos/redisearch/index-redisearch',
-           { 
+           {
              type: 'category',
              label: 'RedisJSON Tutorial',
              items: [
@@ -137,7 +166,7 @@ module.exports = {
                   'howtos/redisjson/jsonind-document/index-jsonind-document',
                   'howtos/redisjson/redisjson-cheatsheet/index-redisjson-cheatsheet',
                   'howtos/redisjson/shoppingcart/index-shoppingcart',
-                  'howtos/redisjson/storing-json-using-nodejs/index-storingjson-nodejs',  
+                  'howtos/redisjson/storing-json-using-nodejs/index-storingjson-nodejs',
              ]
            },
            'howtos/redistimeseries/index-redistimeseries',
@@ -157,7 +186,7 @@ module.exports = {
            'howtos/moviesdatabase/create/index-create',
            'howtos/moviesdatabase/query/index-query',
            'howtos/moviesdatabase/manage/index-manage',
-           'howtos/moviesdatabase/import/index-import', 
+           'howtos/moviesdatabase/import/index-import',
            'howtos/moviesdatabase/querymovies/index-querymovies',
            'howtos/moviesdatabase/aggregation/index-aggregation',
            'howtos/moviesdatabase/advancedoption/index-advancedoption',
@@ -176,8 +205,8 @@ module.exports = {
            'howtos/herokunodejs/index-herokunodejs',
            'howtos/herokupython/index-herokupython',
            'howtos/herokujava/index-herokujava',
-       ] 
-     }, 
+       ]
+     },
     {
       type: 'category',
       label: 'Get Involved',

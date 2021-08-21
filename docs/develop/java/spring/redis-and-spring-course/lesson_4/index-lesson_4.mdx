@@ -1,0 +1,432 @@
+---
+id: index-lesson_4
+title: "User/Roles & Secondary Indexes"
+sidebar_label: User Roles & Secondary Indexes
+slug: /develop/java/redis-and-spring-course/lesson_4
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+### Objectives
+To finish creating the user-role domain, load and transform JSON data, and begin crafting the Redi2Read API.
+
+### Agenda
+
+In this lesson, you'll learn:
+
+* How to load JSON data using Jackson.
+* How to create and work with secondary indexes
+* How to use the repositories with a REST controller.
+
+If you get stuck:
+
+* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-4
+
+### Loading Users
+
+Now that we’ve created the Roles let’s load the `User`s from the provided JSON data in `src/main/resources/data/users/users.json`.
+The file contains an array of JSON user objects as shown below:
+
+```json
+{
+  "password": "9yNvIO4GLBdboI",
+  "name": "Georgia Spencer",
+  "id": -5035019007718357598,
+  "email": "georgia.spencer@example.com"
+}
+```
+
+The JSON fields map exactly to the JavaBean names for our User POJO properties.
+
+### User Repository
+
+First, we’ll create the `UserRepository`; just like we did with the `RoleRepository`, we’ll extend `CrudRepository`.
+Under the `src/main/java/com/redislabs/edu/redi2read/repositories` let's create the `UserRepository` interface as follows:
+
+```java
+package com.redislabs.edu.redi2read.repositories;
+
+import com.redislabs.edu.redi2read.models.User;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends CrudRepository<User, String> {
+  User findFirstByEmail(String email);
+}
+```
+
+The `findFirstByEmail` method takes advantage of the index we previously created on the email field of the `User` model.
+The Spring Repository will provide an implementation of the finder method at runtime.
+We will use this finder when we tackle our application's security.
+
+Let’s create another `CommandLineRunner` under the boot package to load the users. We’ll follow a similar recipe for the Roles,
+except that we will load the JSON data from disk and use Jackson (https://github.com/FasterXML/jackson),
+one of the most popular Java JSON libraries.
+
+The recipe to load the user goes as follows:
+
+  1. Create an input stream from the user’s JSON data file
+  2. Using Jackson, read the input stream into a collection of users
+  3. For each user:
+  * Encode the plain text password
+  * Add the customer role
+
+### Prerequisites
+
+Based on the loading recipe above, there are two things our application can’t currently do that it needs:
+* A way to encode plain text user password
+* A way to find a role by name
+
+### Password Encoding
+
+Our implementation of `PasswordEncoder` will use the `BCrypt` strong hashing function. In the `Redi2readApplication` class add:
+
+```java
+@Bean
+public BCryptPasswordEncoder passwordEncoder() {
+  return new BCryptPasswordEncoder();
+}
+```
+
+With the corresponding import:
+
+```java
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+```
+
+### Secondary Indexes: Finding Roles by Name
+
+As we learned in the previous lesson, the `@Indexed` annotation can be used to create a secondary index. Secondary indexes enable lookup operations based on native Redis structures.
+The index is maintained on every save/update of an indexed object.
+To add a secondary index to the `Role` model, we’ll simply add the `@Indexed` annotation:
+
+```java
+@Data
+@Builder
+@RedisHash
+public class Role {
+  @Id
+  private String id;
+
+  @Indexed
+  private String name;
+}
+```
+
+Don’t forget to add the corresponding import:
+
+```java
+import org.springframework.data.redis.core.index.Indexed;
+```
+
+Now when a new `Role` instance is created, with ID as `"abc-123"` and role as `"superuser"`, Spring Data Redis will do the following:
+1. Create the `"by name"` index: Created as a Redis Set with the key `com.redislabs.edu.redi2read.models.Role:name:superuser` containing one entry; the id of the indexed object `"abc-123"`
+2. A list of indexes for the `Role` "superuser": Create a Redis Set with the key `"com.redislabs.edu.redi2read.models.Role:abc-123:idx"`
+   containing one entry; the key of the index `"com.redislabs.edu.redi2read.models.Role:name:superuser"`
+
+Unfortunately, to index the already created Roles, we’ll need to either retrieve them and resave them or recreate them.
+Since we already have automated the seeding of the Roles and we haven’t yet created any associated objects,
+we can simply delete them using the Redis CLI and the DEL command and restart the server:
+
+```bash
+127.0.0.1:6379> KEYS com.redislabs.edu.redi2read.models.Role*
+1) "com.redislabs.edu.redi2read.models.Role:c4219654-0b79-4ee6-b928-cb75909c4464"
+2) "com.redislabs.edu.redi2read.models.Role:9d383baf-35a0-4d20-8296-eedc4bea134a"
+3) "com.redislabs.edu.redi2read.models.Role"
+127.0.0.1:6379> DEL "com.redislabs.edu.redi2read.models.Role:c4219654-0b79-4ee6-b928-cb75909c4464" "com.redislabs.edu.redi2read.models.Role:9d383baf-35a0-4d20-8296-eedc4bea134a" "com.redislabs.edu.redi2read.models.Role"
+(integer) 3
+127.0.0.1:6379>
+```
+
+The DEL command takes one or more keys. We’ll pass the three current keys for the Role hashes and the Role key set.
+
+With the secondary index on the name for roles created, we can add a finder method to the `RoleRepository`:
+
+```java
+@Repository
+public interface RoleRepository extends CrudRepository<Role, String> {
+  Role findFirstByName(String role);
+}
+```
+
+### CreateUsers CommandLineRunner
+
+Under the `src/main/java/com/redislabs/edu/redi2read/boot `let's create the `CreateUsers.java` file with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.boot;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redislabs.edu.redi2read.models.Role;
+import com.redislabs.edu.redi2read.models.User;
+import com.redislabs.edu.redi2read.repositories.RoleRepository;
+import com.redislabs.edu.redi2read.repositories.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Order(2)
+@Slf4j
+public class CreateUsers implements CommandLineRunner {
+
+  @Autowired
+  private RoleRepository roleRepository;
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
+
+  @Override
+  public void run(String... args) throws Exception {
+    if (userRepository.count() == 0) {
+      // load the roles
+      Role admin = roleRepository.findFirstByname("admin");
+      Role customer = roleRepository.findFirstByname("customer");
+
+      try {
+        // create a Jackson object mapper
+        ObjectMapper mapper = new ObjectMapper();
+        // create a type definition to convert the array of JSON into a List of Users
+        TypeReference<List<User>> typeReference = new TypeReference<List<User>>() {
+        };
+        // make the JSON data available as an input stream
+        InputStream inputStream = getClass().getResourceAsStream("/data/users/users.json");
+        // convert the JSON to objects
+        List<User> users = mapper.readValue(inputStream, typeReference);
+
+        users.stream().forEach((user) -> {
+          user.setPassword(passwordEncoder.encode(user.getPassword()));
+          user.addRole(customer);
+          userRepository.save(user);
+        });
+        log.info(">>>> " + users.size() + " Users Saved!");
+      } catch (IOException e) {
+        log.info(">>>> Unable to import users: " + e.getMessage());
+      }
+
+      User adminUser = new User();
+      adminUser.setName("Adminus Admistradore");
+      adminUser.setEmail("admin@example.com");
+      adminUser.setPassword(passwordEncoder.encode("Reindeer Flotilla"));//
+      adminUser.addRole(admin);
+
+      userRepository.save(adminUser);
+      log.info(">>>> Loaded User Data and Created users...");
+    }
+  }
+}
+```
+
+Let’s break it down:
+  * At the top, we use the `@Autowired` annotation to inject the `RoleRepository`, the `UserRepository`, and the `BCryptPasswordEncoder`.
+  * As with the `CreateRoles` `CommandLineRunner`, we only execute the logic if there are no database users.
+  * We then load the admin and customer roles by using the Repository custom finder method `findFirstByName`.
+  * To process the JSON, we create a Jackson ObjectMapper and a TypeReference, which will serve as a recipe for serializing the JSON into Java objects.
+  * Using the `getResourceAsStream` from the `Class` object, we load the JSON file from the resources directory
+  * Then we use the `ObjectMapper` to convert the incoming input stream into a `List` of `User` objects
+  * For each user, we encode the password and add the customer role
+  * Near the end of the file, we create a single user with the admin role, which we will use in a later Lesson
+
+On application restart, we should now see:
+
+```bash
+2021-04-03 10:05:04.222  INFO 40386 --- [  restartedMain] c.r.edu.redi2read.Redi2readApplication   : Started Redi2readApplication in 2.192 seconds (JVM running for 2.584)
+2021-04-03 10:05:04.539  INFO 40386 --- [  restartedMain] c.r.edu.redi2read.boot.CreateRoles       : >>>> Created admin and customer roles...
+2021-04-03 10:06:27.292  INFO 40386 --- [  restartedMain] c.r.edu.redi2read.boot.CreateUsers       : >>>> 1000 Users Saved!
+2021-04-03 10:06:27.373  INFO 40386 --- [  restartedMain] c.r.edu.redi2read.boot.CreateUsers       : >>>> Loaded User Data and Created users...
+```
+
+### Exploring the loaded Users
+
+If you were watching the Redis CLI in MONITOR mode you probably saw a barrage of the Redis commands executing for the 1001 users we’ve just created.
+Let’s use the CLI to explore the data:
+
+```bash
+127.0.0.1:6379> KEYS "com.redislabs.edu.redi2read.models.User"
+1) "com.redislabs.edu.redi2read.models.User"
+127.0.0.1:6379> TYPE "com.redislabs.edu.redi2read.models.User"
+set
+127.0.0.1:6379> SCARD "com.redislabs.edu.redi2read.models.User"
+(integer) 1001
+127.0.0.1:6379> SRANDMEMBER "com.redislabs.edu.redi2read.models.User"
+"-1848761758049653394"
+127.0.0.1:6379> HGETALL "com.redislabs.edu.redi2read.models.User:-1848761758049653394"
+ 1) "id"
+ 2) "-1848761758049653394"
+ 3) "_class"
+ 4) "com.redislabs.edu.redi2read.models.User"
+ 5) "roles.[0]"
+ 6) "com.redislabs.edu.redi2read.models.Role:a9f9609f-c173-4f48-a82d-ca88b0d62d0b"
+ 7) "name"
+ 8) "Janice Garza"
+ 9) "email"
+10) "janice.garza@example.com"
+11) "password"
+12) "$2a$10$/UHTESWIqcl6HZmGpWSUHexNymIgM7rzOsWc4tcgqh6W5OVO4O46."
+```
+We now have a Redis Set holding the collection of user keys for the Redis Hashes containing user instances.
+We use the SCARD command to get the set’s cardinality (1001, the 1000 users from the JSON plus the admin user).
+Using the SRANDMEMBER command, we can pull a random member from a `Set`. We then use that and the `User` Hashes prefix to retrieve the data for a random User hash.
+A few things to point out:
+  * The user’s set of roles are stored using indexed hash fields (`roles.[0], roles.[1]`, etc.) with a value being the key for a given role.
+    This is the result of annotating the Java Set of Role using `@Reference`
+  * The password field is hashed correctly.
+
+### Building the Redi2Read API
+
+Now that we have `User`s and `Role`s, let’s create an `UserController` to expose some user management functionality.
+```java
+package com.redislabs.edu.redi2read.controllers;
+
+import com.redislabs.edu.redi2read.models.User;
+import com.redislabs.edu.redi2read.repositories.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @GetMapping
+  public Iterable<User> all() {
+    return userRepository.findAll();
+  }
+}
+```
+
+We can now issue a GET request to retrieve all users:
+
+```bash
+$ curl --location --request GET 'http://localhost:8080/api/users/'
+```
+
+The output should be an array of JSON object like:
+
+```json
+[
+   {
+       "id": "-1180251602608130769",
+       "name": "Denise Powell",
+       "email": "denise.powell@example.com",
+       "password": "$2a$10$pMJjQ2bFAUGlBTX9cHsx/uGrbbl3JZmmiR.vG5xaVwQodQyLaj52a",
+       "passwordConfirm": null,
+       "roles": [
+           {
+               "id": "a9f9609f-c173-4f48-a82d-ca88b0d62d0b",
+               "name": "customer"
+           }
+       ]
+   },
+...
+]
+```
+
+Let’s be good RESTful citizens and filter out the `password` and `passwordConfirm` fields on the way out.
+To accomplish this we take advantage of the fact the Jackson is the default serializer in Spring Web which
+mean we can annotate the `User` class with the `@JsonIgnoreProperties` only allowing setters
+(so that we can load the data) but hiding the getters during serialization as shown next:
+
+```java
+@JsonIgnoreProperties(value = { "password", "passwordConfirm" }, allowSetters = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Data
+@RedisHash
+public class User {
+...
+}
+```
+With the import statement:
+```java
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+```
+
+Issuing the request again should reflect the changes on the JSON response:
+
+```json
+[
+    {
+        "id": "-1180251602608130769",
+        "name": "Denise Powell",
+        "email": "denise.powell@example.com",
+        "roles": [
+            {
+                "id": "a9f9609f-c173-4f48-a82d-ca88b0d62d0b",
+                "name": "customer"
+            }
+        ]
+    },
+...
+]
+```
+
+Let’s add one more method to our `UserController`. We’ll add the ability to retrieve a user by its email address,
+which will take advantage of the secondary index on email in the User object.
+We’ll implement it as a filter on the GET root endpoint of the controller:
+
+```java
+ @GetMapping
+ public Iterable<User> all(@RequestParam(defaultValue = "") String email) {
+   if (email.isEmpty()) {
+     return userRepository.findAll();
+   } else {
+     Optional<User> user = Optional.ofNullable(userRepository.findFirstByEmail(email));
+     return user.isPresent() ? List.of(user.get()) : Collections.emptyList();
+   }
+ }
+```
+
+We use a request parameter for the email, and if it is present, we invoke the `findFirstByEmail` finder.
+We wrap the result in a list to match the result type of the method. We use Optional to handle a null
+result from the finder.
+And don’t forget your imports:
+
+```java
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.web.bind.annotation.RequestParam;
+```
+
+Invoking the endpoint with curl:
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/users/?email=donald.gibson@example.com'
+```
+Returns the expected result:
+```json
+[
+    {
+        "id": "-1266125356844480724",
+        "name": "Donald Gibson",
+        "email": "donald.gibson@example.com",
+        "roles": [
+            {
+                "id": "a9f9609f-c173-4f48-a82d-ca88b0d62d0b",
+                "name": "customer"
+            }
+        ]
+    }
+]
+```
