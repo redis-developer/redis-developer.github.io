@@ -169,14 +169,22 @@ module.exports = {
                   'howtos/redisjson/storing-json-using-nodejs/index-storingjson-nodejs',
              ]
            },
-           'howtos/redistimeseries/index-redistimeseries',
-           'howtos/redisgraph/index-redisgraph',
-           'howtos/redisbloom/index-redisbloom',
-           'howtos/redisgears/index-redisgears',
-           'howtos/redisai/index-redisai',
-           'howtos/leaderboard/index-leaderboard',
-           'howtos/ratelimiting/index-ratelimiting',
-           'howtos/caching/index-caching',
+             'howtos/redistimeseries/index-redistimeseries',
+             {
+               type: 'category',
+               label: 'RedisGraph Tutorial',
+               items: [
+                  'howtos/redisgraph/index-redisgraph',
+                  'howtos/redisgraph/getting-started/index-gettingstarted',
+                  'howtos/redisgraph/explore-python-code/index-explorepythoncode',
+               ]
+            },
+               'howtos/redisbloom/index-redisbloom',
+               'howtos/redisgears/index-redisgears',
+               'howtos/redisai/index-redisai',
+               'howtos/leaderboard/index-leaderboard',
+               'howtos/ratelimiting/index-ratelimiting',
+               'howtos/caching/index-caching',
           {
           type: 'category',
           label: 'How to list & search Movies database using RediSearch',
