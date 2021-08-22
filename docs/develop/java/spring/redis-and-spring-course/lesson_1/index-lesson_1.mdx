@@ -1,0 +1,300 @@
+---
+id: index-lesson_1
+title: "Spring and Redis: Up and Running"
+sidebar_label: Up and Running
+slug: /develop/java/redis-and-spring-course/lesson_1
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+### Objectives
+
+Create the skeleton for the course’s Spring Boot application, configuring all dependencies and launching a suitably configured Redis instance for the course.
+
+### Agenda
+
+In this lesson, you will learn:
+* How to create and configure your Spring Boot application to use Redis
+* How to add a docker-compose file as a Git submodule to your application to configure and run Redis
+* How to add a Git submodule with the application’s sample raw data
+* How to launch a Redis instance suitable for the course
+
+If you get stuck:
+
+* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-1
+
+### Creating a skeleton spring boot application from scratch!
+
+If you want to start with a fully configured Spring Boot application and wish to skip the “from scratch” part,
+skip to the section “Quick Start For Those In a Hurry.”
+
+1. In your browser, launch the [Spring Initilizr](https://start.spring.io)
+2. Fill out the form using the following settings:
+  * Project: Maven Project
+  * Language: Java
+  * Spring Boot: 2.4.4
+  * Project Metadata:
+    * Group: `com.redislabs.edu`
+    * Artifact: `redi2read`
+    * Name: `redi2read`
+    * Description: Bookstore Web Services Powered by Redis
+    * Package Name: `com.redislabs.edu.redi2read`
+    * Packaging: JAR
+    * Java: 11
+  * Dependencies:
+    * Spring Web
+    * String Data Redis (Access + Driver)
+    * Spring Security
+    * Lombok
+    * Spring Boot DevTools
+
+Alternatively, you can use the following URL: http://bit.ly/spring-initlz-redi2read to launch the Spring Initilizr fully configured for the project.
+Click on GENERATE and Initializr will generate the zip file for the project and prompt you to download it to your local machine.
+Unzip the downloaded file (named `redi2read.zip`) in a suitable directory. For example on a Mac:
+
+```bash
+cd ~/my-directory
+unzip ~/Downloads/redi2read.zip
+```
+
+### Adding redismod docker compose Git submodule
+
+Now that you have downloaded and unzipped the generated Spring Initializr application, change directories to the app directory (./redi2read) and inspect the contents.
+
+You should have a full Maven-based Spring Boot application. Since we are going to be adding submodules, let’s put the application in git:
+
+```bash
+echo "# redi2read" >> README.md
+git init
+git commit --allow-empty -m "git: initial empty commit"
+git add README.md
+git commit -m "feat: spring boot + redis initializr app"
+git branch -M main
+```
+
+In the previous code block we initialized a git repo in our redi2read application directory.
+Adding an empty git commit facilitates future Git rebase operations.
+
+Now that we have a basic Spring application, we need to configure a Redis instance for our application.
+We've created a docker-compose file in a git repository that you can add as a submodule to your application.
+
+Git submodules, if you haven't encountered them, are a way to nest a git repo within another git repo.
+Read the [Git documentation on submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to learn more.
+
+You’ll find this file in the [redismod-docker-compose repo](https://github.com/redis-developer/redismod-docker-compose),
+hosted under the [redis-developer](https://github.com/redis-developer/) organization in Github.
+The Repo contains a [Docker Compose](https://docs.docker.com/compose) file configured to use the Redis Labs “redismod” image, which is a Docker image
+that includes Redis built with  select Redis Labs modules. In particular, we will use the [RedisJSON](https://redisjson.io), [RediSearch](https://redisearch.io),
+and [RedisGraph](https://redisgraph.io) modules while building this application.
+
+Modules included in the container:
+
+* **RediSearch**: a full-featured search engine
+* **RedisGraph**: a graph database
+* **RedisTimeSeries**: a time-series database
+* **RedisAI**: a tensor and deep learning model server
+* **RedisJSON**: a native JSON data type
+* **RedisBloom**: native Bloom and Cuckoo Filter data types
+* **RedisGears**: a dynamic execution framework
+
+To add the submodule, we use the git submodule command at the root of the project:
+
+```bash
+git submodule add git@github.com:redis-developer/redismod-docker-compose.git docker
+```
+
+The command adds the contents of the passed repository under the folder named “docker,” which the command will create.
+At this point you can commit the changes made to the repository.
+
+### Adding redi2read-data git submodule
+
+The sample data for the application is also provided as a separate Git repo that we will add to our main repository: `redi2read-data`.
+The raw data for our application consists of a collection of JSON documents, representing books and users.
+
+#### Books
+
+The collection of JSON documents for book data comes from https://books.googleapis.com.
+Each file is labelled with the keyword/category used to construct it
+and an incrementing integer (some categories have more books than others) resulting in JSON such as:
+
+```javascript
+{
+  "pageCount":304,
+  "thumbnail":"http:\/\/books.google.com\/books\/content?id=prtSDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+  "price":42.99,
+  "subtitle":null,
+  "description":"Drowning in unnecessary complexity, unmanaged state, and tangles of spaghetti code? In the best tradition of Lisp, Clojure gets out of your way so you can focus on expressing simple solutions to hard problems.",
+  "language":"en",
+  "currency":"USD",
+  "id":"1680505726",
+  "title":"Programming Clojure",
+  "infoLink":"https:\/\/play.google.com\/store\/books\/details?id=prtSDwAAQBAJ&source=gbs_api",
+  "authors":[
+    "Alex Miller",
+    "Stuart Halloway",
+    "Aaron Bedra"
+  ]
+}
+```
+
+We have an ID (the book ISBN), title, subtitle, description, page count, price, currency, language, thumbnail URL, a link to more information (the “infoLink” field), and an array of authors.
+
+#### Users
+
+The user data was randomly created using [https://randomuser.me](https://randomuser.me), which generated JSON like:
+
+```json
+{
+  "password": "9yNvIO4GLBdboI",
+  "name": "Georgia Spencer",
+  "id": -5035019007718357598,
+  "email": "georgia.spencer@example.com"
+}
+```
+
+To add the submodule use the following command:
+
+```bash
+git submodule add git@github.com:redis-developer/redi2read-data.git src/main/resources/data
+```
+
+This submodule will load under the folder `src/main/resource/data` within the application folder to facilitate the loading of the data from the classpath. At this point you can commit your work so far to the git repo.
+
+### Quick start for those in a hurry
+
+To skip past all the steps outlined above (e.g., initializing a Spring app, adding submodules for data, etc.), simply clone the application with the `--recurse-submodules` option, and check out the branch named `course/milestone-1`
+
+```bash
+git clone --branch course/milestone-1 git@github.com:redis-developer/redi2read.git --recurse-submodule
+```
+
+### Starting and testing Redis
+
+Let's open a terminal window and change directories to the `/docker` directory under our project’s repository.
+To start our Docker Redis image, we’ll use the docker-compose command as follows:
+
+```bash
+docker-compose up
+```
+
+You should see output similar to this:
+
+```bash
+Creating network "redi2read_default" with the default driver
+Creating redi2read_redis_1 ... done
+Attaching to redi2read_redis_1
+redis_1  | 1:C 01 Apr 2021 05:19:27.593 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis_1  | 1:C 01 Apr 2021 05:19:27.593 # Redis version=6.0.1, bits=64, commit=00000000, modified=0, pid=1, just started
+redis_1  | 1:C 01 Apr 2021 05:19:27.593 # Configuration loaded
+redis_1  | 1:M 01 Apr 2021 05:19:27.600 * Running mode=standalone, port=6379.
+...
+```
+
+### Using the Redis CLI
+
+The [redis-cli](https://redis.io/topics/rediscli) is the Redis command line interface, a simple program that allows you to send commands to Redis, and read the replies sent by the server, directly from the terminal.
+
+#### Launching Redis CLI in the container
+
+Find the container name using `docker container ls`:
+
+```bash
+$ docker container ls
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS         PORTS                    NAMES
+0f99ea35b9c1   redislabs/redismod   "redis-server --load…"   57 minutes ago   Up 7 minutes   0.0.0.0:6379->6379/tcp   docker_redis_1
+```
+
+With the name `docker_redis_1` we can run bash in the container and then start the redis-cli:
+
+```bash
+$ docker exec -it docker_redis_1 bash
+root@0f99ea35b9c1:/data# redis-cli
+127.0.0.1:6379>
+```
+
+#### Launching Redis CLI Locally
+
+If you already have the Redis CLI installed locally, you can launch it by simply entering:
+
+```bash
+$ redis-cli
+127.0.0.1:6379>
+```
+
+### Testing our Redis instance
+
+The most basic of commands, PING is used to “ping” the server. If we get a response back, we know that the Redis server is alive and kicking:
+
+```bash
+127.0.0.1:6379> PING
+PONG
+127.0.0.1:6379> PING Marco!
+"Marco!"
+127.0.0.1:6379>
+```
+
+#### Checking for the installed Redis modules
+
+Since we have a customized Redis instance which includes several Redis modules, we can check for which modules have been installed:
+
+```bash
+127.0.0.1:6379> MODULE LIST
+1) 1) "name"
+   2) "search"
+   3) "ver"
+   4) (integer) 20006
+2) 1) "name"
+   2) "graph"
+   3) "ver"
+   4) (integer) 20215
+3) 1) "name"
+   2) "ReJSON"
+   3) "ver"
+   4) (integer) 10007
+4) 1) "name"
+   2) "bf"
+   3) "ver"
+   4) (integer) 20205
+5) 1) "name"
+   2) "timeseries"
+   3) "ver"
+   4) (integer) 10408
+6) 1) "name"
+   2) "ai"
+   3) "ver"
+   4) (integer) 10002
+7) 1) "name"
+   2) "rg"
+   3) "ver"
+   4) (integer) 10006
+```
+
+### Getting familiar with Redis Commands
+
+Keys are unique identifiers, whose value can be any one of the data types that Redis supports.  These data types range from simple Strings, to Lists, Sets, and even Streams.  Each data type has its own set of behaviors and commands associated with it.
+
+```bash
+127.0.0.1:6379> SET myname "Brian"
+OK
+127.0.0.1:6379> GET myname
+"Brian"
+127.0.0.1:6379> TYPE myname
+string
+```
+
+Keys in a Redis database are distributed in a flat keyspace. Redis does not enforce a schema or naming policy for keys.
+This provides great flexibility, with the organization of the keyspace being the responsibility of the developer.
+We'll look at ways of managing this later in the course.
+Redis is famous for being an extremely fast database.
+This speed comes from the fact that it stores and serves all data from RAM rather than disk.
+Redis is durable, so your data will be persisted but all reads will be from a copy of the data held in RAM.
+This makes Redis an excellent choice for applications that require real time data access.
+
+### External Resources
+
+Here's some resources that we think will be useful to you as you discover Redis:
+
+* [redis.io](https://redis.io/) - the official website of open source Redis.
+* [Redis Enterprise Cloud](https://redislabs.com/redis-enterprise-cloud/overview/) - a fully managed cloud service from Redis Labs with a free plan for getting started.
+* The official [Redis Docker image](https://hub.docker.com/_/redis/).
+* For a comprehensive introduction to Redis, we recommend taking a look at the [RU101: Introduction to Redis Data Structures](https://university.redislabs.com/courses/ru101/) course at Redis University. In this free online course, you’ll learn about the data structures in Redis, and you’ll see how to practically apply them in the real world.

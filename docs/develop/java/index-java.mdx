@@ -1,7 +1,7 @@
 ---
 id: index-java
 title: Java and Redis
-sidebar_label: Java
+sidebar_label: Overview
 slug: /develop/java/
 ---
 import Tabs from '@theme/Tabs';
@@ -48,10 +48,10 @@ The blog post “[Jedis vs. Lettuce: An Exploration](https://redislabs.com/blog/
 
 ### Step 3. Create a Connection Pool
 
-Once you have added the Jedis library to your project and imported the necessary classes you can create a connection pool. 
+Once you have added the Jedis library to your project and imported the necessary classes you can create a connection pool.
 
 You can find more information about Jedis connection pool in the [Jedis Wiki](https://github.com/redis/jedis/wiki/Getting-started#basic-usage-example). The connection pool is based on the [Apache Common Pool 2.0 library](http://commons.apache.org/proper/commons-pool/apidocs/org/apache/commons/pool2/impl/GenericObjectPoolConfig.html).
-    
+
    ```java
      JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 6379);
    ```
@@ -72,14 +72,14 @@ Once you have access to the connection pool you can now get a Jedis instance and
      jedis.set("mykey", "Hello from Jedis");
      String value = jedis.get("mykey");
      System.out.println( value );
-            
-     jedis.zadd("vehicles", 0, "car"); 
+
+     jedis.zadd("vehicles", 0, "car");
      jedis.zadd("vehicles", 0, "bike");
      Set<String> vehicles = jedis.zrange("vehicles", 0, -1);
      System.out.println( vehicles );
 
      }
-        
+
      // close the connection pool
      jedisPool.close();
    ```
@@ -117,12 +117,12 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
      RedisClient redisClient = RedisClient.create("redis://localhost:6379/");
      StatefulRedisConnection<String, String> connection = redisClient.connect();
      RedisCommands<String, String> syncCommands = connection.sync();
-        
+
      syncCommands.set("mykey", "Hello from Lettuce!");
      String value = syncCommands.get("mykey");
      System.out.println( value );
 
-     syncCommands.zadd("vehicles", 0, "car"); 
+     syncCommands.zadd("vehicles", 0, "car");
      syncCommands.zadd("vehicles", 0, "bike");
      List<String> vehicles = syncCommands.zrange("vehicles", 0, -1);
      System.out.println( vehicles );
@@ -138,7 +138,7 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
 
 ### Redis Marketplace
 
-Redis Marketplace is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages. 
+Redis Marketplace is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
 Below are few of these apps. [Click here to access the complete lists of apps](https://marketplace.redislabs.com)
 
 <div class="row text--center">
@@ -158,7 +158,7 @@ Below are few of these apps. [Click here to access the complete lists of apps](h
 <div class="col">
 <div className="ri-container">
 
-#### Leaderboard app in Java 
+#### Leaderboard app in Java
 
 ![marketplace](images/basicleaderboardjava.png)
 
@@ -177,7 +177,7 @@ As developer you can use the Java client library directly in your application, o
 <div class="col ">
 <div className="ri-container">
 
-#### Develop with Spring 
+#### Develop with Spring
 
 ![Spring logo](/img/logos/spring.png)
 
@@ -188,7 +188,7 @@ As developer you can use the Java client library directly in your application, o
 <div class="col">
 <div className="ri-container">
 
-#### Develop with Quarkus 
+#### Develop with Quarkus
 
 ![Quarkus logo](/img/logos/quarkus.png)
 
@@ -203,18 +203,18 @@ As developer you can use the Java client library directly in your application, o
 <div class="col">
 <div className="ri-container">
 
-#### Develop with Vert.x 
+#### Develop with Vert.x
 
 ![Vert.x logo](/img/logos/vertx.png)
 
-[Eclipse Vert.x](https://vertx.io/introduction-to-vertx-and-reactive/) is a framework to build reactive applications on the JVM. [Vert.x-redis](https://vertx.io/docs/vertx-redis-client/java/) is redis client to be used with Vert.x. 
+[Eclipse Vert.x](https://vertx.io/introduction-to-vertx-and-reactive/) is a framework to build reactive applications on the JVM. [Vert.x-redis](https://vertx.io/docs/vertx-redis-client/java/) is redis client to be used with Vert.x.
 </div>
 </div>
 
 <div class="col">
 <div className="ri-container">
 
-#### Develop with Micronaut 
+#### Develop with Micronaut
 
 ![Micronaut logo](/img/logos/micronaut.svg)
 

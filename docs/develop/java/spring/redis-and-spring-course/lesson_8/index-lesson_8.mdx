@@ -1,0 +1,508 @@
+---
+id: index-lesson_8
+title: "Recommendations with RedisGraph"
+sidebar_label: Recommendations w/ RedisGraph
+slug: /develop/java/redis-and-spring-course/lesson_8
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+### Objectives
+Build a simple but powerful graph-based recommendation engine in the Redi2Read application.
+
+### Agenda
+In this lesson, students will learn:
+* How to use RedisGraph in a Spring Boot application to construct a Graph from model data using the JRedisGraph client library.
+* How to query data using the Cypher query language.
+If you get stuck:
+* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-8
+
+### Graphs
+
+Graph databases are composed of nodes and relationships. These databases excel at managing highly connected data.
+Nodes represent entities (party, place, thing, category, moment-in-time) related to other entities.
+Relationships connect nodes. They represent an association between nodes that are important to your domain.
+
+### Redis Graph
+
+Redis Graph is a low-latency graph database based on the property graph model built as a Redis module.
+Like all graphs, a property graph has nodes and relationships. However, it adds extra expressiveness by providing:
+* Nodes: Graph data entities
+* Relationships: Connect nodes (has direction and a type)
+* Properties: Stores data in key-value pairs in nodes and relationships
+* Labels: Groups nodes and relationships (optional)
+
+Redis Graph meets the two most essential requirements of a graph database:
+Native Graph Storage: Uses a Redis-native optimized graph data structure (sparse adjacency matrices).
+Native Graph Processing: Index-free adjacency and linear algebra to query the graph.
+It supports a large subset of the Cypher Query Language, an open standard supported by several graph databases, the Cypher Graph Query Language.
+The Cypher Query Language is a SQL-inspired pattern-matching language with an easy to grasp visual aspect due to its use of ASCII-Art to easily visual graph relationships in text. The specification is becoming an industry standard among graph database vendors (see openCypher).
+
+### Nodes
+Nodes are enclosed by parenthesis. For example:
+`()`
+
+It is the simplest of nodes; an anonymous node (with no label or variable), as a pattern-matching entity, it will match any node in the database.
+`(:Actor)`
+
+Represents a node under the label “Actor”; you can think of it as the node’s class.
+`(a:Actor)`
+
+In this example, “a” is an alias for the node. Think of it as a variable that you can use in a query, just like in SQL.
+`(a:Actor {name:'Kathryn Hahn'})`
+
+The JSON-looking object in curly brackets is a node property. The properties are attached to the node upon creation. When used in a query, they serve as pattern matching.
+Relationships
+Relationships are represented by arrows (--> or <--) between two nodes. The type of relationship is enclosed in squared brackets.
+`(a:Actor {name:'Kathryn Hahn'})-[:ACTS]->(s:Show {name:'WandaVision'})`
+
+The above snippet could be used to create the relationship if used with the GRAPH.CREATE method, for example. If the nodes did not exist, they would be created, or if they existed, it would just use the node properties to pattern match.
+
+### RedisInsight: A Visual Management Tool for Redis
+
+Until now, we have been using the Redis CLI, curl, and the output of our Java programs to interact with Redis.
+
+If there is one place where we can use visualization is with graph data. RedisInsight is a free product from Redis Labs that provides an intuitive graphical user interface for managing Redis databases.
+RedisInsight also supports some popular Redis modules, and we'll use it in this lesson to visualize our graphs.
+If you want to get the best possible understanding of the materials in this chapter, please download and install RedisInsight.
+
+### A warm-up with Cypher
+
+Try in the Redis CLI
+Ok, enough theory, let’s fire up the Redis CLI and try some graph making and querying (and later visualizing in RedisInsight).
+Let’s create a standalone node for an Actor:
+
+```bash
+127.0.0.1:6379> GRAPH.QUERY imdb-grf "CREATE (:Actor {name: 'Kathryn Hahn', nick: 'ka'})"
+1) 1) "Labels added: 1"
+   2) "Nodes created: 1"
+   3) "Properties set: 2"
+
+And a standalone node for a TV show:
+127.0.0.1:6379> GRAPH.QUERY imdb-grf "CREATE (:Show {name: 'WandaVision', nick: 'wv'})"
+1) 1) "Labels added: 1"
+   2) "Nodes created: 1"
+   3) "Properties set: 2"
+```
+
+Now let’s join them with a relationship of type `:ACTS`:
+
+```bash
+127.0.0.1:6379> GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'ka'}), (s:Show {nick: 'wv'}) CREATE (a)-[:ACTS]->(s)"
+1) 1) "Relationships created: 1"
+```
+
+The MATCH keyword indicates a pattern matching operation. You can have multiple patterns in a command separated list in a single MATCH or multiple MATCH lines. Variables are used to “join” multiple patterns.
+Notice that the Redis Graph Cypher command starts with:
+
+```bash
+GRAPH.QUERY key-of-the-graph cypher-query
+```
+First, let’s see what are the unique labels (classes) in the graph:
+```bash
+127.0.0.1:6379> GRAPH.QUERY "imdb-grf" "match (n) return distinct labels(n)"
+1) 1) "labels(n)"
+2) 1) 1) "Actor"
+   2) 1) "Show"
+   3) 1) "Movie"
+```
+
+In RedisInsight:
+
+![RedisInsight](./images/redis-insight.png)
+
+As expected, the unique labels are “Actor,” “Movie,” and “Show.”
+Now, execute the commands below, and then we can ask some questions of the data using Cypher:
+
+```bash
+GRAPH.QUERY imdb-grf "CREATE (:Actor {name: 'Paul Bettany', nick: 'pb'})"
+GRAPH.QUERY imdb-grf "CREATE (:Actor {name: 'Paul Rudd', nick: 'pr'})"
+
+GRAPH.QUERY imdb-grf "CREATE (:Show {name: 'The Shrink Next Door', nick: 'tsnd'})"
+GRAPH.QUERY imdb-grf "CREATE (:Movie {name: 'Iron Man', nick: 'im'})"
+GRAPH.QUERY imdb-grf "CREATE (:Movie {name: 'Our Idiot Brother', nick: 'oib'})"
+GRAPH.QUERY imdb-grf "CREATE (:Movie {name: 'Captain America: Civil War', nick: 'cacw'})"
+
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pb'}), (s:Show {nick: 'wv'}) CREATE (a)-[:ACTS]->(s)"
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pb'}), (m:Movie {nick: 'im'}) CREATE (a)-[:ACTS]->(m)"
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'ka'}), (m:Movie {nick: 'oib'}) CREATE (a)-[:ACTS]->(m)"
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pr'}), (m:Movie {nick: 'oib'}) CREATE (a)-[:ACTS]->(m)"
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pr'}), (m:Movie {nick: 'cacw'}) CREATE (a)-[:ACTS]->(m)"
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pr'}), (s:Show {nick: 'tsnd'}) CREATE (a)-[:ACTS]->(s)"
+GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'ka'}), (s:Show {nick: 'tsnd'}) CREATE (a)-[:ACTS]->(s)"
+```
+What are the relationships in our graph?
+
+```bash
+127.0.0.1:6379> GRAPH.QUERY "imdb-grf" "MATCH ()-[e]->() RETURN distinct type(e)"
+1) 1) "type(e)"
+2) 1) 1) "ACTS"
+```
+Count the labels in the graph:
+
+```bash
+127.0.0.1:6379> GRAPH.QUERY "imdb-grf" "MATCH (n) RETURN distinct labels(n), count(n)"
+1) 1) "labels(n)"
+   2) "count(n)"
+2) 1) 1) "Actor"
+      2) (integer) 3
+   2) 1) "Movie"
+      2) (integer) 3
+   3) 1) "Show"
+      2) (integer) 2
+```
+
+Return the name of all actors that acted in ‘The Shrink Next Door’:
+
+```bash
+127.0.0.1:6379> GRAPH.QUERY imdb-grf "MATCH (a:Actor)-[:ACTS]->(:Show {name:'The Shrink Next Door'}) RETURN a.name"
+1) 1) "a.name"
+2) 1) 1) "Kathryn Hahn"
+   2) 1) "Paul Rudd"
+```
+
+Find any two actors that worked together in a movie:
+
+```bash
+127.0.0.1:6379> GRAPH.QUERY "imdb-grf" "MATCH                  (a1:Actor)-[:ACTS]->(m:Movie)<-[:ACTS]-(a2:Actor)
+WHERE a1 <> a2 AND id(a1) > id(a2)
+RETURN m.name, a1.name, a2.name"
+1) 1) "m.name"
+   2) "a1.name"
+   3) "a2.name"
+2) 1) 1) "Our Idiot Brother"
+      2) "Paul Rudd"
+      3) "Kathryn Hahn"
+```
+
+That last query gives us a glimpse into the power of the Cypher Query Language. We can graphically draw the connections between the two actors, remove any duplicated (the permutations problem) by making sure we don’t match on the same node (Paul Rudd and Paul Rudd) and variations of the same pair (Paul Rudd and Kathryn Hahn vs. Kathryn Hahn and Paul Rudd) by ordering the pair using the id function.
+Creating the Redi2Read Graph
+Now that we have a cursory understanding of Redis Graph and the Cypher Query Language, let’s build the graph that will power our recommendations in Redi2Read.
+We will create a graph containing the following relationships:
+
+```bash
+Author -> AUTHORED -> Book
+Book -> IN -> Category
+User -> RATED -> Book
+User -> PURCHASED -> Book
+```
+
+### Using Redis Graph in Java
+
+To create and query graphs in Redi2Read we will use the JRedisGraph client library for Redis Graph (https://github.com/RedisGraph/JRedisGraph) built on top of the popular Jedis client library (https://github.com/redis/jedis)
+Adding the JRedisGraph dependency
+In your Maven pom.xml, add the following dependency:
+
+```xml
+<dependency>
+  <groupId>com.redislabs</groupId>
+  <artifactId>jredisgraph</artifactId>
+  <version>2.3.0</version>
+</dependency>
+```
+
+#### CommandLineRunner
+To create our graph we’ll use the now familiar CommandLineRunner recipe. We will keep the name of the created graph in the applications property field as shown:
+
+```bash
+app.graphId=redi2read-grf
+```
+Next, create the src/main/java/com/redislabs/edu/redi2read/boot/CreateGraph.java file and add the contents as follows:
+
+```java
+package com.redislabs.edu.redi2read.boot;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import com.redislabs.edu.redi2read.repositories.BookRatingRepository;
+import com.redislabs.edu.redi2read.repositories.BookRepository;
+import com.redislabs.edu.redi2read.repositories.CategoryRepository;
+import com.redislabs.edu.redi2read.repositories.UserRepository;
+import com.redislabs.redisgraph.impl.api.RedisGraph;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Order(8)
+@Slf4j
+public class CreateGraph implements CommandLineRunner {
+
+  @Autowired
+  private RedisTemplate<String, String> redisTemplate;
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private BookRepository bookRepository;
+
+  @Autowired
+  private BookRatingRepository bookRatingRepository;
+
+  @Autowired
+  private CategoryRepository categoryRepository;
+
+  @Value("${app.graphId}")
+  private String graphId;
+
+  @Override
+  public void run(String... args) throws Exception {
+    if (!redisTemplate.hasKey(graphId)) {
+      try (RedisGraph graph = new RedisGraph()) {
+        // create an index for Books on id
+        graph.query(graphId, "CREATE INDEX ON :Book(id)");
+        graph.query(graphId, "CREATE INDEX ON :Category(id)");
+        graph.query(graphId, "CREATE INDEX ON :Author(name)");
+        graph.query(graphId, "CREATE INDEX ON :User(id)");
+
+        Set<String> authors = new HashSet<String>();
+
+        // for each category create a graph node
+        categoryRepository.findAll().forEach(c -> {
+          graph.query(graphId, String.format("CREATE (:Category {id: \"%s\", name: \"%s\"})", c.getId(), c.getName()));
+        });
+
+        // for each book create a graph node
+        bookRepository.findAll().forEach(b -> {
+          graph.query(graphId, String.format("CREATE (:Book {id: \"%s\", title: \"%s\"})", b.getId(), b.getTitle()));
+          // for each author create an AUTHORED relationship to the book
+          if (b.getAuthors() != null) {
+            b.getAuthors().forEach(a -> {
+              if (!authors.contains(a)) {
+                graph.query(graphId, String.format("CREATE (:Author {name: \"%s\"})", a));
+                authors.add(a);
+              }
+              graph.query(graphId, String.format(
+                  "MATCH (a:Author {name: \"%s\"}), (b:Book {id: \"%s\"}) CREATE (a)-[:AUTHORED]->(b)", a, b.getId()));
+            });
+
+            b.getCategories().forEach(c -> {
+              graph.query(graphId,
+                  String.format("MATCH (b:Book {id: \"%s\"}), (c:Category {id: \"%s\"}) CREATE (b)-[:IN]->(c)",
+                      b.getId(), c.getId()));
+            });
+          }
+        });
+
+        // for each user create a graph node
+        userRepository.findAll().forEach(u -> {
+          graph.query(graphId, String.format("CREATE (:User {id: \"%s\", name: \"%s\"})", u.getId(), u.getName()));
+
+          // for each of the user's book create a purchased relationship
+          u.getBooks().forEach(book -> {
+            graph.query(graphId,
+                String.format("MATCH (u:User {id: \"%s\"}), (b:Book {id: \"%s\"}) CREATE (u)-[:PURCHASED]->(b)",
+                    u.getId(), book.getId()));
+          });
+        });
+
+        // for each book rating create a rated relationship
+        bookRatingRepository.findAll().forEach(br -> {
+          graph.query(graphId,
+              String.format("MATCH (u:User {id: \"%s\"}), (b:Book {id: \"%s\"}) CREATE (u)-[:RATED {rating: %s}]->(b)",
+                  br.getUser().getId(), br.getBook().getId(), br.getRating()));
+        });
+      }
+
+      log.info(">>>> Created graph...");
+    }
+  }
+}
+```
+
+Let’s break down the graph creation:
+* We inject the needed repositories for users, books, book rating and categories
+* We check if the key for the graph does not exist to prevent recreating the graph on restarts
+* We create 4 single property indexes for the Book id, Category id, Author name and User id. RedisGraph supports indexes for node labels. Indexes are automatically used by queries that reference any indexed properties.
+  * For each book category we create a node
+  * For each book we create a node
+  * For each author we create a node
+  * For each book author we created a AUTHORED relationship between the author and the book
+  * For each book we created an IN relationship with the category
+  * For each user we create a node
+  * For each book owned by a user we create a PURCHASED relationship
+  * For each book rating we create a RATED relationship between the user and the book
+
+
+### Creating the Recommendations Service
+
+As we did in the Search Lesson, we are going to use a Service abstraction to encapsulate the complexity of the recommendations engine.
+Let’s start with the skeleton of the recommendation service. Create the src/main/java/com/redislabs/edu/redi2read/services/RecommendationService.java file and add the contents as follows:
+
+```java
+package com.redislabs.edu.redi2read.services;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.redislabs.redisgraph.Record;
+import com.redislabs.redisgraph.ResultSet;
+import com.redislabs.redisgraph.graph_entities.Node;
+import com.redislabs.redisgraph.impl.api.RedisGraph;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RecommendationService {
+
+  @Value("${app.graphId}")
+  public String graphId;
+
+  RedisGraph graph = new RedisGraph();
+
+  // add magic here!
+}
+```
+
+Getting Book Recommendations From Common Purchases
+Our first recommendation method will find recommendations by looking at purchases of other users that have bought some of the same books a user has in its bookshelf:
+
+```bash
+MATCH (u:User { id: '8675309' })-[:PURCHASED]->(ob:Book)
+MATCH (ob)<-[:PURCHASED]-(:User)-[:PURCHASED]->(b:Book)
+WHERE NOT (u)-[:PURCHASED]->(b)
+RETURN distinct b, count(b) as frequency
+ORDER BY frequency DESC
+```
+
+Let’s break down the Cypher query:
+* The anchor for the query is the User’s id, in this case ‘8675309’
+* On the first MATCH we look for the given user purchases
+* On the second MATCH we find other users that have purchase a book the user has purchased and also collect the other users books
+* On WHERE clause we make sure that the user doesn’t already own any of the recommended books
+* ON the RETURN we make sure to remove duplicates and we count how often a book has been purchased
+* Finally on the ORDER BY, we return the most purchased books first
+
+Running the query on RedisInsight we get graphical display in which we can navigate the relationships of the result set:
+
+![RedisInsight Query Results Graph](./images/redis-insight-query-graph.png)
+
+There is also a tabular results view that reflect the values of the RETURN clause:
+
+![RedisInsight Query Results Table](./images/redis-insight-query-table.png)
+
+To implement the above query in the recommendations service we can escape the query string, and we simply pass the prepared query string to JRedisGraph’s query method:
+
+```java
+public Set<String> getBookRecommendationsFromCommonPurchasesForUser(String userId) {
+  Set<String> recommendations = new HashSet<String>();
+
+  String query = "MATCH (u:User { id: '%s' })-[:PURCHASED]->(ob:Book) " //
+               + "MATCH (ob)<-[:PURCHASED]-(:User)-[:PURCHASED]->(b:Book) " //
+               + "WHERE NOT (u)-[:PURCHASED]->(b) " //
+               + "RETURN distinct b, count(b) as frequency " //
+               + "ORDER BY frequency DESC";
+
+    ResultSet resultSet = graph.query(graphId, String.format(query, userId));
+
+    while (resultSet.hasNext()) {
+      Record record = resultSet.next();
+      Node book = record.getValue("b");
+      recommendations.add(book.getProperty("id").getValue().toString());
+    }
+
+    return recommendations;
+  }
+```
+
+Similar to a JDBC result set, we have an iterator that returns Record objects. We extract the column of interest by its label, in the case above “b” for the Book entity. Graph Nodes like the “book” variable above are like Maps, we can get a property by its name “id” and then get the value with getValue().
+Books Frequently Bought Together
+To find books that are frequently bought together give an ISBN we use the query:
+
+```bash
+MATCH (u:User)-[:PURCHASED]->(b1:Book {id: '%s'})
+MATCH (b1)<-[:PURCHASED]-(u)-[:PURCHASED]->(b2:Book)
+MATCH rated = (User)-[:RATED]-(b2) " //
+WITH b1, b2, count(b2) as freq, head(relationships(rated)) as r
+WHERE b1 <> b2
+RETURN b2, freq, avg(r.rating)
+ORDER BY freq, avg(r.rating) DESC
+```
+
+Let's break it down:
+
+* The first MATCH find users that have the bought the target book
+* The second MATCH finds other books purchased by those users
+* The third MATCH find the ratings if any for those books
+* The WITH clause groups the values gathered so far, counts number of purchases of the collected books and grab the metadata from the RATED notes
+* The RETURN line returns the collected books, with the number of purchases and their average star rating
+
+To implement the above query in our service add the following method:
+
+```java
+  public Set<String> getFrequentlyBoughtTogether(String isbn) {
+    Set<String> recommendations = new HashSet<String>();
+
+    String query = "MATCH (u:User)-[:PURCHASED]->(b1:Book {id: '%s'}) " //
+        + "MATCH (b1)<-[:PURCHASED]-(u)-[:PURCHASED]->(b2:Book) " //
+        + "MATCH rated = (User)-[:RATED]-(b2) " //
+        + "WITH b1, b2, count(b2) as freq, head(relationships(rated)) as r " //
+        + "WHERE b1 <> b2 " //
+        + "RETURN b2, freq, avg(r.rating) " //
+        + "ORDER BY freq, avg(r.rating) DESC";
+
+    ResultSet resultSet = graph.query(graphId, String.format(query, isbn));
+    while (resultSet.hasNext()) {
+      Record record = resultSet.next();
+      Node book = record.getValue("b2");
+      recommendations.add(book.getProperty("id").getValue().toString());
+    }
+    return recommendations;
+  }
+```
+
+### The Recommendations Controller
+
+To serve our recommendations we will expose the recommendation service using the `RecommendationController`.
+Create the `src/main/java/com/redislabs/edu/redi2read/controllers/RecommendationController.java`
+file and add the contents as follows:
+
+```java
+package com.redislabs.edu.redi2read.controllers;
+
+import java.util.Set;
+
+import com.redislabs.edu.redi2read.services.RecommendationService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/recommendations")
+public class RecommendationController {
+
+  @Autowired
+  private RecommendationService recommendationService;
+
+  @GetMapping("/user/{userId}")
+  public Set<String> userRecommendations(@PathVariable("userId") String userId) {
+    return recommendationService.getBookRecommendationsFromCommonPurchasesForUser(userId);
+  }
+
+  @GetMapping("/isbn/{isbn}/pairings")
+  public Set<String> frequentPairings(@PathVariable("isbn") String isbn) {
+    return recommendationService.getFrequentlyBoughtTogether(isbn);
+  }
+}
+```
+You can invoke the recommendation service with a curl request like:
+```bash
+curl --location --request GET 'http://localhost:8080/api/recommendations/user/55214615117483454'
+```
+or:
+```bash
+curl --location --request GET 'http://localhost:8080/api/recommendations/isbn/1789610222/pairings'
+```
+

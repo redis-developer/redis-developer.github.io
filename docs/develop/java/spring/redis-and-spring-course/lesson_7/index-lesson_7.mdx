@@ -1,0 +1,458 @@
+---
+id: index-lesson_7
+title: "Search with RediSearch"
+sidebar_label: Search w/ RediSearch
+slug: /develop/java/redis-and-spring-course/lesson_7
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+### Objectives
+
+Learn how the RediSearch module can bridge the querying gap between SQL and NoSQL systems. We’ll focus on two everyday use cases: full-text search and auto-complete.
+
+### Agenda
+
+In this lesson, you'll learn:
+* How to create search indexes with RediSeach using spring-redisearch and lettuce-search.
+* How to use RediSearch in a Spring Boot application to implement faceted search.
+* How to use the RediSearch suggestions feature to implement auto-complete.
+If you get stuck:
+* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-7
+
+### RediSearch
+
+RediSearch is a source-available module for querying, secondary indexing, and full-text search in Redis.
+Redisearch implements a secondary index in Redis, but unlike other Redis indexing libraries, it does not use internal data structures such as sorted sets.
+This also enables more advanced features, such as multi-field queries, aggregation, and full-text search. Also, RediSearch supports exact phrase matching and numeric filtering for text queries, neither possible nor efficient with traditional Redis indexing approaches.
+Having a rich query and aggregation engine in your Redis database opens the door to many new applications that go well beyond caching. You can use Redis as your primary database even when you need to access the data using complex queries without adding complexity to the code to update and index data.
+
+### Using spring-redisearch
+
+Spring RediSearch (https://github.com/RediSearch/spring-redisearch) is a library built on LettuSearch (https://github.com/RediSearch/lettusearch), providing access to RediSearch from Spring applications.
+LettuSearch is a Java client for RediSearch based on the popular Redis Java client library Lettuce.
+Adding the `spring-redisearch` dependency
+In your Maven `pom.xml`, add the following dependency:
+
+```xml
+<dependency>
+  <groupId>com.redislabs</groupId>
+  <artifactId>spring-redisearch</artifactId>
+  <version>3.0.1</version>
+</dependency>
+```
+
+### Creating a Search Index
+
+To create an index, you must define a schema to list the fields and their types to be indexed.
+For the `Book` model, you will be indexing four fields:
+* Title
+* Subtitle
+* Description
+
+#### Authors
+
+Creating the index is done using the FT.CREATE command. The RediSearch engine will scan the database using one or more PREFIX key pattern values and update the index based on the schema definition.
+This active index maintenance makes it easy to add an index to an existing application.
+To create our index, we’ll use the now-familiar `CommandLineRunner` recipe.
+We will keep the name of the soon to be created index in the application's property field as shown:
+```
+app.booksSearchIndexName=books-idx
+```
+
+Next, create the `src/main/java/com/redislabs/edu/redi2read/boot/CreateBooksSearchIndex.java` file and add the contents as follows:
+
+```java
+package com.redislabs.edu.redi2read.boot;
+
+import com.redislabs.edu.redi2read.models.Book;
+import com.redislabs.lettusearch.CreateOptions;
+import com.redislabs.lettusearch.Field;
+import com.redislabs.lettusearch.RediSearchCommands;
+import com.redislabs.lettusearch.StatefulRediSearchConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import io.lettuce.core.RedisCommandExecutionException;
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Order(6)
+@Slf4j
+public class CreateBooksSearchIndex implements CommandLineRunner {
+
+  @Autowired
+  private StatefulRediSearchConnection<String, String> searchConnection;
+
+  @Value("${app.booksSearchIndexName}")
+  private String searchIndexName;
+
+  @Override
+  @SuppressWarnings({ "unchecked" })
+  public void run(String... args) throws Exception {
+    RediSearchCommands<String, String> commands = searchConnection.sync();
+    try {
+      commands.ftInfo(searchIndexName);
+    } catch (RedisCommandExecutionException rcee) {
+      if (rcee.getMessage().equals("Unknown Index name")) {
+
+        CreateOptions<String, String> options = CreateOptions.<String, String>builder()//
+            .prefix(String.format("%s:", Book.class.getName())).build();
+
+        Field<String> title = Field.text("title").sortable(true).build();
+        Field<String> subtitle = Field.text("subtitle").build();
+        Field<String> description = Field.text("description").build();
+        Field<String> author0 = Field.text("authors.[0]").build();
+        Field<String> author1 = Field.text("authors.[1]").build();
+        Field<String> author2 = Field.text("authors.[2]").build();
+        Field<String> author3 = Field.text("authors.[3]").build();
+        Field<String> author4 = Field.text("authors.[4]").build();
+        Field<String> author5 = Field.text("authors.[5]").build();
+        Field<String> author6 = Field.text("authors.[6]").build();
+
+        commands.create(
+          searchIndexName, //
+          options, //
+          title, subtitle, description, //
+          author0, author1, author2, author3, author4, author5, author6 //
+        );
+
+        log.info(">>>> Created Books Search Index...");
+      }
+    }
+  }
+}
+```
+
+Let’s break down what our `CreateBooksSearchIndex` `CommandLineRunner` is doing. We'll be working with classes out of the `com.redislabs.lettusearch` package:
+Inject a `StatefulRediSearchConnection`, which gives access to RediSearch commands in synchronous mode, asynchronous mode, and reactive mode.
+From the `StatefulRediSearchConnection` we get an instance of RediSearchCommands using the `sync()` method (return the synchronous mode methods).
+We only create the index if it doesn’t exist, which will be signalled by the FT.INFO command command throwing an exception.
+To create the index, we build a `CreateOptions` object passing the Book class prefix.
+For each one the fields to be indexed, we create a Field object:
+* Title is created as a sortable text field
+* Subtitle is created as a text field
+* Description is created as a text field
+
+Authors are stored in a Set, so they are serialized as prefixed indexed fields (`authors.[0], authors.[1]`, ...). We indexed up to 6 authors.
+To create the index, we invoke the create method passing the index name, the CreateOptions, and the fields.
+To see more options and all field types, see https://oss.redislabs.com/redisearch/Commands/#ftcreate
+On server restart, you should run your Redis CLI MONITOR to see the following commands:
+
+```
+1617601021.779396 [0 172.21.0.1:59396] "FT.INFO" "books-idx"
+1617601021.786192 [0 172.21.0.1:59396] "FT.CREATE" "books-idx" "PREFIX" "1" "com.redislabs.edu.redi2read.models.Book:" "SCHEMA" "title" "TEXT" "SORTABLE" "subtitle" "TEXT" "description" "TEXT" "authors.[0]" "TEXT" "authors.[1]" "TEXT" "authors.[2]" "TEXT" "authors.[3]" "TEXT" "authors.[4]" "TEXT" "authors.[5]" "TEXT" "authors.[6]" "TEXT"
+```
+
+You can see the index information with the following command in the Redis CLI:
+
+```bash
+127.0.0.1:6379> FT.INFO "books-idx"
+ 1) index_name
+ 2) books-idx
+...
+ 9) num_docs
+10) "2403"
+11) max_doc_id
+12) "2403"
+13) num_terms
+14) "32863"
+15) num_records
+16) "413522"
+```
+
+This snippet from the FT.INFO command output for the `“books-idx”` index shows that there are 2,403 documents indexed (the number of books in the system). From our indexed documents, there are 32,863 terms and close to half a million records.
+
+### Full-text Search Queries
+RediSearch is a full-text search engine, allowing the application to run powerful queries. For example, to search all books that contain “networking”-related information, you would run the following command:
+
+```bash
+127.0.0.1:6379> FT.SEARCH books-idx "networking" RETURN 1 title
+```
+
+Which returns:
+
+```bash
+ 1) (integer) 299
+ 2) "com.redislabs.edu.redi2read.models.Book:3030028496"
+ 3) 1) "title"
+    2) "Ubiquitous Networking"
+ 4) "com.redislabs.edu.redi2read.models.Book:9811078718"
+ 5) 1) "title"
+    2) "Progress in Computing, Analytics and Networking"
+ 6) "com.redislabs.edu.redi2read.models.Book:9811033765"
+ 7) 1) "title"
+    2) "Progress in Intelligent Computing Techniques: Theory, Practice, and Applications"
+ 8) "com.redislabs.edu.redi2read.models.Book:981100448X"
+ 9) 1) "title"
+    2) "Proceedings of Fifth International Conference on Soft Computing for Problem Solving"
+10) "com.redislabs.edu.redi2read.models.Book:1787129411"
+11) 1) "title"
+    2) "OpenStack: Building a Cloud Environment"
+12) "com.redislabs.edu.redi2read.models.Book:3319982044"
+13) 1) "title"
+    2) "Engineering Applications of Neural Networks"
+14) "com.redislabs.edu.redi2read.models.Book:3319390287"
+15) 1) "title"
+    2) "Open Problems in Network Security"
+16) "com.redislabs.edu.redi2read.models.Book:0133887642"
+17) 1) "title"
+    2) "Web and Network Data Science"
+18) "com.redislabs.edu.redi2read.models.Book:3319163132"
+19) 1) "title"
+    2) "Databases in Networked Information Systems"
+20) "com.redislabs.edu.redi2read.models.Book:1260108422"
+21) 1) "title"
+    2) "Gray Hat Hacking: The Ethical Hacker's Handbook, Fifth Edition"
+```
+
+As you can see, books with the work “network” in the title are returned, even though we used the word “networking”. This is because the title has been indexed as text, so the field is tokenized and stemmed.
+Also, the command does not specify a field, so the term “networking” (and related terms) is searched in all text fields of the index.
+That’s why we have titles that do not show the search term; in these cases, the term has been found in another of the indexed fields.
+If you want to search on specific fields, you use the `@field` notation, as follows:
+
+```bash
+127.0.0.1:6379> FT.SEARCH books-idx "@title:networking" RETURN 1 title
+```
+
+Try some additional full-text search queries against the index.
+
+Prefix matches:
+
+```bash
+127.0.0.1:6379> FT.SEARCH books-idx "clo*" RETURN 4 title subtitle authors.[0] authors.[1]
+```
+
+Fuzzy search:
+
+```bash
+127.0.0.1:6379> FT.SEARCH books-idx "%scal%" RETURN 2 title subtitle
+```
+
+Unions:
+
+```bash
+127.0.0.1:6379> FT.SEARCH books-idx "rust | %scal%" RETURN 3 title subtitle authors.[0]
+```
+
+You can find more information about the query syntax in the RediSearch documentation.
+Adding Search to the Books Controller
+To add full-text search capabilities to the `BooksController`, we'll first inject a `StatefulRediSearchConnection`
+and simply pass a text query param to the search method available from the `RediSearchCommands` interface:
+
+```java
+@Value("${app.booksSearchIndexName}")
+private String searchIndexName;
+
+@Autowired
+private StatefulRediSearchConnection<String, String> searchConnection;
+
+@GetMapping("/search")
+public SearchResults<String,String> search(@RequestParam(name="q")String query) {
+  RediSearchCommands<String, String> commands = searchConnection.sync();
+  SearchResults<String, String> results = commands.search(searchIndexName, query);
+  return results;
+}
+```
+
+With the imports:
+
+```java
+import com.redislabs.lettusearch.RediSearchCommands;
+import com.redislabs.lettusearch.SearchResults;
+import com.redislabs.lettusearch.StatefulRediSearchConnection;
+import org.springframework.beans.factory.annotation.Value;
+```
+
+We can use curl to execute some the sample queries we previously tried:
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/search/?q=%25scal%25'
+```
+
+This returns:
+
+```json
+[
+  {
+    "infoLink": "https://play.google.com/store/books/details?id=xVU2AAAAQBAJ&source=gbs_api",
+    "thumbnail": "http://books.google.com/books/content?id=xVU2AAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "_class": "com.redislabs.edu.redi2read.models.Book",
+    "id": "1449340326",
+    "language": "en",
+    "title": "Scala Cookbook",
+    "price": "43.11",
+    "currency": "USD",
+    "categories.[0]": "com.redislabs.edu.redi2read.models.Category:23a4992c-973d-4f36-b4b1-6678c5c87b28",
+    "subtitle": "Recipes for Object-Oriented and Functional Programming",
+    "authors.[0]": "Alvin Alexander",
+    "pageCount": "722",
+    "description": "..."
+  },
+    {
+      "infoLink": "https://play.google.com/store/books/details?id=d5EIBgAAQBAJ&source=gbs_api",
+      "thumbnail": "http://books.google.com/books/content?id=d5EIBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+      "_class": "com.redislabs.edu.redi2read.models.Book",
+      "id": "178355875X",
+      "language": "en",
+      "title": "Scala for Machine Learning",
+      "price": "22.39",
+      "currency": "USD",
+      "categories.[0]": "com.redislabs.edu.redi2read.models.Category:15129267-bee9-486d-88e7-54de709276ef",
+      "authors.[0]": "Patrick R. Nicolas",
+      "pageCount": "520",
+      "description": "..."
+    },
+ ...
+]
+```
+
+### Adding and getting Auto-complete suggestions
+
+RediSearch provides a completion suggester that is typically used for auto-complete/search-as-you-type functionality.
+This is a navigational feature to guide users to relevant results as they are typing, improving search precision.
+RediSearch provides completion suggestions with four commands:
+
+* FT.SUGADD: Adds a suggestion string to an auto-complete dictionary.
+* FT.SUGGET: Get a list of suggestions for a string.
+* FT.SUGDEL: Deletes a suggestion string from an auto-complete dictionary.
+* FT.SUGLEN: Returns the size of an auto-completion dictionary
+
+#### Implement an auto-complete endpoint for author names
+
+To create an auto-complete suggestion dictionary for author names, we’ll create a CommandLineRunner that will loop over the books, and for each author in the `Set<String>` of authors, it will add them to the dictionary.
+Unlike search indexes, which RediSearch maintains automatically, you maintain suggestion dictionaries manually using FT.SUGADD and FT.SUGDEL.
+Add the property for the name of the auto-complete dictionary to `src/main/resources/application.properties`:
+
+```java
+app.autoCompleteKey=author-autocomplete
+```
+
+Add the file `src/main/java/com/redislabs/edu/redi2read/boot/CreateAuthorNameSuggestions.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.boot;
+
+import com.redislabs.edu.redi2read.repositories.BookRepository;
+import com.redislabs.lettusearch.RediSearchCommands;
+import com.redislabs.lettusearch.StatefulRediSearchConnection;
+import com.redislabs.lettusearch.Suggestion;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Order(7)
+@Slf4j
+public class CreateAuthorNameSuggestions  implements CommandLineRunner {
+
+  @Autowired
+  private RedisTemplate<String, String> redisTemplate;
+
+  @Autowired
+  private BookRepository bookRepository;
+
+  @Autowired
+  private StatefulRediSearchConnection<String, String> searchConnection;
+
+  @Value("${app.autoCompleteKey}")
+  private String autoCompleteKey;
+
+  @Override
+  public void run(String... args) throws Exception {
+    if (!redisTemplate.hasKey(autoCompleteKey)) {
+      RediSearchCommands<String, String> commands = searchConnection.sync();
+      bookRepository.findAll().forEach(book -> {
+        if (book.getAuthors() != null) {
+          book.getAuthors().forEach(author -> {
+            Suggestion<String> suggestion = Suggestion.builder(author).score(1d).build();
+            commands.sugadd(autoCompleteKey, suggestion);
+          });
+        }
+      });
+
+      log.info(">>>> Created Author Name Suggestions...");
+    }
+  }
+}
+```
+
+Let’s break down the logic of the `CreateAuthorNameSuggestions` `CommandLineRunner`:
+
+* First, we guarantee a single execution by checking for the existence of the key for the auto-complete dictionary.
+* Then, using the `BookRepository` we loop over all books
+* For each author in a book we add a suggestion to the dictionary
+
+To use the auto-suggestion feature in the controller, we can add a new method:
+
+```java
+@Value("${app.autoCompleteKey}")
+private String autoCompleteKey;
+
+@GetMapping("/authors")
+public List<Suggestion<String>> authorAutoComplete(@RequestParam(name="q")String query) {
+  RediSearchCommands<String, String> commands = searchConnection.sync();
+  SuggetOptions options = SuggetOptions.builder().max(20L).build();
+  return commands.sugget(autoCompleteKey, query, options);
+}
+```
+
+With imports:
+
+```java
+import com.redislabs.lettusearch.Suggestion;
+import com.redislabs.lettusearch.SuggetOptions;
+```
+
+In the `authorAutoComplete` method, we use the FT.SUGGET command (via the sugget method from the `RediSearchCommands` object) and build a query using a `SuggetOptions` configuration. In the example above, we set the maximum number of results to 20.
+We can use curl to craft a request to our new endpoint. In this example, I’m passing “brian s” as the query:
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/authors/?q=brian%20s'
+```
+
+This results in a response with 2 JSON objects:
+
+```json
+[
+    {
+        "string": "Brian Steele",
+        "score": null,
+        "payload": null
+    },
+    {
+        "string": "Brian Sam-Bodden",
+        "score": null,
+        "payload": null
+    }
+]
+```
+
+If we add one more letter to our query to make it “brian sa”:
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/authors/?q=brian%20sa'
+```
+
+We get the expected narrowing of the suggestion set:
+
+```json
+[
+    {
+        "string": "Brian Sam-Bodden",
+        "score": null,
+        "payload": null
+    }
+]
+```
+
+

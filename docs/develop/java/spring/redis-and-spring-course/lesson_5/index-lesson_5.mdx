@@ -1,0 +1,681 @@
+---
+id: index-lesson_5
+title: "Books, Categories & The Catalog"
+sidebar_label: Books, Categories & The Catalog
+slug: /develop/java/redis-and-spring-course/lesson_5
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+### Objectives
+Create the Book-Category-Book-Ratings domain, load and transform JSON data, and implement the Books API.
+
+### Agenda
+In this lesson, students will learn:
+* How to load JSON data using Jackson
+* How to create and work with secondary indexes
+* How to use the repositories with a REST controller
+If you get stuck:
+* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-5
+
+### Books, Categories, and Book Ratings
+This lesson will start by fleshing out the Book, Category, and BookRating models with their respective Spring Repositories.
+
+![Books, Categories, and Book Ratings](./images/books_categories_ratings.png)
+
+#### The Category Model
+We’ll start with the `Category`. A `Book` belongs to one or more categories. The `Category` has a name that we will derive from the JSON data
+files in `src/main/resources/data/books`. As we’ve done previously, we will map the class to a Redis Hash.
+Add the file `src/main/java/com/redislabs/edu/redi2read/models/Category.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.models;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@RedisHash
+public class Category {
+  @Id
+  private String id;
+  private String name;
+}
+```
+
+### The Category Repository
+The corresponding repository extends Spring’s CrudRepository. Add the file `src/main/java/com/redislabs/edu/redi2read/repositories/CategoryRepository.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.repositories;
+
+import com.redislabs.edu.redi2read.models.Category;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CategoryRepository extends CrudRepository<Category, String> {
+}
+```
+
+### The Book Model
+
+The Book model maps directly to the JSON payload in the *.json files in `src/main/resources/data/books`.
+For example, the JSON object shown below came from the the file redis_0.json:
+
+```java
+{
+   "pageCount": 228,
+   "thumbnail": "http://books.google.com/books/content?id=NsseEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+   "price": 9.95,
+   "subtitle": "Explore Redis - Its Architecture, Data Structures and Modules like Search, JSON, AI, Graph, Timeseries (English Edition)",
+   "description": "Complete reference guide to Redis KEY FEATURES ● Complete coverage of Redis Modules.",
+   "language": "en",
+   "currency": "USD",
+   "id": "8194837766",
+   "title": "Redis(r) Deep Dive",
+   "infoLink": "https://play.google.com/store/books/details?id=NsseEAAAQBAJ&source=gbs_api",
+   "authors": ["Suyog Dilip Kale", "Chinmay Kulkarni"]
+ },
+...
+}
+```
+
+The category name is extracted from the file name as "redis". The same applies to any book from the files: `redis_0.json`, `redis_1.json`, `redis_2.json`, and `redis_3.json`.
+The Book class contains a `Set<Category>` which will for now contain the single category extracted from the filename. The `Set<String>` for authors gets mapped from the "authors" JSON array in the payload.
+Add the file `src/main/java/com/redislabs/edu/redi2read/repositories/Book.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.models;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
+import org.springframework.data.redis.core.RedisHash;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RedisHash
+public class Book {
+
+  @Id
+  @EqualsAndHashCode.Include
+  private String id;
+
+  private String title;
+  private String subtitle;
+  private String description;
+  private String language;
+  private Long pageCount;
+  private String thumbnail;
+  private Double price;
+  private String currency;
+  private String infoLink;
+
+  private Set<String> authors;
+
+  @Reference
+  private Set<Category> categories = new HashSet<Category>();
+
+  public void addCategory(Category category) {
+	categories.add(category);
+  }
+}
+```
+
+### The Book Repository
+
+In the `BookRepository` we introduce the usage of the `PaginationAndSortingRepository`. The `PaginationAndSortingRepository` extends the `CrudRepository` interface
+and adds additional methods to ease paginated access to entities.
+We will learn more about the usage of the `PagingAndSortingRepository` when we implement the `BookController`.
+Add the file `src/main/java/com/redislabs/edu/redi2read/repositories/BookRepository.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.repositories;
+
+import com.redislabs.edu.redi2read.models.Book;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BookRepository extends PagingAndSortingRepository<Book, String> {
+}
+```
+
+#### The BookRating Model
+
+The `BookRating` model represents a rating of a book by a user. We implement a traditional 5 star rating system as a many-to-many relationship.
+The `BookRating` model plays a role equivalent to that of a joining table or bridging table in a relational model.
+`BookRating` sits between the two other entities of a many-to-many relationship. Its purpose is to store a record for each of the combinations
+of these other two entities (Book and User).
+We keep the links to the Book and User models using the `@Reference` annotation (the equivalent of having foreign keys in a relational database)
+Add the file `src/main/java/com/redislabs/edu/redi2read/models/BookRating.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.models;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
+import org.springframework.data.redis.core.RedisHash;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@RedisHash
+public class BookRating {
+  @Id
+  private String id;
+
+  @NotNull
+  @Reference
+  private User user;
+
+  @NotNull
+  @Reference
+  private Book book;
+
+  @NotNull
+  private Integer rating;
+}
+```
+
+### The Book Rating Repository
+
+The corresponding Repository simply extends Spring’s CrudRepository. Add the file `src/main/java/com/redislabs/edu/redi2read/repositories/BookRatingRepository.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.repositories;
+
+import com.redislabs.edu.redi2read.models.BookRating;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BookRatingRepository extends CrudRepository<BookRating, String> {
+}
+```
+
+### Loading Books
+
+Now that we have our models and repositories defined, let’s load the books from the provided JSON data in the `src/main/resources/data/books` directory.
+We’ll create a `CommandLineRunner` to iterate over every .json file in the `data/books` directory.  We will map the content of each file to a Book object using Jackson.
+We'll create a category using the characters in the filename up to the last underscore. If there is no category with that name already, we will create one.
+The category is then added to the set of categories for the book.
+Add the file `src/main/java/com/redislabs/edu/redi2read/boot/CreateBooks.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.boot;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redislabs.edu.redi2read.models.Book;
+import com.redislabs.edu.redi2read.models.Category;
+import com.redislabs.edu.redi2read.repositories.BookRepository;
+import com.redislabs.edu.redi2read.repositories.CategoryRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Order(3)
+@Slf4j
+public class CreateBooks implements CommandLineRunner {
+  @Autowired
+  private BookRepository bookRepository;
+
+  @Autowired
+  private CategoryRepository categoryRepository;
+
+  @Override
+  public void run(String... args) throws Exception {
+    if (bookRepository.count() == 0) {
+  	ObjectMapper mapper = new ObjectMapper();
+  	TypeReference<List<Book>> typeReference = new TypeReference<List<Book>>() {
+  	};
+
+  	List<File> files = //
+      	Files.list(Paths.get(getClass().getResource("/data/books").toURI())) //
+          	.filter(Files::isRegularFile) //
+          	.filter(path -> path.toString().endsWith(".json")) //
+          	.map(java.nio.file.Path::toFile) //
+          	.collect(Collectors.toList());
+
+  	Map<String, Category> categories = new HashMap<String, Category>();
+
+  	files.forEach(file -> {
+    	  try {
+      	    log.info(">>>> Processing Book File: " + file.getPath());
+      	    String categoryName = file.getName().substring(0, file.getName().lastIndexOf("_"));
+      	    log.info(">>>> Category: " + categoryName);
+
+      	    Category category;
+      	    if (!categories.containsKey(categoryName)) {
+            category = Category.builder().name(categoryName).build();
+            categoryRepository.save(category);
+            categories.put(categoryName, category);
+      	    } else {
+            category = categories.get(categoryName);
+      	    }
+
+      	    InputStream inputStream = new FileInputStream(file);
+      	    List<Book> books = mapper.readValue(inputStream, typeReference);
+      	    books.stream().forEach((book) -> {
+            book.addCategory(category);
+            bookRepository.save(book);
+      	    });
+      	    log.info(">>>> " + books.size() + " Books Saved!");
+    	  } catch (IOException e) {
+      	    log.info("Unable to import books: " + e.getMessage());
+    	  }
+  	});
+
+  	log.info(">>>> Loaded Book Data and Created books...");
+    }
+  }
+}
+```
+
+There's a lot to unpack here, so let’s take it from the top:
+* As done previously, we only execute if there are no books in the repository.
+* We use Jackson `ObjectMapper` and a `TypeReference `to perform the mapping.
+* We collect the paths of all the files with the .json extension in the target directory.
+* We create a `Map` of `String`s to `Category `objects to collect the categories as we process
+  the files and quickly determine whether we have already created a category.
+* For each book, we assign the category and save it to Redis.
+
+### Book Controller
+
+Now we can implement the initial version of the `BookController`: our Bookstore Catalog API. This first version of the `BookController`
+ will have three endpoints:
+* Get all books
+* Get a book by ISBN (id)
+* Get all categories
+Add the file `src/main/java/com/redislabs/edu/redi2read/controllers/BookController.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.controllers;
+
+import com.redislabs.edu.redi2read.models.Book;
+import com.redislabs.edu.redi2read.models.Category;
+import com.redislabs.edu.redi2read.repositories.BookRepository;
+import com.redislabs.edu.redi2read.repositories.CategoryRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+  @Autowired
+  private BookRepository bookRepository;
+
+  @Autowired
+  private CategoryRepository categoryRepository;
+
+  @GetMapping
+  public Iterable<Book> all() {
+	return bookRepository.findAll();
+  }
+
+  @GetMapping("/categories")
+  public Iterable<Category> getCategories() {
+	return categoryRepository.findAll();
+  }
+
+  @GetMapping("/{isbn}")
+  public Book get(@PathVariable("isbn") String isbn) {
+	return bookRepository.findById(isbn).get();
+  }
+}
+```
+
+### Get all Books
+
+To get all books, we issue a GET request to `http://localhost:8080/api/books/`. This endpoint is implemented in the all method, which calls the BookRepository findAll method. Using curl:
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/'
+```
+
+The result is an array of JSON objects containing the books:
+
+```json
+[
+	{
+    	"id": "1783980117",
+    	"title": "RESTful Java Web Services Security",
+    	"subtitle": null,
+    	"description": "A sequential and easy-to-follow guide which allows you to understand the concepts related to securing web apps/services quickly and efficiently, since each topic is explained and described with the help of an example and in a step-by-step manner, helping you to easily implement the examples in your own projects. This book is intended for web application developers who use RESTful web services to power their websites. Prior knowledge of RESTful is not mandatory, but would be advisable.",
+    	"language": "en",
+    	"pageCount": 144,
+    	"thumbnail": "http://books.google.com/books/content?id=Dh8ZBAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    	"price": 11.99,
+    	"currency": "USD",
+    	"infoLink": "https://play.google.com/store/books/details?id=Dh8ZBAAAQBAJ&source=gbs_api",
+    	"authors": [
+        	"Andrés Salazar C.",
+        	"René Enríquez"
+    	],
+    	"categories": [
+        	{
+            	"id": "f2ada1e2-7c18-4d90-bfe7-e321b650c0a3",
+            	"name": "redis"
+        	}
+    	]
+	},
+...
+]
+```
+
+### Get a book by ISBN
+
+To get a specific book, we issue a GET request to `http://localhost:8080/api/books/{isbn}`. This endpoint is implemented in the get method, which calls the BookRepository findById method. Using curl:
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/1680503545'
+```
+The result is a JSON object containing the book:
+
+```json
+{
+	"id": "1680503545",
+	"title": "Functional Programming in Java",
+	"subtitle": "Harnessing the Power Of Java 8 Lambda Expressions",
+	"description": "Intermediate level, for programmers fairly familiar with Java, but new to the functional style of programming and lambda expressions. Get ready to program in a whole new way. ...",
+	"language": "en",
+	"pageCount": 196,
+	"thumbnail": "http://books.google.com/books/content?id=_g5QDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+	"price": 28.99,
+	"currency": "USD",
+	"infoLink": "https://play.google.com/store/books/details?id=_g5QDwAAQBAJ&source=gbs_api",
+	"authors": [
+    	"Venkat Subramaniam"
+	],
+	"categories": [
+    	{
+        	"id": "9d5c025e-bf38-4b50-a971-17e0b7408385",
+        	"name": "java"
+    	}
+	]
+}
+```
+
+### Get all Categories
+
+To get all categories, we issue a GET request to `http://localhost:8080/api/books/categories`. It’s implemented in the `getCategories` method, which calls the `CategoriesRepository` `findAll` method. Using curl:
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/categories'
+```
+
+The result is an array of JSON objects containing the categories:
+
+```json
+[
+	{
+    	"id": "2fd916fe-7ff8-44c7-9f86-ca388565256c",
+    	"name": "mongodb"
+	},
+	{
+    	"id": "9615a135-7472-48fc-b8ac-a5516a2c8b22",
+    	"name": "dynamodb"
+	},
+	{
+    	"id": "f2ada1e2-7c18-4d90-bfe7-e321b650c0a3",
+    	"name": "redis"
+	},
+	{
+    	"id": "08fc8148-d924-4d2e-af7e-f5fe6f2861f0",
+    	"name": "elixir"
+	},
+	{
+    	"id": "b6a0b57b-ebb8-4d98-9352-8236256dbc27",
+    	"name": "microservices"
+	},
+	{
+    	"id": "7821fd6a-ec94-4ac6-8089-a480a7c7f2ee",
+    	"name": "elastic_search"
+	},
+	{
+    	"id": "f2be1bc3-1700-45f5-a300-2c4cf2f90583",
+    	"name": "hbase"
+	},
+	{
+    	"id": "31c8ea64-cad2-40d9-b0f6-30b8ea6fcbfb",
+    	"name": "reactjs"
+	},
+	{
+    	"id": "5e527af7-93a1-4c00-8f20-f89e89a213e8",
+    	"name": "apache_spark"
+	},
+	{
+    	"id": "9d5c025e-bf38-4b50-a971-17e0b7408385",
+    	"name": "java"
+	},
+	{
+    	"id": "bcb2a01c-9b0a-4846-b1be-670168b5d768",
+    	"name": "clojure"
+	},
+	{
+    	"id": "aba53bb9-7cfa-4b65-8900-8c7e857311c6",
+    	"name": "couchbase"
+	},
+	{
+    	"id": "bd1b2877-1564-4def-b3f7-18871165ff10",
+    	"name": "riak"
+	},
+	{
+    	"id": "47d9a769-bbc2-4068-b27f-2b800bec1565",
+    	"name": "kotlin"
+	},
+	{
+    	"id": "400c8f5a-953b-4b8b-b21d-045535d8084d",
+    	"name": "nosql_big_data"
+	},
+	{
+    	"id": "06bc25ff-f2ab-481b-a4d9-819552dea0e0",
+    	"name": "javascript"
+	}
+]
+```
+
+### Generate Book Ratings
+
+Next, we will create a random set of book ratings. Later in the course, we’ll use these for an example. Following the same recipe we used to seed Redis with a `CommandLineRunner`, add the file `src/main/java/com/redislabs/edu/redi2read/boot/CreateBookRatings.java` with the following contents:
+
+```java
+package com.redislabs.edu.redi2read.boot;
+
+import java.util.Random;
+import java.util.stream.IntStream;
+
+import com.redislabs.edu.redi2read.models.Book;
+import com.redislabs.edu.redi2read.models.BookRating;
+import com.redislabs.edu.redi2read.models.User;
+import com.redislabs.edu.redi2read.repositories.BookRatingRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Order(4)
+@Slf4j
+public class CreateBookRatings implements CommandLineRunner {
+
+  @Value("${app.numberOfRatings}")
+  private Integer numberOfRatings;
+
+  @Value("${app.ratingStars}")
+  private Integer ratingStars;
+
+  @Autowired
+  private RedisTemplate<String, String> redisTemplate;
+
+  @Autowired
+  private BookRatingRepository bookRatingRepo;
+
+  @Override
+  public void run(String... args) throws Exception {
+    if (bookRatingRepo.count() == 0) {
+  	Random random = new Random();
+  	IntStream.range(0, numberOfRatings).forEach(n -> {
+    	  String bookId = redisTemplate.opsForSet().randomMember(Book.class.getName());
+    	  String userId = redisTemplate.opsForSet().randomMember(User.class.getName());
+    	  int stars = random.nextInt(ratingStars) + 1;
+
+    	  User user = new User();
+    	  user.setId(userId);
+
+    	  Book book = new Book();
+    	  book.setId(bookId);
+
+    	  BookRating rating = BookRating.builder() //
+        	.user(user) //
+        	.book(book) //
+        	.rating(stars).build();
+    	  bookRatingRepo.save(rating);
+  	});
+
+  	log.info(">>>> BookRating created...");
+    }
+  }
+}
+```
+
+This `CommandLineRunner` creates a configurable number of random ratings for a random set of books and users. We use `RedisTemplate.opsForSet().randomMember()` to request a random ID from the set of users and books.
+Then we choose a random integer between 1 and the total number of stars in our rating system to create the rating.
+This class introduces the use of the `@Value` annotation, which will grab the property inside the String param `${foo}` from the application’s property file.
+In the file `src/main/resources/application.properties` add the following values:
+
+```java
+app.numberOfRatings=5000
+app.ratingStars=5
+```
+
+### Implementing Pagination with All Books
+
+Pagination is helpful when we have a large dataset and want to present it to the user in smaller chunks. As we learned earlier in the lesson, the `BookRepository `extends the `PagingAndSortingRepository`, which is built on top of the `CrudRepository`.
+In this section, we will refactor the `BookController` all method to work with the pagination features of the `PagingAndSortingRepository`. Replace the previously created all method with the following contents:
+
+```java
+  @GetMapping
+  public ResponseEntity<Map<String, Object>> all( //
+  	@RequestParam(defaultValue = "0") Integer page, //
+  	@RequestParam(defaultValue = "10") Integer size //
+  ) {
+	Pageable paging = PageRequest.of(page, size);
+	Page<Book> pagedResult = bookRepository.findAll(paging);
+	List<Book> books = pagedResult.hasContent() ? pagedResult.getContent() : Collections.emptyList();
+
+	Map<String, Object> response = new HashMap<>();
+	response.put("books", books);
+	response.put("page", pagedResult.getNumber());
+	response.put("pages", pagedResult.getTotalPages());
+	response.put("total", pagedResult.getTotalElements());
+
+	return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
+  }
+```
+
+Let’s break down the refactoring:
+* We want to control the method return value so we’ll use a `ResponseEntity`, which is an extension of `HttpEntity` and gives us control over the HTTP status code, headers, and body.
+* For the return type, we wrap a `Map<String,Object>` to return the collection of books as well as pagination data.
+* We’ve added two request parameters (HTTP query params) of type integer for the page number being retrieved and the size of the page.
+  The page number defaults to 0 and the size of the page defaults to 10.
+* In the body of the method, we use the `Pageable` and `PageRequest` abstractions to construct the paging request.
+* We get a `Page<Book>` result by invoking the `findAll` method, passing the `Pageable` paging request.
+* If the returned page contains any items, we add them to the response object. Otherwise, we add an empty list.
+* The response is constructed by instantiating a Map and adding the books, current page, total number of pages, and total number of books.
+* Finally we package the response map into a `ResponseEntity`.
+
+Let’s fire up a pagination request with curl as shown next:
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/books/?size=25&page=2'
+```
+Passing a page size of 25 and requesting page number 2, we get the following:
+```json
+{
+	"total": 2403,
+	"books": [
+    	{
+        	"id": "1786469960",
+        	"title": "Data Visualization with D3 4.x Cookbook",
+        	"subtitle": null,
+        	"description": "Discover over 65 recipes to help you create breathtaking data visualizations using the latest features of D3...",
+        	"language": "en",
+        	"pageCount": 370,
+        	"thumbnail": "http://books.google.com/books/content?id=DVQoDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+        	"price": 22.39,
+        	"currency": "USD",
+        	"infoLink": "https://play.google.com/store/books/details?id=DVQoDwAAQBAJ&source=gbs_api",
+        	"authors": [
+            	"Nick Zhu"
+        	],
+        	"categories": [
+            	{
+                	"id": "f2ada1e2-7c18-4d90-bfe7-e321b650c0a3",
+                	"name": "redis"
+            	}
+        	]
+    	},
+    	{
+        	"id": "111871735X",
+        	"title": "Android Programming",
+        	"subtitle": "Pushing the Limits",
+        	"description": "Unleash the power of the Android OS and build the kinds ofbrilliant, innovative apps users love to use ...",
+        	"language": "en",
+        	"pageCount": 432,
+        	"thumbnail": "http://books.google.com/books/content?id=SUWPAQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+        	"price": 30.0,
+        	"currency": "USD",
+        	"infoLink": "https://play.google.com/store/books/details?id=SUWPAQAAQBAJ&source=gbs_api",
+        	"authors": [
+            	"Erik Hellman"
+        	],
+        	"categories": [
+            	{
+                	"id": "47d9a769-bbc2-4068-b27f-2b800bec1565",
+                	"name": "kotlin"
+            	}
+        	]
+    	},
+```
