@@ -88,9 +88,9 @@ Redis Enterprise solves the quorum challenge with an odd number of nodes. Redis 
 
 
 
-### 5. Performing single operations
+### 5. Performing single operation
 
-Performing several operations serially increases connection overhead. Instead, use Redis Pipelining.  Pipelining is the process of sending multiple messages down the pipe without waiting on the reply from each - and (typically) processing the replies later when they come in. 
+Performing several operations serially increases connection overhead. Instead, use [Redis Pipelining](https://redis.io/topics/pipelining).  Pipelining is the process of sending multiple messages down the pipe without waiting on the reply from each - and (typically) processing the replies later when they come in. 
 
 Pipeling is completely a client side implementation. It is aimed at solving response latency issues in high network latency environments. So, the lesser the amount of time spent over the network in sending commands and reading responses, the better. This is effectively achieved by buffering. The client may (or may not) buffer the commands at the TCP stack (as mentioned in other answers) before they are sent to the server. Once they are sent to the server, the server executes them and buffers them on the server side. The benefit of the pipelining is a drastically improved protocol performance. The speedup gained by pipelining ranges from a factor of five for connections to localhost up to a factor of at least one hundred over slower internet connections.
 Read further here.
@@ -98,7 +98,7 @@ Read further here.
 
 ### 6. Caching keys without TTL
 
-Redis functions primarily as a key-value store.  It is possible to set timeout values on these keys. Said that, a timeout expiration automatically deletes the key. Additionally, when we use commands that delete or overwrite the contents of the key, it will clear the timeout. Redis TTL command is used to get the remaining time of the key expiry in seconds. TTL returns the remaining time to live of a key that has a timeout. This introspection capability allows a Redis client to check how many seconds a given key will continue to be part of the dataset.Keys will accumulate and end up being evicted. Hence, it is recommended to set TTLs on all caching keys. Further information here.
+Redis functions primarily as a key-value store.  It is possible to set timeout values on these keys. Said that, a timeout expiration automatically deletes the key. Additionally, when we use commands that delete or overwrite the contents of the key, it will clear the timeout. Redis TTL command is used to get the remaining time of the key expiry in seconds. TTL returns the remaining time to live of a key that has a timeout. This introspection capability allows a Redis client to check how many seconds a given key will continue to be part of the dataset.Keys will accumulate and end up being evicted. Hence, it is recommended to set TTLs on all caching keys. For further read, [refer to this link](https://redis.io/commands/expire).
 
 ### 7. Endless Redis Replication Loop
 
