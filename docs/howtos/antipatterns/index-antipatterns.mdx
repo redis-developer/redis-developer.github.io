@@ -1,7 +1,7 @@
 ---
 id: index-antipatterns
 title: Redis Anti-Patterns Every Developer Should Avoid
-sidebar_label: 12 Redis Anti-Patterns Every Developer Should Avoid
+sidebar_label: Redis Anti-Patterns Every Developer Should Avoid
 slug: /howtos/antipatterns/
 ---
 
@@ -79,7 +79,7 @@ With a large number of clients, a reconnect flood will be able to simply overwhe
 [Redis Enterprise DMC proxy](https://docs.redis.com/latest/rs/administering/designing-production/networking/multiple-active-proxy/) allows you to reduce the number of connections to your cache server by acting as a proxy.
 :::
 
-The other alternative 3rd party tool is [Twemproxy](https://github.com/twitter/twemproxy). It is a fast and lightweight proxy server that allows you to reduce the number of open connections to your Redis server. It was built primarily to reduce the number of connections to the caching servers on the backend. This, together with protocol pipelining and sharding enables you to horizontally scale your distributed caching architecture.
+There are other 3rd party tool like [Twemproxy](https://github.com/twitter/twemproxy). It is a fast and lightweight proxy server that allows you to reduce the number of open connections to your Redis server. It was built primarily to reduce the number of connections to the caching servers on the backend. This, together with protocol pipelining and sharding enables you to horizontally scale your distributed caching architecture.
 
 
 
@@ -130,7 +130,7 @@ In Redis, the KEYS command can be used to perform exhaustive pattern matching on
 
 :::important
 Scaning keyspace by keyname is an extremely slow operation and will run  O(N) with N being the number of keys. It is recommended to use RediSearch to return information based on the contents of the data instead of iterating through the key space.
-
+::: 
 
 ```bash
  FT.SEARCH orders "@make: ford @model: explorer"
