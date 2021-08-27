@@ -61,6 +61,23 @@ module.exports = {
                     'develop/java/spring/redis-and-spring-course/lesson_8/index-lesson_8',
                     'develop/java/spring/redis-and-spring-course/lesson_9/index-lesson_9'
                   ]
+                },
+                {
+                  type: 'category',
+                  label: 'Rate Limiting',
+                  items: [
+                    'develop/java/spring/rate-limiting/index-rate-limiting',
+                    {
+                      type: 'category',
+                      label: 'Fixed Window',
+                      items: [
+                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window',
+                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window-reactive',
+                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window-reactive-lua',
+                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window-reactive-gears'
+                      ]
+                    }
+                  ]
                 }
               ]
             }

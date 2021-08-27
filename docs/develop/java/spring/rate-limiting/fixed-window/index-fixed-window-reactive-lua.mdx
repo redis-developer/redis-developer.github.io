@@ -1,0 +1,200 @@
+---
+id: index-fixed-window-reactive-lua
+title: Atomicity with Lua
+sidebar_label: Atomicity with Lua
+slug: /develop/java/spring/rate-limiting/fixed-window/reactive-lua
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+## Improving atomicity and performance with Lua
+
+One way to improve our implementation is by moving the responsibility of
+performing the `INCR` and `EXPIRE` operations from the `incrAndExpireKey`
+method, to a Lua script.
+
+## Rate Limiting Lua Script
+
+Redis has the ability to execute Lua scripts on the server side. Lua scripts
+are executed atomically, that is, no other script or command will run
+while a script is running, which gives us the same transactional semantics as `MULTI` / `EXEC`.
+
+Below is a simple Lua script to encapsulate the rate limiting logic. The script returns `true`
+if the request is to be rejected or `false` otherwise:
+
+```py
+-- rateLimiter.lua
+local key = KEYS[1]
+local requests = tonumber(redis.call('GET', key) or '-1')
+local max_requests = tonumber(ARGV[1])
+local expiry = tonumber(ARGV[2])
+
+if (requests == -1) or (requests < max_requests) then
+  redis.call('INCR', key)
+  redis.call('EXPIRE', key, expiry)
+  return false
+else
+  return true
+end
+```
+
+Place the script under `src/main/resources/scripts`. Now, Let's break it down:
+
+1. Lua scripts in Redis work with keys (`KEYS[]`) and arguments (`ARGV[]`) in our case
+   we are expecting one `key` in `KEYS[1]` (Lua arrays are 1-based)
+2. We retrieve the quota for the key in `requests` by making a `call` to the `GET` command,
+  returning `-1` if the key does not exist, and converting the value to a number.
+3. The quota is passed as the first argument (`ARGV[1]`) and stored in `max_requests`, the
+   expiry in seconds is the second argument and stored in `expiry`
+4. The `if` statement checks whether the request is the first request in the time window or
+   if the number of requests have not exceeded the quota, in which case we run the `INCR`-`EXPIRE`
+   commands and retunr `false` (meaning we are not rate limiting and allowing the request through).
+5. If they've exceeded the quote, then we rate limit by returning `true`
+
+If you want to learn more about Lua, see [Programming in Lua](https://www.lua.org/pil/contents.html).
+
+## Redis Lua Scripts in Spring Data Redis
+
+Spring Data Redis supports Lua scripting via the class `RedisScript`. It handles serialization and intelligently
+uses the Redis script cache. The cache is populated using the `SCRIPT LOAD` command. The default `ScriptExecutor`
+uses [`EVALSHA`](https://redis.io/commands/evalsha) using the SHA1 of the script and falling back to
+[`EVAL`](https://redis.io/commands/eval) if the script has not yet been loaded into the cache.
+
+Let's add the bean annotated method `script()` to load our script from the classpath:
+
+```java
+@Bean
+public RedisScript<Boolean> script() {
+  return RedisScript.of(new ClassPathResource("scripts/rateLimiter.lua"), Boolean.class);
+}
+```
+
+## Modifying the Filter to use Lua
+
+Next, we'll modify the filter to include the script as well as the quota; the value that we need to pass to the script:
+
+```java
+class RateLimiterHandlerFilterFunction implements HandlerFilterFunction<ServerResponse, ServerResponse> {
+
+  private ReactiveRedisTemplate<String, Long> redisTemplate;
+  private RedisScript<Boolean> script;
+  private Long maxRequestPerMinute;
+
+  public RateLimiterHandlerFilterFunction(ReactiveRedisTemplate<String, Long> redisTemplate,
+      RedisScript<Boolean> script, Long maxRequestPerMinute) {
+    this.redisTemplate = redisTemplate;
+    this.script = script;
+    this.maxRequestPerMinute = maxRequestPerMinute;
+  }
+```
+
+Now we can modify the `filter` method to use the script. Scripts are run using the execute methods of
+`RedisTemplate` or `ReactiveRedisTemplate`. The `execute` methods use a configurable `ScriptExecutor`/`ReactiveScriptExecutor`
+that inherits the key and value serialization setting of the template to run the scripts:
+
+```java
+@Override
+public Mono<ServerResponse> filter(ServerRequest request, HandlerFunction<ServerResponse> next) {
+  int currentMinute = LocalTime.now().getMinute();
+  String key = String.format("rl_%s:%s", requestAddress(request.remoteAddress()), currentMinute);
+
+  return redisTemplate //
+      .execute(script, List.of(key), List.of(maxRequestPerMinute, 59)) //
+      .single(false) //
+      .flatMap(value -> value ? //
+          ServerResponse.status(TOO_MANY_REQUESTS).build() : //
+          next.handle(request));
+}
+```
+
+Let's break down the method additions:
+
+1. The `filter` method uses the template `execute` method passing the script, keys and arguments.
+2. We expect a `single` result (`true` or `false`). The `single` method takes a default value to
+   be returned in case we get an empty result.
+3. Finally, we use the `flatMap` method to grab the value:
+   - If it is `true` we reject the request with an HTTP 429.
+   - If it is `false` we handle the request
+
+## Applying the filter
+
+Let's add a configurable `@Value` annotated `Long` value to the `FixedWindowRateLimiterApplication` to
+hold the request quota.
+
+```java
+@Value("${MAX_REQUESTS_PER_MINUTE}")
+Long maxRequestPerMinute;
+```
+
+In our `application.properties` we'll set it to a max of 20 request per minute:
+
+```java
+MAX_REQUESTS_PER_MINUTE=20
+```
+
+To invoke the filter we use the newly modified constructor, passing the template, the script, and the
+`maxRequestPerMinute` value:
+
+```java
+@Bean
+RouterFunction<ServerResponse> routes() {
+  return route() //
+      .GET("/api/ping", r -> ok() //
+          .contentType(TEXT_PLAIN) //
+          .body(BodyInserters.fromValue("PONG")) //
+      ).filter(new RateLimiterHandlerFilterFunction(redisTemplate, script(), maxRequestPerMinute)).build();
+}
+```
+
+## Testing with curl
+
+Using our trusty curl loop:
+
+```
+for n in {1..22}; do echo $(curl -s -w " :: HTTP %{http_code}, %{size_download} bytes, %{time_total} s" -X GET http://localhost:8080/api/ping); sleep 0.5; done
+```
+
+You should see the 21st request being rejected:
+
+```bash
+➜ for n in {1..22}; do echo $(curl -s -w " :: HTTP %{http_code}, %{size_download} bytes, %{time_total} s" -X GET http://localhost:8080/api/ping); sleep 0.5; done
+PONG :: HTTP 200, 4 bytes, 0.173759 s
+PONG :: HTTP 200, 4 bytes, 0.008903 s
+PONG :: HTTP 200, 4 bytes, 0.008796 s
+PONG :: HTTP 200, 4 bytes, 0.009625 s
+PONG :: HTTP 200, 4 bytes, 0.007604 s
+PONG :: HTTP 200, 4 bytes, 0.008052 s
+PONG :: HTTP 200, 4 bytes, 0.011364 s
+PONG :: HTTP 200, 4 bytes, 0.012158 s
+PONG :: HTTP 200, 4 bytes, 0.010415 s
+PONG :: HTTP 200, 4 bytes, 0.010373 s
+PONG :: HTTP 200, 4 bytes, 0.010009 s
+PONG :: HTTP 200, 4 bytes, 0.006587 s
+PONG :: HTTP 200, 4 bytes, 0.006807 s
+PONG :: HTTP 200, 4 bytes, 0.006970 s
+PONG :: HTTP 200, 4 bytes, 0.007948 s
+PONG :: HTTP 200, 4 bytes, 0.007949 s
+PONG :: HTTP 200, 4 bytes, 0.006606 s
+PONG :: HTTP 200, 4 bytes, 0.006336 s
+PONG :: HTTP 200, 4 bytes, 0.007855 s
+PONG :: HTTP 200, 4 bytes, 0.006515 s
+:: HTTP 429, 0 bytes, 0.006633 s
+:: HTTP 429, 0 bytes, 0.008264 s
+```
+
+If we run Redis in monitor mode, we should see the Lua calls to `EVALSHA`, followed by the call to `GET` for a rejected
+request, and the same plus calls to `INCR` and `EXPIRE` for an allowed request:
+
+```bash
+1630342834.878972 [0 172.17.0.1:65008] "EVALSHA" "16832548450a4b1c5e23ffab55bddefe972fecd2" "1" "rl_localhost:0" "20" "59"
+1630342834.879044 [0 lua] "GET" "rl_localhost:0"
+1630342834.879091 [0 lua] "INCR" "rl_localhost:0"
+1630342834.879141 [0 lua] "EXPIRE" "rl_localhost:0" "59"
+1630342835.401937 [0 172.17.0.1:65008] "EVALSHA" "16832548450a4b1c5e23ffab55bddefe972fecd2" "1" "rl_localhost:0" "20" "59"
+1630342835.402009 [0 lua] "GET" "rl_localhost:0"
+```
+
+The complete code for this implementation is under the branch [`with_lua`](https://github.com/redis-developer/fixed-window-rate-limiter/tree/with_lua).
+

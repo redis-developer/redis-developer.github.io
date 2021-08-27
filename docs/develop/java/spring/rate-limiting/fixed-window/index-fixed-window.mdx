@@ -1,0 +1,55 @@
+---
+id: index-fixed-window
+title: Fixed Window Rate Limiting
+sidebar_label: Overview
+slug: /develop/java/spring/rate-limiting/fixed-window
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+The simplest approach to build a rate limiter is the "fixed window" implementation in which we cap the
+maximum number of requests in a fixed window of time. For exmaple, if the window size is 1 hour, we can
+"fix" it at the top of the hour, like 12:00-12:59, 1:00-1:59, and so forth.
+
+The procedure to implement a fixed window rate limiter is fairly simple, for each request we:
+
+1. **Identify the requester**: This might be an API key, a token, a user's name or id, or even an IP address.
+2. **Find the current window**: Use the current time to find the window. Assume that we are working with 1 hour windows
+   and it's 3:15 PM, we could use a 24 hour clock and label this window "15".
+3. **Find the request count**: Find the fixed window request count for the requester. For example, say we've
+   identified the requester to be user with id "u123", and it's 3:15 PM. We will look for a count under the
+   key "u123:15" where the value store under that key is the count of requests for user u123 from 3:00 PM
+   to 3:59:59 PM.
+4. **Increment the request count**: Increment the request count for the window+user key.
+5. **Rate Limit if applicable**: If the count exceeds the user's quota, then deny the request, otherwise, allow the
+   requests to proceed.
+
+The fixed window recipe ignores the cost of the request (all requests are created equal) and in this particular implementation
+it uses a single quota for all all users. This simple implementation minimizes the CPU and I/O utilization but that comes with
+some limitations. It is possible to experience spikes near the edges of the window, since APIs users might program their
+requests in a "use or lose it" approach.
+
+One way to minimize the spikiness in this scheme is to have multiple time windows of different granularity. For example, you can
+rate limit at the hour and minute levels, say, allowing a maximum of 2,000 request per hour, and a maximum of 33 requests
+per minute.
+
+This basic recipe using Redis Strings, a minute-size window and a quota of 20 requests is outlined on
+the [Redis Blog](https://redis.com/redis-best-practices/basic-rate-limiting/). I'll summarize it here before we jump
+into out Spring Reactive implementation:
+
+1. `GET [user-api-key]:[current minute number]` such as `GET "u123:45"`
+2.	If the result from line 1 is less than 20 (or the key is not found) go to step 4 otherwise continue to step 3
+3.	Reject the request.
+4.	In an atomic way (using `MULTI` and `EXEC`) increment the key and set the expiry to 59 seconds into the future.
+  ```
+  MULTI
+  INCR [user-api-key]:[current minute number]
+  EXPIRE [user-api-key]:[current minute number] 59
+  EXEC
+  ```
+5. Otherwise, fulfill the request.
+
+Ok, now that we know the basic recipe, let's implement it in [Spring](/develop/java/spring/rate-limiting/fixed-window/reactive)
+
