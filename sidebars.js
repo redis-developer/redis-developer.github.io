@@ -61,7 +61,8 @@ module.exports = {
                     'develop/java/spring/redis-and-spring-course/lesson_8/index-lesson_8',
                     'develop/java/spring/redis-and-spring-course/lesson_9/index-lesson_9'
                   ]
-                }
+                },
+                'develop/java/spring/rate-limiting/index-rate-limiting',
               ]
             }
           ]
