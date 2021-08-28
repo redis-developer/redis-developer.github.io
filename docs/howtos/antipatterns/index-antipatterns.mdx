@@ -97,7 +97,7 @@ Redis Enterprise solves the quorum challenge with an odd number of nodes. Redis 
 
 Performing several operations serially increases connection overhead. Instead, use [Redis Pipelining](https://redis.io/topics/pipelining).  Pipelining is the process of sending multiple messages down the pipe without waiting on the reply from each - and (typically) processing the replies later when they come in. 
 
-Pipeling is completely a client side implementation. It is aimed at solving response latency issues in high network latency environments. So, the lesser the amount of time spent over the network in sending commands and reading responses, the better. This is effectively achieved by buffering. The client may (or may not) buffer the commands at the TCP stack (as mentioned in other answers) before they are sent to the server. Once they are sent to the server, the server executes them and buffers them on the server side. The benefit of the pipelining is a drastically improved protocol performance. The speedup gained by pipelining ranges from a factor of five for connections to localhost up to a factor of at least one hundred over slower internet connections.
+Pipelining is completely a client side implementation. It is aimed at solving response latency issues in high network latency environments. So, the lesser the amount of time spent over the network in sending commands and reading responses, the better. This is effectively achieved by buffering. The client may (or may not) buffer the commands at the TCP stack (as mentioned in other answers) before they are sent to the server. Once they are sent to the server, the server executes them and buffers them on the server side. The benefit of the pipelining is a drastically improved protocol performance. The speedup gained by pipelining ranges from a factor of five for connections to localhost up to a factor of at least one hundred over slower internet connections.
 
 
 
@@ -168,3 +168,5 @@ The RedisTimeSeries module provides a direct compete to time series databases. B
 - [Redis Best Practices](https://redis.com/redis-best-practices)
 - [7 Redis Worst Practices](https://redis.com/blog/7-redis-worst-practices/)
 - [Redis Anti-Patterns Video](https://www.youtube.com/watch?v=V532pU-7zW8)
+- [Java and Redis](https://developer.redis.com/develop/java/)
+- 
