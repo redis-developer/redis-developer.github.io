@@ -66,7 +66,7 @@ module.exports = {
                   type: 'category',
                   label: 'Rate Limiting',
                   items: [
-                    'develop/java/spring/rate-limiting/index-rate-limiting',
+                    'develop/java/spring/rate-limiting/index-ratelimiting',
                     {
                       type: 'category',
                       label: 'Fixed Window',
