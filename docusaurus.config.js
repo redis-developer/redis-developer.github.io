@@ -37,13 +37,11 @@ module.exports = {
           label: 'Get started',
           position: 'right',
         },
-        /*
         {
-          href: '#',
-          label: 'Resources',
+          href: 'https://launchpad.redis.com',
+          label: 'Redis Launchpad',
           position: 'right',
         },
-        */
         {
           href: 'https://redis.com/try-free/',
           label: 'Try Free',

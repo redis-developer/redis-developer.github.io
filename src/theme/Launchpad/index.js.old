@@ -1,0 +1,58 @@
+import React from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Slider from 'react-slick';
+
+function Launchpad() {
+  var sliderSettings = {
+    infinite: true,
+    centerMode: true,
+    centerPadding: '32.5px',
+    responsive: [
+      {
+        breakpoint: 10000,
+        settings: 'unslick'
+      },
+      {
+        breakpoint: 996,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 750,
+        settings: {
+          slidesToShow: 1,
+        }
+      }
+    ]
+  };
+  return <section className="rds-resources">
+    <div className="container" id="resources">
+
+      <h2 className="section-title white">Redis Launchpad<br /></h2>
+      <h3 className="section-description white">Build fast apps faster 🚀</h3>
+
+      <Slider className="row articles" {...sliderSettings}>
+        <div className="col col--4">
+          <article className="article">
+            <div className="article-wrapper">
+              <img src={useBaseUrl('/img/launchpad.png')} className="thumb" loading="lazy" alt="Redis Pods" />
+              <div className="article-body">
+                <span className="type">Podcast</span>
+                <h3 className="title">How Redis scales Groww’s investing platform to empower 10 Million+ customers</h3>
+              </div>
+              <a href="https://redispods.simplecast.com/episodes/how-redis-scales-growws-investing-platform-to-empower-10-million-customers" target="_blank" rel="noopener" className="link">Read More</a>
+            </div>
+          </article>
+        </div>
+      </Slider>
+
+      <div className="cta">
+        <a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="btn">Access Today</a>
+      </div>
+
+    </div>
+  </section>;
+}
+
+export default Launchpad;

@@ -8,6 +8,7 @@ import styles from './styles.module.css';
 
 import Hero from '@theme/Hero';
 import Languages from '@theme/Languages';
+import Launchpad from '@theme/Launchpad';
 import Demos from '@theme/Demos';
 import Resources from '@theme/Resources';
 
@@ -21,6 +22,7 @@ function Home() {
       <Hero />
       <main className="home-main">
         <Languages />
+        <Launchpad />
         <Demos />
         <Resources />
       </main>

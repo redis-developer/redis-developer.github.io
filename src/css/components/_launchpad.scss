@@ -1,0 +1,224 @@
+.rds-launchpad {
+  margin-top: 75px;
+  padding: 80px 0 85px;
+  border-radius: 10px 10px 0 0;
+  background-color: $primary-blue;
+
+  @include mobile {
+    margin-top: 59px;
+    padding: 54px 0 53px;
+  }
+
+  .articles {
+    &:not(:first-child) {
+      margin-top: 77px;
+
+      @include mobile {
+        margin-top: 52px;
+      }
+    }
+
+    .slick-list {
+      margin: -10px 0;
+    }
+
+    .slick-track {
+      display: flex;
+      padding: 10px 0;
+    }
+
+    .slick-slide {
+      height: auto;
+
+      >div {
+        height: 100%;
+
+        >.col {
+          padding: 0 12.5px;
+          height: 100%;
+        }
+      }
+    }
+
+    .slick-dots {
+      display: flex !important;
+      justify-content: center;
+      bottom: -15px;
+
+      li {
+        margin: 0 6px;
+        width: auto;
+        height: auto;
+
+        button {
+          margin: 0;
+          padding: 0;
+          width: 8px;
+          height: 8px;
+          border-radius: 100%;
+          background-color: $white;
+          transition: background-color .2s ease-in-out;
+
+          &:before {
+            display: none;
+          }
+        }
+
+        &.slick-active {
+          button {
+            background-color: $red;
+          }
+        }
+      }
+    }
+
+    .article {
+      position: relative;
+      height: 100%;
+
+      &:hover {
+        &:before {
+          top: 5px;
+          opacity: 1;
+        }
+
+        .article-wrapper {
+          top: -5px;
+          box-shadow: 12px 11px 6px rgba($primary-black, .17);
+        }
+      }
+
+      &:before {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        border-radius: 10px;
+        background-color: $purple;
+        transition: top .2s ease-in-out, opacity .2s ease-in-out;
+        content: '';
+
+        @include mobile {
+          border-radius: 8px;
+        }
+      }
+
+      .article-wrapper {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        top: 0;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: top .2s ease-in-out, box-shadow .2s ease-in-out;
+
+        @include mobile {
+          border-radius: 8px;
+        }
+      }
+
+      .thumb {
+        z-index: 2;
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 187px;
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+        box-shadow: 0px 2px 4px rgba(183, 183, 183, .5);
+
+        @include mobile {
+          height: 151px;
+          border-radius: 8px 8px 0 0;
+        }
+      }
+
+      .article-body {
+        flex: 1;
+        padding: 20px 25px 25px;
+        border-radius: 0 0 10px 10px;
+        background-color: $white;
+
+        @include mobile {
+          padding: 15px 19px 16px;
+          border-radius: 0 0 8px 8px;
+        }
+
+        .type {
+          display: block;
+          text-transform: uppercase;
+          line-height: 1.25;
+          letter-spacing: 1px;
+          font-size: 14.5px;
+          font-weight: 900;
+          color: $red;
+
+          @include mobile {
+            font-size: 13px;
+          }
+        }
+
+        .title {
+          margin: 0;
+          line-height: 1.35;
+          font-size: 18px;
+          font-weight: 600;
+
+          @include mobile {
+            font-size: 16px;
+          }
+
+          &:not(:first-child) {
+            margin-top: 4px;
+
+            @include mobile {
+              margin-top: 3px;
+            }
+          }
+        }
+      }
+
+      .link {
+        z-index: 5;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        text-indent: -9999px;
+      }
+    }
+  }
+
+  .cta {
+    margin-top: 55px;
+    text-align: center;
+
+    @include mobile {
+      margin-top: 50px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 11px 32px 12px;
+      border-radius: 3px;
+      background-color: $red;
+      text-decoration: none;
+      line-height: 1;
+      letter-spacing: 0.25px;
+      font-size: 14px;
+      font-weight: 700;
+      color: $white;
+      transition: background-color .2s ease-in-out, color .2s ease-in-out;
+
+      &:hover {
+        background-color: $white;
+        color: $red;
+      }
+    }
+  }
+}

@@ -39,7 +39,6 @@ function Languages() {
             <span className="btn">Node.js</span>
           </a>
         </li>
-
         <li>
           <a href="/develop/dotnet">
             <SvgCSharp />
@@ -54,9 +53,8 @@ function Languages() {
           </a>
         </li>
       </ul>
-
-    </div>
-  </section>;
+     </div>
+   </section>; 
 }
 
 export default Languages;
