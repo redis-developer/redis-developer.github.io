@@ -194,7 +194,8 @@ module.exports = {
                   'howtos/redisgraph/index-redisgraph',
                   'howtos/redisgraph/getting-started/index-gettingstarted',
                   'howtos/redisgraph/explore-python-code/index-explorepythoncode',
-               ]
+                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',  
+             ]
             },
                'howtos/redisbloom/index-redisbloom',
                'howtos/redisgears/index-redisgears',
