@@ -4,7 +4,7 @@
 ![issues](https://img.shields.io/github/issues/redis-developer/redis-developer.github.io)
 ![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fredis-developer%2Fredis-developer.github.io)
 
-[![build](https://github.com/redis-developer/redis-developer.github.io/actions/workflows/documentation.yml/badge.svg)](https://github.com/redis-developer/redis-developer.github.io/actions/workflows/documentation.yml)
+
 
 # Redis Developer Hub
 
