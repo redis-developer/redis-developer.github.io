@@ -27,9 +27,13 @@ Follow the steps below to get started with RedisGraph with Python:
   module:name=graph,ver=20405,api=1,filters=0,usedby=[],using=[],options=[]
  ```
 
+### Step 3. Loading the Python Module
 
+ ```bash
+  pip install redisgraph
+ ```
 
-### Step 3. Write a python code 
+### Step 4. Write a python code 
 
  ```python
   import redis
@@ -92,7 +96,7 @@ Follow the steps below to get started with RedisGraph with Python:
   redis_graph.delete()
 ```
 
-### Step 4. Execute th Python Script
+### Step 5. Execute th Python Script
 
  ```python
    python3 test.py 
@@ -117,7 +121,7 @@ Follow the steps below to get started with RedisGraph with Python:
 
 
 
-### Step 5. Monitor the Graph query
+### Step 6. Monitor the Graph query
 
 
 ```bash
@@ -137,7 +141,7 @@ Follow the steps below to get started with RedisGraph with Python:
 
 Let us comment out the last line. Try to query Graph data over over RedisInsight.
 
-### Step 6. Install RedisInsight
+### Step 7. Install RedisInsight
 
 Run the RedisInsight container. The easiest way is to run the following command:
 
@@ -145,12 +149,12 @@ Run the RedisInsight container. The easiest way is to run the following command:
   docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
  ```
 
-### Step 7. Accessing RedisInsight
+### Step 8. Accessing RedisInsight
 
 Next, point your browser to http://localhost:8001.
 
 
-### Step 8. Run the Graph Query
+### Step 9. Run the Graph Query
 
 You can use the limit clause to limit the number of records returned by a query:
 
@@ -160,7 +164,7 @@ MATCH (n) RETURN n  LIMIT 1
 ![My Image](redisgraph_redisinsight_1.png)
 
 
-### Step 9. Run the Graph Query with no LIMIT
+### Step 10. Run the Graph Query with no LIMIT
 
 MATCH (n) RETURN n
 
