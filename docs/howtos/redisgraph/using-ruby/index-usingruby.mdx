@@ -1,0 +1,113 @@
+---
+id: index-usingruby
+title: How to query Graph data in Redis with Ruby
+sidebar_label: RedisGraph and Ruby
+slug: /howtos/redisgraph/using-ruby
+---
+
+RedisGraph is the fastest graph database that processes complex graph operations in real time, 10x – 600x faster than any other graph database. Show how your data is connected through multiple visualization integrations including RedisInsight, Linkurious, and Graphileon. Query graphs using the industry-standard Cypher query language and easily use graph capabilities from application code.
+
+## RedisGraph Ruby Client
+
+
+redisgraph-rb is a Ruby gem client for the RedisGraph module. It relies on redis-rb for Redis connection management and provides support for graph QUERY, EXPLAIN, and DELETE commands.
+
+Follow the steps below to get started with RedisGraph with Ruby:
+
+### Step 1. Run RedisMod Docker container
+
+ ```bash
+  docker run -p 6379:6379 --name redislabs/redismodCopy
+ ```
+
+### Step 2. Verify if RedisGraph module is loaded
+
+ ```bash
+  info modules
+  # Modules
+  module:name=graph,ver=20405,api=1,filters=0,usedby=[],using=[],options=[]
+ ```
+
+### Step 3. Loading the RedisGraph Ruby Module
+
+ ```bash
+  gem install redisgraph
+  Fetching redisgraph-2.0.3.gem
+  Successfully installed redisgraph-2.0.3
+  1 gem installed
+
+ ```
+
+### Step 4 Install the prerequisites
+
+To ensure prerequisites are installed, run the following: bundle install
+
+
+ ```bash
+  bundle install
+ ```
+
+
+
+### Step 5. Write a Ruby code 
+
+Copy the below sample code and save it in a file "test.rb"
+
+
+ ```ruby
+  require 'redisgraph'
+  
+  graphname = "sample"
+
+  r = RedisGraph.new(graphname)
+
+  cmd = """CREATE (:person {name: 'Jim', age: 29})-[:works]->(:employer {name: 'Dunder Mifflin'})"""
+  response = r.query(cmd)
+  response.stats
+
+  cmd = """MATCH ()-[:works]->(e:employer) RETURN e"""
+
+  response = r.query(cmd)
+
+  response.print_resultset
+ ```
+
+### Step 5. Execute the Ruby code
+
+ ```bash
+   ruby test.rb 
+ ```
+
+
+
+
+### Step 6. Monitor the Graph query
+
+
+```bash
+ redis-cli 
+ 127.0.0.1:6379> monitor
+ OK
+ 1632716792.038955 [0 172.17.0.1:57804] "info"
+ 1632716792.041201 [0 172.17.0.1:57804] "GRAPH.QUERY" "sample" "CREATE (:person {name: 'Jim', age: 29})-[:works]->(:employer {name: 'Dunder Mifflin'})" "--compact"
+ 1632716792.042751 [0 172.17.0.1:57804] "GRAPH.QUERY" "sample" "MATCH ()-[:works]->(e:employer) RETURN e" "--compact"
+ 1632716792.044241 [0 172.17.0.1:57804] "GRAPH.QUERY" "sample" "CALL db.propertyKeys()"
+ 1632716812.060458 [0 172.17.0.1:57962] "COMMAND"
+ 1632716813.148710 [0 172.17.0.1:57962] "GRAPH.QUERY" "sample" "CREATE (:person {name: 'Jim', age: 29})-[:works]->(:employer {name: 'Dunder Mifflin'})" "--compact"
+
+```
+
+
+### References
+
+
+- [Building Movies database app using RedisGraph and NodeJS](/howtos/redisgraphmovies/)
+- Learn more about RedisGraph in the [Quickstart](https://oss.redislabs.com/redisgraph/?_ga=2.186887980.520518125.1606546041-1440690046.1604964523) tutorial.
+- [Query, Visualize and Manipulate Graphs using RedisGraph Browser Tool](/explore/redisinsight/redisgraph)
+
+##
+
+<div>
+<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+</div>
+
