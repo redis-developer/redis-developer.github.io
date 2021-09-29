@@ -197,7 +197,8 @@ module.exports = {
                   'howtos/redisgraph/using-redisinsight/index-usingredisinsight',  
                   'howtos/redisgraph/using-python/index-usingpython',
                   'howtos/redisgraph/using-ruby/index-usingruby', 
-             ]
+                  'howtos/redisgraph/using-javascript/index-usingjavascript',
+              ]
             },
                'howtos/redisbloom/index-redisbloom',
                'howtos/redisgears/index-redisgears',
