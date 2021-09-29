@@ -241,6 +241,7 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
+        'get-involved/hacktoberfest/index-hacktoberfest',
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]
