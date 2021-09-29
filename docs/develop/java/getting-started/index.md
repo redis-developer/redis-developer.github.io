@@ -139,7 +139,7 @@ Find more information about Java & Redis connections in the "[Redis Connect](htt
 ### Redis Launchpad
 
 Redis Launchpad is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
-Below are few of these apps. [Click here to access the complete lists of apps](https://launchpad.redis.com)
+Check out a few of these apps below, or [click here to access the complete list](https://launchpad.redis.com).
 
 <div class="row text--center">
 
