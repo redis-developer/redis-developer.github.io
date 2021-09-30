@@ -113,6 +113,8 @@ This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern 
 yarn install
 ```
 
+**Note:** Node.js 16 isn't supported yet.  If you experience issues with `node-gyp` compiling code, switch to the current LTS version of Node.js and re-run `yarn install`.
+
 ## Local Development
 
 ```console
