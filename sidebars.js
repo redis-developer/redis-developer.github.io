@@ -156,6 +156,7 @@ module.exports = {
         ]
         },
           'explore/redisdatasource/index-redisdatasource',
+          'explore/redisexplorer/index-redisexplorer',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
 
