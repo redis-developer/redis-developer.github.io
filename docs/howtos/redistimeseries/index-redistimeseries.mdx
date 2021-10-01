@@ -5,7 +5,6 @@ sidebar_label: RedisTimeSeries Tutorial
 slug: /howtos/redistimeseries
 ---
 
-Author: [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
 
 [RedisTimeseries](https://redis.com/modules/redis-timeseries/) is a Redis module developed by Redis Labs to enhance your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
@@ -13,26 +12,62 @@ Author: [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
 <iframe width="760" height="415" src="https://www.youtube.com/embed/nkUZqxjs2rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-### Step 1. Register and subscribe
+### Step 1. Create free cloud account
 
-Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
+Create your free <a href="https://redislabs.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-![Redistimeseries](tryfree.png)
-![Redistimeseries](redistimeseries.png)
+![My Image](tryfree.png)
 
-### Step 2. Create a database with RedisTimeSeries Module
-
-![Redistimeseries](redistimeseries1.png)
+![image](images/deployment.png)
 
 
-### Step 3. Connect to a database
+### Step 2. Create Your subscription
+
+Next, you will have to create  Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "Create your Subscription". 
+
+![My Image](images/create_subscription.png)
+
+
+### Step 3. Select the right Subscription Plan
+
+Select "Fixed Plan" for low throughout application as for now.
+
+![My Image](images/select_subscription.png)
+
+### Step 4.  Select cloud vendor
+ 
+For the cloud provider, select your preferred cloud (for demo purpose)
+
+
+
+![My Image](images/select_cloud.png)
+
+### Step 5. Click "Create Subscription"
+
+Finally, click on "Create Subscription" button.
+
+![My Image](images/final_subscription.png)
+
+You can now verify the subscription as shown below:
+
+![My Image](images/Verify_subscription.png)
+
+### Step 6. Create database
+
+Click "Create Database". Enter database name and your preferred module.
+
+![My Image](images/rediscloud_redistimeseries.png)
+
+
+
+### Step 7. Connect to a database
 
 
 Follow [this](explore/redisinsight) link to know how to connect to a database
 
 
 
-### Step 4. Getting Started with RedisTimeSeries
+### Step 8. Getting Started with RedisTimeSeries
 
 This section will walk you through using some basic RedisTimeseries commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.)
 Using a basic air-quality dataset, we will show you how to:
