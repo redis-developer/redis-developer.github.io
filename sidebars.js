@@ -132,7 +132,8 @@ module.exports = {
                 type: 'category',
                 label: 'ASP.NET Core',
                 items:[
-                  'develop/dotnet/aspnetcore/rate-limiting/index-rate-limiting'
+                  'develop/dotnet/aspnetcore/rate-limiting/index-rate-limiting',
+                  'develop/dotnet/aspnetcore/rate-limiting/sliding-window-rate-limiting',
                 ]
               }
             ]

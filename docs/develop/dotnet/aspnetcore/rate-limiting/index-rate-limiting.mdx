@@ -67,7 +67,7 @@ public RateLimitedController(IConnectionMultiplexer mux)
 
 ## Add a Simple Route
 
-We will add a simple route that we will Rate Limit; it will be a POST request route on our controller. This POST request will use [Basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) - this means that each request is going to expect a header of the form `Authorization: Basic <base64encoded>` where the `base64encoded` will be a string of the form `apiKey:apiSecret` base64 encoded, e.g. `Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==`. This route will parse the key out of the header and respond with JSON containing the key.
+We will add a simple route that we will Rate Limit; it will be a POST request route on our controller. This POST request will use [Basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) - this means that each request is going to expect a header of the form `Authorization: Basic <base64encoded>` where the `base64encoded` will be a string of the form `apiKey:apiSecret` base64 encoded, e.g. `Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==`. This route will parse the key out of the header and return an OK result.
 
 ```csharp
 [HttpPost("simple")]
