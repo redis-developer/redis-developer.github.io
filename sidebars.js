@@ -123,8 +123,21 @@ module.exports = {
               'develop/python/index-python',
               'develop/python/fastapi/index-fastapi'
             ]
-          },
-          'develop/dotnet/index-dotnet',
+          },{
+            type: 'category',
+            label: '.NET',
+            items: [
+              'develop/dotnet/index-dotnet',
+              {
+                type: 'category',
+                label: 'ASP.NET Core',
+                items:[
+                  'develop/dotnet/aspnetcore/rate-limiting/fixed-window/index-rate-limiting',
+                  'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
+                ]
+              }
+            ]
+          },          
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
