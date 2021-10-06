@@ -134,6 +134,7 @@ module.exports = {
                 items:[
                   'develop/dotnet/aspnetcore/rate-limiting/fixed-window/index-rate-limiting',
                   'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
+                  'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
                 ]
               }
             ]
