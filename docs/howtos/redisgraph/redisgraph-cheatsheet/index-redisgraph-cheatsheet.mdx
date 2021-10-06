@@ -9,9 +9,9 @@ slug: /howtos/redisgraph/redisgraph-cheatsheet
 | :--------------------- | :---------------------- | :----------------- |
 | <button><b>[GRAPH.QUERY](https://oss.redis.com/redisgraph/commands/#graphquery)</b></button> | Execute a query against a named graph | <code>GRAPH.QUERY &lt;graph name&gt; "&lt;query&gt;"</code> |
 | <button><b>[GRAPH.RO_QUERY](https://oss.redis.com/redisgraph/commands/#graphro_query)</b></button> | Executes a read only query against a named graph | <code>GRAPH.RO_QUERY &lt;graph name&gt; "&lt;query&gt;" |
-| <button><b>[GRAPH.QUERY ... "MATCH ..."]() | | <code>GRAPH.QUERY &lt;graph name&gt; "&lt; &gt;"</code |
-| <button><b>[GRAPH.QUERY ...]() | | <code>GRAPH.QUERY &lt;graph name&gt; "&lt; &gt;"</code> |
-| <button><b>[GRAPH.QUERY ...]() | | <code>GRAPH.QUERY &lt;graph name&gt; "&lt; &gt;"</code> |
+| <button><b>[GRAPH.QUERY ... "MATCH ..."]() | Query Structure: MATCH describes the relationship between queried entities, using ascii art to represent pattern(s) to match against | <code>GRAPH.QUERY &lt;graph name&gt; "MATCH &lt;pattern&gt;"</code> |
+| <button><b>[GRAPH.QUERY ... "MATCH ... OPTIONAL MATCH"](https://oss.redis.com/redisgraph/commands/#optional-match) | The OPTIONAL MATCH clause is a MATCH variant that produces null values for elements that do not match successfully, rather than the all-or-nothing logic for patterns in MATCH clauses. | <code>GRAPH.QUERY &lt;graph name&gt; "MATCH &lt;pattern&gt; OPTIONAL MATCH &lt;pattern&gt;"</code> |
+| <button><b>[GRAPH.QUERY ... "MATCH ... WHERE ..."](https://oss.redis.com/redisgraph/commands/#where) | The WHERE clause is not mandatory, but if you want to filter results, you can specify your predicates here.  Click the link to see supported operations. | <code>GRAPH.QUERY &lt;graph name&gt; "MATCH &lt;pattern&gt; WHERE &lt;pattern&gt;"</code> |
 | <button><b>[GRAPH.QUERY ...]() | | <code>GRAPH.QUERY &lt;graph name&gt; "&lt; &gt;"</code> |
 | <button><b>[GRAPH.QUERY ...]() | | <code>GRAPH.QUERY &lt;graph name&gt; "&lt; &gt;"</code> |
 | <button><b>[GRAPH.QUERY ...]() | | <code>GRAPH.QUERY &lt;graph name&gt; "&lt; &gt;"</code> |
