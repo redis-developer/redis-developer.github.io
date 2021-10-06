@@ -213,6 +213,7 @@ module.exports = {
                   'howtos/redisgraph/using-python/index-usingpython',
                   'howtos/redisgraph/using-ruby/index-usingruby', 
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
+                  'howtos/redisgraph/using-go/index-usinggo',
               ]
             },
                'howtos/redisbloom/index-redisbloom',
