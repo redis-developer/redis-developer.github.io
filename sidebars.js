@@ -215,6 +215,7 @@ module.exports = {
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
                   'howtos/redisgraph/using-go/index-usinggo',
                   'howtos/redisgraph/using-rust/index-usingrust',
+                  'howtos/redisgraph/redisgraphmovies/index-redisgraphmovies',
               ]
             },
                'howtos/redisbloom/index-redisbloom',
