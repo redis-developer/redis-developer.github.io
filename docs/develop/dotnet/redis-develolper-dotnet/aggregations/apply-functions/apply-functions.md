@@ -129,3 +129,17 @@ foreach (var employee in lastOnline)
 |ApplyFunctions.DayOfYear|time|Converts the unix timestamp to the current day of the year (1..31)|`ApplyFunctions.DayOfYear(x.RecordShell.LastTimeOnline)`|
 |ApplyFunctions.Year|time|Converts the unix timestamp to the current year|`ApplyFunctions.Year(x.RecordShell.LastTimeOnline)`|
 |ApplyFunctions.MonthOfYear|time|Converts the unix timestamp to the current month (0..11)|`ApplyFunctions.MonthOfYear(x.RecordShell.LastTimeOnline)`|
+
+## Geo Distance
+
+Another useful function is the `GeoDistance` function, which allows you computer the distance between two points, e.g. if you wanted to see how far away from the office each employee was you could use the `ApplyFunctions.GeoDistance` function inside your pipeline:
+
+```csharp
+var officeLoc = new GeoLoc(-122.064181, 37.377207);
+var distanceFromWork =
+    employeeAggregations.Apply(x => ApplyFunctions.GeoDistance(x.RecordShell.HomeLoc, officeLoc), "DistanceToWork");
+await foreach (var element in distancesFromWork)
+{
+    Console.WriteLine(element["DistanceToWork"].ToString());
+}
+```
