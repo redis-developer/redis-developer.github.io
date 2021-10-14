@@ -2,7 +2,7 @@
 id: apply-functions
 title: Apply Functions
 sidebar_label: Apply Functions
-slug: /develop/dotnet/redis-developer-dotnet/aggregations
+slug: /develop/dotnet/redis-developer-dotnet/aggregations/apply-functions
 ---
 
 Apply functions are functions that you can define as expressions to apply to your data in Redis. In essence, they allow you to combine your data together, and extract the information you want.

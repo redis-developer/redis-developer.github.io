@@ -2,7 +2,7 @@
 id: groups
 title: Grouping and Reductions
 sidebar_label: Grouping and Reductions
-slug: /develop/dotnet/redis-developer-dotnet/aggregations
+slug: /develop/dotnet/redis-developer-dotnet/aggregations/groups/groups
 ---
 
 Grouping and reducing operations using aggregations can be extremely powerful.

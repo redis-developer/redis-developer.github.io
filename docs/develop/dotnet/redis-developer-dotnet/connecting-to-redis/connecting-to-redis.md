@@ -1,8 +1,8 @@
 ---
-id: connecting-to-redis
+id: connecting
 title: Connecting to Redis with Redis-Developer-Dotnet
 sidebar_label: Connecting to Redis
-slug: /develop/dotnet/redis-developer-dotnet
+slug: /develop/dotnet/redis-developer-dotnet/connecting-to-redis
 ---
 
 The Redis-Developer-Dotnet is designed to make using Redis easier for .NET developers, so naturally the first question one might ask is how would you use it to connect to Redis?

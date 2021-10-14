@@ -2,7 +2,7 @@
 id: geo-filters
 title: Geo Filters
 sidebar_label: Geo Filters
-slug: /develop/dotnet/redis-developer-dotnet
+slug: /develop/dotnet/redis-developer-dotnet/searching/geo-filters
 ---
 
 A really nifty bit of indexing you can do with redis-developer-dotnet is geo-indexing. To GeoIndex, all you need to do is to mark a `GeoLoc` field in your model as `Indexed` and create the index 
