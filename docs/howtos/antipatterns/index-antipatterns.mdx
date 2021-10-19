@@ -26,9 +26,7 @@ Redis Enterprise recommends to shard if you have more than 25 GB of data and a h
 Opening a connection each operation requires a lot of overhead to build up and tear down the TCP connection. As a developer, you might sometimes create a connection, run a command, and close the connection. While opening and closing connections per command will technically work, it’s far from optimal and needlessly cuts into the performance of Redis as a whole. Hence, it is recommended to use a connection pool (Jedis) or a Redis client that has a reactive design (Lettuce).
  
 
-Using the OSS Cluster API, the connection to the nodes are maintained by the client as needed, so you’ll have multiple connections open to different nodes at any given time. 
-
-With Redis Enterprise, the connection is actually to a proxy, which takes care of the complexity of connections at the cluster level.
+Using the OSS Cluster API, the connection to the nodes are maintained by the client as needed, so you’ll have multiple connections open to different nodes at any given time. With Redis Enterprise, the connection is actually to a proxy, which takes care of the complexity of connections at the cluster level.
 
 
 ### Examples #1 - redis-py
@@ -73,10 +71,7 @@ Lettuce provides generic connection pool support.Lettuce connections are designe
 
 With a large number of clients, a reconnect flood will be able to simply overwhelm a single threaded Redis process and force a failover. Hence, it is recommended that you should use the right tool that allows you to reduce the number of open connections to your Redis server. 
 
-[Redis Enterprise DMC proxy](https://docs.redis.com/latest/rs/administering/designing-production/networking/multiple-active-proxy/) allows you to reduce the number of connections to your cache server by acting as a proxy.
-
-
-There are other 3rd party tool like [Twemproxy](https://github.com/twitter/twemproxy). It is a fast and lightweight proxy server that allows you to reduce the number of open connections to your Redis server. It was built primarily to reduce the number of connections to the caching servers on the backend. This, together with protocol pipelining and sharding enables you to horizontally scale your distributed caching architecture.
+[Redis Enterprise DMC proxy](https://docs.redis.com/latest/rs/administering/designing-production/networking/multiple-active-proxy/) allows you to reduce the number of connections to your cache server by acting as a proxy. There are other 3rd party tool like [Twemproxy](https://github.com/twitter/twemproxy). It is a fast and lightweight proxy server that allows you to reduce the number of open connections to your Redis server. It was built primarily to reduce the number of connections to the caching servers on the backend. This, together with protocol pipelining and sharding enables you to horizontally scale your distributed caching architecture.
 
 
 
@@ -115,9 +110,7 @@ Redis even provides tools to find where your hot keys are located. Use redis-cli
 ```bash
  $ redis-cli --hotkeys
 ```
-When possible, the best defense is to avoid the development pattern that is creating the situation. Writing the data to multiple keys that reside in different shards will allow you to access the same data more frequently.
-
-In nutshell, having specific keys that are accessed with every client operation. Hence, it's recommended to shard out hot keys using hashing algorithms. You can set policy to LFU and run redis-cli --hotkeys to determine.
+When possible, the best defence is to avoid the development pattern that is creating the situation. Writing the data to multiple keys that reside in different shards will allow you to access the same data more frequently. In nutshell, having specific keys that are accessed with every client operation. Hence, it's recommended to shard out hot keys using hashing algorithms. You can set policy to LFU and run redis-cli --hotkeys to determine.
 
 
 ### 9. Using Keys command
@@ -151,7 +144,6 @@ The only query mechanism is a SCAN which requires reading the data structure and
 Using SELECT command and multiple databases inside one Redis instance
 
 The usage of SELECT and multiple databases inside one Redis instance was mentioned as an anti-pattern by Salvatore (the creator of Redis). It is recommended to use a dedicated Redis instance for each database need. This is especially true in microservice architectures where client applications might step on each other's toes (noisy neighbor, database setup/teardown impact, maintenance, upgrade, ...)
-
 
 
 The RedisTimeSeries module provides a direct compete to time series databases. But if the only query is based on ordering, it's unnecessary complexity. Hence, it is recommended to use a SORTED SET with a score of 0 for every value. The values are appended. Or use a timestamp for the score for simple time based queries
