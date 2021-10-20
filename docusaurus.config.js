@@ -11,6 +11,20 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'redis-developer', // Usually your GitHub org/user name.
   projectName: 'redis-developer', // Usually your repo name.
+  customFields: {
+    authors: {
+      simon: {
+        name: 'Simon Prickett',
+        link: 'https://twitter.com/simon_prickett',
+        title: 'Manager, Developer Advocacy'
+      },
+      suze: {
+        name: 'Suze Shardlow',
+        link: 'https://twitter.com/SuzeShardlow',
+        title: 'Developer Community Manager'
+      }
+    }
+  },
   themeConfig: {
 
     // ...
