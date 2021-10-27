@@ -65,8 +65,7 @@ If this API was called with an invalid room number, the server would crash with 
 
 After combing through the sample data I had loaded previously via npm run load and finding out that the room data was persisted as an array of JSON objects, I assumed the minimum room number would be 0. To get the maximum, then, I would need to get the last index in the array by getting the array length and subtracting one from it. For this, I used the `JSON.ARRLEN` RedisJSON command, validating that the room number sent in the request path was within range and returning `400` otherwise.
 
-# TODO insert screen grab of the file changes in GitHub
-`![Screen grab of the file changes in GitHub](/images/*.jpg)`
+![Screen grab of the file changes in GitHub](images/7-github.png)
 
 **5. Testing**
 
