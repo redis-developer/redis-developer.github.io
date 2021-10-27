@@ -145,3 +145,46 @@ If you are using GitHub pages for hosting, this command is a convenient way to b
 ```console
 npm run serve
 ```
+
+## How to add an author
+
+Add a new author as follows:
+
+* Edit `docusaurus.config.js` and add a new author object into the `authors` object:
+
+```javascript
+customFields: {
+  authors: {
+    simon: {
+      name: 'Simon Prickett',
+      link: 'https://twitter.com/simon_prickett',
+      title: 'Manager, Developer Advocacy',
+      image: 'profile_pic_simon_prickett.jpg'
+    },
+    suze: {
+      name: 'Suze Shardlow',
+      link: 'https://twitter.com/SuzeShardlow',
+      title: 'Developer Community Manager'
+    }
+  }
+},
+```
+
+* Give each author a unique name in the `authors` object.  
+* The `link` field can be set to any of your social media profiles or personal website etc.
+* The `image` field is optional.  If omitted, a default silhouette image will be used.
+* If providing a value for the `image` field, please name your image `profile_pic_<author_name>.jpg|.png` and add it to the `static/img` folder.
+* Make sure that the image is 640px square and use a service such as [tinypng.com](https://tinypng.com/) to reduce the file size.
+* When you want to tag a document as written by the new author, edit its front matter e.g.:
+
+```yaml
+---
+id: index-hacktoberfest
+title: Hacktoberfest 2021 at Redis
+sidebar_label: Hacktoberfest 2021
+slug: /hacktoberfest/
+authors: [suze,simon]
+---
+```
+
+* Note that multiple authors are supported as shown above.
