@@ -107,7 +107,7 @@ function DocItem(props: Props): JSX.Element {
                 <div className="docAuthors">
                   <hr/>
                     {DocContent.frontMatter.authors.map(author => {
-                      return <div><img className={styles.authorProfileImage} src="/img/default_author_profile_pic.png" alt={'Profile picture for ' + authorLookup[author].name}/> <a href={authorLookup[author].link} target="_blank">{authorLookup[author].name}</a>: {authorLookup[author].title}</div>
+                      return <div className={styles.authorByline}><img className={styles.authorProfileImage} src={'/img/' + (authorLookup[author].image ? authorLookup[author].image : 'default_author_profile_pic.png')} alt={'Profile picture for ' + authorLookup[author].name}/> <div><div className={styles.authorLabel}>Author:</div><div><a href={authorLookup[author].link} target="_blank">{authorLookup[author].name}</a>, {authorLookup[author].title}</div></div></div>
                     })}
                   <hr/>
                 </div>

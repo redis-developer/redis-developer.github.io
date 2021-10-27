@@ -31,9 +31,22 @@
   font-weight: bold;
 }
 
+.authorByline {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.authorLabel {
+  padding-top: 5px;
+  line-height: 0.5;
+  font-weight: bold;
+}
+
 .authorProfileImage {
-  border-radius: 5px;
-  border: 2px;
-  border-style: solid;
-  border-color: #ff0000;
+  display: inline-block;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
 }

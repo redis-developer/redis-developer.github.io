@@ -16,7 +16,8 @@ module.exports = {
       simon: {
         name: 'Simon Prickett',
         link: 'https://twitter.com/simon_prickett',
-        title: 'Manager, Developer Advocacy'
+        title: 'Manager, Developer Advocacy',
+        image: 'profile_pic_simon_prickett.jpg'
       },
       suze: {
         name: 'Suze Shardlow',
