@@ -2,7 +2,7 @@
 id: groups
 title: Grouping and Reductions
 sidebar_label: Grouping and Reductions
-slug: /develop/dotnet/redis-developer-dotnet/aggregations/groups/groups
+slug: /develop/dotnet/redis-om-dotnet/aggregations/groups/groups
 ---
 
 Grouping and reducing operations using aggregations can be extremely powerful.
@@ -33,7 +33,7 @@ If grouped together by `Department` would be one group. When grouped by `Name`, 
 
 What makes groups so useful in Redis Aggregations is that you can run reductions on them to aggregate items within the group. For example, you can calculate summary statistics on numeric fields, retrieve random samples, distinct counts, approximate distinct counts of any aggregatable field in the set.
 
-## Using Groups and Reductions with Redis-Developer-Dotnet
+## Using Groups and Reductions with Redis ŌM .NET
 
 You can run reductions against an `RedisAggregationSet` either with or without a group. If you run a reduction without a group, the result of the reduction will materialize immediately as the desired type. If you run a reduction against a group, the results will materialize when they are enumerated.
 

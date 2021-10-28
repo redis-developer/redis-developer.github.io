@@ -2,10 +2,10 @@
 id: numeric-queries
 title: Numeric Queries
 sidebar_label: Numeric Queries
-slug: /develop/dotnet/redis-developer-dotnet/searching/numeric-queries
+slug: /develop/dotnet/redis-om-dotnet/searching/numeric-queries
 ---
 
-In addition to providing capabilities for text queries, redis-developer-dotnet also provides you the ability to perform numeric equality and numeric range queries. Let us assume a model of:
+In addition to providing capabilities for text queries, Redis ŌM also provides you the ability to perform numeric equality and numeric range queries. Let us assume a model of:
 
 ```csharp
 [Document]

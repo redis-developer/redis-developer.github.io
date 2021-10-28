@@ -2,7 +2,7 @@
 id: intro
 title: Aggregations Intro
 sidebar_label: Aggregations Intro
-slug: /develop/dotnet/redis-developer-dotnet/aggregations
+slug: /develop/dotnet/redis-om-dotnet/aggregations
 ---
 
 [Aggregations](https://oss.redis.com/redisearch/Aggregations/) are a method of grouping documents together and run processing on them on the server to transform them into data that you need in your application, without having to perform the computation client-side.
@@ -20,7 +20,7 @@ Aggregations in Redis are build around an aggregation pipeline, you will start o
 
 ## Setting up for Aggregations
 
-`Redis-Developer-Dotnet` provides an `RedisAggregationSet<T>` class that will let you perform aggregations on employees, let's start off with a trivial aggregation. Let's start off by defining a model:
+Redis ŌM .NET provides an `RedisAggregationSet<T>` class that will let you perform aggregations on employees, let's start off with a trivial aggregation. Let's start off by defining a model:
 
 ```csharp
 [Document]

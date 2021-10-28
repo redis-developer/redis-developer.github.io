@@ -1,13 +1,13 @@
 ---
 id: connecting
-title: Connecting to Redis with Redis-Developer-Dotnet
+title: Connecting to Redis with Redis ŌM Dotnet
 sidebar_label: Connecting to Redis
-slug: /develop/dotnet/redis-developer-dotnet/connecting-to-redis
+slug: /develop/dotnet/redis-om-dotnet/connecting-to-redis
 ---
 
-The Redis-Developer-Dotnet is designed to make using Redis easier for .NET developers, so naturally the first question one might ask is how would you use it to connect to Redis?
+Redis ŌM is designed to make using Redis easier for .NET developers, so naturally the first question one might ask is how would you use it to connect to Redis?
 
-The Redis-Developer-Dotnet library is an abstraction above a lower level (closer to Redis) library—[StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis)—which it uses to manage connections to Redis. That is however, an implementation detail which should not be a concern to the user. `RedisConnectionProvider` class contains the connection logic, and provides for connections to Redis. The RedisConnectionProvider should only be initialized once in your app's lifetime.
+The Redis ŌM library is an abstraction above a lower level (closer to Redis) library—[StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis)—which it uses to manage connections to Redis. That is however, an implementation detail which should not be a concern to the user. `RedisConnectionProvider` class contains the connection logic, and provides for connections to Redis. The RedisConnectionProvider should only be initialized once in your app's lifetime.
 
 ## Initializing RedisConnectionProvider
 
