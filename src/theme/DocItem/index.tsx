@@ -119,17 +119,19 @@ function DocItem(props: Props): JSX.Element {
             {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
               <div className="margin-vert--xl">
                 <div className="row">
-                  <div className="col">
-                    {editUrl && (
-                      <a
-                        href={editUrl}
-                        target="_blank"
-                        rel="noreferrer noopener">
-                        <IconEdit />
-                        Edit this page
-                      </a>
-                    )}
-                  </div>
+                  {(! DocContent.frontMatter.hasOwnProperty('isEditable') || DocContent.frontMatter.isEditable === true) && (
+                    <div className="col">
+                      {editUrl && (
+                        <a
+                          href={editUrl}
+                          target="_blank"
+                          rel="noreferrer noopener">
+                          <IconEdit />
+                          Edit this page
+                        </a>
+                      )}
+                    </div>
+                  )}                  
                   {(lastUpdatedAt || lastUpdatedBy) && (
                     <div className="col text--right">
                       <em>
