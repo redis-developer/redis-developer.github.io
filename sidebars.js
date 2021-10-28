@@ -260,7 +260,14 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
-        'get-involved/hacktoberfest/index-hacktoberfest',
+        {
+          type: 'category',
+          label: 'Hacktoberfest 2021',
+          items: [
+            'get-involved/hacktoberfest/index-hacktoberfest',
+            'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story'
+          ]
+        }, 
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]
