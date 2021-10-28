@@ -22,7 +22,8 @@ module.exports = {
       suze: {
         name: 'Suze Shardlow',
         link: 'https://twitter.com/SuzeShardlow',
-        title: 'Developer Community Manager'
+        title: 'Developer Community Manager',
+        image: 'profile_pic_suze_shardlow.jpg'
       }
     }
   },
