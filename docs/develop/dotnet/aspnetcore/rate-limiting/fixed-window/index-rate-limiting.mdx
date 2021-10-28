@@ -1,7 +1,7 @@
 ---
 id: index-rate-limiting
-title: Fixed Window Rate Limiting with ASP.NET Core & Redis
-sidebar_label: Fixed Window Rate Limiting
+title: How to implement a Fixed Window Rate Limiting app using ASP.NET Core & Redis
+sidebar_label: Fixed Window Rate Limiting app using ASP.NET
 slug: /develop/dotnet/aspnetcore/rate-limiting/fixed-window
 ---
 
@@ -18,7 +18,7 @@ In this tutorial, we will build an app that implements basic fixed-window rate l
 Before we begin, startup Redis. For this example, we'll use the [Redis docker image](https://hub.docker.com/_/redis):
 
 ```bash
-docker run -p 6379:6379 redis
+ docker run -dp 6379:6379 redis
 ```
 
 ## Create Project
@@ -26,23 +26,25 @@ docker run -p 6379:6379 redis
 In your terminal, navigate to where you want the app to live and run:
 
 ```bash
-dotnet new webapi -n FixedRateLimiter --no-https
+ dotnet new webapi -n FixedRateLimiter --no-https
 ```
 
-Cd into `FixedRateLimiter` and run the command: `dotnet add package StackExchange.Redis`
+Change directory to `FixedRateLimiter` and run the below command: 
+
+`dotnet add package StackExchange.Redis`
 
 Open the `FixedRateLimiter.csproj` file in Visual Studio or Rider (or open the folder in VS Code) and in the `Controllers` folder, add an API controller called `RateLimitedController`, when all this is complete, `RateLimitedController.cs` should look like the following:
 
 ```csharp
-namespace FixedRateLimiter.Controllers
-{
+  namespace FixedRateLimiter.Controllers
+ {
     [ApiController]
     [Route("api/[controller]")]
     public class RateLimitedController : ControllerBase
     {
         
     }
-}
+ }
 ```
 
 ## Initialize The Multiplexer
@@ -50,7 +52,7 @@ namespace FixedRateLimiter.Controllers
 To use Redis, we're going to initialize an instance of the ConnectionMultiplexer from `StackExchange.Redis`, to do so, go to the `ConfigureServices` method inside of `Startup.cs` and add the following line:
 
 ```csharp
-services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
+ services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 ```
 
 ## Inject the ConnectionMultiplexer
@@ -58,11 +60,11 @@ services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("loc
 In `RateLimitedController.cs` inject the ConnectionMultiplexer into the controller and pull out an `IDatabase` object from it with the following:
 
 ```csharp
-private readonly IDatabase _db;
-public RateLimitedController(IConnectionMultiplexer mux)
-{
+ private readonly IDatabase _db;
+ public RateLimitedController(IConnectionMultiplexer mux)
+ {
     _db = mux.GetDatabase();
-}
+ }
 ```
 
 ## Add a Simple Route
@@ -70,15 +72,15 @@ public RateLimitedController(IConnectionMultiplexer mux)
 We will add a simple route that we will Rate Limit; it will be a POST request route on our controller. This POST request will use [Basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) - this means that each request is going to expect a header of the form `Authorization: Basic <base64encoded>` where the `base64encoded` will be a string of the form `apiKey:apiSecret` base64 encoded, e.g. `Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==`. This route will parse the key out of the header and return an OK result.
 
 ```csharp
-[HttpPost("simple")]
-public async Task<IActionResult> Simple([FromHeader]string authorization)
-{
+ [HttpPost("simple")]
+ public async Task<IActionResult> Simple([FromHeader]string authorization)
+ {
     var encoded = string.Empty;
     if(!string.IsNullOrEmpty(authorization)) encoded = AuthenticationHeaderValue.Parse(authorization).Parameter;
     if (string.IsNullOrEmpty(encoded)) return new UnauthorizedResult();
     var apiKey = Encoding.UTF8.GetString(Convert.FromBase64String(encoded)).Split(':')[0];
     return Ok();
-}
+ }
 ```
 
 With that setup, you should run the project with a `dotnet run`, and if you issue a POST request to `https://localhost:5001/api/RateLimited/simple` - with apiKey `foobar` and password `password`, you will get a 200 OK response back.
@@ -86,7 +88,7 @@ With that setup, you should run the project with a `dotnet run`, and if you issu
 You can use this cURL request to elicit that response:
 
 ```bash
-curl -X POST -H "Content-Length: 0" --user "foobar:password" http://localhost:5000/api/RateLimited/simple
+ curl -X POST -H "Content-Length: 0" --user "foobar:password" http://localhost:5000/api/RateLimited/simple
 ```
 
 ## Fixed Window Rate Limiting Lua Script
@@ -102,28 +104,28 @@ We are going to build a Fixed Window Rate limiting script. A fixed Window Rate L
 The issue we need to contend with here is that this rate-limiting requires atomicity for all our commands (e.g. between when we get and increment the key we don't want anyone coming in and hitting it). Because of this, we will run everything on the server through a [Lua script](https://redis.io/commands/eval). Now there are two ways to write this Lua script. The traditional way, where you drive everything off of keys and arguments, the following 
 
 ``` sh
-local key = KEYS[1]
-local max_requests = tonumber(ARGV[1])
-local expiry = tonumber(ARGV[2])
-local requests = redis.call('INCR',key)
-redis.call('EXPIRE', key, expiry)
-if requests < max_requests then
-    return 0
-else
+ local key = KEYS[1]
+ local max_requests = tonumber(ARGV[1])
+ local expiry = tonumber(ARGV[2])
+ local requests = redis.call('INCR',key)
+ redis.call('EXPIRE', key, expiry)
+ if requests < max_requests then
+     return 0
+ else
     return 1
-end
+ end
 ```
 
 Alternatively, StackExchange.Redis contains support for a [more readable mode of scripting](https://stackexchange.github.io/StackExchange.Redis/Scripting.html) they will let you name arguments to your script, and the library will take care of filling in the appropriate items at execution time. That mode of scripting, which we will use here, will produce this script:
 
 ```sh
-local requests = redis.call('INCR',@key)
-redis.call('EXPIRE', @key, @expiry)
-if requests < tonumber(@maxRequests) then
-    return 0
-else
-    return 1
-end
+ local requests = redis.call('INCR',@key)
+ redis.call('EXPIRE', @key, @expiry)
+ if requests < tonumber(@maxRequests) then
+     return 0
+ else
+     return 1
+ end
 ```
 
 ## Loading the Script
@@ -131,12 +133,12 @@ end
 To run a Lua script with StackExchange.Redis, you need to prepare a script and run it. So consequentially add a new file `Scripts.cs` to the project, and in that file add a new static class called `Scripts`; this will contain a constant string containing our script and a getter property to prepare the script for execution.
 
 ```csharp
-using StackExchange.Redis;
-namespace FixedRateLimiter
-{
-    public static class Scripts
-    {
-        public static LuaScript RateLimitScript => LuaScript.Prepare(RATE_LIMITER);
+ using StackExchange.Redis;
+ namespace FixedRateLimiter
+ {
+     public static class Scripts
+     {
+         public static LuaScript RateLimitScript => LuaScript.Prepare(RATE_LIMITER);
 
         private const string RATE_LIMITER = @"            
             local requests = redis.call('INCR',@key)
@@ -148,7 +150,7 @@ namespace FixedRateLimiter
             end
             "; 
     }
-}
+ }
 ```
 
 ## Executing the Script
@@ -157,20 +159,20 @@ With the script setup, all that's left to do is build our key, run the script, a
 
 
 ```csharp
-var script = Scripts.RateLimitScript;
-var key = $"{Request.Path.Value}:{apiKey}:{DateTime.Now:hh:mm}";
-var res = await _db.ScriptEvaluateAsync(script, new {key = new RedisKey(key), expiry = 60, maxRequests = 10});
-if ((int) res == 1)
-    return new StatusCodeResult(429);
-```
+ var script = Scripts.RateLimitScript;
+ var key = $"{Request.Path.Value}:{apiKey}:{DateTime.Now:hh:mm}";
+ var res = await _db.ScriptEvaluateAsync(script, new {key = new RedisKey(key), expiry = 60, maxRequests = 10});
+ if ((int) res == 1)
+     return new StatusCodeResult(429);
+ ```
 
 Our `Simple` route's code should look like this:
 
 ```csharp
-[HttpPost("simple")]
-public async Task<IActionResult> Simple([FromHeader]string authorization)
-{
-    var encoded = string.Empty;
+ [HttpPost("simple")]
+ public async Task<IActionResult> Simple([FromHeader]string authorization)
+ {
+     var encoded = string.Empty;
     if(!string.IsNullOrEmpty(authorization)) encoded = AuthenticationHeaderValue.Parse(authorization).Parameter;
     if (string.IsNullOrEmpty(encoded)) return new UnauthorizedResult();
     var apiKey = Encoding.UTF8.GetString(Convert.FromBase64String(encoded)).Split(':')[0];
@@ -180,41 +182,52 @@ public async Task<IActionResult> Simple([FromHeader]string authorization)
     if ((int) res == 1)
         return new StatusCodeResult(429); 
     return new JsonResult(new {key});
-}
+ }
 ```
 
 Now, if we start our server back up with `dotnet run` and try running the following command:
 
 ```bash
-for n in {1..21}; do echo $(curl -s -w " HTTP %{http_code}, %{time_total} s" -X POST -H "Content-Length: 0" --user "foobar:password" http://localhost:5000/api/ratelimited/simple); sleep 0.5; done
+ for n in {1..21}; do echo $(curl -s -w " HTTP %{http_code}, %{time_total} s" -X POST -H "Content-Length: 0" --user "foobar:password" http://localhost:5000/api/ratelimited/simple); sleep 0.5; done
 ```
 
 You will see some of your requests return a `200`, and at least one request return a `429`. How many depends on the time at which you start sending the request. Recall, the requests are time-boxed on single-minute windows, so if you transition to the next minute in the middle of the 21 requests, the counter will reset. Hence, you should expect to receive somewhere between 10 and 20 OK results and between 1 and 11 `429` results. The Response should look something like this:
 
 ```text
-HTTP 200, 0.002680 s
-HTTP 200, 0.001535 s
-HTTP 200, 0.001653 s
-HTTP 200, 0.001449 s
-HTTP 200, 0.001604 s
-HTTP 200, 0.001423 s
-HTTP 200, 0.001492 s
-HTTP 200, 0.001449 s
-HTTP 200, 0.001551 s
-{"status":429,"traceId":"00-16e9da63f77c994db719acff5333c509-f79ac0c862c5a04c-00"} HTTP 429, 0.001803 s
-{"status":429,"traceId":"00-3d2e4e8af851024db121935705d5425f-0e23eb80eae0d549-00"} HTTP 429, 0.001521 s
-{"status":429,"traceId":"00-b5e824c9ebc4f94aa0bda2a414afa936-8020a7b8f2845544-00"} HTTP 429, 0.001475 s
-{"status":429,"traceId":"00-bd6237c5d0362a409c436dcffd0d4a7a-87b544534f397247-00"} HTTP 429, 0.001549 s
-{"status":429,"traceId":"00-532d64033c54a148a98d8efe1f9f53b2-b1dbdc7d8fbbf048-00"} HTTP 429, 0.001476 s
-{"status":429,"traceId":"00-8c210b1c1178554fb10aa6a7540d3488-0fedba48e38fdd4b-00"} HTTP 429, 0.001606 s
-{"status":429,"traceId":"00-633178f569dc8c46badb937c0363cda8-ab1d1214b791644d-00"} HTTP 429, 0.001661 s
-{"status":429,"traceId":"00-12f01e448216c64b8bfe674f242a226f-d90ff362926aa14e-00"} HTTP 429, 0.001858 s
-{"status":429,"traceId":"00-63ef51cee3bcb6488b04395f09d94def-be9e4d6d6057754a-00"} HTTP 429, 0.001622 s
-{"status":429,"traceId":"00-80a971db60fdf543941e2457e35ac2fe-3555f5cb9c907e4c-00"} HTTP 429, 0.001710 s
-{"status":429,"traceId":"00-f718734ae0285343ac927df617eeef92-91a49e127f2e4245-00"} HTTP 429, 0.001582 s
-{"status":429,"traceId":"00-9da2569cce4d714480dd4f0edc0506d2-8a1ce375b1a9504f-00"} HTTP 429, 0.001629 s
+ HTTP 200, 0.002680 s
+ HTTP 200, 0.001535 s
+ HTTP 200, 0.001653 s
+ HTTP 200, 0.001449 s
+ HTTP 200, 0.001604 s
+ HTTP 200, 0.001423 s
+ HTTP 200, 0.001492 s
+ HTTP 200, 0.001449 s
+ HTTP 200, 0.001551 s
+ {"status":429,"traceId":"00-16e9da63f77c994db719acff5333c509-f79ac0c862c5a04c-00"} HTTP 429, 0.001803 s
+ {"status":429,"traceId":"00-3d2e4e8af851024db121935705d5425f-0e23eb80eae0d549-00"} HTTP 429, 0.001521 s
+ {"status":429,"traceId":"00-b5e824c9ebc4f94aa0bda2a414afa936-8020a7b8f2845544-00"} HTTP 429, 0.001475 s
+ {"status":429,"traceId":"00-bd6237c5d0362a409c436dcffd0d4a7a-87b544534f397247-00"} HTTP 429, 0.001549 s
+ {"status":429,"traceId":"00-532d64033c54a148a98d8efe1f9f53b2-b1dbdc7d8fbbf048-00"} HTTP 429, 0.001476 s
+ {"status":429,"traceId":"00-8c210b1c1178554fb10aa6a7540d3488-0fedba48e38fdd4b-00"} HTTP 429, 0.001606 s
+ {"status":429,"traceId":"00-633178f569dc8c46badb937c0363cda8-ab1d1214b791644d-00"} HTTP 429, 0.001661 s
+ {"status":429,"traceId":"00-12f01e448216c64b8bfe674f242a226f-d90ff362926aa14e-00"} HTTP 429, 0.001858 s
+ {"status":429,"traceId":"00-63ef51cee3bcb6488b04395f09d94def-be9e4d6d6057754a-00"} HTTP 429, 0.001622 s
+ {"status":429,"traceId":"00-80a971db60fdf543941e2457e35ac2fe-3555f5cb9c907e4c-00"} HTTP 429, 0.001710 s
+ {"status":429,"traceId":"00-f718734ae0285343ac927df617eeef92-91a49e127f2e4245-00"} HTTP 429, 0.001582 s
+ {"status":429,"traceId":"00-9da2569cce4d714480dd4f0edc0506d2-8a1ce375b1a9504f-00"} HTTP 429, 0.001629 s
 ```
 
 ## Resources
 
-* The source code for the Fixed Window Rate Limiter can be found in [GitHub](https://github.com/redis-developer/fixed-rate-limiter-aspnet-core)
+* [Source Code](https://github.com/redis-developer/fixed-rate-limiter-aspnet-core)
+* [How to Implement Sliding Window Rate Limiting with ASP.NET Core & Redis](/develop/dotnet/aspnetcore/rate-limiting/sliding-window)
+* [Configurable Sliding Window Rate Limiting Middleware for Redis & ASP.NET Core](/develop/dotnet/aspnetcore/rate-limiting/middleware)
+* [Getting Started with .NET and Redis](/develop/dotnet/)
+
+
+##
+
+<div>
+<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+</div>
+

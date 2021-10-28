@@ -240,6 +240,10 @@ module.exports = {
                   'howtos/redisgraph/using-python/index-usingpython',
                   'howtos/redisgraph/using-ruby/index-usingruby', 
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
+                  'howtos/redisgraph/using-go/index-usinggo',
+                  'howtos/redisgraph/using-rust/index-usingrust',
+                  'howtos/redisgraph/redisgraphmovies/index-redisgraphmovies',
+                  'howtos/redisgraph/csvtograph/index-csvtograph',
               ]
             },
                'howtos/redisbloom/index-redisbloom',
@@ -283,6 +287,7 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
+        'get-involved/hacktoberfest/index-hacktoberfest',
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]

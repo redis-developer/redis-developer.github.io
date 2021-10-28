@@ -1,11 +1,22 @@
 ---
 id: index-usingruby
-title: How to query Graph data in Redis with Ruby
+title: How to query Graph data in Redis using Ruby
 sidebar_label: RedisGraph and Ruby
 slug: /howtos/redisgraph/using-ruby
 ---
 
-RedisGraph is the fastest graph database that processes complex graph operations in real time, 10x – 600x faster than any other graph database. Show how your data is connected through multiple visualization integrations including RedisInsight, Linkurious, and Graphileon. Query graphs using the industry-standard Cypher query language and easily use graph capabilities from application code.
+RedisGraph is the first queryable Property Graph database to use sparse matrices to represent the adjacency matrix in graphs and linear algebra to query the graph.
+Few of the notable features of RedisGraph includes:
+
+- Based on the Property Graph Model
+- Nodes (vertices) and Relationships (edges) that may have attributes
+- Nodes that can be labeled
+- Relationships have a relationship type
+- Graphs represented as sparse adjacency matrices
+- Cypher as query language
+- Cypher queries translated into linear algebra expressions
+
+RedisGraph is based on a unique approach and architecture that translates Cypher queries to matrix operations executed over a GraphBLAS engine. This new design allows use cases like social graph operation, fraud detection, and real-time recommendation to be executed 10x – 600x faster than any other graph database.
 
 ## RedisGraph Ruby Client
 
