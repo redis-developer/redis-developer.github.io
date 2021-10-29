@@ -1,11 +1,11 @@
 ---
 id: creating-an-index
-title: Creating an Index with Redis ŌM
+title: Creating an Index with Redis OM
 sidebar_label: Creating an Index
 slug: /develop/dotnet/redis-om-dotnet/searching/creating-an-index
 ---
 
-To unlock some of the nicest functionality of Redis ŌM, e.g., running searches, matches, aggregations, reductions, mappings, etc... You will need to tell Redis how you want data to be stored and how you want it indexed. One of the features the Redis ŌM library provides is creating indices that map directly to your objects by declaring the indices as attributes on your class.
+To unlock some of the nicest functionality of Redis OM, e.g., running searches, matches, aggregations, reductions, mappings, etc... You will need to tell Redis how you want data to be stored and how you want it indexed. One of the features the Redis OM library provides is creating indices that map directly to your objects by declaring the indices as attributes on your class.
 
 Let's start with an example class.
 

@@ -139,7 +139,7 @@ module.exports = {
               },
               {
                 type: 'category',
-                label: 'Redis ŌM Dotnet',
+                label: 'Redis OM Dotnet',
                 items: [
                   'develop/dotnet/redis-om-dotnet/connecting-to-redis/connecting',
                   'develop/dotnet/redis-om-dotnet/add-and-retrieve-objects/add-and-retrieve-objects',

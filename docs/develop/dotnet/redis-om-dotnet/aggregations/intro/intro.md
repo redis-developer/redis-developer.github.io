@@ -20,7 +20,7 @@ Aggregations in Redis are build around an aggregation pipeline, you will start o
 
 ## Setting up for Aggregations
 
-Redis ŌM .NET provides an `RedisAggregationSet<T>` class that will let you perform aggregations on employees, let's start off with a trivial aggregation. Let's start off by defining a model:
+Redis OM .NET provides an `RedisAggregationSet<T>` class that will let you perform aggregations on employees, let's start off with a trivial aggregation. Let's start off by defining a model:
 
 ```csharp
 [Document]
