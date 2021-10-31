@@ -17,3 +17,74 @@ Now, onto the [issue](https://github.com/redis-developer/introducing-the-geosear
 
 With the pre-work done, it was time to start the Flask application's Docker Compose implementation.  Here is a step-by-step guide, expressed in the present tense, to the process:
 
+First, let's start with the Docker Compose `YAML` file:
+
+![Screen grab of the YAML file](images/1-docker-compose-yaml.png)
+
+As you can see, we have some Redis provisioning steps.  We assign a name to the container, define the version of Redis we wish to spin up, and the port mapping (`6379:6379` states we'd like to expose port `6379` from inside the container to a port on your local machine).
+
+Now, let's start with composing the project's application.  Unlike the Redis container, which uses an official Docker image to build from, we don't have a blueprint to scaffold the project's application.  This blueprint, or schema, is called a Dockerfile.  A Dockerfile lists steps on how to build our image.  It's this very image that tells Docker's engine how to build the container.  Let's create a Dockerfile, which will assemble the application image for us:
+
+![Screen grab of the Dockerfile](images/2-dockerfile.png)
+
+In short, this file serves as the foundation for the construction of the project's application environment.  Additionally, the file tells Docker which files we want to include in our container, how to install the contained app's dependencies and what command should be used to run the app. Most of the file's instructions are better explained in the [official documentation](https://docs.docker.com/engine/reference/builder/), so please take a look there if you're curious as to what the file's instructions have to offer.
+
+Great, before we move on to the compose file, let's make sure we test that Docker is able to build and run the container from our image.
+
+Let's build the image:
+
+![Screen grab of the image build](images/3-build-image.png)
+
+Get our newly created image's hash identifier by listing our local images:
+
+![Screen grab of the list of local images](images/4-list-local-images.png)
+
+Now let’s run the container using the image id, while making sure we bind a port on our machine to the exposed port defined in the Dockerfile:
+
+![Screen grab of the port binding](images/5-run-container-bind-port.png)
+
+Great!  The logs indicate the container is running.  Let's ensure our port mapping is working.  A quick `cURL` command verifies that we can talk to the application:
+
+![Screen grab of the cURL command](images/6-curl.png)
+
+With the Flask application Docker-fied<sup>TM</sup>, let's compose it with Redis!
+
+![Screen grab of the Redis composition](images/7-compose-with-Redis.png)
+
+Let us quickly dissect what was added to the `docker-compose.yml`:
+
+1. Define a service for the application (namespaced under 'app')
+2. Define a name for the container
+3. Set a build context/entry point (this is the relative location for our service's Dockerfile)
+4. Map the service's port to the host machine
+5. Ensure that Redis is initialized before the Flask app starts (since the Flask application requires a Redis connection on `init`)
+6. Define the necessary environment variables.
+
+With the scaffolding in order, it's now time to run both the Flask application and Redis with Docker Compose.  To do so, we'll run the command `docker-compose up`:
+
+![Screen grab of the docker-compose-up command](images/8-docker-compose-up.png)
+
+Finally, let's navigate to `localhost:5000` in our browser to see the application in action:
+
+![Screen grab showing localhost:5000](images/9-localhost-5000.png)
+
+Excellent, the Flask application is running and is composed with the pre-existing Redis integration!
+
+Now, before I conclude, I'd be remiss if I said that things worked as smoothly as portrayed; however, we welcome such hiccups and challenges.  The main problem I faced was an empty response from the contained application server.  What could be the issue?  The Dockerfile, for the Flask app, is working.  The compose file seemingly provisions our services successfully.  What could be the problem here?  Welp, turns out I forgot a very important factoid: Docker Compose will set up a single default network, one of which will house the services defined in the yaml file.  Containers and their services can communicate within this network, but what about our browser - which is not on that Docker network?
+
+To resolve this issue, we need to tell our contained application server that it should listen on all networks, not just localhost; which, in the context of our running Docker network, is local only to that micro-network, if you will.  To tell the Flask server to listen on all accessible networks, we can define our host in the Dockerfile's `CMD` command:
+
+![Screen grab showing the CMD command](images/10-cmd.png)
+
+All good!
+
+Working through this issue, I definitely picked up some newfound Redis knowledge!  While not 100% necessary for the task at hand, starting with the official documentation and exploring the API provided me with the confidence needed to tackle this issue.  Additionally, the project allowed me to solidify some pre-existing Docker knowledge; and, very politely, pointed out which knowledge gaps needed to be filled.
+
+Working through this Hacktoberfest-inspired issue was very rewarding, and I can say that I have walked away a better developer.  Not only was I exposed to more technology, and got to flex some problem-solving muscles, but my passion for open-source software collaboration has grown evermore.
+
+Thank you for reading!  I hope my story inspires you to start with (or continue) working with open source.
+
+---
+
+You can find Vincent online at [his website](https://www.vincentaceto.com/) and at [LinkedIn](https://www.linkedin.com/in/vinaceto).
+
