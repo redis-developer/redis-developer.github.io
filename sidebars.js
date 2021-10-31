@@ -265,7 +265,8 @@ module.exports = {
           label: 'Hacktoberfest 2021',
           items: [
             'get-involved/hacktoberfest/index-hacktoberfest',
-            'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story'
+            'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
+            'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story'
           ]
         }, 
         'get-involved/discord/index-discord',
