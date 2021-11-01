@@ -201,7 +201,16 @@ module.exports = {
                   'howtos/redisjson/storing-json-using-nodejs/index-storingjson-nodejs',
              ]
            },
-             'howtos/redistimeseries/index-redistimeseries',
+             {
+                type: 'category',
+                label: 'RedisTimeSeries Tutorial',
+                items: [
+                     'howtos/redistimeseries/index-redistimeseries',
+                     'howtos/redistimeseries/getting-started/index-gettingstarted',
+                     'howtos/redistimeseries/using-python/index-usingpython',
+                     'howtos/redistimeseries/using-go/index-usinggo',
+                 ]
+              },
              {
                type: 'category',
                label: 'RedisGraph Tutorial',
