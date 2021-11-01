@@ -27,7 +27,6 @@ import {
 
 function DocItem(props: Props): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
-  console.log(siteConfig);
   const {url: siteUrl} = siteConfig;
   const {content: DocContent} = props;
   const {
