@@ -24,8 +24,14 @@ module.exports = {
         link: 'https://twitter.com/SuzeShardlow',
         title: 'Developer Community Manager',
         image: 'profile_pic_suze_shardlow.jpg'
-      }
+      },
+      ajeet: {
+        name: 'Ajeet Raina',
+        link: 'https:/twitter.com/ajeetsraina',
+        title: 'Sr. Technical Marketing Manager',
+        image: 'profile_pic_ajeet_raina.jpg'
     }
+  }
   },
   themeConfig: {
 
