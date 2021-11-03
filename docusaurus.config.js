@@ -28,7 +28,7 @@ module.exports = {
       ajeet: {
         name: 'Ajeet Raina',
         link: 'https:/twitter.com/ajeetsraina',
-        title: 'Sr. Technical Growth Marketing Manager',
+        title: 'Sr. Technical Marketing Manager',
         image: 'profile_pic_ajeet_raina.jpg'
     }
   }
