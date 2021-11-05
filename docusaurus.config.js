@@ -30,9 +30,15 @@ module.exports = {
         link: 'https://twitter.com/ajeetsraina',
         title: 'Sr. Technical Marketing Manager',
         image: 'profile_pic_ajeet_raina.jpg'
-    }
+      },
+      julian: {
+        name: 'Julian Mateu',
+        link: 'https://www.linkedin.com/in/julian-mateu',
+        title: 'Sr. Backend Software Engineer at Globality, Inc. ',
+        image: 'profile_pic_julian_mateu.jpg'
+   }
   }
-  },
+ },
   themeConfig: {
 
     // ...
