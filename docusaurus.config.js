@@ -16,25 +16,25 @@ module.exports = {
       simon: {
         name: 'Simon Prickett',
         link: 'https://twitter.com/simon_prickett',
-        title: 'Manager, Developer Advocacy',
+        title: 'Manager, Developer Advocacy at Redis',
         image: 'profile_pic_simon_prickett.jpg'
       },
       suze: {
         name: 'Suze Shardlow',
         link: 'https://twitter.com/SuzeShardlow',
-        title: 'Developer Community Manager',
+        title: 'Developer Community Manager at Redis',
         image: 'profile_pic_suze_shardlow.jpg'
       },
       ajeet: {
         name: 'Ajeet Raina',
         link: 'https://twitter.com/ajeetsraina',
-        title: 'Sr. Technical Marketing Manager',
+        title: 'Sr. Technical Marketing Manager at Redis',
         image: 'profile_pic_ajeet_raina.jpg'
       },
       julian: {
         name: 'Julian Mateu',
         link: 'https://www.linkedin.com/in/julian-mateu',
-        title: 'Sr. Backend Software Engineer at Globality, Inc. ',
+        title: 'Sr. Backend Software Engineer at Globality, Inc.',
         image: 'profile_pic_julian_mateu.jpg'
       },
      manuel: {
