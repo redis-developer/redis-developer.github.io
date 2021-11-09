@@ -201,7 +201,17 @@ module.exports = {
                   'howtos/redisjson/storing-json-using-nodejs/index-storingjson-nodejs',
              ]
            },
-             'howtos/redistimeseries/index-redistimeseries',
+             {
+                type: 'category',
+                label: 'RedisTimeSeries Tutorial',
+                items: [
+                     'howtos/redistimeseries/index-redistimeseries',
+                     'howtos/redistimeseries/getting-started/index-gettingstarted',
+                     'howtos/redistimeseries/using-python/index-usingpython',
+                     'howtos/redistimeseries/using-go/index-usinggo',
+                     'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
+                ]
+              },
              {
                type: 'category',
                label: 'RedisGraph Tutorial',
@@ -247,6 +257,7 @@ module.exports = {
            'howtos/nlp/index-nlp',
            'howtos/hackernews/index-hackernews',
            'howtos/antipatterns/index-antipatterns',
+           'howtos/socialnetwork/index-socialnetwork',
            'howtos/security/index-tls',
            'howtos/analytics/index-analytics',
            'howtos/popupstore/index-popupstore',
@@ -260,7 +271,15 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
-        'get-involved/hacktoberfest/index-hacktoberfest',
+        {
+          type: 'category',
+          label: 'Hacktoberfest 2021',
+          items: [
+            'get-involved/hacktoberfest/index-hacktoberfest',
+            'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
+            'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story'
+          ]
+        }, 
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]

@@ -22,10 +22,23 @@ module.exports = {
       suze: {
         name: 'Suze Shardlow',
         link: 'https://twitter.com/SuzeShardlow',
-        title: 'Developer Community Manager'
-      }
-    }
-  },
+        title: 'Developer Community Manager',
+        image: 'profile_pic_suze_shardlow.jpg'
+      },
+      ajeet: {
+        name: 'Ajeet Raina',
+        link: 'https://twitter.com/ajeetsraina',
+        title: 'Sr. Technical Marketing Manager',
+        image: 'profile_pic_ajeet_raina.jpg'
+      },
+      julian: {
+        name: 'Julian Mateu',
+        link: 'https://www.linkedin.com/in/julian-mateu',
+        title: 'Sr. Backend Software Engineer at Globality, Inc. ',
+        image: 'profile_pic_julian_mateu.jpg'
+   }
+  }
+ },
   themeConfig: {
 
     // ...
@@ -137,14 +150,14 @@ module.exports = {
       // Useful if you want to support a single color mode
       disableSwitch: false,
     },
-    announcementBar: {
-      id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: '<p class="text">We\'re taking part in Hacktoberfest!</p> <a href="/hacktoberfest" class="btn">Join Us!</a>',
+    //announcementBar: {
+    //  id: 'redisconf20201cfp', // Any value that will identify this message.
+    //  content: '<p class="text">We\'re taking part in Hacktoberfest!</p> <a href="/hacktoberfest" class="btn">Join Us!</a>',
     //  content: '<p class="text"></p> <a href="https://www.youtube.com/c/Redisinc/playlists?view=50&sort=dd&shelf_id=1" target="_blank" rel="noopener" class="btn"></a>',
-      backgroundColor: '#fff', // Defaults to `#fff`.
-      textColor: '#000', // Defaults to `#000`.
-      isCloseable: true, // Defaults to `true`.
-    },
+    //  backgroundColor: '#fff', // Defaults to `#fff`.
+    //  textColor: '#000', // Defaults to `#000`.
+    //  isCloseable: true, // Defaults to `true`.
+    //},
   },
   presets: [
     [

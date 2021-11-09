@@ -27,7 +27,6 @@ import {
 
 function DocItem(props: Props): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
-  console.log(siteConfig);
   const {url: siteUrl} = siteConfig;
   const {content: DocContent} = props;
   const {
@@ -172,9 +171,11 @@ function DocItem(props: Props): JSX.Element {
                 </div>
               </div>
             )}
-            <div className="margin-vert--lg">
-              <DocPaginator metadata={metadata} />
-            </div>
+            {(! DocContent.frontMatter.hasOwnProperty('useNextPrev') || DocContent.frontMatter.useNextPrev === true) && (
+              <div className="margin-vert--lg">
+                <DocPaginator metadata={metadata} />
+              </div>
+            )}
           </div>
         </div>
         {!hideTableOfContents && DocContent.toc && (
