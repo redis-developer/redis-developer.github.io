@@ -209,7 +209,8 @@ module.exports = {
                      'howtos/redistimeseries/getting-started/index-gettingstarted',
                      'howtos/redistimeseries/using-python/index-usingpython',
                      'howtos/redistimeseries/using-go/index-usinggo',
-                 ]
+                     'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
+                ]
               },
              {
                type: 'category',
@@ -256,6 +257,7 @@ module.exports = {
            'howtos/nlp/index-nlp',
            'howtos/hackernews/index-hackernews',
            'howtos/antipatterns/index-antipatterns',
+           'howtos/socialnetwork/index-socialnetwork',
            'howtos/security/index-tls',
            'howtos/analytics/index-analytics',
            'howtos/popupstore/index-popupstore',
