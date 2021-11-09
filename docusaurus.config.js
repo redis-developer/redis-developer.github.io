@@ -36,11 +36,16 @@ module.exports = {
         link: 'https://www.linkedin.com/in/julian-mateu',
         title: 'Sr. Backend Software Engineer at Globality, Inc. ',
         image: 'profile_pic_julian_mateu.jpg'
-   }
-  }
+      },
+     manuel: {
+       name: 'Manuel Aguirre',
+       link: 'https://github.com/manuelaguirre',
+       title: 'Backend Engineer at Baseline Spain',
+       image: 'profile_pic_manuel_aguirre.jpg'
+      }
+    }
  },
   themeConfig: {
-
     // ...
     googleTagManager: {
       trackingID: 'GTM-W8Z6BLQ',
