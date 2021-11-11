@@ -42,7 +42,13 @@ module.exports = {
        link: 'https://github.com/manuelaguirre',
        title: 'Backend Engineer at Baseline Spain',
        image: 'profile_pic_manuel_aguirre.jpg'
-      }
+      },
+      christian: { 
+        name: 'Christian Mague',
+        link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
+        title: 'Principle Field Engineer at Redis',
+        image: 'profile_pic_christian_mague.jpg',
+      },
     }
  },
   themeConfig: {
