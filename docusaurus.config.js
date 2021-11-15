@@ -46,7 +46,7 @@ module.exports = {
       christian: { 
         name: 'Christian Mague',
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
-        title: 'Principle Field Engineer at Redis',
+        title: 'Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
       },
     }
