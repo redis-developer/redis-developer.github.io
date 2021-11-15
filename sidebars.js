@@ -171,6 +171,7 @@ module.exports = {
         },
           'explore/redisdatasource/index-redisdatasource',
           'explore/redisexplorer/index-redisexplorer',
+          'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
 
