@@ -45,7 +45,7 @@ Datadog allows you to:
 ### 1. Latency
 
 #### Definition
-##### redis_enterprise.avg_latency (unit: microseconds)
+##### redisenterprise.avg_latency (unit: microseconds)
 
 This is the average amount of time that a request takes to return from the time that it first hits the Redis Enterprise proxy until the response is returned. It does not include the full time from the remote client’s perspective.
 
@@ -78,7 +78,7 @@ Since Redis is popular due to performance, generally you would expect most opera
 
 #### Definition
 
-##### redis_enterprise.memory_usage_percent (unit: percentage)
+##### redisenterprise.memory_usage_percent (unit: percentage)
 
 This is the percentage of used memory over the memory limit set for the database.
 
@@ -110,7 +110,7 @@ In Redis Enterprise, all databases have a maximum memory limit set to ensure iso
 
 ##### Definition
 
-#####  redis_enterprise.cache_hit_rate (unit: percent)
+#####  redisenterprise.cache_hit_rate (unit: percent)
 
 This is the percentage of time that Redis is accessing a key that already exists.
 
@@ -134,7 +134,7 @@ Note that Redis commands return information on whether or not a key or field alr
 ##### Definition
 
 
-##### redis_enterprise.evicted_objects (unit: count)
+##### redisenterprise.evicted_objects (unit: count)
 
 This is the count of items that have been evicted from the database.
 
@@ -160,7 +160,7 @@ Eviction occurs when the database is close to capacity. In this condition, the [
 ##### Definition
 
 
-##### redis_enterprise.ingress_bytes/redis_enterprise.egress_bytes (unit: bytes)
+##### redisenterprise.ingress_bytes/redisenterprise.egress_bytes (unit: bytes)
 
 Counters for the network traffic coming into the database and out from the database.
 
@@ -175,7 +175,7 @@ While these two metrics will not help you pinpoint a root cause, network traffic
 
 ##### Definition
 
-##### redis_enterprise.conns (unit: count)
+##### redisenterprise.conns (unit: count)
 
 The count of current client connections to the database.
 
