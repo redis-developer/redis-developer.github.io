@@ -209,6 +209,7 @@ module.exports = {
                      'howtos/redistimeseries/index-redistimeseries',
                      'howtos/redistimeseries/getting-started/index-gettingstarted',
                      'howtos/redistimeseries/using-python/index-usingpython',
+                     'howtos/redistimeseries/using-dotnet/index-usingdotnet',
                      'howtos/redistimeseries/using-go/index-usinggo',
                      'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
                 ]
