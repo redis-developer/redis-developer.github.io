@@ -163,7 +163,7 @@ let schema = new Schema(Song, {
   genres: { type: 'array' }, // array of strings for the genres of the song
   lyrics: { type: 'string', textSearch: true }, // the full lyrics of the song
   music: { type: 'string', textSearch: true }, // who wrote the music for the song
-  year: { type: 'number' }, // the year the song was releases
+  year: { type: 'number' }, // the year the song was released
   duration: { type: 'number' }, // the duration of the song in seconds
   link: { type: 'string' } // link to a YouTube video of the song
 }, {
