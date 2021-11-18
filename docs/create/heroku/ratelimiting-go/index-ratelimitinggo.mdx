@@ -147,7 +147,7 @@ This app will block connections from a client after surpassing certain amount of
 
 ### Cookies
 
-User identification based on cookies, on first request user will receive a cookie if it not exists
+The application uses cookies to identify users.  On the first request, the user will receive a cookie back from the server if one didn't previously exist.
 `CookieName: user-limiter`
 `CookieValue: md5(<current time>)`
 `<current time>` - request time in a format: `2006-01-02 15:04:05.999999999 -0700 MST`
