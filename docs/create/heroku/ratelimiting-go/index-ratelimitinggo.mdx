@@ -143,7 +143,7 @@ Open [https://powerful-fortress-83061.herokuapp.com/](https://powerful-fortress-
 
 ## How it works
 
-This app will block connections from a client after surpassing certain amount of requests (default: 10) per time (default: 10 sec). The application will return after each request the following headers. That will let the user know how many requests they have remaining before the run over the limit. On the 10th run server should return an HTTP status code of **429 Too Many Requests**
+This app will block connections from a client after surpassing certain amount of requests (default: 10) per time period (default: 10 sec). The application returns the following headers in response to each request. The values of these headers tell the user how many requests they have remaining before they reach the limit. On the 10th run the server should return an HTTP status code of **429 Too Many Requests**
 
 ### Cookies
 
