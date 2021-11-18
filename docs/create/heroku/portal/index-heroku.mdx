@@ -1,0 +1,344 @@
+---
+id: index-heroku-portal
+title: Create Redis database on Heroku 
+sidebar_label: Redis on Heroku
+slug: /create/heroku/portal
+authors: [ajeet]
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+
+Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming languages that is used as a web application deployment model. Heroku lets the developer build, run and scale applications in a similar manner across all the languages(Java, Node.js, Scala, Clojure, Python, PHP, Ruby and Go). 
+
+
+<Tabs
+  defaultValue="direct"
+  values={[
+    {label: 'Direct via Redis Enterprise Cloud', value: 'direct'},
+    {label: 'Addons using Heroku CLI', value: 'CLI'},
+    {label: 'Addons using Heroku Dashboard', value: 'dashboardui'},
+  ]}>
+  <TabItem value="direct">
+
+
+
+
+### Using Redis Enterprise Cloud directly
+
+
+You can quickly and easily get your apps up and running with Redis Enterprise Cloud directly. Follow the below steps:
+
+#### Step 1. Create Redis Enterprise Cloud
+
+Create your free Redis Enterprise Cloud account. [Follow this link to create Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
+
+![heroku](rediscloud_timeseries.png)
+
+Save the database endpoint URL and password for future reference.
+
+
+#### Step 2. Create a Heroku account
+
+If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login)
+
+![heroku](create_heroku.png)
+
+
+#### Step 3. Install Heroku CLI on your system
+
+   ```macos
+    brew install heroku
+   ```
+
+#### Step 4. Login to Heroku
+
+   ```bash
+    heroku login
+    heroku: Press any key to open up the browser to login or q to exit:
+    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+    Logging in... done
+    Logged in as your_email_address
+   ```
+
+#### Step 5. Connect your application to Redis Enterprise Cloud
+
+For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-python)
+
+#### Clone the repository
+
+   ```bash
+    git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
+   ```
+
+
+
+
+Run the below CLI to have a functioning Git repository that contains a simple application as well as a package.json file.
+
+
+   ```bash
+    heroku create
+    Creating app... done, ⬢ lit-bayou-75670
+    https://lit-bayou-75670.herokuapp.com/ | https://git.heroku.com/lit-bayou-75670.git
+   ```
+
+
+![heroku](heroku_app01.png)
+
+
+#### Step 6. Setting up Environmental variable
+
+Go to Heroku dashboard, click "Settings" and set REDIS_ENDPOINT_URI and REDIS_PASSWORD under the Config Vars.
+Refer to Step 1 for the reference.
+
+![heroku](heroku_app01_env.png)
+
+
+
+#### Step 7. Pushing the code to Git
+
+   ```bash
+    git push heroku
+    remote: -----> Build succeeded!
+    remote: -----> Discovering process types
+    remote:        Procfile declares types -> web
+    remote: 
+    remote: -----> Compressing...
+    remote:        Done: 32.9M
+    remote: -----> Launching...
+    remote:        Released v5
+    remote:        https://lit-bayou-75670.herokuapp.com/ deployed to Heroku
+    remote: 
+    remote: Verifying deploy... done.
+    To https://git.heroku.com/lit-bayou-75670.git
+    * [new branch]      main -> main
+   ```
+
+Check the logs:
+
+   ```bash
+    heroku logs --tail
+    2021-03-27T03:48:30.000000+00:00 app[api]: Build succeeded
+    2021-03-27T03:48:33.956884+00:00 heroku[web.1]: Starting process with command `node server/index.js`
+    2021-03-27T03:48:36.196827+00:00 app[web.1]: App listening on port 11893
+   ```
+
+
+#### Step 8. Accessing the app 
+
+![heroku](ratelimiting.png)
+
+
+
+ </TabItem>
+
+<TabItem value="CLI">
+
+#### Using Heroku CLI
+
+:::important
+Please note that this method won't allow you to choose Redis Modules while creating Redis database. Also, it doesn't provide you with the flexibility to choose Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+:::
+
+
+Under this section, we will be creating Heroku account, use Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
+
+#### Step 1: Install Heroku 
+
+
+   ```bash
+    $ brew tap heroku/brew && brew install heroku
+   ```
+
+Assuming that you already have Heroku account created, run the below command to login into Heroku via command prompt:
+
+
+   ```bash
+    $ heroku login
+    heroku: Press any key to open up the browser to login or q to exit:
+    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/4788f936-3557-439f-ab37-95338b735cf2?requestor=XXXXXXXXXXXA.vhF7XtVTtsp9xliwwrHG5ytuirrmn9EfT6Ef3WuzXFE
+    Logging in... done
+    Logged in as your_email_address
+   ```
+
+
+
+#### Step 2: Cloning the application
+
+   ```bash
+    $ git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs
+   ```
+
+
+#### Step 3. Create a heroku app
+
+
+   ```
+    $ heroku create
+    Creating app... done, ⬢ lit-island-48230
+    https://lit-island-48230.herokuapp.com/ | https://git.heroku.com/lit-island-48230.git
+  ```
+
+
+#### Step 4. Start by installing the add-on:
+
+Ensure that you don’t have existing add-ons added in your account.
+
+
+   ```bash
+    $ heroku addons:create rediscloud -a lit-island-48230
+    Creating rediscloud on ⬢ lit-island-48230... free
+    Created rediscloud-asymmetrical-85190 as REDISCLOUD_URL
+    Use heroku addons:docs rediscloud to view documentation
+   ```
+
+
+Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config vars in your heroku config containing the username, password, hostname and port of your first Redis Cloud database.
+
+
+   ```bash
+    heroku config:get REDISCLOUD_URL -a lit-island-48230
+    redis://default:ajSE7DuqhmGG7u2ZbSU0HTuEqTx1FuEQ@redis-17268.c256.us-east-1-2.ec2.cloud.redislabs.com:17268
+   ```
+
+
+   ```bash
+    $ heroku addons:info rediscloud
+    === rediscloud-asymmetrical-85190
+    Attachments:  lit-island-48230::REDISCLOUD
+    Installed at: Fri Mar 26 2021 07:52:43 GMT+0530 (India Standard Time)
+    Owning app:   lit-island-48230
+    Plan:         rediscloud:30
+    Price:        free
+    State:        created
+  ```
+
+
+  ```bash
+   heroku config -a lit-island-48230
+   === lit-island-48230 Config Vars
+   REDISCLOUD_URL: redis://default:ajSE7DuqhmGG7u2ZbSU0HTuEqTx1FuEQ@redis-17268.c256.us-east-1-2.ec2.cloud.redislabs.com:17268
+  ```
+
+
+
+#### Step 5. Accessing the Redis Enterprise Cloud dashboard
+
+Go to Heroku and click on “Installed add-ons”
+
+![heroku](heroku_addons.png)
+
+Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
+
+![heroku](heroku_rediscloud1.png)
+
+
+
+#### Step 6. Pushing the code to Heroku
+
+  ```bash
+   $ git push heroku
+
+
+   remote: -----> Launching...
+   remote:        Released v8
+   remote:        https://lit-island-48230.herokuapp.com/ deployed to Heroku
+   remote: 
+   remote: Verifying deploy... done.
+   To https://git.heroku.com/lit-island-48230.git
+   * [new branch]      master -> master
+  ```
+
+#### Step 7. Accessing the app
+
+Open https://lit-island-48230.herokuapp.com/ and access the rate limiting app.
+
+
+
+![heroku](heroku_ratelimiting1.png)
+
+
+
+
+ </TabItem>
+
+<TabItem value="dashboardui">
+
+#### Using Heroku Dashboard
+
+:::important
+Please note that this method won't allow you to choose Redis Modules while creating Redis database. Also, it doesn't provide you with the flexibility to choose Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+:::
+
+#### Step 1: Sign up for a Heroku account
+
+Create a heroku account and sign-in to the dashboard
+
+![heroku](create_heroku.png)
+
+#### Step 2. Create a new Heroku app
+
+Create a new app called "redislabs"
+
+![heroku](heroku_appname.png)
+
+
+#### Step 3. Choose GitHub
+
+Select "Github" as a deployment method
+
+
+![heroku](heroku_selectgit.png)
+
+
+#### Step 4. Connect to GitHub
+
+![heroku](heroku_gitconnect.png)
+
+#### Step 5. Install Redis Enteprise Cloud as an add-on
+
+
+![heroku](heroku_recloudinstall1.png)
+
+#### Step 6. Fill up order online form
+
+![heroku](heroku_orderform.png)
+
+
+#### Step 7. Deploy the app
+
+Before deploying the app, modify the environmental variables as per your application:
+
+![heroku](heroku_env1.png)
+
+
+Go to "Deploy" section under the application dashboard and click on "Deploy Branch"
+
+![heroku](heroku_finaldeploy.png)
+
+
+Click "Open App" on the top right corner.
+
+![heroku](heroku_access2.png)
+
+#### Step 8. Accessing the app 
+
+![heroku](heroku_finalratelimit.png)
+
+ </TabItem>
+</Tabs>
+
+### Next Steps
+
+- [How to build Java based Rate Limiting application on Heroku using Redis](/howtos/herokujava)
+- [How to build NodeJS based Rate Limiting application on Heroku using Redis](/howtos/herokunodejs)
+
+##
+
+<div>
+<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+</div>
