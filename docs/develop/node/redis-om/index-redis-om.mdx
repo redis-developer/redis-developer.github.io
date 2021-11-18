@@ -336,7 +336,7 @@ And you should get back...
 }
 ```
 
-...complete wrong results! What's up with that? Well, our entity doesn't know how to serialize itself to JSON so Express is doing that for us. And since `JSON.stringify`, which Express is using, can't see the properties that the `Schema` class added to our entity, it's just rendering the internal implementation of the entity. We can fix that by making our `Song` smarter.
+...completely wrong results! What's up with that? Well, our entity doesn't know how to serialize itself to JSON so Express is doing that for us. And since `JSON.stringify`, which Express is using, can't see the properties that the `Schema` class added to our entity, it's just rendering the internal implementation of the entity. We can fix that by making our `Song` smarter.
 
 To make `Song` smarter, add a `.toJSON` method to it. This creates something that `JSON.stringify` can deal with and that looks exactly how we want it to.  And while we're at it, let's add a computed field as well, just to show off that capability:
 
