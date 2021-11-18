@@ -1,12 +1,12 @@
 ---
 id: index-usingdotnet
 title: Processing Time Series data with Redis and .NET
-sidebar_label: RedisTimeSeries and With .NET
+sidebar_label: Using RedisTimeSeries with .NET
 slug: /howtos/redistimeseries/using-dotnet
 authors: [steve]
 ---
 
-Time Series data can be used to measure anything from remote sensor readings to stock market feeds. Using time-series in .NET is a snap with Redis and [NRedisTimeSeries](https://github.com/RedisTimeSeries/NRedisTimeSeries), and in this tutorial, we'll explore how we can use them.
+Time Series data can be used to measure anything from remote sensor readings to stock market feeds. Working with time series data in .NET is a snap with Redis and [NRedisTimeSeries](https://github.com/RedisTimeSeries/NRedisTimeSeries). In this tutorial, we'll explore how to use them together.
 
 ## Create your Project
 
@@ -24,26 +24,26 @@ dotnet add package NRedisTimeSeries
 
 ## Get a RedisTimeSeries Database
 
-The next step is to get a RedisTimeSeries database up and running. The easiest way to do that for development purposes is to use docker:
+The next step is to get a RedisTimeSeries database up and running. The easiest way to do that for development purposes is to use Docker:
 
 ```
 docker run -p 6379:63379 redislabs/redistimeseries
 ```
 
-If you are well past getting started and want to get something into your production, your best bet is to run it in [Redis Enterprise](http://localhost:3000/howtos/redistimeseries/getting-started).
+If you are well past getting started and want to get something into your production, your best bet is to run it in [Redis Enterprise](/howtos/redistimeseries/getting-started).
 
 ## Connecting to Redis
 
-Open the `Program.cs` file, in here, create a new ConnectionMultiplexer using a connection string (which will vary based on what deployment you're using). Then, for our basic docker setup, you'll just run:
+Open the `Program.cs` file, in here, create a new ConnectionMultiplexer using a connection string (which will vary based on what deployment you're using). Then, for our basic Docker setup, you'll just run:
 
 ```csharp
 var muxer = ConnectionMultiplexer.Connect("localhost");
 var db = muxer.GetDatabase();
 ```
 
-## Create a TimeSeries
+## Create a Time Series
 
-Now that you've gotten a handle to Redis, your next step is to initialize a TimeSeries. This will be a bit of a toy example. We are going to start off by just creating a Time Series called `sensor`, we will set its retention period to 1 minute, and we just give it an `id` label of `sensor-1`:
+Now that you've gotten a handle to Redis, your next step is to initialize a time series. This will be a bit of a toy example. We are going to start off by just creating a time series called `sensor`, we will set its retention period to 1 minute, and we just give it an `id` label of `sensor-1`:
 
 ```csharp
 await db.TimeSeriesCreateAsync("sensor", 60000, new List<TimeSeriesLabel>{new TimeSeriesLabel("id", "sensor-1")});
@@ -51,7 +51,7 @@ await db.TimeSeriesCreateAsync("sensor", 60000, new List<TimeSeriesLabel>{new Ti
 
 ## Producer Task
 
-Next, we'll create a task that will run a consumer in the background. Every second it will send a random integer between 1 and 50 into our time series a the current time.
+Next, we'll create a task that will run a consumer in the background. Every second it will send a random integer between 1 and 50 into our time series.
 
 ```csharp
 var producerTask = Task.Run(async()=>{
@@ -103,7 +103,7 @@ foreach(var agg in aggregations)
 
 ### Process Results from Aggregations
 
-With the rules established, we can consume the relevant time series to get the results. When we were creating the time series for our aggregations, we added a label to all of them: `new TimeSeriesLabel("aggregation-for", "sensor-1")`. We essentially told Redis that this time series would be an aggregation for `sensor-1`. We can then use that label to find just the time series aggregations of `sensor-1`. With this in mind, we can grab all the sensor aggregations in one command to Redis using `MGET`
+With the rules established, we can consume the relevant time series to get the results. When we were creating the time series for our aggregations, we added a label to all of them: `new TimeSeriesLabel("aggregation-for", "sensor-1")`. We essentially told Redis that this time series would be an aggregation for `sensor-1`. We can then use that label to find just the time series aggregations of `sensor-1`. With this in mind, we can grab all the sensor aggregations in one command to Redis using `MGET`.
 
 ```csharp
 var aggregationConsumerTask = Task.Run(async()=>
