@@ -48,6 +48,12 @@ module.exports = {
         link: 'http://guy.dev',
         title: 'Developer Advocate at Redis',
         image: 'profile_pic_guy_royse.jpg'
+      },
+      christian: { 
+        name: 'Christian Mague',
+        link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
+        title: 'Principal Field Engineer at Redis',
+        image: 'profile_pic_christian_mague.jpg',
       }
     }
  },

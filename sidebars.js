@@ -11,7 +11,18 @@ module.exports = {
       items: [
         'create/index-create',
         'create/rediscloud/index-rediscloud',
-        'create/heroku/index-heroku',
+          {
+             type: 'category',
+              label: 'Redis on Heroku',
+              items: [
+                  'create/heroku/index-heroku',
+                  'create/heroku/portal/index-heroku-portal',
+                  'create/heroku/herokujava/index-herokujava',
+                  'create/heroku/herokunodejs/index-herokunodejs',
+                  'create/heroku/herokupython/index-herokupython',
+                  'create/heroku/ratelimiting-go/index-ratelimitinggo'
+             ]
+            },
           {
               type: 'category',
               label: 'Redis on Azure Cache',
@@ -172,6 +183,7 @@ module.exports = {
         },
           'explore/redisdatasource/index-redisdatasource',
           'explore/redisexplorer/index-redisexplorer',
+          'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
 
