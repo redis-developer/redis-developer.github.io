@@ -42,6 +42,12 @@ module.exports = {
        link: 'https://github.com/manuelaguirre',
        title: 'Backend Engineer at Baseline Spain',
        image: 'profile_pic_manuel_aguirre.jpg'
+      },
+     andrew: {
+      name: 'Andrew Brookins',
+      link: 'https://twitter.com/abrookins',
+      title: 'Curriculum Software Engineer',
+      image: 'profile_pic_andrew_brookins.jpg'
       }
     }
  },
