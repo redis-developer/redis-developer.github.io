@@ -1,7 +1,7 @@
 ---
 id: index-redis-om
 title: Getting Started With Redis OM for Python
-sidebar_label: Redis OM - Python
+sidebar_label: "Redis OM for Python"
 slug: /develop/python/redis-om
 authors: [andrew]
 ---
@@ -178,20 +178,6 @@ Unix domain sockets:
 
     rediss://[[username]:[password]]@localhost:6379/0
     unix://[[username]:[password]]@/path/to/socket.sock?db=0
-
-For more details about how to connect to Redis with Redis OM, see the
-[connections documentation](connections.md).
-
-### Redis Cluster Support
-
-Redis OM supports connecting to Redis Cluster, but this preview release does not
-support doing so with the `REDIS_OM_URL` environment variable. However, you can
-connect by manually creating a connection object.
-
-See the [connections documentation](connections.md) for examples of connecting
-to Redis Cluster.
-
-Support for connecting to Redis Cluster via `REDIS_OM_URL` will be added in a future release.
 
 ## Defining a Model
 
@@ -769,6 +755,7 @@ from pydantic import EmailStr
 
 from redis_om import (
     Field,
+    get_redis_connection,
     HashModel,
     Migrator
 )
@@ -789,7 +776,9 @@ class Customer(HashModel):
 # Before running queries, we need to run migrations to set up the
 # indexes that Redis OM will use. You can also use the `migrate`
 # CLI tool for this!
-Migrator().run()
+redis = get_redis_connection()
+Migrator(redis).run()
+
 
 # Find all customers with the last name "Brookins"
 Customer.find(Customer.last_name == "Brookins").all()
@@ -804,13 +793,12 @@ Customer.find((Customer.last_name == "Brookins") | (
 ) & (Customer.last_name == "Smith")).all()
 ```
 
-Many more types of queries are possible. learn more about querying with Redis
-OM, see the [documentation on querying](docs/querying.md).
-
 ## Next Steps
 
-Now that you know the basics of working with Redis OM, continue on for all the
-nitty-gritty details about [models and fields](models_and_fields.md).
+Now that you know the basics of working with Redis OM, start playing around with
+it in your project!
+
+If you're a FastAPI user, check out [how to integrate Redis OM with FastAPI](https://github.com/redis/redis-om-python/blob/main/docs/fastapi_integration.md).
 
 <!-- Links -->
 
