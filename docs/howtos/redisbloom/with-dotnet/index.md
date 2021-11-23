@@ -1,7 +1,7 @@
 ---
 id: redisbloom-withdotnet
-title: Using Redis Bloom with .NET
-sidebar_label: Using Redis Bloom with .NET
+title: Using RedisBloom with .NET
+sidebar_label: Using RedisBloom with .NET
 slug: /howtos/redisbloom/with-dotnet/redisbloom-withdotnet
 authors: [steve]
 ---
@@ -34,7 +34,7 @@ The preceding code will add the username `Kermit` to the `bf:username` filter.
 
 ### Check if an Item is in a Filter
 
-To check if an item has been added to a bloom filter yet, you will use the `BF.EXISTS` command:
+To check if an item has been added to a Bloom Filter yet, you will use the `BF.EXISTS` command:
 
 ```csharp
 var exists = await db.ExecuteAsync("BF.EXISTS", "bf:username", "Kermit") == 1; 
@@ -44,20 +44,20 @@ After running that command, if the Bloom Filter reports that it contains the ite
 
 ## Count-Min Sketch
 
-You can use Count-Min Sketches to count the number of times an item has been added to a set quickly and compactly. Although, of course, like other probabilistic data structures, it has some probability of error. In this case, it can over count the number of occurrences. The dimensions of the sketch determine the likelihood of this.
+You can use Count-Min Sketches to count the number of times an item has been added to a set quickly and compactly. Although, of course, like other probabilistic data structures, it has some margin of error. In this case, it can over count the number of occurrences. The dimensions of the sketch determine the likelihood of this.
 
-### Creating a Count Min Sketch
+### Creating a Count-Min Sketch
 
-There are two ways to create a count min sketch, by probability and by dimension. Creating a count min sketch by probability will automatically generate a count min sketch based on the amount of overestimation you want to allow and the likelihood of overestimating a given element. If you want to initialize by dimensions, a Count Min Sketch will initialize with the provided width and depth.
+There are two ways to create a Count-Min Sketch, by probability and by dimension. Creating a Count-Min Sketch by probability will automatically generate a Count-Min Sketch based on the amount of overestimation you want to allow and the likelihood of overestimating a given element. If you want to initialize by dimensions, a Count-Min Sketch will initialize with the provided width and depth.
 
 ```csharp
 await db.ExecuteAsync("CMS.INITBYPROB", "cms:views", .1, .01);
 ```
 This code will initialize a Count-Min Sketch. The sketch will have an acceptable overcount of 10% and a probability of overcounting of 1%.
 
-### Adding Items to a Count Min Sketch
+### Adding Items to a Count-Min Sketch
 
-To add an item to a count min sketch, you call the `CMS.INCRBY` command, passing in the quantity of the given item you want to add to the sketch.
+To add an item to a Count-Min Sketch, you call the `CMS.INCRBY` command, passing in the quantity of the given item you want to add to the sketch.
 
 ```csharp
 await db.ExecuteAsync("CMS.INCRBY", "cms:views", "Gangnam Style", 1);
@@ -69,7 +69,7 @@ The above will add three views of Gangnam Style to the sketch and one view of Ba
 
 ### Querying the Sketch
 
-To query the number of occurrences of an element in the sketch, you need to use the CMS.QUERY command:
+To query the number of occurrences of an element in the sketch, you need to use the `CMS.QUERY` command:
 
 ```csharp
 var numViewsGangnamStyle = (long)await db.ExecuteAsync("CMS.QUERY", "cms:views", "Gangnam Style");
@@ -80,7 +80,7 @@ Console.WriteLine($"Baby Shark Views: {numViewsBabyShark}");
 
 ## Cuckoo Filters
 
-Cuckoo Filters solve a similar problem to Bloom Filters; they allow you to determine if an item has been added to a set yet. However, Cuckoo Filters have slightly different characteristics than Bloom Filters. For example, you may add the same item to a Cuckoo filter more than once, and they do support delete operations (which introduces the possibility of false negatives in addition to false positives).
+Cuckoo Filters solve a similar problem to Bloom Filters; they allow you to determine if an item has been added to a set yet. However, Cuckoo Filters have slightly different characteristics than Bloom Filters. For example, you may add the same item to a Cuckoo Filter more than once, and they do support delete operations (which introduces the possibility of false negatives in addition to false positives).
 
 ### Creating a Cuckoo Filter
 
@@ -99,7 +99,7 @@ await db.ExecuteAsync("CF.ADD", "cf:emails", "foo@bar.com");
 await db.ExecuteAsync("CF.ADD", "cf:emails", "James.Bond@mi6.com");
 ```
 
-The above will add `foo@bar.com` and `James.Bond@mi6.com` to the cuckoo filter.
+The above will add `foo@bar.com` and `James.Bond@mi6.com` to the Cuckoo Filter.
 
 ### Checking Item Presence in a Cuckoo Filter
 
@@ -119,13 +119,13 @@ The Top-K data structure allows you to keep a compact leader board of heavy-hitt
 
 ### Initializing a Top-K
 
-To initialize a Top-K, use the `TOPK.RESERVE` command. This command will reserve a TOPK that will keep track of the highest `k` items:
+To initialize a Top-K, use the `TOPK.RESERVE` command. This command will reserve a Top-K that will keep track of the highest `k` items:
 
 ```csharp
 await db.ExecuteAsync("TOPK.RESERVE", "topk:views", 5);
 ```
 
-The above, for example, will keep track of the five most viewed videos sent to the TOP-K.
+The above, for example, will keep track of the five most viewed videos sent to the Top-K.
 
 ### Add Items to the Top-K
 
@@ -159,7 +159,7 @@ foreach (var item in topK)
 
 This code will get all the items back for you and print them out.
 
-### Query if an Item is in the Top K
+### Query if an Item is in the Top-K
 
 To see if a given item is present in the Top-K, you would use `TOPK.QUERY`, passing in the item you want to check membership of:
 
