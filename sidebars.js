@@ -243,7 +243,15 @@ module.exports = {
                   'howtos/redisgraph/csvtograph/index-csvtograph',
               ]
             },
-               'howtos/redisbloom/index-redisbloom',
+            {
+              type:'category',
+              label: 'Redis Bloom Tutorial',
+              items:
+              [
+                'howtos/redisbloom/index-redisbloom',
+                'howtos/redisbloom/with-dotnet/redisbloom-withdotnet'
+              ]
+            },
                'howtos/redisgears/index-redisgears',
                'howtos/redisai/index-redisai',
                'howtos/leaderboard/index-leaderboard',
