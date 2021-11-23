@@ -54,6 +54,12 @@ module.exports = {
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
         title: 'Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
+      },
+      steve: {
+        name: 'Steve Lorello',
+        link: 'https://twitter.com/slorello',
+        title: '.NET Developer Advocate at Redis',
+        image: 'profile_pic_steve_lorello.jpg'
       }
     }
  },
