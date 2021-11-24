@@ -37,6 +37,12 @@ module.exports = {
         title: 'Sr. Backend Software Engineer at Globality, Inc.',
         image: 'profile_pic_julian_mateu.jpg'
       },
+      andrew: {
+        name: 'Andrew Brookins',
+        link: 'https://twitter.com/abrookins',
+        title: 'Curriculum Software Engineer',
+        image: 'profile_pic_andrew_brookins.jpg'
+      },
       manuel: {
         name: 'Manuel Aguirre',
         link: 'https://github.com/manuelaguirre',
