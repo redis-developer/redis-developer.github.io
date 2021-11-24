@@ -11,7 +11,18 @@ module.exports = {
       items: [
         'create/index-create',
         'create/rediscloud/index-rediscloud',
-        'create/heroku/index-heroku',
+          {
+             type: 'category',
+              label: 'Redis on Heroku',
+              items: [
+                  'create/heroku/index-heroku',
+                  'create/heroku/portal/index-heroku-portal',
+                  'create/heroku/herokujava/index-herokujava',
+                  'create/heroku/herokunodejs/index-herokunodejs',
+                  'create/heroku/herokupython/index-herokupython',
+                  'create/heroku/ratelimiting-go/index-ratelimitinggo'
+             ]
+            },
           {
               type: 'category',
               label: 'Redis on Azure Cache',
@@ -85,37 +96,38 @@ module.exports = {
         },
         'develop/C/index-c',
         {
-           type: 'category',
-           label: 'Node.js',
-           items: [
-             'develop/node/index-node',
-             'develop/node/gettingstarted/index-gettingstarted',
-               {
-                type: 'category',
-                label: 'Node.js Crash Course',
-                items: [
-                 'develop/node/node-crash-course/index-node-crash-course',
-                 'develop/node/node-crash-course/welcome/index-welcome',
-                 'develop/node/node-crash-course/whatisredis/index-whatisredis',
-                 'develop/node/node-crash-course/redisandnodejs/index-redisandnodejs',
-                 'develop/node/node-crash-course/introducingredisinsight/index-introducingredisinsight',
-                 'develop/node/node-crash-course/sampleapplicationoverview/index-sampleapplicationoverview',
-                 'develop/node/node-crash-course/runningtheapplication/index-runningtheapplication',
-                 'develop/node/node-crash-course/domainobjectswithhashes/index-domainobjectswithhashes',
-                 'develop/node/node-crash-course/introductiontomodules/index-introductiontomodules',
-                 'develop/node/node-crash-course/redisjson/index-redisjson',
-                 'develop/node/node-crash-course/redisearch/index-redisearch',
-                 'develop/node/node-crash-course/checkinswithstreams/index-checkinswithstreams',
-                 'develop/node/node-crash-course/managingsuccess/index-managingsuccess',
-                 'develop/node/node-crash-course/caching/index-caching',
-                 'develop/node/node-crash-course/sessionstorage/index-sessionstorage',
-                 'develop/node/node-crash-course/advancedstreams/index-advancedstreams',
-                 'develop/node/node-crash-course/redisbloom/index-redisbloom',
-                 'develop/node/node-crash-course/coursewrapup/index-coursewrapup',
-                    ]
-                },
+          type: 'category',
+          label: 'Node.js',
+          items: [
+            'develop/node/index-node',
+            'develop/node/gettingstarted/index-gettingstarted',
+            {
+              type: 'category',
+              label: 'Node.js Crash Course',
+              items: [
+                'develop/node/node-crash-course/index-node-crash-course',
+                'develop/node/node-crash-course/welcome/index-welcome',
+                'develop/node/node-crash-course/whatisredis/index-whatisredis',
+                'develop/node/node-crash-course/redisandnodejs/index-redisandnodejs',
+                'develop/node/node-crash-course/introducingredisinsight/index-introducingredisinsight',
+                'develop/node/node-crash-course/sampleapplicationoverview/index-sampleapplicationoverview',
+                'develop/node/node-crash-course/runningtheapplication/index-runningtheapplication',
+                'develop/node/node-crash-course/domainobjectswithhashes/index-domainobjectswithhashes',
+                'develop/node/node-crash-course/introductiontomodules/index-introductiontomodules',
+                'develop/node/node-crash-course/redisjson/index-redisjson',
+                'develop/node/node-crash-course/redisearch/index-redisearch',
+                'develop/node/node-crash-course/checkinswithstreams/index-checkinswithstreams',
+                'develop/node/node-crash-course/managingsuccess/index-managingsuccess',
+                'develop/node/node-crash-course/caching/index-caching',
+                'develop/node/node-crash-course/sessionstorage/index-sessionstorage',
+                'develop/node/node-crash-course/advancedstreams/index-advancedstreams',
+                'develop/node/node-crash-course/redisbloom/index-redisbloom',
+                'develop/node/node-crash-course/coursewrapup/index-coursewrapup',
               ]
-          },
+            },
+            'develop/node/redis-om/index-redis-om'
+          ]
+        },
           {
             type: 'category',
             label: 'Python',
@@ -171,6 +183,7 @@ module.exports = {
         },
           'explore/redisdatasource/index-redisdatasource',
           'explore/redisexplorer/index-redisexplorer',
+          'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
 
@@ -208,6 +221,7 @@ module.exports = {
                      'howtos/redistimeseries/index-redistimeseries',
                      'howtos/redistimeseries/getting-started/index-gettingstarted',
                      'howtos/redistimeseries/using-python/index-usingpython',
+                     'howtos/redistimeseries/using-dotnet/index-usingdotnet',
                      'howtos/redistimeseries/using-go/index-usinggo',
                      'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
                 ]
@@ -229,7 +243,15 @@ module.exports = {
                   'howtos/redisgraph/csvtograph/index-csvtograph',
               ]
             },
-               'howtos/redisbloom/index-redisbloom',
+            {
+              type:'category',
+              label: 'Redis Bloom Tutorial',
+              items:
+              [
+                'howtos/redisbloom/index-redisbloom',
+                'howtos/redisbloom/with-dotnet/redisbloom-withdotnet'
+              ]
+            },
                'howtos/redisgears/index-redisgears',
                'howtos/redisai/index-redisai',
                'howtos/leaderboard/index-leaderboard',
