@@ -37,17 +37,35 @@ module.exports = {
         title: 'Sr. Backend Software Engineer at Globality, Inc.',
         image: 'profile_pic_julian_mateu.jpg'
       },
-     manuel: {
-       name: 'Manuel Aguirre',
-       link: 'https://github.com/manuelaguirre',
-       title: 'Backend Engineer at Baseline Spain',
-       image: 'profile_pic_manuel_aguirre.jpg'
+      andrew: {
+        name: 'Andrew Brookins',
+        link: 'https://twitter.com/abrookins',
+        title: 'Curriculum Software Engineer',
+        image: 'profile_pic_andrew_brookins.jpg'
       },
-     andrew: {
-      name: 'Andrew Brookins',
-      link: 'https://twitter.com/abrookins',
-      title: 'Curriculum Software Engineer',
-      image: 'profile_pic_andrew_brookins.jpg'
+      manuel: {
+        name: 'Manuel Aguirre',
+        link: 'https://github.com/manuelaguirre',
+        title: 'Backend Engineer at Baseline Spain',
+        image: 'profile_pic_manuel_aguirre.jpg'
+      },
+      guyroyse: {
+        name: 'Guy Royse',
+        link: 'http://guy.dev',
+        title: 'Developer Advocate at Redis',
+        image: 'profile_pic_guy_royse.jpg'
+      },
+      christian: { 
+        name: 'Christian Mague',
+        link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
+        title: 'Principal Field Engineer at Redis',
+        image: 'profile_pic_christian_mague.jpg',
+      },
+      steve: {
+        name: 'Steve Lorello',
+        link: 'https://twitter.com/slorello',
+        title: '.NET Developer Advocate at Redis',
+        image: 'profile_pic_steve_lorello.jpg'
       }
     }
  },
