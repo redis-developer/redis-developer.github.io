@@ -5,7 +5,7 @@ sidebar_label: RedisJSON and Python
 slug: /howtos/redisjson/using-python
 ---
 
-[RedisJSON](https://oss.redis.com/redisjson/) is a source-available Redis module that lets you store, manipulate, and query JSON documents in Redis. The standard Redis Python client (v4.0 or greater) supports all of the feature of RedisJSON, and in this tutorial, we'll see how to use them.
+[RedisJSON](https://oss.redis.com/redisjson/) is a source-available Redis module that lets you store, manipulate, and query JSON documents in Redis. The standard Redis Python client (v4.0 or greater) supports all of the features of RedisJSON, and in this tutorial, we'll see how to get started with them.
 
 ## Getting started with RedisJSON
 
@@ -33,7 +33,7 @@ Ensure that you're running RedisJSON v2.0 or greater (here indicated as `20004`)
 
 You'll need `redis-py` version 4.0 or later. If you're using `pipenv`, you can install the client library like so:
 
-```
+```bash
 pipenv install redis
 ```
 
@@ -51,8 +51,8 @@ Let's consider a simple JSON document structure representing a user:
 ```
  {
   "name": "Jane",
-  "age": 25,
-  "location: "USA"
+  "age": 33,
+  "location: "Chawton"
  }
 ```
 
@@ -80,28 +80,28 @@ In the code above, we first connect to Redis and store a reference to the connec
 
 Next, we create a Python dictionary to represent a person object.
 
-And finally, we store the object in Redis using the `json().set()` method. The first argument, `person:1` is the name of the key that will store the JSON. The second argument is a JSON path. We use `Path.rootPath()`, as this is a new object. Finally, we pass in the Python dictionary, which will be serialized to JSON.
+And finally, we store the object in Redis using the `json().set()` method. The first argument, `person:1` is the name of the key that will reference the JSON. The second argument is a JSON path. We use `Path.rootPath()`, as this is a new object. Finally, we pass in the Python dictionary, which will be serialized to JSON.
 
-To retrieve the JSON object, we run `json().get()`, passing the key. The result is the Python dictionary we passed in.
+To retrieve the JSON object, we run `json().get()`, passing in the key. The result is a Python dictionary representing the JSON object stored in Redis.
 
 ### Run the code
 
-If you copy the code above in a file called `main.py`, you can run the code like so:
+If you copy the code above into a file called `main.py`, you can run the code like so:
 
 ```bash
 $ pipenv python run main.py
-
+```
 
 ## Verify that the JSON document has been added to Redis
 
-Start `redis-cli` to connect to your Redis instance. The run the following command:
+Start `redis-cli` to connect to your Redis instance. Then run the following command:
 
 ```bash
 localhost:6379> json.get person:1
 "{\"name\":\"Jane\",\"Age\":33,\"Location\":\"Chawton\"}"
 ```
 
-## Fetching the specific fields within a JSON document
+## Fetching specific fields from a JSON document
 
 You can use RedisJSON to fetch specific fields from a document by specifying a path. For example, here's how to return only the `name` field:
 
