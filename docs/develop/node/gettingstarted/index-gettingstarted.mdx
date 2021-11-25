@@ -14,99 +14,114 @@ Find tutorials, examples and technical articles that will help you to develop wi
 
 ## Introduction
 
-Redis is a great database for use with Node.js. Both Redis Node.js share similar type conventions and threading models, which makes for a very predictable development experience. By pairing Node.js & Redis together you can achieve a scalable and productive development platform.
+Redis is a great database for use with Node.js. Both Redis and Node.js share similar type conventions and threading models, which makes for a very predictable development experience. By pairing Node.js and Redis together you can achieve a scalable and productive development platform.
 
-Redis Node.js has two primary clients available [node_redis](https://github.com/NodeRedis/node_redis) and [ioredis](https://github.com/luin/ioredis). Both are available through npm. Both clients have pros and cons, but we generally suggest node_redis, as it has wide support for Redis modules, it is easily extensible and widely used. Ioredis has better integrated support for the Redis Enterprise Cluster API, but this is only relevant if you're specifically using [the Cluster API topology](https://redis.com/redis-enterprise/technology/linear-scaling-redis-enterprise/) instead of the more common Proxy topology. Node_redis’ support for the Cluster API is provided by an additional shim, redis-clustr. Node_redis has built-in support for Redis Enterprise features such as [Active Active geo distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/), allowing you to have one database that spans multiple clusters. Node_redis also supports Redis-on-Flash which enables extending your database into Flash SSD storage for warm values and DRAM for hot values. Nodejs redis enables you to integrate such features.
+Redis has two primary Node.js clients which are [node-redis](https://github.com/redis/node-redis) and [ioredis](https://github.com/luin/ioredis). Both are available through npm. We generally suggest using node-redis, as it has wide support for Redis modules, it is easily extensible and widely used. 
 
-The Node.js community has built many client libraries that you can find [here](https://redis.io/clients#nodejs). 
-For your first steps with Node.js and Redis, this article will show how to use the recommended libraries: [ioredis](https://github.com/luin/ioredis) and [node-redis](https://github.com/NodeRedis/node-redis).
+Check out a list of Redis clients that the community has built for Node.js [here](https://redis.io/clients#nodejs). 
 
+This article shows how to get started with the recommended libraries: [node-redis](https://github.com/redis/node-redis) and [ioredis](https://github.com/luin/ioredis).
 <Tabs
-  defaultValue="ioredis"
+  defaultValue="node-redis"
   values={[
-    {label: 'IO redis', value: 'ioredis'},
-    {label: 'Node Redis', value: 'node_redis'},
+    {label: 'node-redis', value: 'node-redis'},
+    {label: 'ioredis', value: 'ioredis'},
   ]}>
-    <TabItem value="ioredis"> 
+  <TabItem value="node-redis">
 
 
-#### Step 1. Install the ioredis library using `npm` (or `yarn`)
-
-  ```bash
-   npm install ioredis
-  ```
-
-
-#### Step 2. Write your application code
-
-   ```javascript
-    const Redis = require("ioredis");
-    const redis = new Redis(6379, "localhost");
-
-    redis.set("mykey", "Hello from io-redis!");
-    redis.get("mykey", function(err, result){
-        if (err) { throw err; }
-    
-        console.log(result);
-    });
-
-    // use the promise instead of callback
-    redis.get("mykey").then(function (result) {
-        console.log(result);
-    });
-
-    redis.zadd("vehicles", 0, "car", 0, "bike");
-    redis.zrange("vehicles", 0, -1, "WITHSCORES").then((res) => console.log(res));
-
-  ```
-
-Find more information about Redis & io-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/ioredis)" repository.
-
-  </TabItem>
-  <TabItem value="node_redis">
-
-
-#### Step 1. Install the Redis library using `npm` (or `yarn`)
+#### Step 1. Install node-redis using `npm` (or `yarn`)
 
   ```bash
     npm install redis
   ```
 
 
-#### Step 2. Write your application code
+#### Step 2. Write your Application Code
 
-  ```javascript
-    const redis = require("redis");
-    
-    const client = redis.createClient ({
-        port : 6379,
-        host : "localhost"
-    });
+```javascript
+import { createClient } from 'redis';
 
-    client.set("mykey", "Hello from node-redis!");
-    client.get("mykey", function(err, result){
-        if (err) { throw err; }
-    
-        console.log(result);
-    });
+async function nodeRedisDemo () {
+  try {
+    const client = createClient();
+    await client.connect();
 
-    const vehiclesData = ["vehicles", 4, "car", 2, "bike"];
-    client.zadd(vehiclesData, function(addError, addResponse) {
-        if (addError) { throw addError; }
+    await client.set('mykey', 'Hello from node-redis!');
+    const myKeyValue = await client.get('mykey');
+    console.log(myKeyValue);
 
-        console.log("added " + addResponse + " items.");
+    const numAdded = await client.zAdd('vehicles', [
+      {
+        score: 4,
+        value: 'car'
+      },
+      {
+        score: 2,
+        value: 'bike'
+      }
+    ]);
+    console.log(`Added ${numAdded} items.`);
 
-        const query = ["vehicles", 0, -1];
-        client.zrange(query, function(rangeError, rangeResponse) {
-            if (rangeError) {throw rangeError;}
-            console.log("vehicles", rangeResponse);
-        });
-    });
+    for await (const { score, value } of client.zScanIterator('vehicles')) {
+      console.log(`${value} -> ${score}`);
+    }
 
+    await client.quit();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+nodeRedisDemo();
+```
+
+  </TabItem>
+    <TabItem value="ioredis"> 
+
+
+#### Step 1. Install ioredis using `npm` (or `yarn`)
+
+  ```bash
+   npm install ioredis
   ```
 
-Find more information about Redis & node-redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/node.js/node-redis)" repository.
 
+#### Step 2. Write your Application Code
+
+```javascript
+const Redis = require('ioredis');
+
+async function ioredisDemo() {
+  try {
+    const client = new Redis();
+
+    await client.set('mykey', 'Hello from io-redis!');
+    const myKeyValue = await client.get('mykey');
+    console.log(myKeyValue);
+
+    const numAdded = await client.zadd('vehicles', 4, 'car', 2, 'bike');
+    console.log(`Added ${numAdded} items.`);
+
+    const stream = client.zscanStream('vehicles');
+
+    stream.on('data', items => {
+      // items = array of value, score, value, score...
+      for (let n = 0; n < items.length; n += 2) {
+        console.log(`${items[n]} -> ${items[n+1]}`);
+      }
+    });
+
+    stream.on('end', async () => {
+      await client.quit();
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+ioredisDemo();
+```
 
   </TabItem>
 </Tabs>
