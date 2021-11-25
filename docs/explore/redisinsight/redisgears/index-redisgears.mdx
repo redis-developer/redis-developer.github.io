@@ -14,7 +14,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 RedisInsight has built-in support for Redis Modules like RedisJSON, RediSearch, RedisGraph, Streams, RedisTimeSeries, and RedisGears. RedisGears enables reactive programming at the database level. It's like using lambda functions, but with a dramatically lower latency, and with much less encoding/decoding overhead. 
 
-Support for [RedisGears](https://oss.redislabs.com/redisgears/) was first introduced in RedisInsight v1.5.0. RedisInsights allows you:
+Support for [RedisGears](https://oss.redis.com/redisgears/) was first introduced in RedisInsight v1.5.0. RedisInsights allows you:
 
 
 
@@ -22,7 +22,7 @@ Support for [RedisGears](https://oss.redislabs.com/redisgears/) was first introd
 *    Manage registered functions and get execution summary. 
 *    Code, build and execute functions.
 
-RedisGears is a dynamic framework that enables developers to write and execute [functions](https://oss.redislabs.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. These capabilities enable efficient data processing using multiple models in Redis with infinite programmability, while remaining simple to use in any environment.
+RedisGears is a dynamic framework that enables developers to write and execute [functions](https://oss.redis.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. These capabilities enable efficient data processing using multiple models in Redis with infinite programmability, while remaining simple to use in any environment.
 
 Follow the below steps to get started with the RedisInsight browser tool for RedisGears.
 
@@ -35,7 +35,7 @@ Follow the below steps to get started with the RedisInsight browser tool for Red
 
 To install RedisInsight on your local system, you need to first download the software from Redis Labs website.
 
-[Click this link ](https://redislabs.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+[Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
 
 ![My Image](images/redisinsightinstall.png)
 
@@ -114,7 +114,7 @@ GB('KeysOnlyReader').map(lambda x: execute('hget', x, 'genres')).flatmap(lambda 
 
 ## Additional References
 
-- [RedisGears Project](https://oss.redislabs.com/redisgears/)
+- [RedisGears Project](https://oss.redis.com/redisgears/)
 - [RedisGears Tutorials](/howtos/redisgears)
 - [How to build a Fraud Detection System using RedisGears and RedisBloom](/howtos/frauddetection)
 - [Building a Pipeline for Natural Language Processing using RedisGears](/howtos/nlp)

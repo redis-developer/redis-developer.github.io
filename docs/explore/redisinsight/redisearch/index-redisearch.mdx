@@ -13,7 +13,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Author: [Ajeet Singh Raina](https://twitter.com/ajeetsraina)
 
-A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redislabs.com/redisearch/)  is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules.With RedisInsight, the below functionalities are possible
+A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redis.com/redisearch/)  is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules.With RedisInsight, the below functionalities are possible
 
 
 
@@ -40,7 +40,7 @@ RediSearch allows you to quickly create indexes on datasets (Hashes), and uses a
 
 To install RedisInsight on your local system, you need to first download the software from Redis Labs website.
 
-[Click this link ](https://redislabs.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+[Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
 
 ![My Image](images/redisinsightinstall.png)
 
@@ -235,7 +235,7 @@ A Redis Hash allows the application to structure all the movie attributes in ind
 ### Step 11. Insert Movies
 
 
-It is time now to add some data into your database, let's insert a few movies, using `redis-cli` or [Redis Insight](https://redislabs.com/redisinsight/).
+It is time now to add some data into your database, let's insert a few movies, using `redis-cli` or [RedisInsight](https://redis.com/redis-enterprise/redis-insight/).
 
 Once you are connected to your Redis instance run the following commands:
 
@@ -336,7 +336,7 @@ The database contains a few movies, and an index, it is now possible to execute 
 
 The FT.SEARCH commands returns a list of results starting with the number of results, then the list of elements (keys & fields).
 
-As you can see the movie *Star Wars: Episode V - The Empire Strikes Back* is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redislabs.com/redisearch/Escaping/) and [stemmed](https://oss.redislabs.com/redisearch/Stemming/).
+As you can see the movie *Star Wars: Episode V - The Empire Strikes Back* is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redis.com/redisearch/Escaping/) and [stemmed](https://oss.redis.com/redisearch/Stemming/).
 
 Later when looking at the query syntax in more detail you will learn more about the search capabilities.
 
@@ -438,7 +438,7 @@ The FT.SEARCH syntax has two ways to query numeric fields:
 
 ### Additional Links
 
-- [RediSearch Project](https://oss.redislabs.com/redisearch/)
+- [RediSearch Project](https://oss.redis.com/redisearch/)
 - [RediSearch Tutorial](/howtos/redisearch)
 - [Getting Started with Movie Database](/howtos/moviesdatabase/getting-started)
 - [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
