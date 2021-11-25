@@ -17,7 +17,7 @@ Find the best Graphical User Interfaces to interact with your data and, manage a
     <RedisCard 
         title="RedisInsight" 
         description="RedisInsight provides an intuitive and efficient GUI for Redis" 
-        page="https://redislabs.com/redis-enterprise/redis-insight/"
+        page="https://redis.com/redis-enterprise/redis-insight/"
         />
  </div>
  
