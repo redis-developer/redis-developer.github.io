@@ -67,7 +67,7 @@ The following links provides you with the available options to create a new Redi
               </div>
           </div>
       </div>
-      <a href={useBaseUrl('https://docs.redislabs.com/latest/platforms/')} rel="nofollow noopener" className="ri-card-link">Read More</a>
+      <a href={useBaseUrl('https://docs.redis.com/latest/platforms/')} rel="nofollow noopener" className="ri-card-link">Read More</a>
     </div>
   </div>
 

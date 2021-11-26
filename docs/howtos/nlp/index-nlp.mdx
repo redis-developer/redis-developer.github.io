@@ -16,7 +16,7 @@ Authors - [Alex Mikhalev](https://www.linkedin.com/in/alexmikhalev/), [Ajeet Sin
 
 ##  Goal
 
-In this tutorial, you will learn how to build a pipeline for  Natural Language Processing(NLP) using [RedisGears](https://developer.redislabs.com/howtos/redisgears). For this demonstration, we will be leveraging the Kaggle CORD19 datasets. The implementation is designed to avoid running out of memory, leveraging Redis Cluster and RedisGears, where the use of RedisGears allows for processing data on storage without the need to move data in and out of the Redis Cluster—using Redis Cluster as data fabric. Redis Cluster allows for horizontal scalability up to 1000 nodes, and together with RedisGears, provides a distributed system where data science/ML engineers can focus on processing steps, without the worry of writing tons of scaffoldings for distributed calculations.
+In this tutorial, you will learn how to build a pipeline for  Natural Language Processing(NLP) using [RedisGears](https://developer.redis.com/howtos/redisgears). For this demonstration, we will be leveraging the Kaggle CORD19 datasets. The implementation is designed to avoid running out of memory, leveraging Redis Cluster and RedisGears, where the use of RedisGears allows for processing data on storage without the need to move data in and out of the Redis Cluster—using Redis Cluster as data fabric. Redis Cluster allows for horizontal scalability up to 1000 nodes, and together with RedisGears, provides a distributed system where data science/ML engineers can focus on processing steps, without the worry of writing tons of scaffoldings for distributed calculations.
 
 ![nlp](nlparch.png)
 
@@ -25,7 +25,7 @@ This project was built with the aim to make it easier for other people to contri
 
 ## Why data scientists uses RedisGears?
 
-[RedisGears](https://redislabs.com/modules/redis-gears/) have enormous potential, particularly for text processing—you can process your data “on data” without needing to move them in and out of memory. Summary of the important points: 
+[RedisGears](https://redis.com/modules/redis-gears/) have enormous potential, particularly for text processing—you can process your data “on data” without needing to move them in and out of memory. Summary of the important points: 
 
 
 - In Memory storage (Horizontally scalable if it’s Redis cluster)
@@ -61,13 +61,13 @@ Intake step - is very simple put all JSON records into RedisCluster, then NLP pi
 
 ### How does the NLP pipeline steps fit into RedisGears? 
 
-1. For each record — detect language (discard non English), it’s [filter](https://oss.redislabs.com/redisgears/operations.html#filter)
+1. For each record — detect language (discard non English), it’s [filter](https://oss.redis.com/redisgears/operations.html#filter)
 
-2. Map paragraphs into a sentence — [flatmap](https://oss.redislabs.com/redisgears/operations.html#flatmap)
+2. Map paragraphs into a sentence — [flatmap](https://oss.redis.com/redisgears/operations.html#flatmap)
 
-3. Sentences spellchecker — it’s [map](https://oss.redislabs.com/redisgears/operations.html#map)
+3. Sentences spellchecker — it’s [map](https://oss.redis.com/redisgears/operations.html#map)
 
-4. Save sentences into hash — [processor](https://oss.redislabs.com/redisgears/operations.html#processor)
+4. Save sentences into hash — [processor](https://oss.redis.com/redisgears/operations.html#processor)
 
 
 

@@ -17,7 +17,7 @@ So we’ve come up with a different approach:
 
 ![image](../../../static/img/ajeet-riot-blog-1.png)
 
-RIOT is an open source online migration tool built by Julien Ruaux, a Solution Architect at Redis Labs. RIOT implements client-side replication using a producer/consumer approach. The producer is the combination of the key and value readers that have a connection to ElastiCache. The key reader component identifies keys to be replicated using scan and keyspace notifications. For each key, the value reader component performs a DUMP and handles the resulting key+bytes to the consumer (writer), which performs a RESTORE on the Redis Enterprise connection.
+RIOT is an open source online migration tool built by Julien Ruaux, a Solution Architect at Redis. RIOT implements client-side replication using a producer/consumer approach. The producer is the combination of the key and value readers that have a connection to ElastiCache. The key reader component identifies keys to be replicated using scan and keyspace notifications. For each key, the value reader component performs a DUMP and handles the resulting key+bytes to the consumer (writer), which performs a RESTORE on the Redis Enterprise connection.
 
 
 This blog post will show how to perform a seamless online migration of databases from ElastiCache to Redis Enterprise Cloud.
