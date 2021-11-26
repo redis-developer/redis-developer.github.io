@@ -109,7 +109,7 @@ module.exports = {
     footer: {
       style: 'dark',
       logo: {
-        alt: 'Redis Labs logo',
+        alt: 'Redis logo',
         src: 'img/redis_logo_red_white_rgb.svg',
         href: 'https://redis.com/', 
       },

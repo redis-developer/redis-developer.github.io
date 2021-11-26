@@ -16,7 +16,7 @@ Find tutorials, examples and technical articles that will help you to develop wi
 
 Java community has built many client libraries that you can find [here](https://redis.io/clients#java). For your first steps with Java and Redis, this article will show how to use the two main libraries: [Jedis](https://github.com/redis/jedis) and [Lettuce](https://lettuce.io/).
 
-The blog post “[Jedis vs. Lettuce: An Exploration](https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/)” will help you to select the best for your application; keeping in mind that both are available in Spring & SpringBoot framework.
+The blog post “[Jedis vs. Lettuce: An Exploration](https://redis.com/blog/jedis-vs-lettuce-an-exploration/)” will help you to select the best for your application; keeping in mind that both are available in Spring & SpringBoot framework.
 
 
 <Tabs
@@ -260,9 +260,9 @@ Run Redis Commands from Lettuce
 
 #### Technical Articles
 
-**[Getting Started with Redis Streams and Java (Lettuce)](https://redislabs.com/blog/getting-started-with-redis-streams-and-java/)**
+**[Getting Started with Redis Streams and Java (Lettuce)](https://redis.com/blog/getting-started-with-redis-streams-and-java/)**
 
-**[Jedis vs. Lettuce: An Exploration](https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/https://redislabs.com/blog/jedis-vs-lettuce-an-exploration/)**
+**[Jedis vs. Lettuce: An Exploration](https://redis.com/blog/jedis-vs-lettuce-an-exploration/)**
 
 
 </div>
@@ -273,7 +273,7 @@ Run Redis Commands from Lettuce
 
 ### Redis University
 
-### [Redis for Java Developers](https://university.redislabs.com/courses/ru102j/)
+### [Redis for Java Developers](https://university.redis.com/courses/ru102j/)
 
 Redis for Java Developers teaches you how to build robust Redis client applications in Java using the Jedis client library. The course focuses on writing idiomatic Java applications with the Jedis API, describing language-specific patterns for managing Redis database connections, handling errors, and using standard classes from the JDK. The course material uses the Jedis API directly with no additional frameworks. As such, the course is appropriate for all Java developers, and it clearly illustrates the principles involved in writing applications with Redis.
 

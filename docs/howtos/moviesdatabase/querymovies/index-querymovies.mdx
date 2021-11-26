@@ -57,7 +57,7 @@ The first line contains the number of documents (`4`) that match the query condi
 
 This query is a "fieldless" condition, this means that the query engine has:
 * searched in all the TEXT fields of the index(`title` and `plot`)
-* for the word `heat` and related words, this is why the movie:736 is returned since it has the word `heated` in the plot ([stemming](https://oss.redislabs.com/redisearch/Stemming/))
+* for the word `heat` and related words, this is why the movie:736 is returned since it has the word `heated` in the plot ([stemming](https://oss.redis.com/redisearch/Stemming/))
 * returned the result sorted by score, remember that the title has a weight of 1.0, and the plot a weight of 0.5. So when the word or related words are found in the title the score is larger.
 ---
 

@@ -17,7 +17,7 @@ Find the best Graphical User Interfaces to interact with your data and, manage a
     <RedisCard 
         title="RedisInsight" 
         description="RedisInsight provides an intuitive and efficient GUI for Redis" 
-        page="https://redislabs.com/redis-enterprise/redis-insight/"
+        page="https://redis.com/redis-enterprise/redis-insight/"
         />
  </div>
  
@@ -68,7 +68,7 @@ Find the best Graphical User Interfaces to interact with your data and, manage a
  <div class="col">
     <RedisCard 
         title="Memtier Benchmark" 
-        description="memtier_benchmark is a command line load generation and bechmarking tool developed by Redis Labs." 
+        description="memtier_benchmark is a command line load generation and bechmarking tool developed by Redis." 
         page="https://github.com/RedisLabs/memtier_benchmark"
         />
  </div>

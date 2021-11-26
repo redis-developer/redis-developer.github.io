@@ -26,7 +26,7 @@ Redis. Unlike most databases, Redis excels at low-latency access because it's an
 
 In this tutorial, we'll walk through the steps necessary to use Redis with
 FastAPI. We're going to build *IsBitcoinLit*, an API that stores Bitcoin
-sentiment and price averages in [RedisTimeSeries](https://oss.redislabs.com/redistimeseries/), then rolls these averages up for
+sentiment and price averages in [RedisTimeSeries](https://oss.redis.com/redistimeseries/), then rolls these averages up for
 the last three hours.
 
 Next, let's look at the learning objectives of this tutorial.
@@ -73,7 +73,7 @@ to the project running.
 
 RedisTimeSeries is a source available Redis Module that adds a timeseries data type to Redis. Timeseries is a great way to model any data that you want to query over time, like in this case, the ever-changing price of Bitcoin.
 
-You can get started by following the [setup instructions](https://oss.redislabs.com/redistimeseries/#setup) in the RedisTimeSeries documentation.
+You can get started by following the [setup instructions](https://oss.redis.com/redistimeseries/#setup) in the RedisTimeSeries documentation.
 
 However, note that this tutorial's example project configures RedisTimeSeries automatically for you with the [redismod](https://hub.docker.com/r/redislabs/redismod) Docker image.
 
