@@ -293,6 +293,7 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
+        'get-involved/devcember/index-devcember',
         {
           type: 'category',
           label: 'Hacktoberfest 2021',
