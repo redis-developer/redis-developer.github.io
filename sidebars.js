@@ -59,6 +59,15 @@ module.exports = {
                 'develop/java/spring/index-spring',
                 {
                   type: 'category',
+                  label: 'Redis OM Tutorial',
+                  items: [
+                    'develop/java/spring/redis-om/redis-om-spring',
+                    'develop/java/spring/redis-om/redis-om-spring-json',
+                    'develop/java/spring/redis-om/redis-om-spring-hash',
+                  ]
+                },
+                {
+                  type: 'category',
                   label: 'Redis and Spring Course',
                   items: [
                     'develop/java/spring/redis-and-spring-course/index-redis-and-spring-course',
@@ -150,7 +159,7 @@ module.exports = {
                 ]
               }
             ]
-          },          
+          },
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
@@ -223,7 +232,7 @@ module.exports = {
                      'howtos/redistimeseries/using-python/index-usingpython',
                      'howtos/redistimeseries/using-dotnet/index-usingdotnet',
                      'howtos/redistimeseries/using-go/index-usinggo',
-                     'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
+                     'howtos/redistimeseries/using-prometheus/index-usingprometheus',
                 ]
               },
              {
@@ -233,9 +242,9 @@ module.exports = {
                   'howtos/redisgraph/index-redisgraph',
                   'howtos/redisgraph/getting-started/index-gettingstarted',
                   'howtos/redisgraph/explore-python-code/index-explorepythoncode',
-                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',  
+                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',
                   'howtos/redisgraph/using-python/index-usingpython',
-                  'howtos/redisgraph/using-ruby/index-usingruby', 
+                  'howtos/redisgraph/using-ruby/index-usingruby',
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
                   'howtos/redisgraph/using-go/index-usinggo',
                   'howtos/redisgraph/using-rust/index-usingrust',
@@ -302,7 +311,7 @@ module.exports = {
             'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
             'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story'
           ]
-        }, 
+        },
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]

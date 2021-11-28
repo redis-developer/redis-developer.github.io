@@ -55,7 +55,7 @@ module.exports = {
         title: 'Developer Advocate at Redis',
         image: 'profile_pic_guy_royse.jpg'
       },
-      christian: { 
+      christian: {
         name: 'Christian Mague',
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
         title: 'Principal Field Engineer at Redis',
@@ -66,6 +66,12 @@ module.exports = {
         link: 'https://twitter.com/slorello',
         title: '.NET Developer Advocate at Redis',
         image: 'profile_pic_steve_lorello.jpg'
+      },
+      bsb: {
+        name: 'Brian Sam-Bodden',
+        link: 'https://twitter.com/bsbodden',
+        title: 'Developer Advocate at Redis',
+        image: 'profile_pic_brian_sam-bodden.jpeg'
       }
     }
  },
@@ -75,7 +81,7 @@ module.exports = {
       trackingID: 'GTM-W8Z6BLQ',
     },
     prism : {
-      additionalLanguages: ['csharp', 'php', 'ruby']
+      additionalLanguages: ['csharp', 'php', 'ruby', 'java', 'rust', 'elixir', 'groovy']
 
     },
 
@@ -111,7 +117,7 @@ module.exports = {
       logo: {
         alt: 'Redis logo',
         src: 'img/redis_logo_red_white_rgb.svg',
-        href: 'https://redis.com/', 
+        href: 'https://redis.com/',
       },
       links: [
         {
@@ -172,7 +178,7 @@ module.exports = {
           ],
         },
       ],
-   copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`, 
+   copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`,
    },
     colorMode: {
       // Hides the switch in the navbar
@@ -209,6 +215,6 @@ module.exports = {
     ],
   ],
   plugins: [
-    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm') 
+    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm')
   ],
 };
