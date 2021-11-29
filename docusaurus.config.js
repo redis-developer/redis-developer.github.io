@@ -37,6 +37,12 @@ module.exports = {
         title: 'Sr. Backend Software Engineer at Globality, Inc.',
         image: 'profile_pic_julian_mateu.jpg'
       },
+      andrew: {
+        name: 'Andrew Brookins',
+        link: 'https://twitter.com/abrookins',
+        title: 'Curriculum Software Engineer',
+        image: 'profile_pic_andrew_brookins.jpg'
+      },
       manuel: {
         name: 'Manuel Aguirre',
         link: 'https://github.com/manuelaguirre',
@@ -54,6 +60,12 @@ module.exports = {
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
         title: 'Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
+      },
+      steve: {
+        name: 'Steve Lorello',
+        link: 'https://twitter.com/slorello',
+        title: '.NET Developer Advocate at Redis',
+        image: 'profile_pic_steve_lorello.jpg'
       }
     }
  },
@@ -97,7 +109,7 @@ module.exports = {
     footer: {
       style: 'dark',
       logo: {
-        alt: 'Redis Labs logo',
+        alt: 'Redis logo',
         src: 'img/redis_logo_red_white_rgb.svg',
         href: 'https://redis.com/', 
       },

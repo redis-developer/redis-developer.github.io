@@ -140,7 +140,7 @@ For each one the fields to be indexed, we create a Field object:
 
 Authors are stored in a Set, so they are serialized as prefixed indexed fields (`authors.[0], authors.[1]`, ...). We indexed up to 6 authors.
 To create the index, we invoke the create method passing the index name, the CreateOptions, and the fields.
-To see more options and all field types, see https://oss.redislabs.com/redisearch/Commands/#ftcreate
+To see more options and all field types, see https://oss.redis.com/redisearch/Commands/#ftcreate
 On server restart, you should run your Redis CLI MONITOR to see the following commands:
 
 ```

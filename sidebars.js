@@ -221,6 +221,7 @@ module.exports = {
                      'howtos/redistimeseries/index-redistimeseries',
                      'howtos/redistimeseries/getting-started/index-gettingstarted',
                      'howtos/redistimeseries/using-python/index-usingpython',
+                     'howtos/redistimeseries/using-dotnet/index-usingdotnet',
                      'howtos/redistimeseries/using-go/index-usinggo',
                      'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
                 ]
@@ -242,7 +243,15 @@ module.exports = {
                   'howtos/redisgraph/csvtograph/index-csvtograph',
               ]
             },
-               'howtos/redisbloom/index-redisbloom',
+            {
+              type:'category',
+              label: 'Redis Bloom Tutorial',
+              items:
+              [
+                'howtos/redisbloom/index-redisbloom',
+                'howtos/redisbloom/with-dotnet/redisbloom-withdotnet'
+              ]
+            },
                'howtos/redisgears/index-redisgears',
                'howtos/redisai/index-redisai',
                'howtos/leaderboard/index-leaderboard',
@@ -284,6 +293,7 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
+        'get-involved/devcember/index-devcember',
         {
           type: 'category',
           label: 'Hacktoberfest 2021',

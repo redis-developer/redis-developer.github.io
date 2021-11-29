@@ -1,9 +1,9 @@
 ---
 id: index-storingjson-nodejs
-title: How to store and retrieve JSON documents using NodeJS 
-sidebar_label: Storing and retrieving JSON documents using NodeJS
+title: How to store and retrieve JSON documents using Node.js 
+sidebar_label: Storing and retrieving JSON documents using Node.js
 slug: /howtos/redisjson/storing-json-using-nodejs
-authors: [ajeet]
+authors: [ajeet, simon]
 ---
 
 
@@ -407,7 +407,7 @@ If you're using redis-cli, you can look at the structure of the JSON document wi
 json.get ncc:locationdetails:121 .
 ```
 
-Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis.  Use the [RedisJSON path syntax page](https://oss.redislabs.com/redisjson/path/) to help you formulate the right query.
+Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis.  Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
 
 To test your code, start the server with:
 
@@ -433,7 +433,7 @@ If you have the correct JSON path in your code, visiting `http://localhost:80801
 - [RedisJSON](https://redisjson.io/)
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://oss.redislabs.com/redisjson/) in the Quickstart tutorial.
-
+- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
+- [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
 
 

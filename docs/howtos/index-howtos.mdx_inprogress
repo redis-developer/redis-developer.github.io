@@ -7,7 +7,7 @@ slug: /howtos
 
 import RedisCard from '@site/src/theme/RedisCard';
 
-This page holds a catalog with dozens of ready-to-use app listings from Redis Labs. Now it is easy to build, test and  deploy software that runs using Redis.
+This page holds a catalog with dozens of ready-to-use app listings from Redis. Now it is easy to build, test and  deploy software that runs using Redis.
 
 
 <div class="row">

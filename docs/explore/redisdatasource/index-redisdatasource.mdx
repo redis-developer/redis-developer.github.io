@@ -25,10 +25,10 @@ The Redis Data Source for Grafana is a plug-in that allows users to connect to t
 - Redis Cluster and Sentinel supported since version 1.2.
 - Data Source supports:
 
-   - [RedisTimeSeries](https://oss.redislabs.com/redistimeseries/): TS.GET, TS.INFO, TS.MRANGE, TS.QUERYINDEX, TS.RANGE
-   - [RedisGears](https://oss.redislabs.com/redisgears/): RG.DUMPREGISTRATIONS, RG.PYEXECUTE, RG.PYSTATS
-   - [RedisSearch](https://oss.redislabs.com/redisearch/): FT.INFO
-   - [RedisGraph](https://oss.redislabs.com/redisgraph/): GRAPH.QUERY, GRAPH.SLOWLOG
+   - [RedisTimeSeries](https://oss.redis.com/redistimeseries/): TS.GET, TS.INFO, TS.MRANGE, TS.QUERYINDEX, TS.RANGE
+   - [RedisGears](https://oss.redis.com/redisgears/): RG.DUMPREGISTRATIONS, RG.PYEXECUTE, RG.PYSTATS
+   - [RedisSearch](https://oss.redis.com/redisearch/): FT.INFO
+   - [RedisGraph](https://oss.redis.com/redisgraph/): GRAPH.QUERY, GRAPH.SLOWLOG
 
 <Tabs
   defaultValue="Using Homebrew"
@@ -177,7 +177,7 @@ Assuming that Docker Compose is already installed in your system, follow the bel
 
 #### Step 2. Execute the docker-compose CLI 
 
-Project provides `docker-compose.yml` to start Redis with all Redis Labs modules and Grafana.
+Project provides `docker-compose.yml` to start Redis with all modules and Grafana.
 
  ```bash
   docker-compose up -d
@@ -230,8 +230,8 @@ Data Source supports various Redis commands using custom components and provides
 
 ### Further References 
 
-- [Introducing the Redis Data Source Plug-in for Grafana](https://redislabs.com/blog/introducing-the-redis-data-source-plug-in-for-grafana/)
-- [How to Use the New Redis Data Source for Grafana Plug-in](https://redislabs.com/blog/how-to-use-the-new-redis-data-source-for-grafana-plug-in/)
-- [3 Real-Life Apps Built with Redis Data Source for Grafana](https://redislabs.com/blog/3-real-life-apps-built-with-redis-data-source-for-grafana/)
-- [How to Manage Real-Time IoT Sensor Data in Redis](https://redislabs.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
+- [Introducing the Redis Data Source Plug-in for Grafana](https://redis.com/blog/introducing-the-redis-data-source-plug-in-for-grafana/)
+- [How to Use the New Redis Data Source for Grafana Plug-in](https://redis.com/blog/how-to-use-the-new-redis-data-source-for-grafana-plug-in/)
+- [3 Real-Life Apps Built with Redis Data Source for Grafana](https://redis.com/blog/3-real-life-apps-built-with-redis-data-source-for-grafana/)
+- [How to Manage Real-Time IoT Sensor Data in Redis](https://redis.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
 - [Real-time observability with Redis and Grafana](https://grafana.com/go/observabilitycon/real-time-observability-with-redis-and-grafana/)

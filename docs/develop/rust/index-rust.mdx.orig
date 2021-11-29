@@ -70,7 +70,7 @@ Rust is installed and managed by the rustup tool.
 
 # Further Reference:
 
-- [Redis Enterprise and Rust](https://redislabs.com/lp/redis-enterprise-rust/)
+- [Redis Enterprise and Rust](https://redis.com/lp/redis-enterprise-rust/)
 - https://github.com/redis-developer/redis-rust-getting-started 
 
   </TabItem>
