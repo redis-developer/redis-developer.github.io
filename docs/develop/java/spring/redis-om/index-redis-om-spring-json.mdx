@@ -502,7 +502,7 @@ public class CompanyController {
 In our controller, we include our `CompanyRepository` and create simple method to respond to a GET request at
 `/api/companies/name/{name}` where `{name}` would be the string parameter we are passing as the `name` to find.
 
-Let's test the endpoint using CURL and passing the exact company name `Redis`:
+Let's test the endpoint using CURL by passing it the exact company name `Redis`:
 
 ```bash
 ➜ curl --location --request GET 'http://localhost:8080/api/companies/name/Redis'
