@@ -552,7 +552,7 @@ we tell ROMS to expect a `Point`  (`org.springframework.data.geo.Point`) and a
 Iterable<Company> findByLocationNear(Point point, Distance distance);
 ```
 
-Let's add a testing end point to our controller for our Geo query:
+Let's add a test endpoint to our controller for our Geo query:
 
 ```java
 @GetMapping("near")
