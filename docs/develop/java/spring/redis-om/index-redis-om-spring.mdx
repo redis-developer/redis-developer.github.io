@@ -14,25 +14,22 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 ## Introduction
 
-The Redis OM family of projects aim is to provide high-level abstractions idiomatically implemented for
- your language/platform of choice. We currently cater to the Node, Python, .Net and Spring communities.
+The aim of the Redis OM family of projects is to provide high-level abstractions idiomatically implemented for your language/platform of choice. We currently cater to the Node.js, Python, .NET and Spring communities.
 
-The Spring Framework is the leading full-stack Java/JEE application framework and Redis OM Spring (ROMS)
-goal is to enable developers to easily add the power of Redis to their Spring Boot applications.
+The Spring Framework is the leading full-stack Java/JEE application framework and Redis OM Spring (ROMS) goal is to enable developers to easily add the power of Redis to their Spring Boot applications.
 
-Redis OM Spring provides powerful repository and custom object-mapping abstractions built on top of the
-powerful Spring Data Redis (SDR) framework.
+Redis OM Spring provides powerful repository and custom object-mapping abstractions built on top of the amazing Spring Data Redis (SDR) framework.
 
 The current **preview** release provides all of SDRs capabilities plus:
 
 * A `@Document` annotation to map Spring Data models to Redis JSON documents
-* Enhances SDR's `@RedisHash` via `@EnableRedisEnhancedRepositories` to:
+* Enhancements to SDR's `@RedisHash` via `@EnableRedisEnhancedRepositories` to:
   - use Redis' native search engine (RediSearch) for secondary indexing
   - use [ULID](https://github.com/ulid/spec) indentifiers for `@Id` annotated fields
 * `RedisDocumentRepository` with automatic implementation of Repository interfaces for complex querying capabilities using `@EnableRedisDocumentRepositories`
 * Declarative Search Indices via `@Indexable`
 * Full-text Search Indices via `@Searchable`
-* `@Bloom` annotation to determine very fast, with and with high degree of certainty, whether a value is in a collection
+* `@Bloom` annotation to determine very quickly, and with high degree of certainty, whether a value is in a collection
 
 ## Tutorials to get you started
 
