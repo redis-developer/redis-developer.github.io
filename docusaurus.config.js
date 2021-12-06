@@ -174,19 +174,19 @@ module.exports = {
       ],
    copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`, 
    },
-    colorMode: {
+     colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
       disableSwitch: false,
     },
-    //announcementBar: {
-    //  id: 'redisconf20201cfp', // Any value that will identify this message.
-    //  content: '<p class="text">We\'re taking part in Hacktoberfest!</p> <a href="/hacktoberfest" class="btn">Join Us!</a>',
-    //  content: '<p class="text"></p> <a href="https://www.youtube.com/c/Redisinc/playlists?view=50&sort=dd&shelf_id=1" target="_blank" rel="noopener" class="btn"></a>',
-    //  backgroundColor: '#fff', // Defaults to `#fff`.
-    //  textColor: '#000', // Defaults to `#000`.
-    //  isCloseable: true, // Defaults to `true`.
-    //},
+    announcementBar: {
+      id: 'redisconf20201cfp', // Any value that will identify this message.
+      content: '<p class="text"> Grab $200 Off Coupon Code for Redis Enterprise Cloud </p> <a href="https://bit.ly/3ImXUEG" target="_blank" rel="noopener" class="btn">Click Here!</a>',
+    //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
+      backgroundColor: '#fff', // Defaults to `#fff`.
+      textColor: '#000', // Defaults to `#000`.
+      isCloseable: true, // Defaults to `true`.
+    },
   },
   presets: [
     [
