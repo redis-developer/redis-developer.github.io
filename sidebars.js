@@ -162,6 +162,14 @@ module.exports = {
       items: [
         'explore/index-explore',
         {
+          type: 'category',
+          label: 'RedisInsight v2.x',
+          items: [
+           'explore/redisinsightv2/index-redisinsightv2',
+           'explore/redisinsightv2/getting-started/index-gettingstarted',
+           ]
+         },
+        {
          type: 'category',
          label: 'RedisInsight',
          items: [
@@ -181,7 +189,7 @@ module.exports = {
           'explore/redisinsight/usinghelm/index-usinghelm',
         ]
         },
-          'explore/redisdatasource/index-redisdatasource',
+         'explore/redisdatasource/index-redisdatasource',
           'explore/redisexplorer/index-redisexplorer',
           'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
