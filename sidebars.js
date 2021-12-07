@@ -148,6 +148,33 @@ module.exports = {
                   'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
                   'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
                 ]
+              },
+              {
+                type: 'category',
+                label: 'Redis OM Dotnet',
+                items: [
+                  'develop/dotnet/redis-om-dotnet/connecting-to-redis/connecting',
+                  'develop/dotnet/redis-om-dotnet/add-and-retrieve-objects/add-and-retrieve-objects',
+                  'develop/dotnet/redis-om-dotnet/creating-an-index/creating-an-index',
+                  {
+                    type: 'category',
+                    label: 'Querying',
+                    items:[
+                      'develop/dotnet/redis-om-dotnet/searching/simple-text-queries/simple-text-queries',
+                      'develop/dotnet/redis-om-dotnet/searching/numeric-queries/numeric-queries',
+                      'develop/dotnet/redis-om-dotnet/searching/geo-filters/geo-filters',
+                    ]
+                  },
+                  {
+                    type: 'category',
+                    label: 'Aggregations',
+                    items:[
+                      'develop/dotnet/redis-om-dotnet/aggregations/intro/intro',
+                      'develop/dotnet/redis-om-dotnet/aggregations/apply-functions/apply-functions',
+                      'develop/dotnet/redis-om-dotnet/aggregations/groups/groups'
+                    ]
+                  }
+                ]
               }
             ]
           },          
