@@ -15,31 +15,31 @@ RedisConnectionProvider takes a [Redis URI](https://github.com/redis-developer/R
 
 Consequentially, all that needs to be done to initialize the client is calling the constructor of `RedisConnectionProvider` with a Redis uri. Alternatively, you can connect with a ConnectionConfiguration object.
 
-### Connecting to a Standalone Instance of Redis No Auth
+#### Connecting to a Standalone Instance of Redis No Auth
 
 ```csharp
 var provider = new RedisConnectionProvider("redis://hostname:port");
 ```
 
-### Connecting to Standalone Instance of Redis Just Password
+#### Connecting to Standalone Instance of Redis Just Password
 
 ```csharp
 var provider = new RedisConnectionProvider("redis://:password@hostname:port");
 ```
 
-### Connecting to Standalone Instance of Redis or Redis Enterprise Username and Password
+#### Connecting to Standalone Instance of Redis or Redis Enterprise Username and Password
 
 ```csharp
 var provider = new RedisConnectionProvider("redis://username:password@hostname:port");
 ```
 
-### Connecting to Standalone Instance of Redis Particular Database
+#### Connecting to Standalone Instance of Redis Particular Database
 
 ```csharp
 var provider = new RedisConnectionProvider("redis://username:password@hostname:port/4");
 ```
 
-### Connecting to Redis Sentinel
+#### Connecting to Redis Sentinel
 
 When connecting to Redis Sentinel, you will need to provide the sentinel 
 
@@ -47,7 +47,7 @@ When connecting to Redis Sentinel, you will need to provide the sentinel
 var provider = new RedisConnectionProvider("redis://username:password@sentinel-hostname:port?endpoint=another-sentinel-host:port&endpoint=yet-another-sentinel-hot:port&sentinel_primary_name=redisprimary");
 ```
 
-### Connecting to Redis Cluster
+#### Connecting to Redis Cluster
 
 Connecting to a Redis Cluster is similar to connecting to a standalone server, it is advisable however to include at least one other alternative endpoint in the URI as a query parameter in case of a failover event.
 
@@ -55,7 +55,7 @@ Connecting to a Redis Cluster is similar to connecting to a standalone server, i
 var provider = new RedisConnectionProvider("redis://username:password@hostname:port?endpoint=another-primary-host:port");
 ```
 
-## Getting Connection RedisCollection RedisAggregationSet
+## Getting the RedisConnection, RedisCollection, and RedisAggregationSet
 
 There are three primary drivers of Redis in this Library, which can all be accessed from the `provider` object after it's been initialize.
 
