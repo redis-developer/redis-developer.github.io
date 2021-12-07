@@ -194,11 +194,12 @@ module.exports = {
           items: [
            'explore/redisinsightv2/index-redisinsightv2',
            'explore/redisinsightv2/getting-started/index-gettingstarted',
-           ]
+           'explore/redisinsightv2/browser/index-browser', 
+          ]
          },
         {
          type: 'category',
-         label: 'RedisInsight',
+         label: 'RedisInsight v1.x',
          items: [
           'explore/redisinsight/index-redisinsight',
           'explore/redisinsight/getting-started/index-gettingstarted',
