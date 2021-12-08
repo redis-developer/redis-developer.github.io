@@ -181,7 +181,7 @@ module.exports = {
     },
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
-      content: '<p class="text"> Grab $200 Off Coupon Code for Redis Enterprise Cloud </p> <a href="https://bit.ly/3ImXUEG" target="_blank" rel="noopener" class="btn">Click Here!</a>',
+      content: '<p class="text"> Sign up to Redis Enterprise Cloud and use MATRIX200 to get $200 credits and a chance to win a Tesla </p> <a href="https://bit.ly/3ImXUEG" target="_blank" rel="noopener" class="btn">Click Here!</a>',
     //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
