@@ -59,6 +59,15 @@ module.exports = {
                 'develop/java/spring/index-spring',
                 {
                   type: 'category',
+                  label: 'Redis OM Tutorial',
+                  items: [
+                    'develop/java/spring/redis-om/redis-om-spring',
+                    'develop/java/spring/redis-om/redis-om-spring-json',
+                    'develop/java/spring/redis-om/redis-om-spring-hash',
+                  ]
+                },
+                {
+                  type: 'category',
                   label: 'Redis and Spring Course',
                   items: [
                     'develop/java/spring/redis-and-spring-course/index-redis-and-spring-course',
@@ -148,9 +157,36 @@ module.exports = {
                   'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
                   'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
                 ]
+              },
+              {
+                type: 'category',
+                label: 'Redis OM Dotnet',
+                items: [
+                  'develop/dotnet/redis-om-dotnet/connecting-to-redis/connecting',
+                  'develop/dotnet/redis-om-dotnet/add-and-retrieve-objects/add-and-retrieve-objects',
+                  'develop/dotnet/redis-om-dotnet/creating-an-index/creating-an-index',
+                  {
+                    type: 'category',
+                    label: 'Querying',
+                    items:[
+                      'develop/dotnet/redis-om-dotnet/searching/simple-text-queries/simple-text-queries',
+                      'develop/dotnet/redis-om-dotnet/searching/numeric-queries/numeric-queries',
+                      'develop/dotnet/redis-om-dotnet/searching/geo-filters/geo-filters',
+                    ]
+                  },
+                  {
+                    type: 'category',
+                    label: 'Aggregations',
+                    items:[
+                      'develop/dotnet/redis-om-dotnet/aggregations/intro/intro',
+                      'develop/dotnet/redis-om-dotnet/aggregations/apply-functions/apply-functions',
+                      'develop/dotnet/redis-om-dotnet/aggregations/groups/groups'
+                    ]
+                  }
+                ]
               }
             ]
-          },          
+          },
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
@@ -232,7 +268,7 @@ module.exports = {
                      'howtos/redistimeseries/using-python/index-usingpython',
                      'howtos/redistimeseries/using-dotnet/index-usingdotnet',
                      'howtos/redistimeseries/using-go/index-usinggo',
-                     'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
+                     'howtos/redistimeseries/using-prometheus/index-usingprometheus',
                 ]
               },
              {
@@ -242,9 +278,9 @@ module.exports = {
                   'howtos/redisgraph/index-redisgraph',
                   'howtos/redisgraph/getting-started/index-gettingstarted',
                   'howtos/redisgraph/explore-python-code/index-explorepythoncode',
-                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',  
+                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',
                   'howtos/redisgraph/using-python/index-usingpython',
-                  'howtos/redisgraph/using-ruby/index-usingruby', 
+                  'howtos/redisgraph/using-ruby/index-usingruby',
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
                   'howtos/redisgraph/using-go/index-usinggo',
                   'howtos/redisgraph/using-rust/index-usingrust',
@@ -311,7 +347,7 @@ module.exports = {
             'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
             'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story'
           ]
-        }, 
+        },
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]
