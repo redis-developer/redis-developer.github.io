@@ -311,7 +311,7 @@ This is how it works:
 1. First, the Redis Enterprise cluster custom resource (“CR” for short) is read and validated by the operator for a cluster specification.
 1. Secondly, cluster StatefulSet, service rigger, cluster admin secrets, RS/UI services are created.
 2. A Redis Enterprise Database CR is read and validated by the operator.
-3. The database is created on the cluster and the database access credentials are stored in a Kubernetes secret object. ?????
+3. The database is created on the cluster and the database access credentials are stored in a Kubernetes secret object. 
 4. The service rigger discovers the new database and configures the Kubernetes service for the database.
 5. An application workload uses the database secret and service for access to data.
 
