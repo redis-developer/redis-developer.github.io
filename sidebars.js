@@ -279,6 +279,7 @@ module.exports = {
                   'howtos/redisgraph/getting-started/index-gettingstarted',
                   'howtos/redisgraph/explore-python-code/index-explorepythoncode',
                   'howtos/redisgraph/using-redisinsight/index-usingredisinsight',
+                  'howtos/redisgraph/using-dotnet/index-using-dotnet',
                   'howtos/redisgraph/using-python/index-usingpython',
                   'howtos/redisgraph/using-ruby/index-usingruby',
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
