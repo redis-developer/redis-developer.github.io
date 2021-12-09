@@ -69,7 +69,7 @@ await graph.QueryAsync("pets",
     "MATCH(a:human),(p:pet) WHERE(a.name='Bob' and p.name='Honey') CREATE (a)-[:OWNS]->(p)");
 ```
 
-You could establish other relationships as well between nodes, say, for example, both Bob and Alice both walk honey you could add the connections:
+You could establish other relationships as well between nodes, say, for example, both Bob and Alice both walk Honey you could add the connections:
 
 ```csharp
 await graph.QueryAsync("pets",
@@ -80,7 +80,7 @@ await graph.QueryAsync("pets",
 
 ### Querying Relationships
 
-Now that we've created a few Nodes and Relationships between nodes, we can query things in the Graph, again using the `Query` and `QueryAsync`. So, for example, if we wanted to find all of Honey's owners, we would issue the following query:
+Now that we've created a few Nodes and Relationships between nodes, we can query things in the Graph, again using `Query` and `QueryAsync`. So, for example, if we wanted to find all of Honey's owners, we would issue the following query:
 
 ```csharp
 var matches = await graph.QueryAsync("pets", "MATCH(a:human),(p:pet) where (a)-[:OWNS]->(p) and p.name='Honey' return a");
@@ -101,7 +101,7 @@ We can also find all the walkers of Honey by finding all the human's who have a 
 matches = await graph.QueryAsync("pets", "MATCH(a:human),(p:pet) where (a)-[:WALKS]->(p) and p.name='Honey' return a");
 ```
 
-Then if we wanted to find all of Bob's dogs, we would query the graph and find all the canine's who have an OWNS relationship with a human named Bob:
+Then if we wanted to find all of Bob's dogs, we would query the graph and find all the canines who have an OWNS relationship with a human named Bob:
 
 ```csharp
 matches = await graph.QueryAsync("pets", "MATCH(a:human),(p:pet) where (a)-[:OWNS]->(p) and p.species='canine' and a.name='Bob' return p");
