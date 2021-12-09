@@ -34,7 +34,7 @@ var graph = new RedisGraph(db);
 
 ## Sending a Query
 
-Querying in RedisGraph applies to a wide array of operations, but fundamentally when executing queries with NRedisGraph, all you need to do is execute `graph.Query` or `graph.QueryAsync` passing in the name of the graph you want to query and the query you want to run.
+Querying in RedisGraph applies to a wide array of operations, but fundamentally when executing queries with NRedisGraph, all you need to do is execute `graph.Query` or `graph.QueryAsync` passing in the name of the graph you want to query and the query you want to run. For example, we'll be using the graph `pets` for the remainder of this tutorial, `pets` is the name of the key the graph will be stored at. Hence any call to `graph.Query` or `graph.QueryAsync` will first pass in `pets` to indicate the graph to work with.
 
 ### Creating a Node
 
