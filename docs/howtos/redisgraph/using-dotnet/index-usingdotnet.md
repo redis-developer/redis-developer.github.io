@@ -24,7 +24,7 @@ The above command will start an instance of Redis locally with the RedisGraph mo
 
 ## Connecting
 
-NRedisGraph makes use of the [StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis) project which is installed along with `NRedisGraph` to create the `RedisGraph` object you'll first create a `ConnectionMultiplexer`, and pull a reference, pull a reference to an `IDatabase` object from it, and then initialize the `RedisGraph` with the `IDatabase` object:
+NRedisGraph makes use of the [StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis) project which is installed along with `NRedisGraph`. To create the `RedisGraph` object you'll first create a `ConnectionMultiplexer`, and pull a reference to an `IDatabase` object from it, and then initialize the `RedisGraph` with the `IDatabase` object:
 
 ```csharp
 var muxer = ConnectionMultiplexer.Connect("localhost");
@@ -34,7 +34,7 @@ var graph = new RedisGraph(db);
 
 ## Sending a Query
 
-Querying in Redis Graph applies to a wide array of operations, but fundamentally when executing queries with NRedisGraph, all you need to do is execute `graph.Query` or `graph.QueryAsync` passing in the name of the graph you want to query and the query you want to run.
+Querying in RedisGraph applies to a wide array of operations, but fundamentally when executing queries with NRedisGraph, all you need to do is execute `graph.Query` or `graph.QueryAsync` passing in the name of the graph you want to query and the query you want to run.
 
 ### Creating a Node
 
