@@ -11,7 +11,18 @@ module.exports = {
       items: [
         'create/index-create',
         'create/rediscloud/index-rediscloud',
-        'create/heroku/index-heroku',
+          {
+             type: 'category',
+              label: 'Redis on Heroku',
+              items: [
+                  'create/heroku/index-heroku',
+                  'create/heroku/portal/index-heroku-portal',
+                  'create/heroku/herokujava/index-herokujava',
+                  'create/heroku/herokunodejs/index-herokunodejs',
+                  'create/heroku/herokupython/index-herokupython',
+                  'create/heroku/ratelimiting-go/index-ratelimitinggo'
+             ]
+            },
           {
               type: 'category',
               label: 'Redis on Azure Cache',
@@ -46,6 +57,15 @@ module.exports = {
               label: 'Spring',
               items: [
                 'develop/java/spring/index-spring',
+                {
+                  type: 'category',
+                  label: 'Redis OM Tutorial',
+                  items: [
+                    'develop/java/spring/redis-om/redis-om-spring',
+                    'develop/java/spring/redis-om/redis-om-spring-json',
+                    'develop/java/spring/redis-om/redis-om-spring-hash',
+                  ]
+                },
                 {
                   type: 'category',
                   label: 'Redis and Spring Course',
@@ -85,37 +105,38 @@ module.exports = {
         },
         'develop/C/index-c',
         {
-           type: 'category',
-           label: 'Node.js',
-           items: [
-             'develop/node/index-node',
-             'develop/node/gettingstarted/index-gettingstarted',
-               {
-                type: 'category',
-                label: 'Node.js Crash Course',
-                items: [
-                 'develop/node/node-crash-course/index-node-crash-course',
-                 'develop/node/node-crash-course/welcome/index-welcome',
-                 'develop/node/node-crash-course/whatisredis/index-whatisredis',
-                 'develop/node/node-crash-course/redisandnodejs/index-redisandnodejs',
-                 'develop/node/node-crash-course/introducingredisinsight/index-introducingredisinsight',
-                 'develop/node/node-crash-course/sampleapplicationoverview/index-sampleapplicationoverview',
-                 'develop/node/node-crash-course/runningtheapplication/index-runningtheapplication',
-                 'develop/node/node-crash-course/domainobjectswithhashes/index-domainobjectswithhashes',
-                 'develop/node/node-crash-course/introductiontomodules/index-introductiontomodules',
-                 'develop/node/node-crash-course/redisjson/index-redisjson',
-                 'develop/node/node-crash-course/redisearch/index-redisearch',
-                 'develop/node/node-crash-course/checkinswithstreams/index-checkinswithstreams',
-                 'develop/node/node-crash-course/managingsuccess/index-managingsuccess',
-                 'develop/node/node-crash-course/caching/index-caching',
-                 'develop/node/node-crash-course/sessionstorage/index-sessionstorage',
-                 'develop/node/node-crash-course/advancedstreams/index-advancedstreams',
-                 'develop/node/node-crash-course/redisbloom/index-redisbloom',
-                 'develop/node/node-crash-course/coursewrapup/index-coursewrapup',
-                    ]
-                },
+          type: 'category',
+          label: 'Node.js',
+          items: [
+            'develop/node/index-node',
+            'develop/node/gettingstarted/index-gettingstarted',
+            {
+              type: 'category',
+              label: 'Node.js Crash Course',
+              items: [
+                'develop/node/node-crash-course/index-node-crash-course',
+                'develop/node/node-crash-course/welcome/index-welcome',
+                'develop/node/node-crash-course/whatisredis/index-whatisredis',
+                'develop/node/node-crash-course/redisandnodejs/index-redisandnodejs',
+                'develop/node/node-crash-course/introducingredisinsight/index-introducingredisinsight',
+                'develop/node/node-crash-course/sampleapplicationoverview/index-sampleapplicationoverview',
+                'develop/node/node-crash-course/runningtheapplication/index-runningtheapplication',
+                'develop/node/node-crash-course/domainobjectswithhashes/index-domainobjectswithhashes',
+                'develop/node/node-crash-course/introductiontomodules/index-introductiontomodules',
+                'develop/node/node-crash-course/redisjson/index-redisjson',
+                'develop/node/node-crash-course/redisearch/index-redisearch',
+                'develop/node/node-crash-course/checkinswithstreams/index-checkinswithstreams',
+                'develop/node/node-crash-course/managingsuccess/index-managingsuccess',
+                'develop/node/node-crash-course/caching/index-caching',
+                'develop/node/node-crash-course/sessionstorage/index-sessionstorage',
+                'develop/node/node-crash-course/advancedstreams/index-advancedstreams',
+                'develop/node/node-crash-course/redisbloom/index-redisbloom',
+                'develop/node/node-crash-course/coursewrapup/index-coursewrapup',
               ]
-          },
+            },
+            'develop/node/redis-om/index-redis-om'
+          ]
+        },
           {
             type: 'category',
             label: 'Python',
@@ -136,9 +157,36 @@ module.exports = {
                   'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
                   'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
                 ]
+              },
+              {
+                type: 'category',
+                label: 'Redis OM Dotnet',
+                items: [
+                  'develop/dotnet/redis-om-dotnet/connecting-to-redis/connecting',
+                  'develop/dotnet/redis-om-dotnet/add-and-retrieve-objects/add-and-retrieve-objects',
+                  'develop/dotnet/redis-om-dotnet/creating-an-index/creating-an-index',
+                  {
+                    type: 'category',
+                    label: 'Querying',
+                    items:[
+                      'develop/dotnet/redis-om-dotnet/searching/simple-text-queries/simple-text-queries',
+                      'develop/dotnet/redis-om-dotnet/searching/numeric-queries/numeric-queries',
+                      'develop/dotnet/redis-om-dotnet/searching/geo-filters/geo-filters',
+                    ]
+                  },
+                  {
+                    type: 'category',
+                    label: 'Aggregations',
+                    items:[
+                      'develop/dotnet/redis-om-dotnet/aggregations/intro/intro',
+                      'develop/dotnet/redis-om-dotnet/aggregations/apply-functions/apply-functions',
+                      'develop/dotnet/redis-om-dotnet/aggregations/groups/groups'
+                    ]
+                  }
+                ]
               }
             ]
-          },          
+          },
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
@@ -150,8 +198,17 @@ module.exports = {
       items: [
         'explore/index-explore',
         {
+          type: 'category',
+          label: 'RedisInsight v2.x',
+          items: [
+           'explore/redisinsightv2/index-redisinsightv2',
+           'explore/redisinsightv2/getting-started/index-gettingstarted',
+           'explore/redisinsightv2/browser/index-browser', 
+          ]
+         },
+        {
          type: 'category',
-         label: 'RedisInsight',
+         label: 'RedisInsight v1.x',
          items: [
           'explore/redisinsight/index-redisinsight',
           'explore/redisinsight/getting-started/index-gettingstarted',
@@ -169,7 +226,7 @@ module.exports = {
           'explore/redisinsight/usinghelm/index-usinghelm',
         ]
         },
-          'explore/redisdatasource/index-redisdatasource',
+         'explore/redisdatasource/index-redisdatasource',
           'explore/redisexplorer/index-redisexplorer',
           'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
@@ -209,8 +266,9 @@ module.exports = {
                      'howtos/redistimeseries/index-redistimeseries',
                      'howtos/redistimeseries/getting-started/index-gettingstarted',
                      'howtos/redistimeseries/using-python/index-usingpython',
+                     'howtos/redistimeseries/using-dotnet/index-usingdotnet',
                      'howtos/redistimeseries/using-go/index-usinggo',
-                     'howtos/redistimeseries/using-prometheus/index-usingprometheus', 
+                     'howtos/redistimeseries/using-prometheus/index-usingprometheus',
                 ]
               },
              {
@@ -220,9 +278,10 @@ module.exports = {
                   'howtos/redisgraph/index-redisgraph',
                   'howtos/redisgraph/getting-started/index-gettingstarted',
                   'howtos/redisgraph/explore-python-code/index-explorepythoncode',
-                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',  
+                  'howtos/redisgraph/using-redisinsight/index-usingredisinsight',
+                  'howtos/redisgraph/using-dotnet/index-using-dotnet',
                   'howtos/redisgraph/using-python/index-usingpython',
-                  'howtos/redisgraph/using-ruby/index-usingruby', 
+                  'howtos/redisgraph/using-ruby/index-usingruby',
                   'howtos/redisgraph/using-javascript/index-usingjavascript',
                   'howtos/redisgraph/using-go/index-usinggo',
                   'howtos/redisgraph/using-rust/index-usingrust',
@@ -230,7 +289,15 @@ module.exports = {
                   'howtos/redisgraph/csvtograph/index-csvtograph',
               ]
             },
-               'howtos/redisbloom/index-redisbloom',
+            {
+              type:'category',
+              label: 'Redis Bloom Tutorial',
+              items:
+              [
+                'howtos/redisbloom/index-redisbloom',
+                'howtos/redisbloom/with-dotnet/redisbloom-withdotnet'
+              ]
+            },
                'howtos/redisgears/index-redisgears',
                'howtos/redisai/index-redisai',
                'howtos/leaderboard/index-leaderboard',
@@ -272,6 +339,7 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
+        'get-involved/devcember/index-devcember',
         {
           type: 'category',
           label: 'Hacktoberfest 2021',
@@ -280,7 +348,7 @@ module.exports = {
             'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
             'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story'
           ]
-        }, 
+        },
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
       ]

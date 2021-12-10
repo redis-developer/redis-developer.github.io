@@ -5,7 +5,7 @@ sidebar_label: How to index JSON documents using RedisJSON & RediSearch
 slug: /howtos/redisjson/jsonindex-document
 ---
 
-RedisJSON 2.0 Private Preview was announced for the first time during RedisConf 2021. With this newer version, RedisJSON will fully support JSONPath expressions and [Active-Active geo-distribution](https://redislabs.com/redis-enterprise/technology/active-active-geo-distribution/). The Active-Active implementation is based on [Conflict-free Replicated Data-Types (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
+RedisJSON 2.0 Private Preview was announced for the first time during RedisConf 2021. With this newer version, RedisJSON will fully support JSONPath expressions and [Active-Active geo-distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/). The Active-Active implementation is based on [Conflict-free Replicated Data-Types (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
 
 Prior to v2.2, RediSearch only supported Redis hashes. Going forward, RediSearch will support  RedisJSON documents. This opens a powerful new set of document-based indexing use cases. In addition, RediSearch now provides query profiling. This will empower developers to understand and optimize their RediSearch queries, increasing their developer experience.
 
@@ -14,7 +14,7 @@ RediSearch has been providing indexing and search capabilities on hashes. Under 
 
 By exposing its capabilities to other modules, RedisJSON gives RediSearch the ability to index JSON documents so users can now find documents by indexing and querying the content. These combined modules give you a powerful, low latency, JSON-oriented document database!
 
-### Prerequisite:
+### Prerequisites:
 
 - Redis 6.x or later
 - RediSearch 2.2 or later
@@ -181,6 +181,7 @@ Please Note: It is not possible to index JSON object and JSON arrays.
 
 ### References
 
+- [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
 
 
 

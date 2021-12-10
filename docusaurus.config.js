@@ -37,18 +37,42 @@ module.exports = {
         title: 'Sr. Backend Software Engineer at Globality, Inc.',
         image: 'profile_pic_julian_mateu.jpg'
       },
-     manuel: {
-       name: 'Manuel Aguirre',
-       link: 'https://github.com/manuelaguirre',
-       title: 'Backend Engineer at Baseline Spain',
-       image: 'profile_pic_manuel_aguirre.jpg'
+      andrew: {
+        name: 'Andrew Brookins',
+        link: 'https://twitter.com/abrookins',
+        title: 'Curriculum Software Engineer',
+        image: 'profile_pic_andrew_brookins.jpg'
       },
-      christian: { 
+      manuel: {
+        name: 'Manuel Aguirre',
+        link: 'https://github.com/manuelaguirre',
+        title: 'Backend Engineer at Baseline Spain',
+        image: 'profile_pic_manuel_aguirre.jpg'
+      },
+      guyroyse: {
+        name: 'Guy Royse',
+        link: 'http://guy.dev',
+        title: 'Developer Advocate at Redis',
+        image: 'profile_pic_guy_royse.jpg'
+      },
+      christian: {
         name: 'Christian Mague',
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
         title: 'Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
       },
+      steve: {
+        name: 'Steve Lorello',
+        link: 'https://twitter.com/slorello',
+        title: '.NET Developer Advocate at Redis',
+        image: 'profile_pic_steve_lorello.jpg'
+      },
+      bsb: {
+        name: 'Brian Sam-Bodden',
+        link: 'https://twitter.com/bsbodden',
+        title: 'Developer Advocate at Redis',
+        image: 'profile_pic_brian_sam-bodden.jpeg'
+      }
     }
  },
   themeConfig: {
@@ -57,7 +81,7 @@ module.exports = {
       trackingID: 'GTM-W8Z6BLQ',
     },
     prism : {
-      additionalLanguages: ['csharp', 'php', 'ruby']
+      additionalLanguages: ['csharp', 'php', 'ruby', 'java', 'rust', 'elixir', 'groovy']
 
     },
 
@@ -91,9 +115,9 @@ module.exports = {
     footer: {
       style: 'dark',
       logo: {
-        alt: 'Redis Labs logo',
+        alt: 'Redis logo',
         src: 'img/redis_logo_red_white_rgb.svg',
-        href: 'https://redis.com/', 
+        href: 'https://redis.com/',
       },
       links: [
         {
@@ -154,21 +178,21 @@ module.exports = {
           ],
         },
       ],
-   copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`, 
+   copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`,
    },
-    colorMode: {
+     colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
       disableSwitch: false,
     },
-    //announcementBar: {
-    //  id: 'redisconf20201cfp', // Any value that will identify this message.
-    //  content: '<p class="text">We\'re taking part in Hacktoberfest!</p> <a href="/hacktoberfest" class="btn">Join Us!</a>',
-    //  content: '<p class="text"></p> <a href="https://www.youtube.com/c/Redisinc/playlists?view=50&sort=dd&shelf_id=1" target="_blank" rel="noopener" class="btn"></a>',
-    //  backgroundColor: '#fff', // Defaults to `#fff`.
-    //  textColor: '#000', // Defaults to `#000`.
-    //  isCloseable: true, // Defaults to `true`.
-    //},
+    announcementBar: {
+      id: 'redisconf20201cfp', // Any value that will identify this message.
+      content: '<p class="text"> Sign up to Redis Enterprise Cloud and use MATRIX200 to get $200 credits and a chance to win a Tesla </p> <a href="https://bit.ly/3ImXUEG" target="_blank" rel="noopener" class="btn">Click Here!</a>',
+    //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
+      backgroundColor: '#fff', // Defaults to `#fff`.
+      textColor: '#000', // Defaults to `#000`.
+      isCloseable: true, // Defaults to `true`.
+    },
   },
   presets: [
     [
@@ -191,6 +215,6 @@ module.exports = {
     ],
   ],
   plugins: [
-    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm') 
+    'docusaurus-plugin-sass', path.resolve(__dirname, 'plugins', 'gtm')
   ],
 };
