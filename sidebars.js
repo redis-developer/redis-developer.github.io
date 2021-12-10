@@ -36,7 +36,15 @@ module.exports = {
         'create/gcp/index-gcp',
         'create/aws/index-aws',
         'create/docker/index-docker',
-        'create/kubernetes/index-kubernetes',
+        {
+          type: 'category',
+          label: 'Redis on Kubernetes',
+          items: [
+             'create/kubernetes/index-kubernetes',
+             'create/kubernetes/kubernetes-gke/index-kubernetes-gke',
+             'create/kubernetes/kubernetes-operator/index-kubernetes-operator'
+           ]
+         },
         'create/homebrew/index-homebrew',
         'create/windows/index-windows',
         'create/from-source/index-from-source',
