@@ -18,7 +18,7 @@ Kubernetes is designed for automation. Out of the box, you get lots of built-in 
 
 Think of scaling nodes up, or upgrading to a new version, or disaster recovery for your stateful application — these kinds of operations often need very specific steps, and typically require manual intervention. Kubernetes cannot know all about every stateful, complex, clustered application. Kubernetes, on its own, does not know the configuration values for, say, a Redis database cluster, with its arranged memberships and stateful, persistent storage. Additionally, scaling stateful applications in Kubernetes is not an easy task and requires manual intervention.
 
-### Stateful Vs Stateless Applications
+### Stateful vs Stateless Applications
 
 Let’s try to understand the difference between [stateful](https://kubernetes.io/docs/tutorials/stateful-application/)  versus [stateless](https://kubernetes.io/docs/tutorials/stateless-application/) applications with a simple example. Consider a Kubernetes cluster running a simple web application (without any operator). The YAML file below allows you to create two replicas of NGINX (a stateless application).
 
