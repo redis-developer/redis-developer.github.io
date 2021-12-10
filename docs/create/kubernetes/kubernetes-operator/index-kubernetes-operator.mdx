@@ -50,7 +50,7 @@ Let’s try to understand the difference between [stateful](https://kubernetes.i
 
 In the example above, a Deployment object named nginx-deployment is created under a namespace “web,” indicated by the .metadata.name field. It creates two replicated Pods, indicated by the .spec.replicas field. The .spec.selector field defines how the Deployment finds which Pods to manage. In this case, you select a label that is defined in the Pod template (app: nginx). The template field contains the following subfields: the Pods are labeled app: nginx using the .metadata.labels field and the Pod template's specification indicates that the Pods run one container, nginx, which runs the nginx Docker Hub image at version 1.14.2. Finally, it creates one container and names it nginx.
 
-Run the below command to create the Deployment resource:
+Run the command below to create the Deployment resource:
 
 
 ```
