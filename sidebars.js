@@ -307,7 +307,16 @@ module.exports = {
               ]
             },
                'howtos/redisgears/index-redisgears',
-               'howtos/redisai/index-redisai',
+             {
+              type:'category',
+              label: 'RedisAI Tutorial',
+              items:
+              [
+                'howtos/redisai/index-redisai',
+                'howtos/redisai/getting-started/index-gettingstarted',
+                'howtos/redisai/market-basket-analysis/index-market-basket-analysis'
+               ]
+              },
                'howtos/leaderboard/index-leaderboard',
                'howtos/ratelimiting/index-ratelimiting',
                'howtos/caching/index-caching',
