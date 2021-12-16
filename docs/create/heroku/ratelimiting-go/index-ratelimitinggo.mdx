@@ -10,15 +10,20 @@ authors: [ajeet]
 Rate limiting is a mechanism that many developers may have to deal with at some point in their life. It’s useful for a variety of purposes like sharing access to limited resources or limiting the number of requests made to an API endpoint and responding with a 429 status code. Building a rate limiter with Redis is easy because of two commands [INCR](https://redis.io/commands/incr) and [EXPIRE](https://redis.io/commands/expire). The basic concept is that you want to limit requests to a particular service in a given time period. Let’s say we have a service that has users identified by an API key. This service states that it is limited to 20 requests in any given minute.
 
 In this tutorial, we will see how to deploy Rate Limiting using Redis and Go.
-### Step 1. Create a Redis Enterprise Cloud Database
 
-Create your free Redis Enterprise Cloud account. [Follow this link to create a Redis Enterprise Cloud](https://developer.redis.com/create/rediscloud) subscription and database as shown below:
+#### Step 1. Create Redis Enterprise Cloud
+
+Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free)
+
+![recloud](images/try-free.png)
+
+[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
 
 
-![alt_text](images/image1.png "image_tooltip")
+![heroku](images/launch_database.png)
 
+The database endpoint URL is unique for all and hence might be different in your case. Save it for future reference.
 
-Save the database endpoint URL and password for future reference.
 
 
 ### Step 2. Create a Heroku account
