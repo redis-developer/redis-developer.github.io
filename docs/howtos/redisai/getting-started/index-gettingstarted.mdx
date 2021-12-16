@@ -64,6 +64,15 @@ Ensure that Python3.8+ is installed.
   brew install python
  ```
 
+Create a Python virtual environment and activate it:
+
+```bash
+ python3 -m venv venv
+ . ./venv/bin/activate
+```
+
+
+
 ### Step 3. Install PIP
 
  ```bash
@@ -95,7 +104,7 @@ RedisAI supports DL/ML identifiers and their respective backend libraries, inclu
 A complete list of supported backends is in the [release notes for each version](https://docs.redis.com/latest/modules/redisai/release-notes/redisai-1.0-release-notes/).
 
  ```bash
-  python3 build.py
+  python build.py
  ```
 
 ### Step 7: Deploy the Model into RedisAI
@@ -131,7 +140,7 @@ This will set the key 'iris' to the 2x4 RedisAI tensor (i.e. 2 sets of inputs of
  ```
 
 where, 
-- iris refers to the tensor's key name,
+- iris:in refers to the tensor's key name,
 - FLOAT is a tensor's data type
 - {5.0 3.4 1.6 0.4} refers to 1st item with 4 features
 - {6.0 2.2 5.0 1.5} refers to 2nd item with 4 features
