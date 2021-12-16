@@ -34,11 +34,16 @@ You can quickly and easily get your apps up and running with Redis Enterprise Cl
 
 #### Step 1. Create Redis Enterprise Cloud
 
-Create your free Redis Enterprise Cloud account. [Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
+Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free) 
 
-![heroku](rediscloud_timeseries.png)
+![recloud](try-free.png)
 
-Save the database endpoint URL and password for future reference.
+[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
+
+
+![heroku](launch_database.png)
+
+The database endpoint URL is unique for all and hence might be different in your case. Save it for future reference.
 
 
 #### Step 2. Create a Heroku account
@@ -92,8 +97,10 @@ Run the commands below to get a functioning Git repository that contains a simpl
 
 #### Step 6. Setting up Environmental variable
 
-Go to the Heroku dashboard, click "Settings" and set REDIS_ENDPOINT_URI and REDIS_PASSWORD under the Config Vars.
-Refer to Step 1 for the correct values to use.
+[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
+Go to the Heroku dashboard, click "Settings" and set REDIS_ENDPOINT_URI and REDIS_PASSWORD under the Config Vars.(Please note that the database endpoint is unique and might be different in your case. Please enter the values accordingly)
+
+Refer to [Step 1](/create/heroku/portal#step-1-create-redis-enterprise-cloud) for the correct values to use.
 
 ![heroku](heroku_app01_env.png)
 
