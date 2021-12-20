@@ -1,100 +1,125 @@
 ---
 id: index-usingjava
-title: How to cache JSON data in Redis with Java
+title: Modeling JSON Documents with Redis and Java
 sidebar_label: RedisJSON and Java
 slug: /howtos/redisjson/using-java
-authors: [ajeet]
 ---
 
-[JRedisJSON](https://github.com/RedisJSON/JRedisJSON) is a Java client library for RedisJSON. This client provides access to RedisJSON's Redis API, and provides back-and-forth serialization between Java's and its objects. This client supports the core RedisJSON commands at the moment.
+RedisJSON lets you store, index, and query JSON data in Redis. Jedis, a Java driver for Redis, provides full support for RedisJSON as of the 4.0 release.
 
+Follow along with the steps below to get started with Java and RedisJSON.
 
-Follow the below steps to get started with RedisJSON and Java:
+### 1. Run the RedisMod Docker container
 
-### Step 1. Run RedisMod Docker container
-
-This simple container image bundles together the latest stable releases of Redis and select Redis modules from Redis Lab. 
-
+The RedisMod docker container bundles the Redis modules that power RedisJSON. To get a running Redis instance with RedisJSON, run the following bash command:
 
 ```bash
  docker run -d -p 6379:6379 redislabs/redismod:latest
 ```
 
-### Step 2. Clone the repository
+### 2. Add Jedis as a Dependency
 
-```bash
- git clone https://github.com/RedisJSON/JRedisJSON
+You'll need to add Jedis to your Java project. If you're using [Maven](https://maven.apache.org/install.html), the dependency will look something like this:
+
+```xml
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>4.0.0<version>
+</dependency>
 ```
 
-### Step 3. Install Maven
+Replace the version with your desired version of Jedis, but note that you'll need Jedis 4.0 or greater to get RedisJSON support.
 
-If you have already installed Maven, then it will show that maven 3.8.1 is already installed and up-to-date.
-If not, then run the below command:
+### 3. Connect to Redis
 
-
-```bash
- brew install mvn
-```
-
-
-### Step 4. Create a file 
-
-Copy the below content and save a file name redisdeveloper.java
+You'll need to initialize you connection to Redis. This means configuring and creating a `UnifiedJedis` instance:
 
 ```java
- import redis.clients.jedis.Jedis;
-import com.redislabs.modules.rejson.JReJSON;
-
-// First get a connection
-JReJSON client = new JReJSON("localhost", 6379);
-
-// Setting a Redis key name _foo_ to the string _"bar"_, and reading it back
-client.set("foo", "bar");
-String s0 = (String) client.get("foo");
-
-// Omitting the path (usually) defaults to the root path, so the call above to
-// `get()` and the following ones // are basically interchangeable
-String s1 = (String) client.get("foo", new Path("."));
-String s2 = (String) client.get("foo", Path.ROOT_PATH);
-
-// Any Gson-able object can be set and updated
-client.set("obj", new Object());             // just an empty object
-client.set("obj", null, new Path(".zilch"));
-Path p = new Path(".whatevs");
-client.set("obj", true, p);
-client.set("obj", 42, p);
-client.del("obj", p);                        // back to almost nothing
+  HostAndPort config = new HostAndPort(Protocol.DEFAULT_HOST, 6479);
+  PooledJedisConnectionProvider provider = new PooledJedisConnectionProvider(config);
+  UnifiedJedis client = new UnifiedJedis(provider);
 ```
 
+## 4. Model Your Domain
 
-### Step 5. Run the maven executables
+You'll need to represent your data by creating [POJOs](https://en.wikipedia.org/wiki/Plain_old_Java_object). Jedis will then help you serialize these objects to JSON.
 
-Use the "clean" command to delete all previously compiled Java .class files and resources (like .properties) in your project. Let your build start from a clean slate. Also, you can pass "install" to let it compile, test & package your Java project and even install/copy your built .jar/.war file into your local Maven repository.
+Suppose you're building an online learning platform, and you want to represent 
+students. Let's create a simple POJO to represent these students:
 
-```bash
- mvn clean install -Dmaven.test.skip=true
+```java
+private class Student {
+    private String firstName;
+    private String lastName;
+
+    public Student(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+      return firstName;
+    }
+
+    public String getLastName() {
+      return lastName;
+    }
+}
 ```
 
+Now we can create some students and store them in Redis as JSON:
 
-```
- 1628854852.903490 [0 172.17.0.1:60194] "JSON.SET" "obj" "." "{\"str\":\"string\",\"bTrue\":true}"
- 1628854852.905266 [0 172.17.0.1:60194] "JSON.GET" "obj" "bTrue" "str"
- 1628854852.909629 [0 172.17.0.1:60198] "FLUSHDB"
- 1628854852.911907 [0 172.17.0.1:60202] "JSON.SET" "foobar" "." "{\"foo\":\"bar\"}"
- 1628854852.913345 [0 172.17.0.1:60202] "JSON.TYPE" "foobar" ".foo[1]"
- 1628854852.918301 [0 172.17.0.1:60206] "FLUSHDB"
- 1628854852.920702 [0 172.17.0.1:60210] "JSON.SET" "obj" "." "{\"str\":\"string\",\"bTrue\":true}"
- 1628854852.922083 [0 172.17.0.1:60210] "JSON.SET" "obj" ".none" "\"strangle\"" "XX"
- 1628854852.926862 [0 172.17.0.1:60214] "FLUSHDB"
- 1628854852.930541 [0 172.17.0.1:60218] "JSON.SET" "test" "." "\"foo\""
- 1628854852.932374 [0 172.17.0.1:60218] "JSON.GET" "test" ".bar"
- 1628854852.937640 [0 172.17.0.1:60222] "FLUSHDB"
- 1628854852.940467 [0 172.17.0.1:60226] "JSON.SET" "obj" "." "{\"str\":\"string\",\"bTrue\":true}"
- 1628854852.941928 [0 172.17.0.1:60226] "JSON.SET" "obj" ".none" "\"strangle\"" "NX"
- 1628854852.943441 [0 172.17.0.1:60226] "JSON.GET" "obj" ".none"
+```java
+Student maya = new Student("Maya", "Jayavant");
+client.jsonSet("student:111", maya);
+
+Student oliwia = new Student("Oliwia", "Jagoda");
+client.jsonSet("student:112", oliwia);
 ```
 
-### References
+Notice we pass the `Student` instances to the `jsonSet()` method. Jedis then serializes the objects and stores them in Redis at the specified keys (in this case, "student:111" and "student:112").
+
+## Querying and indexing JSON
+
+If we want to be able to query this JSON, we'll need to create an index. Let's 
+create an index on the "firstName" and "lastName" fields. To do this:
+
+1. We define which fields to index ("firstName" and "lastName").
+2. We set up the index definition to recognize JSON and include only those 
+documents 
+whose key starts with "student:".
+3. Then we actually create the index, called "student-index", by calling `ftCreate
+()`.
+
+```java
+Schema schema = new Schema().addTextField("$.firstName", 1.0).addTextField("$" +
+            ".lastName", 1.0);
+IndexDefinition rule = new IndexDefinition(IndexDefinition.Type.JSON)
+        .setPrefixes(new String[]{"student:"});
+client.ftCreate("student-index",
+            IndexOptions.defaultOptions().setDefinition(rule),
+            schema);
+```
+
+With an index now defined, we can query our JSON. Let's find all students whose 
+name begins with "maya":
+
+```java
+Query q = new Query("@\\$\\" + ".firstName:maya*");
+SearchResult mayaSearch = client.ftSearch("student-index", q);
+```
+
+We can then iterate over our search results:
+    
+```java
+List<Document> docs = mayaSearch.getDocuments();
+for (Document doc : docs) {
+   System.out.println(doc);
+}
+```
+
+This example just scratches the surface. You can atomically manipulate JSON documents and query them in a variety of ways. See the [RedisJSON docs](https://oss.redis.com/redisjson/), the [RediSearch](https://oss.redis.com/redisearch/) docs, and our course, ["Querying, Indexing, and Full-text Search in Redis"](https://university.redis.com/courses/ru203/), for a lot more examples. 
 
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
 - [RedisJSON and Python](/howtos/redisjson/using-python)
@@ -103,3 +128,4 @@ Use the "clean" command to delete all previously compiled Java .class files and 
 - Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
 - [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)
+
