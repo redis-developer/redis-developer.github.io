@@ -130,7 +130,7 @@ Open https://thawing-shore-07338.herokuapp.com/    to see your application
    HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
   ```
 
-- The Ranks of AAPL of 2.6 trillions are stored in a ZSET.
+- The market capitalization for each company is also stored in a ZSET (Redis Sorted Set).
 
    ```bash
     ZADD  companyLeaderboard 2600000000000 company:AAPL
