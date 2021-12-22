@@ -125,7 +125,7 @@ Open https://thawing-shore-07338.herokuapp.com/    to see your application
 
 ####  How the data is stored:
 
-- The AAPL's details - market cap of 2.6 triillions and USA origin - are stored in a hash like below:
+- The AAPL's details - market cap of 2.6 triillions and USA origin - are stored in a Redis hash like this:
   ```bash
    HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
   ```
