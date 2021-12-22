@@ -20,7 +20,8 @@ module.exports = {
                   'create/heroku/herokujava/index-herokujava',
                   'create/heroku/herokunodejs/index-herokunodejs',
                   'create/heroku/herokupython/index-herokupython',
-                  'create/heroku/ratelimiting-go/index-ratelimitinggo'
+                  'create/heroku/ratelimiting-go/index-ratelimitinggo',
+                  'create/heroku/herokuruby/index-herokuruby'
              ]
             },
           {
