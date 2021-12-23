@@ -173,7 +173,7 @@ Then we add messages to this room by writing to a sorted set:
  ```bash
   ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
  ```
-We use a stringified JSON for keeping the message structure and simplify the implementation details for this demo-app.
+We use a stringified JSON object for keeping the message structure and simplify the implementation details for this demo-app.
 
 Populate the "General" room with messages. Messages are added to the sorted set with id of the "General" room: room:0
 
