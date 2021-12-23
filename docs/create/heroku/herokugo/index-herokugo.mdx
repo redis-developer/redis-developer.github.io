@@ -134,7 +134,7 @@ When the server starts, the initialization step occurs. At first, a new Redis co
 
 #### Initialization
 
-For simplicity, a key with total_users value is checked: if it does not exist, we fill the Redis database with initial data. EXISTS total_users (checks if the key exists)
+For simplicity, a key named `total_users` is checked: if it does not exist, we fill the Redis database with initial data. `EXISTS total_users` (checks if the key exists).
 The demo data initialization is handled in multiple steps:
 
 #### Creating of demo users
