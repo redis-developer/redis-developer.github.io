@@ -229,7 +229,7 @@ User data is stored in a hash where each user entry contains the next values:
 - Additionally a set of rooms is associated with user
 - Rooms are sorted sets which contains messages where score is the timestamp for each message
 - Each room has a name associated with it
-- Online set is global for all users is used for keeping track on which user is online.
+- The "online" set is global for all users is used for keeping track on which user is online.
 - User hash set is accessed by key user:{userId}. The data for it stored with HSET key field data. User id is calculated by incrementing the total_users key (INCR total_users)
 
 - Username is stored as a separate key (username:{username}) which returns the userId for quicker access and stored with SET username:{username} {userId}.
