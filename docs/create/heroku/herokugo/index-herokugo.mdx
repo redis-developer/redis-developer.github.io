@@ -179,7 +179,7 @@ Populate the "General" room with messages. Messages are added to the sorted set 
 
 #### Pub/sub
 
-After initialization, a pub/sub subscription is created: SUBSCRIBE MESSAGES. At the same time, each server instance will run a listener on a message on this channel to receive real-time updates.
+After initialization, a pub/sub subscription is created: `SUBSCRIBE MESSAGES`. At the same time, each server instance will run a listener on a message on this channel to receive real-time updates.
 
 Again, for simplicity, each message is serialized to JSON, which we parse and then handle in the same manner, as WebSocket messages.
 
