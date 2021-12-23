@@ -160,7 +160,7 @@ For handling rooms for each user, we have a set that holds the room ids. Here's 
   SADD user:1:rooms "0"
  ```
 
-Populate private messages between users. At first, private rooms are created: if a private room needs to be established, for each user a room id: room:1:2 is generated, where numbers correspond to the user ids in ascending order.
+Next, we need to populate private messages between users. At first, private rooms are created: if a private room needs to be established, for each user a room id: `room:1:2` is generated, where numbers correspond to the user ids in ascending order.
 
 E.g. Create a private room between 2 users: 
  
