@@ -201,7 +201,7 @@ Here we have added a user with id 1 to the set `online_users`
 
 After that, a message is broadcast to the clients to notify them that a new user is joined the chat.
 
-- Disconnect. It works similarly to the connection event, except we need to remove the user for online_users set and notify the clients: SREM online_users 1 (makes user with id 1 offline).
+- Disconnect. It works similarly to the connection event, except we need to remove the user for online_users set and notify the clients: `SREM online_users 1` (makes user with id 1 offline).
 
 - Message. A user sends a message, and it needs to be broadcasted to the other clients. The pub/sub allows us also to broadcast this message to all server instances which are connected to this Redis:
 
