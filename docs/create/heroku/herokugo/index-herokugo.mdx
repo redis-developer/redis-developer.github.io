@@ -234,7 +234,7 @@ User data is stored in a hash where each user entry contains the next values:
 
 - Usernames are stored as separate keys (`username:{username}`) which returns the userId for quicker access and stored with `SET username:{username} {userId}`.
 
-- Rooms which user belongs too are stored at user:{userId}:rooms as a set of room ids. A room is added by SADD user:{userId}:rooms {roomId} command.
+- Rooms that a user belongs to are stored at `user:{userId}:rooms` as a set of room ids. A room is added by the `SADD user:{userId}:rooms {roomId}` command.
 
 - Messages are stored at room:{roomId} key in a sorted set (as mentioned above). They are added with ZADD room:{roomId} {timestamp} {message} command. Message is serialized to an app-specific JSON string.
 
