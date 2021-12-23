@@ -203,7 +203,7 @@ After that, a message is broadcast to the clients to notify them that a new user
 
 - Disconnect. It works similarly to the connection event, except we need to remove the user for online_users set and notify the clients: `SREM online_users 1` (makes user with id 1 offline).
 
-- Message. A user sends a message, and it needs to be broadcasted to the other clients. The pub/sub allows us also to broadcast this message to all server instances which are connected to this Redis:
+- Message. A user sends a message, and it needs to be broadcast to the other clients. The pub/sub also allows us to broadcast this message to all server instances which are connected to this Redis server:
 
  ```
   PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
