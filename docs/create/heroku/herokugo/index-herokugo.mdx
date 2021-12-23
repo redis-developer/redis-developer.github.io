@@ -238,7 +238,7 @@ User data is stored in a hash where each user entry contains the next values:
 
 - Messages are stored at `room:{roomId}` key in a sorted set (as mentioned above). They are added with the `ZADD room:{roomId} {timestamp} {message}` command. The message is serialized to an app-specific JSON string.
 
-### How the data is accessed?
+### How is the data accessed?
 
 Get User HGETALL user:{id}. 
 
