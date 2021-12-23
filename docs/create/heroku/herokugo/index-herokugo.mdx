@@ -199,7 +199,7 @@ A global set with online_users key is used for keeping the online state for each
 
 Here we have added a user with id 1 to the set `online_users`
 
-After that, a message is broadcasted to the clients to notify them that a new user is joined the chat.
+After that, a message is broadcast to the clients to notify them that a new user is joined the chat.
 
 - Disconnect. It works similarly to the connection event, except we need to remove the user for online_users set and notify the clients: SREM online_users 1 (makes user with id 1 offline).
 
