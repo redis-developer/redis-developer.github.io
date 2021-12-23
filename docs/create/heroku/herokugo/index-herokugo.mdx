@@ -187,7 +187,7 @@ Pub/sub allows us to connect multiple servers written in different languages wit
 
 #### Real-time chat and session handling
 
-When a WebSocket/real-time server is instantiated, which listens for the next events:
+A WebSocket/real-time server is instantiated, which then listens for the next events:
 
 - Connection. A new user is connected. At this point, a user ID is captured and saved to the session (which is cached in Redis). Note, that session caching is language/library-specific and it's used here purely for persistence and maintaining the state between server reloads.
 
