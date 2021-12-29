@@ -1,77 +1,27 @@
 ---
 id: index-aws
-title: Create Redis database on AWS 
-sidebar_label: Redis on AWS
+title: Overview  
+sidebar_label: Overview
 slug: /create/aws
-authors: [ajeet]
 ---
 
-Redis Enterprise Cloud on AWS is a fully Managed Redis Enterprise as a service. Designed for modern distributed applications, Redis Enterprise Cloud on AWS is known for its high performance, infinite scalability and true high availability.
+import RedisCard from '@site/src/theme/RedisCard';
 
-Follow the below steps to setup Redis Enterprise Cloud hosted over AWS Cloud:
+The following links provide you with the available options to run apps on Heroku using Redis:
 
-### Step 1. Create free cloud account
-
-Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
-
-![My Image](images/try-free.png)
-
-
-
-### Step 2. Create Your subscription
-
-Next, you will have to create  Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "Create your Subscription". 
-
-![My Image](images/create_subscription.png)
-
-
-### Step 3. Select the right Subscription Plan
-
-Select "Fixed Plan" for low throughout application as for now.
-
-![My Image](images/select_subscription.png)
-
-### Step 4.  Select cloud vendor
- 
-For the cloud provider, select your preferred cloud (for demo purpose)
-
-
-
-![My Image](images/select_cloud.png)
-
-### Step 5. Click "Create Subscription"
-
-Finally, click on "Create Subscription" button.
-
-![My Image](images/final_subscription.png)
-
-You can now verify the subscription as shown below:
-
-![My Image](images/Verify_subscription.png)
-
-### Step 6. Create database
-
-Click "Create Database". Enter database name and your preferred module.
-
-![My Image](images/create_database.png)
-
-
-
-### Step 7. Launch database
-
-Click "Activate" and wait for few seconds till it gets activated. Once fully activated, you will see the database endpoints as shown below:
-
-![My Image](images/launch_database.png)
-### Next Step
-
-- [Connecting to the database using RedisInsight](/explore/redisinsight/)
-- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
-
-
-##
-
-<div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
-</div>
-
-
+<div class="row">
+ <div class="col">
+     <RedisCard
+        title="AWS Portal"
+        description="Create a Redis database on Heroku"
+        page="/create/aws/awsportal"
+        />
+ </div>
+ <div class="col">
+    <RedisCard
+        title="How to Build a Slack Bot to Retrieve Lost Files Using AWS S3 and RediSearch"
+        description="Building a Slack Bot to Retrieve Lost Files Using AWS S3 and RediSearch"
+        page="/create/aws/slackbot"
+        />
+ </div>
+ </div>
