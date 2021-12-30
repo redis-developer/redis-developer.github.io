@@ -36,7 +36,7 @@ Replace the version with your desired version of Jedis, but note that you'll nee
 You'll need to initialize you connection to Redis. This means configuring and creating a `UnifiedJedis` instance:
 
 ```java
-  HostAndPort config = new HostAndPort(Protocol.DEFAULT_HOST, 6479);
+  HostAndPort config = new HostAndPort(Protocol.DEFAULT_HOST, 6379);
   PooledJedisConnectionProvider provider = new PooledJedisConnectionProvider(config);
   UnifiedJedis client = new UnifiedJedis(provider);
 ```
