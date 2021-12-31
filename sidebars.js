@@ -36,7 +36,15 @@ module.exports = {
               ]
           },
         'create/gcp/index-gcp',
-        'create/aws/index-aws',
+        {
+          type: 'category',
+          label: 'Redis on AWS',
+          items: [
+              'create/aws/index-aws',
+              'create/aws/redis-on-aws/index-redis-on-aws',
+              'create/aws/slackbot/index-slackbot' 
+           ]
+          },
         'create/docker/index-docker',
         {
           type: 'category',
