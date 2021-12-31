@@ -41,7 +41,7 @@ module.exports = {
           label: 'Redis on AWS',
           items: [
               'create/aws/index-aws',
-              'create/aws/awsportal/index-awsportal',
+              'create/aws/redis-on-aws/index-redis-on-aws',
               'create/aws/slackbot/index-slackbot' 
            ]
           },
