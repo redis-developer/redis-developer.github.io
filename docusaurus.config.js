@@ -31,6 +31,12 @@ module.exports = {
         title: 'Developer Marketing Manager at Redis',
         image: 'profile_pic_ajeet_raina.jpg'
       },
+      will: {
+        name: 'Will Johnston',
+        link: 'https://twitter.com/wjohnsto',
+        title: 'Developer Growth Manager at Redis',
+        image: 'profile_pic_will_johnston.jpg'
+      },
       julian: {
         name: 'Julian Mateu',
         link: 'https://www.linkedin.com/in/julian-mateu',

@@ -207,13 +207,14 @@ module.exports = {
       label: 'Explore',
       items: [
         'explore/index-explore',
+        'explore/what-is-redis/index-what-is-redis',
         {
           type: 'category',
           label: 'RedisInsight v2.x',
           items: [
            'explore/redisinsightv2/index-redisinsightv2',
            'explore/redisinsightv2/getting-started/index-gettingstarted',
-           'explore/redisinsightv2/browser/index-browser', 
+           'explore/redisinsightv2/browser/index-browser',
           ]
          },
         {
