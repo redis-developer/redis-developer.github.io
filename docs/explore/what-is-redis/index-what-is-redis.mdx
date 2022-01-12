@@ -118,3 +118,38 @@ Microservices and distributed systems need to be able to communicate with each o
 ### Fast data ingest
 
 Redis can handle millions of read/write operations per second at sub-millisecond latencies, and it runs on AWS, GCP, Azure, and other cloud platforms. This makes Redis a great choice for processing large volumes of data that arrive in bursts, data from multiple sources/formats, data that needs to be filtered and analyzed, and data that is distributed geographically. Learn more about [Redis data ingestion](https://redis.com/solutions/use-cases/fast-data-ingest/).
+
+## Redis Language Support
+
+Redis supports most high-level popular programming languages and has SDKs built to make it easy to get started. Redis supports the following languages:
+
+- Python
+- JavaScript
+- Node.js
+- Java
+- Go
+- C/C++
+- C#
+- PHP
+- Ruby
+- Perl
+
+## Redis vs. Memcached
+
+Both Redis and Memcached are open-source, powerful, in-memory data stores. The main difference between the two is that Redis is a more full-featured database that is built to fit a number of different use-cases. Memcached is primarily used for key/value caching. Redis is used for both caching and as a database.
+
+## Using Redis on AWS, GCP, or Azure
+
+There are a number of ways to use Redis on AWS, but the recommended way is using Redis Enterprise Cloud.
+
+### Redis Enterprise Cloud
+
+You can [sign up for Redis Enterprise Cloud](https://redis.com/try-free/) for free, and when you create your subscription you can specify that you want to use AWS, GCP, or Azure. You can also configure the geographic region where you want to host Redis. Redis Enterprise Cloud is a great option when choosing Redis because:
+
+1. It is a fully-managed service that provides a single point of contact for all your Redis clusters.
+1. It is the only managed service that provides [Redis Modules](https://redis.com/modules/get-started/) that turn Redis into a multi-model database.
+1. It is built to scale with enterprise clustering, Redis-on-Flash, and Active-Active geo-distribution using CRDTs.
+
+## Getting Started with Redis
+
+If you are ready to start building applications using Redis check out our [tutorials for Redis](https://developer.redis.com/develop) that let you use your programming language of choice!
