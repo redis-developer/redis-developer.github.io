@@ -36,7 +36,15 @@ module.exports = {
               ]
           },
         'create/gcp/index-gcp',
-        'create/aws/index-aws',
+        {
+          type: 'category',
+          label: 'Redis on AWS',
+          items: [
+              'create/aws/index-aws',
+              'create/aws/redis-on-aws/index-redis-on-aws',
+              'create/aws/slackbot/index-slackbot' 
+           ]
+          },
         'create/docker/index-docker',
         {
           type: 'category',
@@ -163,9 +171,23 @@ module.exports = {
                 type: 'category',
                 label: 'ASP.NET Core',
                 items:[
-                  'develop/dotnet/aspnetcore/rate-limiting/fixed-window/index-rate-limiting',
-                  'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
-                  'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
+                  {
+                    type:'category',
+                    label:'Rate Limiting',
+                    items:[
+                      'develop/dotnet/aspnetcore/rate-limiting/fixed-window/index-rate-limiting',
+                      'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
+                      'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
+                    ]
+                  },
+                  {
+                    type:'category',
+                    label:'Caching',
+                    items:[
+                      'develop/dotnet/aspnetcore/caching/basic/index-basic-caching'
+                    ]
+                  }
+                  
                 ]
               },
               {
