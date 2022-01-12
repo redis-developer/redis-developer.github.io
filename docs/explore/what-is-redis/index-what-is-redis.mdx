@@ -97,16 +97,24 @@ Redis provices sub-millisecond latency at scale, making it a natural choice to s
 
 ### Fraud Detection
 
-Redis is built to handle real-time AI and machine learning workloads because of its scalability and high write throughput at low latency.
+Redis is built to handle real-time AI and machine learning workloads because of its scalability and high write throughput at low latency. Redis is often used as a primary database, enabling deep learning models directly where the data lives. Bloom filters, time series, and other data structures that work natively with Redis enable cost reduction with high-speed statistical analysis. Learn more about [Redis fraud detection](https://redis.com/solutions/use-cases/fraud-detection/).
 
 ### Real-time Inventory
 
-Retailers need to ensure that their real-time inventory systems can survive seasonal peaks, maintain data consistency, and deliver instant results.
+Retailers need to ensure that their real-time inventory systems can survive seasonal peaks, maintain data consistency, and deliver instant results. Redis is a great choice for this use case. It is a highly-available and highly-scalable database that can handle millions of queries per second. Redis clusters can be configured to replicate across multiple servers in a highly-available manner, enabling data consistency between stores. Learn more about [Redis inventory](https://redis.com/solutions/use-cases/real-time-inventory/).
 
 ### Claims processing
 
+Insurance companies need to process claims in real-time, and receive millions of claims daily. Redis provides sub-millisecond latency and can process millions of requests per second. Redis has built-in data types for building scalable event-driven architectures. Redis Streams can enable injesting and analyzing large amounts of data in real-time. Learn more about [Redis claims processing](https://redis.com/solutions/use-cases/claims-processing/).
+
 ### Gaming Leaderboards
+
+Leaderboards require constant updates and scalability across millions of users. They also require complex mathematical computation, and must be distributed globally. Redis has built-in data types such as sorted sets that are useful for manipulating leaderboards. Redis also supports clustering and can be distributed globally. Learn more about [Redis gaming leaderboards](https://redis.com/solutions/use-cases/leaderboards/).
 
 ### Messaging
 
+Microservices and distributed systems need to be able to communicate with each other. Redis provides a simple, fast, and reliable messaging system that can be used for real-time communication between microservices. Redis Streams can be used to enable real-time analytics and data ingestion. Redis Pub/Sub is a lightweight messaging protocol designed for broadcasting and receiving notifications. Redis Lists and Redis Sorted Sets are two native data structures that are great for implementing message queues. Redis also has client libraries in most programming languages that enable you to use your programming language of choice. Learn more about [Redis messaging](https://redis.com/solutions/use-cases/messaging/).
+
 ### Fast data ingest
+
+Redis can handle millions of read/write operations per second at sub-millisecond latencies, and it runs on AWS, GCP, Azure, and other cloud platforms. This makes Redis a great choice for processing large volumes of data that arrive in bursts, data from multiple sources/formats, data that needs to be filtered and analyzed, and data that is distributed geographically. Learn more about [Redis data ingestion](https://redis.com/solutions/use-cases/fast-data-ingest/).
