@@ -1,0 +1,666 @@
+---
+id: index-slackbot
+title: How to Build a Slack Bot to Retrieve Lost Files Using AWS S3 and RediSearch
+sidebar_label: Building a Slack Bot using AWS S3 and RediSearch from scratch
+slug: /create/aws/slackbot
+authors: [ajeet]
+---
+
+![alt_text](images/image7.png "image_tooltip")
+
+If you work remotely then you’re likely to have come across Slack at some point. And if you use Slack on a daily basis, then you’ll be all too aware of how easy it can be to lose files. Being pinged every day by different employees across different channels makes it difficult to keep track of files. 
+
+Eventually, you may be forced to rummage through a cluttered library of documents in search of that one _crucial _document that’s needed for a task, report or even a meeting. We’ve all been there and the frustration is just as real as it is irritating...which is why [this Launchpad App](https://launchpad.redis.com/?id=project%3AReeko-Slack-Bot) has created an application to remove this impediment. 
+
+It was a tricky application to make, requiring a lot of attention to detail across a number of different components for it to come to fruition. However, the success of this application was possible due to Redis’ ability to extract and process data proficiently. 
+
+Thanks to Redis, all of the components functioned harmoniously with one another, creating a fully optimal application that interacts with users in real-time. 
+
+Let’s take a look at how this was done. Before we dive in, we’d also like to point out that we have a variety of exciting applications for you to check out in our [Redis Launchpad](https://launchpad.redis.com/). 
+
+
+
+
+
+![alt_text](images/image21.png "image_tooltip")
+
+
+1. What will you build?
+2. What will you need?
+3. Architecture overview
+4. Getting started
+5. How it works
+
+
+
+
+
+### Step 1. What will you build?
+
+You’ll build a special search engine that’s designed to retrieve lost files in Slack. This is especially handy for people who work from home,  where documents between channels are easily lost between employees. 
+
+Below we’ll go through each step chronologically and highlight what components are required to create this application. 
+
+Ready to get started? OK, let’s dive straight in. 
+
+
+
+### Step 2. What will you need?
+
+- [Slack:](https://slack.com/intl/en-gb/): used as an instant messaging app that connects employees with one another.
+- [Slack Block Kit](https://api.slack.com/block-kit): used as a UI framework for Slack apps that offers a balance of control and flexibility when building experiences. 
+- [Python:](https://www.python.org/): the preferred programming language to connect Redis in the application. 
+- [RediSearch](https://redis.com/modules/redis-search/): Provides querying, secondary indexing, and full-text search for Redis. 
+- [S3 bucket](https://aws.amazon.com/es/s3/): Used as a public cloud storage resource in Amazon Web Services (AWS).
+- [AWS Textract](https://aws.amazon.com/es/textract/): Used as a machine learning service that automatically extracts text.
+- [Nodejs](https://nodejs.org/en/): Responsible for image generation.
+
+### Step 3. Architecture
+
+Let’s look at each of the components that creates the Reeko-Slack bot:
+
+
+![alt_text](images/image31.png "image_tooltip")
+
+
+
+
+#### 1. file_shared
+- When a new file is shared in any public slack channel the file_share event is sent to the Slack Bot app. 
+- The file name is added as a suggestion using the <code>[FT.SUGADD](https://oss.redis.com/redisearch/Commands/)</code> command in RediSearch.
+- All file data is added using the <code>[JSON.SET](https://oss.redis.com/redisjson/commands/#jsonset)</code> command.
+- The file is then stored on the S3 bucket as an object with the key as the filename.
+#### 2. S3-get
+- The <code>[JSON.GET ](https://oss.redis.com/redisjson/commands/#jsonget)</code>command checks whether the desired file exists.
+- The file will then be retrieved from the S3 bucket if found.
+#### 3. S3-search
+- The <code>[FT.SEARCH ](https://oss.redis.com/redisearch/Commands/#ftsearch)</code>command uses RediSearch to look for documents in the S3 bucket- Users are presented will be prompted with different file name suggestions based on what they’ve typed in the search bar. 
+- Once the user chooses one of the file suggestions, it is then downloaded and sent back to Slack.
+#### 4. S3-delete
+- User types the file name from the<strong> command["text']</strong> parameter
+- The file data is deleted from RedisJson using the <code>[JSON.DEL](https://oss.redis.com/redisjson/commands/#jsondel)</code> command and is also removed from RediSearch's suggestions using the <code>FT.SUGDEL</code> command.
+#### 5. Summarise-document
+- The file name is identified from the <strong>command['text']</strong> parameter. 
+- It is then retrieved from the S3 bucket through the[ JSON.GET](https://oss.redis.com/redisjson/commands/#jsonget) command.
+- Users can either download the pdf or png file locally from the S3 bucket. 
+- The text is extracted using [AWS Textract ](https://aws.amazon.com/textract/).
+- The extracted text is then summarised using Hugging face transformers summarization pipeline. The text summary is also added back to the <code>JSON</code> document using[ JSON.SET](https://oss.redis.com/redisjson/commands/#jsonset)<code> </code>command.
+- A post request is then sent to the /create-image on the NodeJS backend with the file name and summary text.
+- An image is generated using a base template.
+- The image that is returned is saved to the S3 bucket and sent back to Slack.
+- The image URL is also added to the <code>JSON</code> document using <code>[JSON.SET ](https://oss.redis.com/redisjson/commands/#jsonset)</code>command.
+
+### What is the S3 bucket?
+
+The [S3 bucket](https://aws.amazon.com/s3/) is a simple storage service from Amazon. It allows users to store objects through a web service interface. The product’s value comes from its ability to store, protect and retrieve data from ‘buckets’ at any time from anywhere and on any device. 
+
+
+
+### Step 4. Getting started
+
+#### Prerequisites
+
+
+
+- Python 3.6+
+- ngrok
+- AWS Account
+- Slack
+- Docker
+
+### 1. Run Redis Docker container
+
+This simple container image bundles together the latest stable releases of Redis and select Redis modules from Redis Labs. This image is based on the official image of Redis from Docker. By default, the container starts with Redis' default configuration and all included modules loaded.
+
+
+```bash
+ docker run -d -p 6379:6379 redislabs/redismod
+```
+
+
+### 2. Setup a Python environment
+
+To test the integration, Python needs to be installed on your computer. You can get a suitable release from [here](https://www.python.org/downloads/). To check your Python version, follow the command below.
+
+
+```
+ # Python 3.6+ required
+ git clone https://github.com/redis-developer/Reeko-Slack-Bot
+ cd Reeko-Slack-Bot
+ python3 -m venv env
+ source env/bin/activate
+ cd python-backend
+ pip3 install -r requirements.txt
+```
+
+
+### 3. Using ngrok as a local proxy
+
+To develop locally we'll be using ngrok. This will allow you to expose a public endpoint that Slack can use to send your app events. If you haven't already, [install ngrok from their website](https://ngrok.com/download) .
+
+The ngrok exposes local networked services behind NATs and firewalls to the public internet over a secure tunnel. Share local websites, build/test webhook consumers and self-host personal services.
+
+
+
+### 4. Setting up an AWS Account
+
+For testing you need a verified aws account. You can get your credentials file at ~/.aws/credentials (C:\Users\USER_NAME.aws\credentials for Windows users) and copy the following lines in the [.env](https://github.com/redis-developer/Reeko-Slack-Bot/blob/master/python-backend/.env) file.
+
+Also make sure to add your S3 bucket name in the .env file.
+
+
+```
+ AWS_ACCESS_KEY_ID="YOUR_ACCESS_KEY_ID"
+ AWS_SECRET_ACCESS_KEY="YOUR_SECRET_ACCESS_KEY"
+ BUCKET_NAME="YOUR_BUCKET_NAME"
+```
+
+
+### 5. Install Slack on your local system
+
+Slack needs to be installed on your computer. If it hasn’t been installed, you can get it from here for [Windows](https://slack.com/intl/en-in/downloads/windows) or [Mac](https://slack.com/intl/en-in/downloads/mac). If you don’t already have an account you can make one [here](https://slack.com/get-started#/create). 
+
+To get started, you'll need to create a new Slack app by clicking on the following link - [https://api.slack.com/apps](https://api.slack.com/apps)
+The foundational framework we’ll be using is Bolt. This will make it easier to build Slack apps with the platform’s latest features. 
+
+
+
+1. Click on the `Create an App` button
+2. Name the application ‘Reeko’ and choose the development workspace. \
+
+
+
+
+![alt_text](images/image3.png "image_tooltip")
+ 
+
+![alt_text](images/image35.png "image_tooltip")
+
+
+3. Requesting scopes - [Scopes](https://api.slack.com/scopes) give your app permission to do things (for example, post messages) in your development workspace. You can select the scopes to add to your app by navigating over to the _OAuth & Permissions_ sidebar.
+4. Add the _Bot Token Scopes_ by clicking on the `Add an OAuth Scope `button.
+
+
+|OAuth Scope|Description|
+|---|-----|
+|channels:history | View messages and other content in public channels that reeko has been added to |
+|channels:join |Join public channels in a workspace |
+|channels:read | View basic information about public channels in a workspace |
+|channels:join | Join public channels in a workspace |
+|chat:write | Send messages as @reeko | 
+|chat:write.customize | Send messages as @reeko with a customized username and avatar |
+|chat:write.public | Send messages to channels @reeko isn't a member of |
+|files:read | View files shared in channels and conversations that reeko has been added to |
+|files:write | Upload, edit, and delete files as reeko |  
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Add the _User Token Scopes_ by clicking on the `Add an OAuth Scope `button
+
+
+
+| OAuth Scope | Description |
+|-------------|-------------|
+|channels:history | View messages and other content in public channels that Reeko has been added to. |
+| files:read | View files shared in channels and conversations that Reeko has been added to. |
+
+
+
+
+
+
+
+
+
+
+1. Install your own app by selecting the `Install App` button at the top of the OAuth & Permissions page, or from the sidebar.
+2. After clicking through one more green `Install App To Workspace` button, you'll be sent through the Slack OAuth UI.
+3. After installation, you'll land back in the _OAuth & Permissions_ page and find a _Bot User OAuth Access Token._ and a _User OAuth Token_. Click on the copy button for each of them. These tokens need to be added to the [.env](https://github.com/redis-developer/Reeko-Slack-Bot/blob/master/python-backend/.env) file. (The bot token starts with xoxb whereas the user token is longer and starts with xoxp).
+
+
+```
+SLACK_USER_TOKEN=xoxp-your-user-token
+SLACK_BOT_TOKEN=xoxb-your-bot-token
+```
+
+
+
+
+
+
+![alt_text](images/image20.png "image_tooltip")
+
+
+
+
+1. As well as the access token, you'll need a signing secret. Your app's signing secret verifies that incoming requests are coming from Slack. Navigate to the _Basic Information_ page from your [app management page](https://api.slack.com/apps). Under App Credentials, copy the value for _Signing Secret_ and add it to the [.env](https://github.com/redis-developer/Reeko-Slack-Bot/blob/master/python-backend/env) file.
+
+
+```
+SLACK_SIGNING_SECRET=your-signing-secret
+```
+
+
+
+
+
+
+![alt_text](images/image8.png "image_tooltip")
+
+
+
+
+1. Make sure you have followed the steps in [Cloning the repo t](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#Cloning-the-repo)o start the bolt app. The HTTP server is using a built-in development adapter, which is responsible for handling and parsing incoming events from Slack on port 3000.
+
+
+```
+python3 app.py
+```
+
+
+
+
+![alt_text](images/image6.png "image_tooltip")
+
+
+Open a new terminal and ensure that you've installed [ngrok. Make sure to](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#ngrok) tell ngrok to use port 3000 (which Bolt for Python uses by default):
+
+
+```
+ngrok http 3000
+```
+
+
+
+
+
+![alt_text](images/image22.gif "image_tooltip")
+
+
+For local slack development, we'll use your ngrok URL from above, so copy it to your clipboard.
+
+
+```
+For example: https://your-own-url.ngrok.io (copy to clipboard)
+
+```
+
+
+
+1. Now we’re going to subscribe to events. Your app can listen to all sorts of events that are happening around your workspace - messages being posted, files being shared and more. On your app configuration page, select the _Event Subscriptions_ sidebar. You'll be presented with an input box to enter a Request URL, which is where Slack sends the events your app is subscribed to. Hit the _save_ button.
+
+By default Bolt for Python listens for all incoming requests at the /slack/events route, so for the Request URL you can enter your ngrok URL appended with /slack/events.
+
+
+```
+Request URL: https://your-own-url.ngrok.io/slack/events
+```
+
+
+If the challenge was successful, you’ll get “verified” right next to the Request URL.
+
+
+
+
+![alt_text](images/image15.png "image_tooltip")
+
+
+On the same page click on the `Subscribe to bot events` menu that sits at the bottom of the page. Click on the `Add Bot User Event`.
+
+Similarly, click on `Subscribe to events on behalf of the user but` then click on `Add Workspace Event`.
+
+Add the following scopes
+
+
+| EventName | Description| Required Scope |
+|----------|-------------|---------------|
+| file_share | A file was shared | files:read |
+| message.channels | A message was posted to a channel | channels: history |
+
+
+
+
+
+
+
+![alt_text](images/image26.png "image_tooltip")
+
+
+
+
+1. Select the _Interactivity & Shortcuts_ sidebar and toggle the switch as on. Again, for the Request URL, enter your ngrok URL appended with /slack/events.
+
+
+```
+Request URL: https://your-own-url.ngrok.io/slack/events
+```
+
+
+
+
+
+![alt_text](images/image16.png "image_tooltip")
+
+
+
+
+1. Scroll down to the _Select Menus_ section in the Options Load URL and enter your ngork URL appended with /slack/events.
+
+
+```
+Options Load URL: https://your-own-url.ngrok.io/slack/events
+```
+
+
+
+
+
+
+![alt_text](images/image32.png "image_tooltip")
+
+
+
+
+1. Finally we come to the slash commands. Slack's custom slash commands perform a very simple task. First they take whatever text you enter after the command itself (along with some other predefined values). Next, they’ll send it to a URL and accept whatever the script returns. After this, Slack will post it as a Slackbot message to the person who issued the command. We have 5 slash commands to add in the workspace.
+
+Visit the _Slash Commands_ sidebar and click on the `Create New Command` button to head over the Create New Command page. Add the Command, Request URL, Short Description and Usage hint, according to the table provided below.
+
+Click on Save to return to the _Slash Commands._
+
+
+| Command | Request URL | Short Description | Usage Hint |
+|---------|-------------|-----------------|----------|
+| /s3-get | https://your-own-url.ngrok.io/slack/events | Get a file from s3 bucket | filename |
+| /s3-search | https://your-own-url.ngrok.io/slack/events | Search for a file in S3 | |
+| /s3-delete | https://your-own-url.ngrok.io/slack/events | Deletes the given file from the s3 bucket | filename |
+| /summarise-document | https://your-own-url.ngrok.io/slack/events | Summarise a document | filename |
+
+
+
+
+
+
+
+![alt_text](images/image28.png "image_tooltip")
+
+
+
+
+
+![alt_text](images/image19.png "image_tooltip")
+
+
+
+
+
+
+![alt_text](images/image27.png "image_tooltip")
+
+
+
+
+
+
+![alt_text](images/image19.png "image_tooltip")
+
+
+
+
+
+
+![alt_text](images/image4.png "image_tooltip")
+
+
+
+
+1. Open the Slack channel and upload a file in any channel. Make sure to note the file name.
+
+### 6. Setting up a NodeJS backend
+
+
+#### Requirements
+
+
+
+- [GraphicsMagick](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/nodejs-backend#GraphicsMagick)
+- [Nodejs](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/nodejs-backend#Nodejs)
+
+#### Getting Started:
+
+
+
+
+
+![alt_text](images/image13.png "image_tooltip")
+
+
+
+
+
+####  GraphicsMagick
+
+GraphicsMagick is a highly versatile piece of software used for image processing. To generate images, you need to have GraphicsMagick installed on your machine.
+
+You can find the suitable release from [http://www.graphicsmagick.org/download.html#download-sites.](http://www.graphicsmagick.org/download.html#download-sites)
+
+
+
+
+![alt_text](images/image17.png "image_tooltip")
+
+
+
+
+#### Nodejs
+
+Note: Please follow all the steps in [python-backend/README.md](https://github.com/redis-developer/Reeko-Slack-Bot/blob/master/python-backend/README.md) first.
+
+Copy the AWS credentials from the [python-backend/.env](https://github.com/redis-developer/Reeko-Slack-Bot/blob/master/python-backend/README.md) to the [config.json](https://github.com/redis-developer/Reeko-Slack-Bot/blob/master/nodejs-backend/src/config/config.json) file.
+
+
+```
+{
+  "accessKeyId": "",
+  "secretAccessKey": "",
+  "region": ""
+}
+```
+
+
+Install all the packages and run the server.
+
+
+```
+npm install
+npm run start
+```
+
+
+
+
+
+
+![alt_text](images/image18.png "image_tooltip")
+
+
+### 7: Connecting Slack to S3
+
+This step involves bringing your AWS S3 bucket to your Slack account. Doing this will allow you to upload, download or delete files from your workspace without writing a single line of code. 
+
+
+
+#### /S3-get filename
+
+The purpose of this command is to retrieve a specified file from the S3 bucket. Once you type in the name of the file in the search bar, Reeko will check whether this document exists. If the document doesn’t exist then it will return as false and nothing will be done. 
+
+If the file is found, then the JSON.GET command will capture its name and download it from the S3 bucket. The downloaded file is sent back as a direct message in Slack.
+
+
+```
+JSON.GET amazonshareholderletterpdf
+```
+
+![alt_text](images/image11.png "image_tooltip")
+
+
+#### /s3-delete filename
+
+This command involves deleting files from the S3 bucket. To achieve this you simply need to type in the file name in the search bar and Reeko will pull up the file as demonstrated below. 
+
+You’ll have the option to permanently delete the file from the S3 bucket. The file data is deleted from RedisJson using the JSON.DEL command and is removed from RediSearch's suggestions using the `FT.SUGDEL` command. You’ll be informed when the file is deleted. 
+
+
+```
+FT.SUGDEL file-index "amazon-shareholder-letter.pdf"
+
+JSON.DEL amazonshareholderletterpdf
+```
+
+
+#### Step 8: File searching 
+
+Have you ever searched for a file without being entirely sure what it is you’re looking for? You may remember snippets of the content but not enough to manually track down its location. Well due to RediSearch’s autocomplete functionality this will no longer be a problem. 
+
+
+
+####  /s3-search
+
+This command first opens up a modal inside of Slack with a search bar. You’ll then be suggested different file names will then be suggested depending on whatever the text you’ve written is. The way this works is simple:
+
+Let’s assume the bucket has documents called `abcd.csv`, `abcd.csv` and `abcdef.sv`. If you type `abc` into the search bar, you’ll get these three results as a list from the `FT.SEARCH` command. From here you’ll be able to select the file you’re looking for. Once selected, the file is downloaded and sent back to Slack. 
+
+
+```
+FT.SEARCH file-index "ama"
+```
+
+
+#### Step 9: Document summarization
+
+In this step, Reeko will extract all of the text from the documents and summarize the content of each one with an image. This will prevent you from having to tediously open each document to get access to important information. Here’s how to do it:
+
+
+
+1. Get the file name from the command['text'] parameter.
+2. If the file is found, you can get the file's name by using the `JSON.GET` command. 
+
+
+```
+ JSON.GET amazonshareholderletterpdf
+
+```
+
+
+
+3. Download the pdf or png file locally from S3 bucket
+4. Extract the text using AWS Textract.
+5. The extracted text is summarised using the Hugging face transformers summarisation pipeline. The text summary is also added back to the JSON document using `JSON.SET` command.
+
+ ```
+  JSON.SET amazonshareholderletterpdf .summary ' Amazon has grown from having 158 employees to 614. We had just gone public at a split-adjusted stock price of $1. 50 per share.  In 1997, we hadnâ\x80\x99t invented prime, marketplace, alexa, or aws. If you want to be successful in business, you have to create more than you consume.  Your goal should be to create value for everyone you interact with. Stock prices are not about the past.  They are a prediction of future cash flows discounted back to the present.'
+ ```
+
+
+6. A post request is then sent to the /create-image on the nodejs backend with the file name and summary text.
+7. An image is generated using a base template.
+8. The image that is returned is saved to the S3 bucket and sent back to Slack.
+9. The image URL is also added to the JSON document using `JSON.SET` command.
+
+
+```
+ JSON.SET amazonshareholderletterpdf .file_path 'https://bucket-1234.s3.amazonaws.com/b8bac45f-7f69-4c28-a26e-9888d9771bed-image.png'
+```
+
+
+Below we’ve used the [Amazon 2020 shareholder letter](https://s2.q4cdn.com/299287126/files/doc_financials/2021/ar/Amazon-2020-Shareholder-Letter-and-1997-Shareholder-Letter.pdf) as an example of how a document can be summarized using Reeko. 
+
+#### 5. How it works
+
+The Slack app is built using Bolt for Python framework. To connect the AWS S3 bucket and AWS Textract, use their respective [boto3 ](https://github.com/boto/boto3)clients. 
+
+Slack is receptive to all events around your workspace such as messages being posted, files being shared, users joining the team, and more. To listen to events, Slack uses the Events API. And to enable custom interactivity, you can use the Block Kit. 
+
+Slash commands work in the following way. First they consider the text you enter after the command itself and then send it to a URL. They then accept whatever the script returns and post it as a Slackbot message to the person who issued the command. There’s a set of 4 slash commands that make the slackbot. 
+
+In the application there are two Redis Modules:
+
+
+
+- [RedisJSON](https://oss.redislabs.com/redisjson/) - store file information like filename, summary and image url.
+- [RediSearch](https://oss.redislabs.com/redisearch/) -  searches for files in the S3 bucket
+
+The code below is used to initialize RediSearch in redisearch_connector.py. This is done by creating an index with the name `file_index.`
+
+
+```
+from redisearch import Client, TextField, AutoCompleter, Suggestion
+
+class RedisSearchConnector():
+    def __init__(self):
+        self.index_name = 'file_index'
+        self.client = Client(self.index_name)
+        self.ac = AutoCompleter(self.index_name)
+```
+
+
+Use the following code to initialise RedisJSON in redisjson_connector.py.
+
+
+```
+from rejson import Client, Path
+
+class RedisJsonConnector():
+    def __init__(self):
+        self.rj = Client(decode_responses=True)
+```
+
+
+And the code below is used to create an index on RediSearch
+
+
+```
+FT.CREATE file-index ON HASH SCHEMA file_name TEXT SORTABLE file_id TEXT created TEXT timestamp TEXT mimetype TEXT filetype TEXT user_id TEXT size
+```
+
+
+### Conclusion: preventing lost files with Redis
+
+The advanced capabilities of Redis allowed this Launchpad App to create an invaluable asset to remote workers - to never lose a file again on Slack. RediSearch offered a simple yet effective way of transmitting data to and from the S3 bucket with no lags, no pauses and no delays whatsoever. You can discover more about the ins and outs of how this app was made by simply [clicking here](https://launchpad.redis.com/?id=project%3AReeko-Slack-Bot). 
+
+Reeko is an innovative application that joins our _exciting_ collection of apps that we currently have on the [Redis Launchpad](https://launchpad.redis.com/). By using Redis, programmers from all over the world are creating breakthrough applications that are having an impact on daily lives… _and you can too_. 
+
+So how can you change the world using Redis? For more inspiration, make sure to check out the other applications we have on our [Launchpad](https://launchpad.redis.com/). 
+
+
+
+
+
+![alt_text](images/image21.png "image_tooltip")
+
+
+
+
+### Who built this application?
+
+#### Sarthak Arora
+
+Being only 20 years old, Sarthak is a young yet highly-advanced programmer who’s already a 2x international Hacong winner. 
+
+To discover more about his work and his activity on GitHub, you can [check out his profile here](https://github.com/sarthakarora1208). 
+
+### References
+
+- [Create Redis database on AWS](/create/aws/redis-on-aws) 
+- [Connecting to the database using RedisInsight](/explore/redisinsight/)
+- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
+
