@@ -10,7 +10,7 @@ authors: [ajeet,rahul]
 
 
 Development teams today are embracing more and more DevOps principles, such as continuous integration and continuous delivery (CI/CD). Therefore, the need to manage infrastructure-as-code (IaC) has become an essential capability for any cloud service.  IaC tools allow you to manage infrastructure with configuration files rather than through a graphical user interface. IaC allows you to build, change, and manage your infrastructure in a safe, consistent, and repeatable way by defining resource configurations that you can version, reuse, and share. 
-A leading tool in the IaC is HashiCorp Terraform, which supports  the major cloud providers and services with its providers and modules cloud infrastructure automation ecosystem for provisioning, compliance, and management of any cloud, infrastructure, and service.
+A leading tool in the IaC is HashiCorp Terraform, which supports the major cloud providers and services with its providers and modules cloud infrastructure automation ecosystem for provisioning, compliance, and management of any cloud, infrastructure, and service.
 
 ### What is Terraform?
 
@@ -23,7 +23,7 @@ Terraform is an open source IaC software tool that provides a consistent CLI wor
 - It provides a single unified syntax, instead of requiring operators to use independent and non-interoperable tools for each platform and service.
 - Manages both existing service providers and custom in-house solutions.
 - Terraform is easily portable to any other provider.
-- Provides immutable infrastructure where configuration changes smoothly
+- Provides immutable infrastructure where configuration changes smoothly.
 - Supports client-only architecture, so no need for additional configuration management on a server.
 - Terraform is very flexible, using a plugin-based model to support providers and provisioners, giving it the ability to support almost any service that exposes APIs.
 - It is not intended to give low-level programmatic access to providers, but instead provides a high-level syntax for describing how cloud resources and services should be created, provisioned, and combined.
@@ -45,7 +45,7 @@ Before we jump into the implementation, let us take a moment to better understan
 
 ### Providers
 
-Provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves. 
+A provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves. 
 A provider defines resources and data for a particular infrastructure, such as AWS. As shown below, the terraform block {} contains terraform settings, including the required providers Terraform will use to provision your infrastructure (for example, rediscloud provider).
 
 ```
@@ -97,7 +97,7 @@ As shown below, the resource {} block is used to define components of your infra
 ```
 
 
-Resource {} block has two strings before the block: resource types and resource names. The prefix of the type maps to the name of the provider. For example, the resource type “random_password” and the resource name “passwords” form a unique identifier of the resource. Terraform uses this ID to identify the resource.
+The resource {} block has two strings before the block: resource types and resource names. The prefix of the type maps to the name of the provider. For example, the resource type “random_password” and the resource name “passwords” form a unique identifier of the resource. Terraform uses this ID to identify the resource.
 
 ### Data sources
 
@@ -129,23 +129,23 @@ Please note that Flexible and Annual Redis Enterprise Cloud subscriptions can le
 ```
 
 
-### Prerequisite:
+### Prerequisites:
 
-- Install Terraform on your MacOS.
+- Install Terraform on MacOS.
 - Create a free Redis Enterprise Cloud account.
 - Create your first subscription.
 - Enable API
 
 
-### Step 1: Install Terraform on your MacOS
+### Step 1: Install Terraform on MacOS
 
-Use Homebrew to install terraform on MacOS as shown below:
+Use Homebrew to install Terraform on MacOS as shown below:
 
 ```
  brew install terraform
 ```
 
-### Step 2: Sign up for a free Red Enterprise Cloud account
+### Step 2: Sign up for a free Redis Enterprise Cloud account
 
 [Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for free Redis Enterprise Cloud account. 
 
@@ -233,7 +233,7 @@ database {
 
 ### Step 5: Create an execution plan
 
-The terraform plan command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan, it reads the current state of any already existing remote objects to make sure that Terraform state is up to date. It then compares the current configuration to the prior state and then proposes a set of change actions that should make the remote object match the configuration.
+The Terraform plan command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan, it reads the current state of any already existing remote objects to make sure that Terraform state is up to date. It then compares the current configuration to the prior state and then proposes a set of change actions that should make the remote object match the configuration.
 
 
 ```
@@ -315,7 +315,7 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 
 ### Step 6: Execute the action
 
-The terraform apply command executes the actions proposed in a Terraform plan.
+The Terraform apply command executes the actions proposed in a Terraform plan.
 
 
 ```
@@ -418,7 +418,7 @@ You can now verify the new database created under Subscription named “db-json.
 
 
 
-Deploy Redis Database with RedisJSON modules on AWS using Terraform
+Deploy a Redis Database with RedisJSON modules on AWS using Terraform:
 
 
 ```
@@ -477,7 +477,7 @@ database {
 
 ### Step 8: Cleanup 
 
-The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration. While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use terraform destroy’ to conveniently clean up all of those temporary objects once you are finished with your work.
+The Terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration. While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use terraform destroy’ to conveniently clean up all of those temporary objects once you are finished with your work.
 
 ```
 % terraform destroy
