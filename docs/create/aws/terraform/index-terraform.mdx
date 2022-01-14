@@ -147,25 +147,11 @@ Use Homebrew to install terraform on MacOS as shown below:
 
 ### Step 2: Sign up for a free Red Enterprise Cloud account
 
-Sign up for your free Redis Enterprise Cloud account. Once you click on “Get Started,” you will receive an email with a link to activate your account and complete the sign-up process.
+[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for free Redis Enterprise Cloud account. 
 
-![terraform](tryfree.png)
+![Redis Cloud](tryfree.png)
 
-### Step 3: Create your subscription
-
-Next, you will have to create a Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "New Subscription."
-
-
-![terraform](subscription.png)
-
-### Step 4: Select the right subscription plan
-
-Select "Fixed plans for low-throughput applications” for now.
-
-![terraform](newsubscription.png)
-
-
-### Step 5: Enable Redis Enterprise Cloud API
+### Step 3: Enable Redis Enterprise Cloud API
 
 If you have a Flexible (or Annual) Redis Enterprise Cloud subscription, you can use a REST API to manage your subscription programmatically. The Redis Cloud REST API is available only to Flexible or Annual subscriptions. It is not supported for Fixed or Free subscriptions.
 
@@ -185,7 +171,7 @@ To authenticate REST API calls, you need to combine the API account key with an 
 
 ![Terraform](accessmanagement1.png)
 
-### Step 6: Create a main.tf file 
+### Step 4: Create a main.tf file 
 
 It’s time to create an empty “main.tf” file and start adding the provider, resource and data sources as shown below:
 
@@ -245,7 +231,7 @@ database {
 
 
 
-### Step 7: Create an execution plan
+### Step 5: Create an execution plan
 
 The terraform plan command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan, it reads the current state of any already existing remote objects to make sure that Terraform state is up to date. It then compares the current configuration to the prior state and then proposes a set of change actions that should make the remote object match the configuration.
 
@@ -327,7 +313,7 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 
 
 
-### Step 8: Execute the action
+### Step 6: Execute the action
 
 The terraform apply command executes the actions proposed in a Terraform plan.
 
@@ -424,7 +410,7 @@ Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
 
 
 
-### Step 9: Verify the database
+### Step 7: Verify the database
 
 You can now verify the new database created under Subscription named “db-json.”
 
@@ -489,7 +475,7 @@ database {
 ```
 
 
-### Step 10: Cleanup 
+### Step 8: Cleanup 
 
 The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration. While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use terraform destroy’ to conveniently clean up all of those temporary objects once you are finished with your work.
 
