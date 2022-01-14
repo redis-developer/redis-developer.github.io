@@ -45,7 +45,7 @@ Before we jump into the implementation, let us take a moment to better understan
 
 ### Providers
 
-Provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves. 
+A provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves. 
 A provider defines resources and data for a particular infrastructure, such as AWS. As shown below, the terraform block {} contains terraform settings, including the required providers Terraform will use to provision your infrastructure (for example, rediscloud provider).
 
 ```
