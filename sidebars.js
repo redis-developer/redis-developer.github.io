@@ -42,7 +42,8 @@ module.exports = {
           items: [
               'create/aws/index-aws',
               'create/aws/redis-on-aws/index-redis-on-aws',
-              'create/aws/slackbot/index-slackbot' 
+              'create/aws/slackbot/index-slackbot',
+              'create/aws/terraform/index-terraform'
            ]
           },
         'create/docker/index-docker',
