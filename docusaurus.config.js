@@ -214,6 +214,7 @@ module.exports = {
           routeBasePath: '/',
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
+          showLastUpdateTime: true,
           editUrl:
           'https://github.com/redis-developer/redis-developer/edit/master/',
         },
