@@ -59,6 +59,7 @@ module.exports = {
         'create/homebrew/index-homebrew',
         'create/windows/index-windows',
         'create/from-source/index-from-source',
+        'create/jenkins/index-jenkins',
       ]
     },
     {
