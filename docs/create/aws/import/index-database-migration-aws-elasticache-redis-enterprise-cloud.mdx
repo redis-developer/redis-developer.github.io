@@ -125,7 +125,7 @@ Once Java and RIOT are installed, we are all set to begin the migration process 
 
 ## Step 4 - Migrate the data
 
-Finally, it’s time to replicate the data from ElastiCache to Redis Enterprise Cloud by running the below command:
+Finally, it’s time to replicate the data from ElastiCache to Redis Enterprise Cloud by running the following command:
 
 ```
 sudo ./riot-redis -r redis://<source Elasticache endpoint>:6379 replicate -r redis://password@<Redis Enterprise Cloud endpoint>:port --live
