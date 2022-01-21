@@ -1,0 +1,147 @@
+---
+id: index-database-migration-aws-elasticache-redis-enterprise-cloud
+title: How to migrate database from AWS ElastiCache to Redis without any downtime
+sidebar_label: Online Data Migration from AWS Elasticache to Redis 
+slug: /create/aws/import/database-migration-aws-elasticache-redis-enterprise-cloud/
+authors: [ajeet]
+---
+
+Most of the database migration tools available today are offline in nature. They are complex and require manual intervention. 
+
+If you want to migrate your data from Amazon ElastiCache to Redis Enterprise Cloud, for example, the usual process is to back up your ElastiCache data to an Amazon S3 bucket and then import your data using the Redis Enterprise Cloud UI. This process can require painful downtime and could result in data loss. Other available techniques include creating point-in-time snapshots of the source Redis server and applying the changes to the destination servers to keep both the servers in sync. That might sound like a good approach, but it can be challenging when you have to maintain dozens of scripts to implement the migration strategy. 
+
+So we’ve come up with a different approach:
+
+## Introducing RIOT 
+
+![image](../../../../static/img/ajeet-riot-blog-1.png)
+
+RIOT is an open source online migration tool built by Julien Ruaux, a Solution Architect at Redis. RIOT implements client-side replication using a producer/consumer approach. The producer is the combination of the key and value readers that have a connection to ElastiCache. The key reader component identifies keys to be replicated using scan and keyspace notifications. For each key, the value reader component performs a DUMP and handles the resulting key+bytes to the consumer (writer), which performs a RESTORE on the Redis Enterprise connection.
+
+
+This blog post will show how to perform a seamless online migration of databases from ElastiCache to Redis Enterprise Cloud.
+
+
+## Prerequisites:
+
+You will require a few resources to use the migration tool:
+
+- A Redis Enterprise Cloud subscription
+- Amazon ElastiCache (a primary endpoint in case of a single-master EC and a configuration endpoint in case of a clustered EC: Refer to Finding Connection Endpoints on the ElastiCache documentation to learn more)
+- An Amazon EC2 instance based on Linux
+
+
+## Step 1 - Setting up an Amazon EC2 instance
+
+You can either create a new EC2 instance or leverage an existing one. In our example, we will first create an instance on Amazon Web Services (AWS). The most common scenario is to access an ElastiCache cluster from an Amazon EC2 instance in the same Amazon Virtual Private Cloud (Amazon VPC). We have used Ubuntu 16.04 LTS for this setup, but you can choose the Ubuntu or Debian distribution of your choice.
+
+Use SSH to connect to this new EC2 instance from your computer as shown here:
+
+```
+ssh -i “public key” <AWS EC2 Instance>
+```
+
+## Step 2 - Install the redis-cli tool 
+
+```
+$ sudo apt update
+# sudo apt install -y redis-tools
+```
+
+##  Verify the connectivity with the ElastiCache database
+
+Syntax:
+
+```
+$ redis-cli -h <Elasticache Primary Endpoint > -p 6379
+```
+
+Command:
+
+```
+$ sudo redis-cli -h <elasticache primary endpoint> -p 6379
+```
+
+Ensure that the above command allows you to connect to the remote Redis database successfully. 
+
+## Step 3 - Using the RIOT migration tool
+
+Run the commands below to set up the migration tool. 
+
+## Prerequisites: 
+
+### Install Java
+
+We recommended using OpenJDK 11 or later:
+
+```
+sudo add-apt-repository ppa:openjdk-r/ppa && sudo apt-get update -q && sudo apt install -y openjdk-11-jdk
+```
+
+### Installing RIOT 
+
+Unzip the package and make sure the RIOT binaries are in place, as shown here:
+
+```
+wget https://github.com/Redislabs-Solution-Architects/riot/releases/download/v2.0.8/riot-redis-2.0.8.zip
+```
+
+
+```
+unzip riot-redis-2.0.8.zip
+cd riot-redis-2.0.8/bin/
+```
+
+You can check the version of RIOT by running the command below:
+
+```
+./riot-redis --version
+RIOT version "2.0.8"
+```
+
+
+```
+bin/riot-redis --help
+Usage: riot-redis [OPTIONS] [COMMAND]
+  -q, --quiet         Log errors only
+  -d, --debug         Log in debug mode (includes normal stacktrace)
+  -i, --info          Set log level to info
+  -h, --help          Show this help message and exit.
+  -V, --version       Print version information and exit.
+Redis connection options
+  -r, --redis=<uri>   Redis connection string (default: redis://localhost:6379)
+  -c, --cluster       Connect to a Redis Cluster
+  -m, --metrics       Show metrics
+  -p, --pool=<int>    Max pool connections (default: 8)
+Commands:
+  replicate, r  Replicate a source Redis database in a target Redis database
+  info, i       Display INFO command output
+  latency, l    Calculate latency stats
+  ping, p       Execute PING command
+````
+
+Once Java and RIOT are installed, we are all set to begin the migration process with the command below, which replicates data directly from the source (ElastiCache) to the target (Redis Enterprise Cloud).
+
+
+## Step 4 - Migrate the data
+
+Finally, it’s time to replicate the data from ElastiCache to Redis Enterprise Cloud by running the below command:
+
+```
+sudo ./riot-redis -r redis://<source Elasticache endpoint>:6379 replicate -r redis://password@<Redis Enterprise Cloud endpoint>:port --live
+```
+
+ElastiCache allows you to configure in two ways: clustered and non-clustered. In the chart below, the first row shows what commands you should perform for the non-clustered scenario, while the second row shows the command for the clustered scenario with a specific database namespace:
+
+
+As you can see, whenever you have a clustered ElastiCache, you need to pass the –cluster option before specifying the source ElastiCache endpoint.
+
+## Important notes
+
+- Perform user acceptance testing of the migration before using it in production.
+- Once the migration is complete, ensure that application traffic gets successfully redirected to the Redis Enterprise endpoint.
+- Perform the migration process during a period of low traffic to minimize the chance of data loss.
+
+## Conclusion
+
+If you’re looking for a simple and easy-to-use live migration tool that can help you move data from Amazon ElastiCache to Redis Enterprise Cloud with no downtime, RIOT is a promising option.
