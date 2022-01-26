@@ -217,6 +217,21 @@ module.exports = {
                     ]
                   }
                 ]
+              },
+              {
+                type: 'category',
+                label: 'Streams',
+                items:['develop/dotnet/streams/stream-basics',
+                {                    
+                    type:'category',
+                    label: "Blocking Reads",
+                    items:[
+                      'develop/dotnet/streams/blocking-reads/blocking-reads',
+                      'develop/dotnet/streams/blocking-reads/service-stack/service-stack',
+                      'develop/dotnet/streams/blocking-reads/cs-redis/cs-redis',                      
+                    ]
+                  }
+                ]
               }
             ]
           },
