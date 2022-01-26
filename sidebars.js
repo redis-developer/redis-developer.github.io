@@ -43,7 +43,8 @@ module.exports = {
               'create/aws/index-aws',
               'create/aws/redis-on-aws/index-redis-on-aws',
               'create/aws/slackbot/index-slackbot',
-              'create/aws/terraform/index-terraform'
+              'create/aws/terraform/index-terraform',
+              'create/aws/import/index-database-migration-aws-elasticache-redis-enterprise-cloud'
            ]
           },
         'create/docker/index-docker',
@@ -59,6 +60,7 @@ module.exports = {
         'create/homebrew/index-homebrew',
         'create/windows/index-windows',
         'create/from-source/index-from-source',
+        'create/jenkins/index-jenkins',
       ]
     },
     {
@@ -231,6 +233,7 @@ module.exports = {
       items: [
         'explore/index-explore',
         'explore/what-is-redis/index-what-is-redis',
+        'explore/import/index-import',
         {
           type: 'category',
           label: 'RedisInsight v2.x',
@@ -265,7 +268,6 @@ module.exports = {
           'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
           'explore/riot/index-riot',
-
      ]
     },
     {

@@ -73,6 +73,12 @@ module.exports = {
         title: 'Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
       },
+      matthew: {
+        name: 'Matthew Royal',
+        link: 'https://www.linkedin.com/in/royalmatthew/',
+        title: 'Consulting Engineer at Redis',
+        image: 'profile_pic_matthew_royal.jpg',
+      },
       steve: {
         name: 'Steve Lorello',
         link: 'https://twitter.com/slorello',
@@ -214,6 +220,7 @@ module.exports = {
           routeBasePath: '/',
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
+          showLastUpdateTime: true,
           editUrl:
           'https://github.com/redis-developer/redis-developer/edit/master/',
         },
