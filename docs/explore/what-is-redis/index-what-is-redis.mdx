@@ -1,7 +1,7 @@
 ---
 id: index-what-is-redis
-title: 'Redis:In-memory database. How it works and Why you should use it'
-description: Redis is an open source, in-memory data store that delivers sub-millisecond response times and is used as a database, cache, message broker, and queue.
+title: 'Redis: In-memory database. How it works and Why you should use it'
+description: Redis is an open source, in-memory data store that delivers sub-millisecond response times and is used as a primary database, cache, message broker, and queue.
 sidebar_label: What is Redis?
 slug: /explore/what-is-redis
 authors: [will]
@@ -14,21 +14,22 @@ keywords:
   - pub/sub
   - real-time apps
   - gaming
+  - primary database
 ---
 
-# What is Redis?
+# What Is Redis?
 
-Redis is an open source, in-memory, key-value data store most commonly used as a database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT. Redis is the [most-loved database](https://insights.stackoverflow.com/survey/2021) by developers for five years running. Developers love Redis because of its ease of use, performance, and scalability. There is a Redis client available for use in every popular modern programming language. This coupled with the performance benefits makes Redis the most popular choice for caching, session management, gaming, fraud detection, leaderboards, real-time analytics, geospacial indexing, ride-sharing, social media, and streaming applications.
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
 
-### Redis Anywhere
+Redis is the [most-loved database](https://insights.stackoverflow.com/survey/2021) by developers for five years running. Developers love Redis because of its ease of use, performance, and scalability. There is a Redis client available for use in every popular modern programming language. This, coupled with the performance benefits, makes Redis the most popular choice for caching, session management, gaming, fraud detection, leaderboards, real-time analytics, geospatial indexing, ride-sharing, social media, and streaming applications.
 
-Redis Enterprise is the only true datastore built for hybrid and multi-cloud applications. [Get started with Redis Enterprise Cloud](/create/rediscloud).
+Redis Enterprise is the only true datastore built for hybrid and multicloud applications. [Get started with Redis Enterprise Cloud](/create/rediscloud).
 
 ### Redis on AWS
 
 You might be familiar with Amazon ElastiCache for Redis. It is a Redis-compatible cache service that is available on AWS. Redis Enterprise Cloud on AWS is a fully-managed Redis Enterprise as a service and supports Redis as a cache and a database. Learn more about [Redis on AWS](/create/aws/redis-on-aws).
 
-### Redis on Other Cloud Providers
+### Redis on other cloud providers
 
 - [Redis on Google Cloud](/create/gcp)
 - [Redis on Azure](/create/azure)
@@ -40,75 +41,75 @@ You might be familiar with Amazon ElastiCache for Redis. It is a Redis-compatibl
 
 The primary benefit of Redis is its sub-millisecond queries. Redis runs in-memory, which enables low-latency and high throughput. Running in-memory means requests for data do not require a trip to disk. This leads to an order of magnitude more operations and faster response times. Redis is one of the only databases that supports millions of operations per second.
 
-### Flexible Data Structures
+### Flexible data structures
 
 Redis is a multi-model database, and provides several built-in data structures such as:
 
-- Strings - any text or binary data (512MB max)
+- Strings - any text or binary data (512MB max.)
 - Hashes - field-value pairs that most commonly represent objects
 - Lists - a collection of Strings ordered by when they were added as a linked list. Useful for queues and "latest updates" for social media posts
 - Sets - an unordered collection of Strings with the ability to intersect, union, and diff against other Sets
-- Sorted Sets - similar to a Redis Set, the Sorted Set is a collection of unique string members. In a Sorted Set, each member is associated with a score that can be used to sort the collection.
+- Sorted Sets - similar to a Redis Set, the Sorted Set is a collection of unique String members. In a Sorted Set, each member is associated with a score that can be used to sort the collection.
 - Bitmaps - not necessarily a data type, but a set of bit-oriented operations on the String type
-- Hyperloglogs - a probabilistic data structure used in order to count unique things (cardinality of a set)
+- HyperLogLogs - a probabilistic data structure used in order to count unique things (cardinality of a set)
 - Geospatial - a Sorted Set of longitude/latitude/name key-value pairs useful for maps, geosearching, and "nearby" features
 - Streams - a data type that models an append only log and which can be used as a durable message queue
 
-#### Redis Modules
+#### Redis modules
 
 Redis also supports custom data structures called modules that run natively alongside core Redis. These modules can be used to create custom data structures that are not available in the built-in data structures. Examples of custom modules include:
 
 - [RediSearch](https://redis.com/redis-enterprise/redis-search/) - a real-time search and secondary indexing engine that runs on your Redis dataset and allows you to query data that has just been indexed
-- [RedisJSON](https://redis.com/redis-enterprise/redis-json/) - a native JSON data type tailored for fast, efficient, in-memory storage and retrieval or JSON documents at high speed and volume
-- [RedisGears](https://redis.com/redis-enterprise/redis-gears/) - a programmable engine for Redis that runs inside Redis, closer to where your data lives and allows cluster-wide operations across shards, nodes, data structures, and data models at a sub-millisecond speed
-- [RedisAI](https://redis.com/redis-enterprise/redis-ai/) - a machine learning data type that runs inside Redis and allows you to train and predict on your data. Additionally provides a common layer among different formats and platforms, including PyTorch, TensorFlow/TensoRT, and ONNXRuntime
+- [RedisJSON](https://redis.com/redis-enterprise/redis-json/) - a native JSON data type tailored for fast, efficient, in-memory storage and retrieval of JSON documents at high speed and volume
+- [RedisGears](https://redis.com/redis-enterprise/redis-gears/) - a programmable engine for Redis that runs inside Redis, closer to where your data lives, and which allows cluster-wide operations across shards, nodes, data structures, and data models at a sub-millisecond speed
+- [RedisAI](https://redis.com/redis-enterprise/redis-ai/) - a machine learning data type that runs inside Redis and allows you to train and predict on your data. Additionally provides a common layer among different formats and platforms, including PyTorch, TensorFlow/TensorRT, and ONNX Runtime
 - [RedisGraph](https://redis.com/redis-enterprise/redis-graph/) - a graph data structure that can be used to store and query data in a graph-oriented way. Supports the industry-standard Cypher as a query language and incorporates the state-of-the-art SuiteSparse GraphBLAS engine for matrix operations on sparse matrices
-- [RedisTimeSeries](https://redis.com/redis-enterprise/redis-time-series/) - a time series data type with capabilities like automatic downsampling, aggregations, labeling and search, compression, and enhanced multi-range queries as well as built-in connectors to popular monitoring tools like Prometheus and Grafana enable the extraction of data into useful formats for visualization and monitoring
+- [RedisTimeSeries](https://redis.com/redis-enterprise/redis-time-series/) - a time series data type with capabilities like automatic downsampling, aggregations, labeling and search, compression, and enhanced multi-range queries as well as built-in connectors to popular monitoring tools like Prometheus and Grafana to enable the extraction of data into useful formats for visualization and monitoring
 - [RedisBloom](https://redis.com/redis-enterprise/redis-bloom/) - provides Redis with support for additional probabilistic data structures and allows for constant memory space and extremely fast processing while still maintaining a low error rate. Supports Bloom and Cuckoo filters to determine whether an item is present or absent from a collection with a given degree of certainty, Count-min sketch to count the frequency of the different items in sub-linear space, and Top-K to count top k events in a near deterministic manner
 
 ### Simplicity and ease-of-use
 
-Redis makes complex applications easier to write and maintain. Redis presents a simple command and query structure for working with data versus query languages of traditional databases. When building applications you typically are using object-oriented languages like Java, Python, PHP, C, C++, C#, JavaScript, TypeScript, Node.js, Ruby, Go, and many others. The built-in data structures of Redis present a natural way of storing data exactly as you use it in object-oriented languages, minimizing [impedance mismatch](https://redis.com/blog/the-impedance-mismatch-test/). Redis also provides clients for almost every popular language, making it easy to build applications that can run on any platform.
+Redis makes complex applications easier to write and maintain. Redis presents a simple command and query structure for working with data versus query languages of traditional databases. When building applications you typically are using object-oriented languages, such as Java, Python, PHP, C, C++, C#, JavaScript, TypeScript, Node.js, Ruby, Go, and many others. The built-in data structures of Redis present a natural way of storing data exactly as you use it in object-oriented languages, minimizing [impedance mismatch](https://redis.com/blog/the-impedance-mismatch-test/). Redis also provides clients for almost every popular language, making it easy to build applications that can run on any platform.
 
 ### Replication and persistence
 
-Redis offers asynchronous replication where data can be replicated to multiple servers. This allows for improved read performance and faster recovery. Redis Enterprise additionally provides [Active-Active Geo-Distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/) to ensure that data is distributed across multiple servers in a highly-available manner for both reads and writes. Redis supports point-in-time backups (known as RDB) that lets you copy Redis data to disk or cloud storage.
+Redis offers asynchronous replication where data can be replicated to multiple servers. This allows for improved read performance and faster recovery. Redis Enterprise additionally provides [Active-Active Geo-Distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/) to ensure that data is distributed across multiple servers in a highly available manner for both reads and writes. Redis supports point-in-time backups (known as RDB) that lets you copy Redis data to disk or cloud storage.
 
-While Redis open source was not built to be a durable and consistent database, [Redis Enterprise provies a durability and consistency](https://redis.com/redis-enterprise/technology/durable-redis/) for Redis and allows you to use Redis as both a cache and a database.
+While Redis open source was not necessarily developed with an emphasis on durability and consistency as a default, [Redis Enterprise provides durability and consistency](https://redis.com/redis-enterprise/technology/durable-redis/) for Redis and allows you to use Redis as both a cache and a database.
 
 ### High availability and scalability
 
 Redis provides a primary-replica architecture as a single node or cluster. This allows you to build highly available, scalable, and reliable applications on top of Redis. You can easily scale Redis up, down, in, and out to meet application demands.
 
-### Open Source
+### Open source
 
-Redis is open source and available for free, and offers open source clients in many languages. The [Redis Modules listed above](#redis-modules) are also available for download or use in Redis Enterprise Cloud.
+Redis is open source and available for free, and offers open source clients in many languages. The [Redis modules listed above](#redis-modules) are also available for download or use in Redis Enterprise Cloud.
 
-## Popular Redis Use Cases
+## Popular Redis use cases
 
 ### Caching
 
-Redis is the de-facto solution for caching. Because Redis can handle millions of queries per second and offers high availability and scalability, it is used as a cache to reduce the load on a relational or NoSQL database. This includes database query caching, session caching, page caching, and caching of frequently used objects such as images, files, and application data. Learn more about [Redis caching](https://redis.com/solutions/use-cases/caching/).
+Redis is the de facto solution for caching in almost every application. Because Redis can handle millions of queries per second and offers high availability and scalability, it is used as a cache to reduce the load on a relational or NoSQL database. This includes database query caching, session caching, page caching, and caching of frequently used objects such as images, files, and application data. Learn more about [Redis caching](https://redis.com/solutions/use-cases/caching/).
 
 ### Session storage
 
-Redis provices sub-millisecond latency at scale, making it a natural choice to store session data. This includes user profile information, oauth tokens, credentials, session state, and more. Learn more about [Redis session storage](https://redis.com/solutions/use-cases/session-management/).
+Redis provides sub-millisecond latency at scale, making it a natural choice to store session data. This includes user profile information, OAuth tokens, credentials, session state, and more. Learn more about [Redis session storage](https://redis.com/solutions/use-cases/session-management/).
 
-### Fraud Detection
+### Fraud detection
 
 Redis is built to handle real-time AI and machine learning workloads because of its scalability and high write throughput at low latency. Redis is often used as a primary database, enabling deep learning models directly where the data lives. Bloom filters, time series, and other data structures that work natively with Redis enable cost reduction with high-speed statistical analysis. Learn more about [Redis fraud detection](https://redis.com/solutions/use-cases/fraud-detection/).
 
-### Real-time Inventory
+### Real-time inventory
 
-Retailers need to ensure that their real-time inventory systems can survive seasonal peaks, maintain data consistency, and deliver instant results. Redis is a great choice for this use case. It is a highly-available and highly-scalable database that can handle millions of queries per second. Redis clusters can be configured to replicate across multiple servers in a highly-available manner, enabling data consistency between stores. Learn more about [Redis for real-time inventory management](https://redis.com/solutions/use-cases/real-time-inventory/).
+Retailers need to ensure that their real-time inventory systems can survive seasonal peaks, maintain data consistency, and deliver instant results. Redis is a great choice for this use case. It is a highly available and highly scalable database that can handle millions of queries per second. Redis clusters can be configured to replicate across multiple servers in a highly available manner, enabling data consistency between stores. Learn more about [Redis for real-time inventory management](https://redis.com/solutions/use-cases/real-time-inventory/).
 
 ### Claims processing
 
-Insurance companies need to process claims in real-time, and receive millions of claims daily. Redis provides sub-millisecond latency and can process millions of requests per second. Redis has built-in data types for building scalable event-driven architectures. Redis Streams can enable injesting and analyzing large amounts of data in real-time. Learn more about [Redis claims processing](https://redis.com/solutions/use-cases/claims-processing/).
+Insurance companies need to process claims in real time, and they receive millions of claims daily. Redis provides sub-millisecond latency and can process millions of requests per second. Redis has built-in data types for building scalable, event-driven architectures. Redis Streams can enable ingesting and analyzing large amounts of data in real time. Learn more about [Redis claims processing](https://redis.com/solutions/use-cases/claims-processing/).
 
-### Gaming Leaderboards
+### Gaming leaderboards
 
-Leaderboards require constant updates and scalability across millions of users. They also require complex mathematical computation, and must be distributed globally. Redis has built-in data types such as sorted sets that are useful for manipulating leaderboards. Redis also supports clustering and can be distributed globally. Learn more about [Redis gaming leaderboards](https://redis.com/solutions/use-cases/leaderboards/).
+Leaderboards require constant updates and scalability across millions of users. They also require complex mathematical computation, and must be distributed globally. Redis has built-in data types, such as sorted sets, that are useful for manipulating leaderboards. Redis also supports clustering and can be distributed globally. Learn more about [Redis gaming leaderboards](https://redis.com/solutions/use-cases/leaderboards/).
 
 ### Messaging
 
@@ -118,9 +119,9 @@ Microservices and distributed systems need to be able to communicate with each o
 
 Redis can handle millions of read/write operations per second at sub-millisecond latencies, and it runs on AWS, GCP, Azure, and other cloud platforms. This makes Redis a great choice for processing large volumes of data that arrive in bursts, data from multiple sources/formats, data that needs to be filtered and analyzed, and data that is distributed geographically. Learn more about [Redis data ingestion](https://redis.com/solutions/use-cases/fast-data-ingest/).
 
-## Redis Language Support
+## Redis language support
 
-Redis supports most high-level popular programming languages and has SDKs built to make it easy to get started. Redis sclients are available the following languages (and more):
+Redis supports most high-level, popular programming languages and has SDKs built to make it easy to get started. Redis clients are available for the following languages (and more):
 
 - Python
 - JavaScript
@@ -136,16 +137,16 @@ Redis supports most high-level popular programming languages and has SDKs built 
 
 ## Redis vs. Memcached
 
-Both Redis and Memcached are open source, powerful, in-memory data stores. The main difference between the two is that Redis is a more full-featured database that is built to fit a number of different use-cases. Memcached is primarily used for key/value caching. Redis is used for both caching and as a database.
+Both Redis and Memcached are open source, powerful, in-memory data stores. The main difference between the two is that Redis is a more full-featured database that is built to fit a number of different use cases. Memcached is primarily used for key/value caching. Redis is used for both caching and as a database.
 
-## How to Host Redis
+## How to host Redis
 
 You can [sign up for Redis Enterprise Cloud](https://redis.com/try-free/) for free, and when you create your subscription you can specify that you want to use AWS, GCP, or Azure. You can also configure the geographic region where you want to host Redis. Redis Enterprise Cloud is a great option when choosing Redis because:
 
-1. It is a fully-managed service that provides a single point of contact for all your Redis clusters.
-1. It is the only managed service that provides [Redis Modules](https://redis.com/modules/get-started/) that turn Redis into a multi-model database.
+1. It is a fully managed service that provides a single point of contact for all your Redis clusters.
+1. It is the only managed service that provides [Redis modules](https://redis.com/modules/get-started/) that turn Redis into a multi-model database.
 1. It is built to scale with enterprise clustering, Redis-on-Flash, and Active-Active geo-distribution using CRDTs.
 
-## Getting Started with Redis
+## Getting started with Redis
 
-If you are ready to start building applications using Redis check out our [tutorials for Redis](/develop) that let you use your programming language of choice!
+If you are ready to start building applications using Redis, check out our [tutorials for Redis](/develop) that let you use your programming language of choice!
