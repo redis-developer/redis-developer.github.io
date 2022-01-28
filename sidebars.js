@@ -44,8 +44,10 @@ module.exports = {
               'create/aws/redis-on-aws/index-redis-on-aws',
               'create/aws/slackbot/index-slackbot',
               'create/aws/terraform/index-terraform',
-              'create/aws/import/index-database-migration-aws-elasticache-redis-enterprise-cloud'
-           ]
+              'create/aws/bidding-on-aws/index-bidding-on-aws',
+              'create/aws/import/index-database-migration-aws-elasticache-redis-enterprise-cloud',
+              'create/aws/chatapp/index-chatapp'
+            ]
           },
         'create/docker/index-docker',
         {
