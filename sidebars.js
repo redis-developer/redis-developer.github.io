@@ -63,7 +63,8 @@ module.exports = {
         'create/windows/index-windows',
         'create/from-source/index-from-source',
         'create/jenkins/index-jenkins',
-      ]
+        'create/openshift/index-openshift' 
+     ]
     },
     {
       type: 'category',

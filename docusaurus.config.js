@@ -28,7 +28,7 @@ module.exports = {
       ajeet: {
         name: 'Ajeet Raina',
         link: 'https://twitter.com/ajeetsraina',
-        title: 'Developer Marketing Manager at Redis',
+        title: 'Developer Growth Manager at Redis',
         image: 'profile_pic_ajeet_raina.jpg'
       },
       will: {
@@ -72,6 +72,18 @@ module.exports = {
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
         title: 'Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
+      },
+      karan: {
+        name: 'Karan Singh',
+        link: 'https://www.linkedin.com/in/karansingh7',
+        title: 'Senior Principal Architect & Developer Evangelist at Red Hat',
+        image: 'profile_pic_karan_singh.png',
+      },
+      sumit: {
+        name: 'Sumit Shatwara',
+        link: 'https://www.linkedin.com/in/sumitshatwara',
+        title: 'Solution Architect at Redis',
+        image: 'profile_pic_sumit_shatwara.jpeg',
       },
       matthew: {
         name: 'Matthew Royal',
