@@ -207,7 +207,7 @@ For each generated key like: ```rab:set:*```, data is stored like:
 ### Cohort data
 
 - We store users who register and then bought some products (action order matters).
-- For each buy action in December we check if user performed register action before (register counter must be greater than zero).
+- For each buy action in December we first check if the user performed register action  (register counter must be greater than zero).
 - If so, we set user bit to 1
 
 ##### Example 
