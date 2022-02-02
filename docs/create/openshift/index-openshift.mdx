@@ -164,9 +164,6 @@ This will open up a list of operators with various categories. Search for “Red
 
 
 
-
-### Step 8. Install Redis Enterprise Operator
-
 Click “Install” to start the installation process and then select the required channel, namespace and approval strategy in the next screen.
 
 
@@ -182,9 +179,10 @@ Click on “Events” to see the streaming events to troubleshoot or check the p
 
 ![image](streaming_events.png)
 
+Step 8. Create Redis Enterprise Cluster
 
 
-Once Redis Enterprise Operator is installed, we will create a Redis Enterprise Cluster instance using RedisEnterpriseCluster (REC) custom resource definition.
+Once Redis Enterprise Operator is installed, we will create a Redis Enterprise Cluster instance using RedisEnterpriseCluster (REC) custom resource.
 
 RedisEnterpriseCluster is the Schema for the redisenterpriseclusters API. From the installed Redis EnterpriseOperator, Click on “Create Redis Enterprise Cluster'' and click on “YAML” section and paste below sample yaml file:
 
@@ -221,7 +219,7 @@ spec:
   username: demo@redis.com
 ```
 
-For configuring any additional parameters for the Redis Enterprise Cluster custom resource definition, [visit this page](https://github.com/RedisLabs/redis-enterprise-k8s-docs/blob/master/redis_enterprise_cluster_api.md).
+For configuring any additional parameters for the Redis Enterprise Cluster custom resource, [visit this page](https://github.com/RedisLabs/redis-enterprise-k8s-docs/blob/master/redis_enterprise_cluster_api.md).
 
 Wait till the status shows “Succeeded” under Redis Enterprise Operator. 
 
@@ -416,10 +414,3 @@ In our next tutorial, we will learn how to deploy a sample Real-time chat applic
 - [Official OpenShift Documentation](https://docs.openshift.com/)
 - [Install a Cluster quickly on GCP](https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-default.html)
 - [Redis Enterprise on Kubernetes Github Repository](https://github.com/RedisLabs/redis-enterprise-k8s-docs)
-
-
-
-
-
-
-
