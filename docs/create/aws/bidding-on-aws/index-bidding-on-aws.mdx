@@ -18,27 +18,27 @@ Let’s take a look at how this was achieved. We’d also like to point out that
 - How data is stored
 - Navigating the application
 
-### 1. What will you build?
+### What will you build?
 
 You’ll build an application that will allow users to attend and take part in digital auctions. The application will allow users to create an account, put in bids, and even set up their own auction. Below we’ll uncover the required components, their functionality, and how to deploy them within this architecture.
 
 Ready to get started? Ok, let’s dive straight in.
 
-### 2. What will you need?
+### What will you need?
 
 - [NodeJS](https://developer.redis.com/develop/node): used as an open-source, cross-platform, backend JavaScript runtime environment that executes Javascript code outside a web browser.
 - [Amazon Cognito](https://aws.amazon.com/cognito/): used to securely manage and synchronize app data for users on mobile.
 - [Redis Enterprise Cloud](https://developer.redis.com/create/rediscloud): used as a real-time database, cache, and message broker.
-- [RedisJSON](https://developer.redis.com/howtos/redisjson/getting-started): used to store, update and fetch JSON values from Redis keys.
+- [RedisJSON](https://developer.redis.com/howtos/redisjson/getting-started): used to store, update and fetch JSON values from Redis.
 - [Socket.IO](https://socket.io/): used as a library that provides real-time, bi-directional, and event-based communication between the browser and the server.
-- [AWS Lambda](https://aws.amazon.com/lambda/): used a serverless compute service that runs your code in response events and manages the underlying compute service automatically for you.
+- [AWS Lambda](https://aws.amazon.com/lambda/): used as a serverless compute service that runs your code in response events and manages the underlying compute service automatically for you.
 - [Amazon SNS/Amazon SES](https://aws.amazon.com/sns/): a fully managed messaging service for both application-to-application (A2A) and application-to-person (A2P) communication.
 
-### 3. Architecture
+### Architecture
 
 ![My Image](images/architecture.png)
 
-### 4. How does it work?
+### How does it work?
 
 #### All auctions
 
@@ -74,77 +74,129 @@ NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then 
 
 NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
-### 5. Getting started
+### Getting started
 
 ### Prerequisites
 
 - [NodeJS](https://nodejs.org/en/)
 - [NPM](https://www.npmjs.com/)
 
-### Step 1: Clone the repo
+### Step 1. Sign up for a Free Redis Enterprise Cloud Account
+
+[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for a free Redis Enterprise Cloud account.
+
+![image](sign3.png)
+
+Choose AWS as a Cloud vendor while creating your new subscription. At the end of the database creation process, you will get a Redis Enterprise CLoud database endpoint and password. You can save it for later use.
+
+![image](sign4.png)
+
+
+### Step 2: Clone the backend GitHub repository
 
 ```
-https://github.com/redis-developer/NR-digital-auction-frontend
+https://github.com/redis-developer/NR-digital-auction-backend
 ```
 
-### Step 2. Install the package  dependencies
+### Step 3. Install the package dependencies
 
-npm install is a npm cli-command that does the predefined thing i.e install dependencies specified inside package.json
+The 'npm install' is a npm cli-command that does the predefined thing i.e install dependencies specified inside package.json
 
 ```
 npm install
 ```
 
-### Step 3. Building the application
+### Step 4. Setting up environmental variable
+
+
 
 ```
-npm build
+export REDIS_END_POINT=XXXX
+export REDIS_PASSWORD=XXX
+export REDIS_PORT=XXX
 ```
 
-### Step 4. Starting the application
+### Step 5. Building the application
+
+```
+npm run build
+```
+
+### Step 6. Starting the application
 
 ```
 npm start
 ```
 
-### Step 5. Accessing the application
+### Step 7. Cloning the Frontend GITHUB repository
+
+```
+git clone https://github.com/redis-developer/NR-digital-auction-frontend
+```
+
+### Step 8. Building the application
+
+```
+npm run build
+```
+
+### Step 9. Starting the application
+
+```
+npm start
+```
+
+### Step 10. Accessing the application
 
 ![accessing](images/image_2.png)
 
-### Step 6. Signing up to the application
+### Step 11. Signing up to the application
 
 ![signing](images/image_3.png)
 
-### Step 7. Sign-in
+### Step 12. Sign-in
 
 ![sign](images/image_4.png)
 
 
-### Step 8. Accessing the dashboard
+### Step 13. Accessing the dashboard
 
 ![access](images/image_5.png)
 
-### Step 9. Listing the auction item
+### Step 14. Listing the auction item
 
 ![Listing](images/image_6.png)
 
 
-### Step 10. Accessing the bidding page
+### Step 15. Accessing the bidding page
 
 ![accessing](images/image_7.png)
 
 
-### 6. How data is stored
+### How data is stored
 
-The Redis Enterprise  Cloud Database with  RedisJSON module is what you’ll use to install the data.
+The Redis Enterprise Cloud Database with RedisJSON module is what you’ll use to install the data.
 
 ### Auctions
 
 - Type - Redis Hash.
 - Used for storing auctions data.
 - UUID generated from the backend (NodeJS) serves as the key
-- JSON data which includes keys - auctionId, auctionItemName, description,lotNo, quantity, buyersPremium, itemUnit, minBidAmount, bidIncrement, startDateTime, endDateTime, images, currentBid - servers as the value for Auctions hash.
-- NodeJS connects to the Redis Cloud database. Meanwhile, the frontend communicates with the NodeJS backend through API calls.
+- JSON data which represents the Auction object and includes the following keys
+    - auctionId
+    - auctionItemName
+    - description
+    - lotNo
+    - quantity
+    - buyersPremium
+    - itemUnit
+    - minBidAmount
+    - bidIncrement
+    - startDateTime
+    - endDateTime
+    - images
+    - currentBid
+- NodeJS connects to the Redis Cloud database. The Frontend communicates with the NodeJS backend through API calls.
 - POST : /api/auctions.
 - The request body has JSON data to be inserted into the database.
 - NodeJS uses the Redis module to work with Redis Cloud. The Redis client is created. using the Redis credentials and hmset(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
@@ -156,8 +208,14 @@ The Redis Enterprise  Cloud Database with  RedisJSON module is what you’ll use
 - NodeJS connects to the Redis Cloud database. The Frontend communicates with the NodeJS backend through API calls.
 - POST : ```/api/bidding```
 - The request body has JSON data to be inserted into the database.
-- AuctionId from request body servers as the key
-- JSON data which includes keys - currentBid, currentBidTime, currentBidEndTime, and biddings array (id, auctionId, userId, username, bidAmount, bidTime) - servers as value
+- AuctionId from request body serves as the key
+- JSON data which includes keys:
+
+     - currentBid
+     - currentBidTime
+     - currentBidEndTime, and 
+     - biddings array (id, auctionId, userId, username, bidAmount, bidTime)
+
 - The bidding array has all of the bids placed for a particular auction item.
 - Based on the current BidEndTime and BidTime, the auction end date is extended based on the Dynamic closing concept.
 - Current dynamic closing logic - If a new bid is placed within the last 5 minutes of the auction end time, the end time is extended by 1 hour.
@@ -184,7 +242,7 @@ The Redis Enterprise  Cloud Database with  RedisJSON module is what you’ll use
 - The JSON data which includes keys - serves as a value
 - NodeJS uses the Redis module to work with Redis Cloud. The Redis client is created using the Redis credentials and hmset(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
-### 7. Navigating the application
+### Navigating the application
 
 ### Creating an account
 
@@ -234,6 +292,10 @@ But thanks to Redis, the components that made up the architecture system became 
 
 So what can you build with Redis? For more inspiration, you can head over to the Redis Launchpad to access an exciting range of applications.
 
-Check it out. Be inspired. And have fun with Redis.
+Don't miss out on your $200 credit. Plus, your opportunity win a Tesla! 
 
+
+<div>
+<a href="https://redis.com/try-free/?utm_medium=email&utm_source=marketo-followup&utm_campaign=2021-11-reinvent+try_free&mkt_tok=OTE1LU5GRC0xMjgAAAGCSARj9AY9-xGRHmR6vxemuDqU8NkDSMDTf1r8o4E7zjy58kDTzL2av6d4xogYhOqud8a4WEw6wu4rht5OHKW8M7vbp-u_cVNGYnhlQzkFr6mF" target="_blank" rel="noopener" className="link"> <img src="/img/matrix200.png"  className="thumb" loading="lazy" alt="Redis Try Free" /></a>
+</div>
 

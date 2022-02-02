@@ -10,7 +10,7 @@ Chat messaging apps are surging in popularity exponentially. Mobile apps like Wh
 
 ![chatapp](image_chatapp1.png)
 
-There’s been a rise in the number of social media apps that bring social elements to enable activities like collaboration, messaging, social interaction and commenting. Such activities require a real-time capability to automatically present updated information to users. More and more developers are tapping into the power of Redis as it is extremely fast & due to its support for a variety of rich data structures such as Lists, Sets, Sorted Sets, Hashes etc. Redis comes along with a Pub/Sub messaging functionality that allows developers to scale the backend by spawning multiple server instances.
+There’s been a rise in the number of social media apps that bring social elements to enable activities like collaboration, messaging, social interaction and commenting. Such activities require a real-time capability to automatically present updated information to users. More and more developers are tapping into the power of Redis as it is extremely fast & its support for a variety of rich data structures such as Lists, Sets, Sorted Sets, Hashes etc. Redis comes along with a Pub/Sub messaging functionality that allows developers to scale the backend by spawning multiple server instances.
 
 
 
@@ -118,7 +118,7 @@ When the server starts, the initialization step occurs. At first, a new Redis co
 For simplicity, a key with total_users value is checked: if it does not exist, we fill the Redis database with initial data. EXISTS total_users (checks if the key exists)
 The demo data initialization is handled in multiple steps:
 
-#### Creating of demo users
+#### Creating demo users
 
 We create a new user id: INCR total_users. Then we set a user ID lookup key by user name: e.g. 
 
@@ -141,7 +141,9 @@ For handling rooms for each user, we have a set that holds the room ids. Here's 
   SADD user:1:rooms "0"
  ```
 
-Populate private messages between users. At first, private rooms are created: if a private room needs to be established, for each user a room id: room:1:2 is generated, where numbers correspond to the user ids in ascending order.
+#### Populating private messages between users
+
+First, private rooms are created: if a private room needs to be established, for each user a room id: room:1:2 is generated, where numbers correspond to the user ids in ascending order.
 
 E.g. Create a private room between 2 users: 
  
@@ -154,9 +156,13 @@ Then we add messages to this room by writing to a sorted set:
  ```bash
   ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
  ```
-We use a stringified JSON for keeping the message structure and simplify the implementation details for this demo-app.
 
-Populate the "General" room with messages. Messages are added to the sorted set with id of the "General" room: room:0
+
+We are using a stringified JSON to keep the message structure and simplify the implementation details for this demo-app. You may choose to use a Hash or RedisJSON
+
+### Populate the "General" room with messages 
+
+Messages are added to the sorted set with id of the "General" room: room:0
 
 #### Pub/sub
 
@@ -168,8 +174,7 @@ Pub/sub allows connecting multiple servers written in different platforms withou
 
 #### Real-time chat and session handling
 
-When a WebSocket/real-time server is instantiated, which listens for the next events:
-
+When a WebSocket connection is established, we can start to listen for events:
 - Connection. A new user is connected. At this point, a user ID is captured and saved to the session (which is cached in Redis). Note, that session caching is language/library-specific and it's used here purely for persistence and maintaining the state between server reloads.
 
 A global set with online_users key is used for keeping the online state for each user. So on a new connection, a user ID is written to that set:
