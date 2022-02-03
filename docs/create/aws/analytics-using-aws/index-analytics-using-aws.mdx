@@ -204,6 +204,7 @@ For each generated key like: ```rab:set:*```, data is stored like:
   ```bash
    SETBIT rab:bitmap:action:addToCart:timeSpan:2015-12/3 8 1
   ```
+
 ### Cohort data
 
 - We store users who register and then bought some products (action order matters).
@@ -289,13 +290,13 @@ So, it will be stored like:
    BITCOUNT rab:bitmap:action:visit:page:product1:timeSpan:2015-12/2
   ```
 
-#### Traffic per Source ({source} is one of: google, Facebook, email, direct, referral, none):
+#### Traffic per Source ({source} is one of: Google, Facebook, email, direct, referral, none):
 
 ##### December: 
 
-   ```bash
-    BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
-   ```
+  ```bash
+   BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
+  ```
 
 ##### Example:
 
@@ -305,9 +306,9 @@ So, it will be stored like:
 
 #####  X week of December: 
 
-    ```bash
-     BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}
-    ```
+  ```bash
+   BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}
+  ```
 ##### Example:
 
   ```bash
@@ -394,9 +395,11 @@ to
 
 ##### X week of December: 
 
-    ```bash
-     GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}
-    ```
+
+  ```bash
+   GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}
+  ```
+
 ##### Example:
 
   ```bash
