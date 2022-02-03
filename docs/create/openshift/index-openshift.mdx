@@ -6,39 +6,50 @@ slug: /create/openshift
 authors: [karan,sumit,ajeet]
 ---
 
-Deploying and managing containerised applications is not easy. With the rise of microservice architecture, it becomes cumbersome to deploy containers across multiple environments. Given that containers can be spun up in seconds and that too in a higher volume compared to VMs, managing across multiple platforms can be extremely challenging. OpenShift (kubernetes) comes to the rescue. Kubernetes is designed and built from the ground up to deploy and manage containerized applications across hundreds of compute nodes. Red Hat OpenShift is a leading enterprise kubernetes platform that enables a cloud-like experience everywhere it’s deployed, no matter if it’s in the cloud, on-premise or at the edge.
+Deploying and managing containerized applications is not easy. The rise of microservice architecture has made it cumbersome to deploy containers across multiple environments. Given that containers can be spun up in seconds and at a much higher volume compared to VMs, managing containers across multiple platforms can be extremely challenging. 
+
+[Red Hat OpenShift](https://www.redhat.com/en/technologies/cloud-computing/openshift/kubernetes-engine) to the rescue! OpenShift, the leading enterprise Kubernetes platform, enables a cloud-like experience wherever it’s deployed—in the cloud, on premises, or at the edge. OpenShift is built upon Kubernetes, which is designed and built from the ground up to deploy and manage containerized applications across hundreds of compute nodes.
+
 
 ### What is OpenShift?
 
-[Red Hat OpenShift](https://www.redhat.com/en/technologies/cloud-computing/openshift) gives you the ability to choose where you build, deploy, and run applications through a consistent experience. Red Hat OpenShift’s full-stack automated operations and self-service provisioning for developers lets teams work together more efficiently to move ideas from development to production. 
 
-[Red Hat OpenShift focused on developer experience](https://www.redhat.com/en/technologies/cloud-computing/openshift/developers) and application security that's platform agnostic. OpenShift helps you develop and deploy applications to one or more hosts. These can be public facing web applications, or backend applications, including micro services or databases. Applications can be implemented in any programming language you choose. The only requirement is that the application can run within a container.  
+[Red Hat OpenShift](https://www.redhat.com/en/technologies/cloud-computing/openshift) gives you the ability to choose where you build, deploy, and run applications, providing a consistent experience every time. OpenShift’s full-stack automated operations and self-service provisioning for developers lets teams work together more efficiently to move ideas from development to production.
 
-[OpenShift Container Platform(OCP)](https://www.redhat.com/en/technologies/cloud-computing/openshift/container-platform) is a set of modular components and services built on top of Red Hat Enterprise Linux, and Kubernetes. OpenShift adds capabilities such as remote management, multitenancy, increased security, application life-cycle management and self-service interfaces for developers.
+OpenShift [focuses on developer experience](https://www.redhat.com/en/technologies/cloud-computing/openshift/developers) and application security that’s platform agnostic. OpenShift helps you develop and deploy applications to one or more hosts, which can be public-facing web applications or backend applications, including microservices or databases. Applications can be implemented in any programming language you choose; the only requirement is that the application can run within a container. 
 
-Red Hat OpenShift is built on Kubernetes and extends the open source platform in several ways to make it suitable for enterprise operations teams: 
-- Automated installation and operations for platform updates on the container host, the Kubernetes cluster, and application services
-- A consistent Kubernetes platform portable across different infrastructures and clouds 
-- Built-in cluster and application monitoring using Prometheus and Grafana dashboards 
-- Centralized policy management and enforcement across clusters 
-- Built-in security checks for the entire container stack throughout the application life cycle 
+[OpenShift Container Platform (OCP)](https://www.redhat.com/en/technologies/cloud-computing/openshift/container-platform) is a set of modular components and services built on top of Red Hat Enterprise Linux and Kubernetes. OpenShift supports remote management, multitenancy, increased security, application lifecycle management, and provides self-service interfaces for developers.
+
+
+![Image](architecture.png)
+
+While OpenShift is built on Kubernetes, it extends the open source platform in several ways to make it suitable for enterprise operations teams: 
+Automated installation and operations for platform updates on the container host, the Kubernetes cluster, and application services
+A consistent Kubernetes platform portable across different infrastructures and clouds 
+Built-in cluster and application monitoring using Prometheus and Grafana dashboards 
+Centralized policy management and enforcement across clusters 
+Built-in security checks for the entire container stack throughout the application life cycle 
+
+
 
 
 ### Supported Technologies
 
-OpenShift is fully pluggable and works with a wide range of technologies some of them are Languages Runtimes like .NET, Java, Node.js, PHP, Python, Ruby, GoLang and Perl. Databases such as MariaDB, MongoDB, MySQL, PostgreSQL, and Redis. Red Hat and IBM Application Services which includes application runtimes, agile integration, business process automation technologies and other enterprise software solutions are available as containers which are managed by Operators in OpenShift. Also, OpenShift is certified with and supports 100+ independent software vendors including Redis Enterprise. 
+OpenShift is fully pluggable and works with a wide range of technologies, including languages such as .NET, Java, Node.js, PHP, Python, Ruby, GoLang, and Perl as well as databases such as MariaDB, MongoDB, MySQL, PostgreSQL, and Redis. In addition, OpenShift is certified with and supports 100+ independent software vendors, including Redis Enterprise. 
+
 
 ### What is OperatorHub?
 
-OperatorHub is the web console interface in OpenShift Container Platform that cluster administrators use to discover, install and manage Operators. In a few clicks, users can subscribe to the software they like via operators and make it available to software developers and platform administrators across cluster or isolated namespace environments using Operator Lifecycle Manager (OLM).
+OperatorHub is the web console interface in OpenShift Container Platform that cluster administrators use to discover, install, and manage operators. In a few clicks, users can subscribe to the software they like via operators and make it available to software developers and platform administrators across clusters or isolated namespace environments using Operator Lifecycle Manager (OLM).
 
 In this tutorial, you will learn how to deploy Redis Enterprise Cluster and Database on OpenShift using Redis Enterprise Kubernetes Operator.
+
 
 ### Pre-requisites:
 
 To follow this guide, you should have an OpenShift cluster with 3 or more worker nodes. There are multiple ways to provision an OpenShift cluster, [you can follow the installation guide](https://docs.openshift.com/container-platform/4.9/installing/index.html) based on your preferred infrastructure or cloud provider. Redis Enterprise Operator currently supports OpenShift 3.11 and OpenShift 4.x. [Visit this page](https://docs.redis.com/latest/kubernetes/reference/supported_k8s_distributions/) to find all the supported Kubernetes distributions. 
 
-In this guide we are using a self-managed OpenShift  Cluster on Google Cloud Platform.
+In this guide we are using a self-managed OpenShift Cluster on Google Cloud Platform.
 
 
 ### Step 1. Login to Red Hat Openshift Container Platform(OCP) 
@@ -58,7 +69,7 @@ You have access to 68 projects, the list has been suppressed. You can list all p
 
 ### Step 2. Verify the status of nodes
 
-All the nodes should be in “Ready” status. 
+Ensure that all the nodes should be in “Ready” status. 
 
 
 ```
@@ -100,13 +111,13 @@ to build a new example application in Ruby. Or use kubectl to deploy a simple Ku
 
 ```
 $ git clone https://github.com/RedisLabs/redis-enterprise-k8s-docs
-$ cd redis-enteprise-k8s-docs/
+$ cd redis-enterprise-k8s-docs/
 ```
 
 ### Step 5. Apply the SCC configuration
 
+The SCC [(security context constraint)](https://docs.openshift.com/container-platform/4.8/authentication/managing-security-context-constraints.html) YAML defines security context constraints for the cluster for our project. This is composed of custom security settings and strategies that will provide access to the Redis Enterprise Operator and Cluster Pods to run on OpenShift.  We strongly recommend that you not change anything in this YAML file.
 
-The scc [(Security Context Constraint)](https://docs.openshift.com/container-platform/4.8/authentication/managing-security-context-constraints.html) yaml defines security context constraints for the cluster for our project. This is composed of custom security settings and strategies that will provide access to the Redis Enterprise Operator and Cluster Pods to run on OpenShift.  We strongly recommend that you not change anything in this yaml file.
 
 ```
 kind: SecurityContextConstraints
@@ -156,8 +167,7 @@ Click on “OperatorHub” under Operators section.
 
 
 
-This will open up a list of operators with various categories. Search for “Redis” and click “Redis Enterprise” without “Marketplace” tag to proceed further.
-
+This will open up a list of operators with various categories. Search for “Redis” and click “Redis Enterprise” (the one without the “Marketplace” tag) to proceed.
 
 
 ![image](image_04.png)
@@ -170,21 +180,21 @@ Click “Install” to start the installation process and then select the requir
 ![image](image_05.png)
 
 
-Wait till the installation gets completed.
+Wait for the installation to be completed.
 
 ![image](installed_operators.png)
 
 
-Click on “Events” to see the streaming events to troubleshoot or check the progress of installation.
+Click on “Events” to see the streaming events in order to troubleshoot or check the progress of the installation.
 
 ![image](streaming_events.png)
 
 ### Step 8. Create Redis Enterprise Cluster
 
 
-Once the Redis Enterprise Operator is installed, we will create a Redis Enterprise Cluster instance using RedisEnterpriseCluster (REC) custom resource.
+Once Redis Enterprise Operator is installed, create a Redis Enterprise Cluster instance using RedisEnterpriseCluster (REC) custom resource.
 
-RedisEnterpriseCluster is the Schema for the redisenterpriseclusters API. From the installed Redis EnterpriseOperator, Click on "Create Redis Enterprise Cluster" and click on the "YAML" section and paste the following sample YAML file:
+RedisEnterpriseCluster is the schema for the redisenterpriseclusters API. From the installed Redis Enterprise Operator, click on “Create RedisEnterpriseCluster'' and click on “YAML” section, then paste the  sample YAML file below:
 
 
 ![image](create_rec.png)
@@ -219,37 +229,38 @@ spec:
   username: demo@redis.com
 ```
 
-To learn about additional configuration parameters for the Redis Enterprise Cluster custom resource definition, [visit this page](https://github.com/RedisLabs/redis-enterprise-k8s-docs/blob/master/redis_enterprise_cluster_api.md)
+For configuring any additional parameters for the Redis Enterprise Cluster custom resource, [visit this page](https://github.com/RedisLabs/redis-enterprise-k8s-docs/blob/master/redis_enterprise_cluster_api.md).
 
-Wait till the status shows “Succeeded” under Redis Enterprise Operator. 
+Wait until the status shows “Succeeded” under Redis Enterprise Operator. 
 
 ![image](succeeded.png)
 
-### Step 9. Prerequisites to access Redis Enterprise Cluster Admin Console
+### Step 9. Access Redis Enterprise Cluster Admin Console
 
-To access the Redis Enterprise Cluster admin console, you will need credentials. Follow the below steps to get the credentials via “rec” secret resource:
+To access the Redis Enterprise Cluster admin console, you will need credentials. Follow the steps below to get the credentials via “rec” secret resource.
 
 ![image](ocp.png)
 
-Under the “Data” section, you can reveal username and password.
+Under the "Data" section, you can reveal username and password.
 
-Next, Click on “Services” and choose “rec-ui” under the services list:
+Next, Click on “Services” and choose “rec-ui” under the services list.
+
 
 ![image](recui.png)
 
-Click on “Services” and look out for External Load-balancer IP.
+Click on "Services" and look for External Load-balancer IP.
 
 ![image](loadbalancer.png)
 
 
-### Step 10. Access the Redis Enterprise Cluster Amdin Console
+Step 10. From the web browser, access the rec-ui external IP http://IP:8443 to access the Redis Enterprise Cluster Admin Console.
 
-From web browser access the rec-ui external IP http://IP:8443 to access  the Redis Enterprise Cluster Admin Console.
+
 
 ![image](re1.png)
 
-To login into Redis Enterprise Cluster, use the credentials what we have extracted above. 
-By now, you will be able to see 3 nodes of the Redis Enterprise cluster.
+To log into Redis Enterprise Cluster, use the credentials that you extracted above. By now, you should be able to see three nodes of the Redis Enterprise cluster.
+
 
 ![image](re2.png)
 
@@ -258,7 +269,8 @@ By now, you will be able to see 3 nodes of the Redis Enterprise cluster.
 
 ### Step 11. Create Redis Enterprise Database
 
-RedisEnterpriseDatabase is the Schema for the redisenterprisedatabases API. To create REDB, navigate to Installed Operator > Redis Enterprise Operator > Redis Enterprise Database > Click “Create RedisEnterpriseDatabase” to start the creation process using REDB custom resource. You can click on “YAML” and paste below sample yaml file.
+RedisEnterpriseDatabase is the schema for the redisenterprisedatabases API. To create REDB, navigate to Installed Operator > Redis Enterprise Operator > Redis Enterprise Database and click “Create RedisEnterpriseDatabase” to start the creation process using REDB custom resource. You can click on “YAML” and paste the sample YAML file below: 
+
 
 ```
 apiVersion: app.redislabs.com/v1alpha1
@@ -274,14 +286,17 @@ spec:
 ```
 
 
-For configuring any additional parameters for the Redis Enterprise Database custom resource, visit this page.
+For configuring any additional parameters for the Redis Enterprise Database custom resource, [visit this page](https://github.com/RedisLabs/redis-enterprise-k8s-docs/blob/master/redis_enterprise_database_api.md).
+
 Once the REDB creation is done, you should see the status as “active”. 
 
 ![Image](re3.png)
 
-Finally, navigate to Redis Enterprise Cluster admin console to verify Redis Enterprise database. 
+Finally, navigate to Redis Enterprise Cluster admin console to verify if Redis Enterprise database is created or not.
 
-Click on the newly created database and then click on configuration option to see the overall details: 
+![Image](navigate.png)
+ 
+Click on the newly created database and then click on configuration option to see the overall details.
 
 ![Image](re6.png)
 
@@ -292,8 +307,7 @@ Navigate back to the OpenShift console and verify the service object created for
 
 
 
-Select “Routes” from left panel and create a new route object for this database service with below sample yaml file:
-
+Select “Routes” from the left-hand column and create a new route object for this database service with the sample YAML file below:
 
 ```
 kind: Route
@@ -405,8 +419,7 @@ b'world'
 
 
 
-In our next tutorial, we will learn how to deploy a sample Real-time chat application powered by Go and Redis on OpenShift Container Platform.
-
+In our next tutorial, we will learn how to deploy a sample Real-time chat application powered by Go and Redis on OpenShift.
 
 ### References:
 
@@ -414,3 +427,10 @@ In our next tutorial, we will learn how to deploy a sample Real-time chat applic
 - [Official OpenShift Documentation](https://docs.openshift.com/)
 - [Install a Cluster quickly on GCP](https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-default.html)
 - [Redis Enterprise on Kubernetes Github Repository](https://github.com/RedisLabs/redis-enterprise-k8s-docs)
+
+
+
+
+
+
+
