@@ -69,8 +69,8 @@ module.exports = {
            type: 'category',
            label: 'Redis using Netlify',
            items: [
-            'create/netlify/getting-started-with-netlify/index-getting-started-with-netlify',
-            'create/netlify/deploy-docusaurus-to-netlify/index-deploy-docusaurus-to-netlify',
+             'create/netlify/getting-started-with-netlify/index-getting-started-with-netlify',
+             'create/netlify/deploy-docusaurus-to-netlify/index-deploy-docusaurus-to-netlify',
               ]
             },
        ]
