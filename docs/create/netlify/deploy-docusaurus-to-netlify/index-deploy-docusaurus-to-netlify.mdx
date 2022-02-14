@@ -34,12 +34,12 @@ Let's get started..
 ### Table of Contents
 
 - Step 1. Sign-in for a new Netlify Account
-- Step 2. Connect your Netlify to one or more Git providers
-- Step 3. Import the Redis Developer Hub GitHub repository to your GitHub account
-- Step 4. Allow Netlify to access Your New GitHub repository
-- Step 5. Perform site settings under Netlify
+- Step 2. Connect Netlify to a Git Provider
+- Step 3. Import the GitHub repository to your GitHub account
+- Step 4. Provide Netlify access to your GitHub repository
+- Step 5. Configure site settings for Netlify
 - Step 6. Deploy your site
-- Step 7. Access the Redis Developer Hub cloned site
+- Step 7. Visit your new Docusaurus site on Netlify
 
 
 ### Step 1. Sign-in for a new Netlify Account
@@ -51,17 +51,17 @@ Visit [https://app.netlify.com/](https://app.netlify.com/) and sign in for Netli
 ### Step 2. Connect your Netlify to Git Provider
 
 Netlify provides you to sign-in using various ways - GitHub, GitLab, Bitbucket, Email and SSO.
-For this demo, let us choose GitHub. Sign-in to GitHub to continue to Netlify Auth.
-It will ask you for two-factor athentication.
+For this demo we'll use GitHub. Sign into GitHub to connect it to Netlify.
+
+It will ask you for two-factor authentication.
 
 ![MyImage](images/netlify_git.png)
 
 
 ### Step 3. Import the project files to your GitHub account
 
-Once you connect your Netlify account to GitHub, you can start logging in and collaborating with your other team members.
-But before that, let us try to import Redis Dev Hub repository project files to your GitHub repository.
-
+Once you connect your Netlify account to GitHub, you can start collaborating with your other team members.
+Before we do that, let's push a sample Docusaurus site to our GitHub repository. You can use a generic Docusaurus site if you want. The Redis Developer Hub is built on Docusaurus, so we are using it instead.
 
 ![MyImage](images/netlify-importexisting.png)
 
@@ -72,9 +72,9 @@ Next, Netlify will allow you to import an existing project from a GitHub reposit
 ![MyImage](images/netlify-importcode.png)
 
 
-### Step 5. Perform site settings 
+### Step 5. Configure site settings for Netlify 
 
-There are two essential settings that needs to be performed. 
+There are two essential settings that needs to be configured.
 First, change the URL under docusaurus.config.js to any other random URL as shown below:
 
 ```javascript title="docusaurus.config.js"
@@ -89,8 +89,7 @@ module.exports = {
 ...
 ```
 
-Secondly, you will need to add a Build command as shown below:
-
+Secondly, you will need to add a build command as shown below:
 ![MyImage](images/netlify_buildenviron.png)
 
 
@@ -106,11 +105,10 @@ Monitor the "Deploy Log" carefully to see if there is no serious error message a
 
 ![MyImage](images/netlify-deploylog.png)
 
-By now, you should be able to see Docusaurus site hosted over 3000 port. 
-
+By now, you should be able to see your Docusaurus site hosted on port 3000.
 ![MyImage](images/netlify-success.png)
 
-### Step 7. Access the Redis Developer Hub cloned site
+### Step 7. Visit your new Docusaurus site on Netlify
 
 Go to "Sites" on the top navigation menu and click on the latest preview build.
 

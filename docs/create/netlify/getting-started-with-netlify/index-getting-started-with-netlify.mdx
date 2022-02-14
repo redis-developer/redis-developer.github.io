@@ -9,8 +9,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Netlify is a popular static site hosting serverless platform. It is a popular way to build, deploy, and scale modern web applications in a much more scalable and secure way.  
 
-
-Netlify helps developers to launch websites and campaigns in minutes with no-ops. The hosting platform is built on top of JAMstack and unifies JavaScript and APIs,strong enough to create an infrastructure that’s well suited for both developers and content editors.
+Netlify helps developers to launch websites and campaigns in minutes with no fuss. Netlify is built primarily for JAMstack sites, which unify JavaScript and APIs to allow applications that are well suited for both developers and content editors.
 
 ![Register](recloud_1.png)
 
@@ -18,7 +17,7 @@ Netlify helps developers to launch websites and campaigns in minutes with no-ops
 
 - It delivers out-of-the-box continuous integration.
 - The platform allows continuous deployment through its support for Git repository deployment.
-- It allows developers to focus on building and deploying apps by asbtracting all the maintenance work away from the developers.
+- It allows developers to focus on building and deploying apps by abstracting all the maintenance work away from the developers.
 - The platform provides free SSL, CDN, and continuous integration.
 - It has built-in DNS management & SSL certificates.
 
@@ -26,11 +25,12 @@ Netlify helps developers to launch websites and campaigns in minutes with no-ops
 
 ![MyImages](netlifyimage.png)
 
-1. The developer writes a code and store it in a version control repository(say, GitHub).
-2. When a new change is merged into the master branch of GitHub repo, Github triggers a webhook that Netlify is listening for. 
+1. The developer writes code and stores it in a version control repository (e.g. GitHub).
+2. When a new change is merged into the main branch of the repository, a webhook notifies Netlify to deploy a new site.
 3. Netlify pulls the latest version of the app from the repository and runs a build command to generate the static site files
 4. Netlify then uses Plugins and internal code to make adjustments to your site, pre-render all of your pages in static HTML and improves it further
 /
+5. Once the build process gets completed, Netlify takes the static assets and pushes them to its global CDN for fast delivery.
 
 In this tutorial, you will see how to deploy a simple Redis caching app built with Next.js and TailwindCSS to Netlify in 5 minutes.
 
