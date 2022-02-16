@@ -64,8 +64,16 @@ module.exports = {
         'create/windows/index-windows',
         'create/from-source/index-from-source',
         'create/jenkins/index-jenkins',
-        'create/openshift/index-openshift' 
-     ]
+        'create/openshift/index-openshift', 
+         {
+           type: 'category',
+           label: 'Redis using Netlify',
+           items: [
+             'create/netlify/getting-started-with-netlify/index-getting-started-with-netlify',
+             'create/netlify/deploy-docusaurus-to-netlify/index-deploy-docusaurus-to-netlify',
+              ]
+            },
+       ]
     },
     {
       type: 'category',
@@ -282,7 +290,7 @@ module.exports = {
           'explore/redisinsight/usinghelm/index-usinghelm',
         ]
         },
-         'explore/redisdatasource/index-redisdatasource',
+          'explore/redisdatasource/index-redisdatasource',
           'explore/redisexplorer/index-redisexplorer',
           'explore/datadog/index-datadog',
           'explore/redismod/index-redismod',
