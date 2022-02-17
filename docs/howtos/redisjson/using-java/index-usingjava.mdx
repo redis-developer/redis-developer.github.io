@@ -37,7 +37,7 @@ You'll need to initialize you connection to Redis. This means configuring and cr
 
 ```java
   HostAndPort config = new HostAndPort(Protocol.DEFAULT_HOST, 6379);
-  PooledJedisConnectionProvider provider = new PooledJedisConnectionProvider(config);
+  PooledConnectionProvider provider = new PooledConnectionProvider(config);
   UnifiedJedis client = new UnifiedJedis(provider);
 ```
 
