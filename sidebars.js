@@ -73,6 +73,13 @@ module.exports = {
              'create/netlify/deploy-docusaurus-to-netlify/index-deploy-docusaurus-to-netlify',
               ]
             },
+          {
+            type: 'category',
+           label: 'Redis using Vercel',
+           items: [
+             'create/vercel/index-vercel',
+           ]
+       },
        ]
     },
     {
