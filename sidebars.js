@@ -73,6 +73,13 @@ module.exports = {
              'create/netlify/deploy-docusaurus-to-netlify/index-deploy-docusaurus-to-netlify',
               ]
             },
+          {
+            type: 'category',
+           label: 'Redis using Vercel',
+           items: [
+             'create/vercel/index-vercel',
+           ]
+       },
        ]
     },
     {
@@ -268,7 +275,8 @@ module.exports = {
            'explore/redisinsightv2/index-redisinsightv2',
            'explore/redisinsightv2/getting-started/index-gettingstarted',
            'explore/redisinsightv2/browser/index-browser',
-          ]
+           'explore/redisinsightv2/profiler/index-profiler',
+           ]
          },
         {
          type: 'category',
