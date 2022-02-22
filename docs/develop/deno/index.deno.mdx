@@ -11,14 +11,19 @@ slug: /develop/deno/
 ### Features of Deno
 
 
+<<<<<<< HEAD
 - Deno is secure by default. It executes code in a sandbox environment, disallowing runtime access to the underlying filesystem, environment variables and scripts.  Deno supports both JavaScript and TypeScript out of the box.
+=======
+- Deno is secure by default. It executes code in a sandbox environment, disallowing runtime access to the underlying filesystem, environment variables and scripts.  
+- Deno supports both JavaScript and TypeScript out of the box.
+>>>>>>> 596126f2a7f3a696fdd73732cc63f66940ee090b
 - Deno ships as a single executable with no dependencies.
 - Comes with built-in utilities like a dependency inspector (deno info) and a code formatter (deno fmt).
 
 
 ### Getting Started
 
-[deno.land/x](https://deno.land/x) is a hosting service for Deno scripts. It caches releases of open source modules stored on GitHub and serves them at one easy to remember domain.These module contains small scripts that demonstrate use of Deno and its standard module.
+[deno.land/x](https://deno.land/x) is a hosting service for Deno scripts. It caches releases of open source modules stored on GitHub and serves them at one easy to remember domain. These modules contain small scripts that demonstrate use of Deno and its standard module.
 
 The basic format of code URLs is 
 
@@ -33,7 +38,7 @@ https://deno.land/std@0.126.0/examples
 ```
 
 
-In order to use Redis with Deno you will need a Deno Redis client. In the following sections, we will demonstrate the use of [an experimental implementation of Redis client for Deno](https://deno.land/x/redis@v0.25.3). 
+In order to use Redis with Deno you will need a Deno Redis client. In the following sections, we will demonstrate the use of [an experimental implementation of a Redis client for Deno](https://deno.land/x/redis@v0.25.3). 
 
 
 
@@ -62,7 +67,7 @@ docker run -d -p 6379:6379 redislabs/redis
 ### Step 3. Create an empty file with the following content
 
 
-The following code creates a connection to Redis using Deno
+The following code creates a connection to Redis using Deno:
 
 ```javascript
 import { connect } from "https://deno.land/x/redis/mod.ts";
@@ -80,8 +85,8 @@ Replace the values of hostname and port to match those of your Redis database, a
 
 ### Step 4. Executing the script
 
-Deno can grab the scripts from multiple sources, a filename, a url, and '-' to read the file from stdin. 
-You can run a JavaScript or TypeScript program by executing the ```deno run```.
+Deno can grab scripts from multiple sources.  For example, you can provide a filename, a url, or'-' to read the file from stdin. 
+You can run a JavaScript or TypeScript program by executing ```deno run```.
 
 
 ```
@@ -89,7 +94,7 @@ deno run --allow-net redis.ts
 
 ```
 
-It should display the value of foo output. You can verify this by running the monitor command
+When you run the script, the value of `foo` should be output. You can verify this by running the monitor command:
 
 ```
 monitor
@@ -101,9 +106,9 @@ OK
 
 
 
-### Further Reference:
+### Further References:
 
-- [Getting Started with Deno Commandline Interface](https://deno.land/manual@v1.19.0/getting_started/command_line_interface)
+- [Getting Started with Deno Command Line Interface](https://deno.land/manual@v1.19.0/getting_started/command_line_interface)
 - [Deno Releases Page](https://github.com/denoland/deno/releases)
 - [Deno GitHub Repository](https://github.com/denoland/deno)
 - [Deno Runtimes](https://deno.land/manual@v1.19.0/runtime)
