@@ -1,0 +1,114 @@
+---
+id: index-deno
+title: Deno and Redis
+sidebar_label: Deno 
+slug: /develop/deno/
+---
+
+
+[With over 80,000 stars and 670+ contributors](https://github.com/denoland/deno), Deno is a popular modern runtime for JavaScript and TypeScript. It is built on [V8](https://v8.dev/) - an open-source JavaScript engine developed by the Chromium Project for Google Chrome and Chromium web browsers. Companies like GitHub, Amazon, Begin, IBM, Netlify, Siemens, Vercel etc.
+
+### Features of Deno
+
+
+- Deno is secure by default. It executes the code in a sandbox environment, disallowing runtime to the underlying filesystem, environmental variables and scripts.- Deno supports both JavaScript and  TypeScript out of the box.
+- Deno ships as a single executable with no dependencies.
+- Comes with built-in utilities like a dependency inspector (deno info) and a code formatter (deno fmt).
+
+
+### Getting Started
+
+[deno.land/x](https://deno.land/x) is a hosting service for Deno scripts. It caches releases of open source modules stored on GitHub and serves them at one easy to remember domain.These module contains small scripts that demonstrate use of Deno and its standard module.
+
+The basic format of code URLs is 
+
+```
+https://deno.land/x/IDENTIFIER@VERSION/FILE_PATH 
+```
+
+#### Example: 
+ 
+```
+https://deno.land/std@0.126.0/examples
+```
+
+
+In order to use Redis with Deno you will need a Deno Redis client. In the following sections, we will demonstrate the use of [an experimental implementation of Redis client for Deno](https://deno.land/x/redis@v0.25.3). 
+
+
+
+
+### Step 1. Get Deno 
+
+
+```
+brew install deno
+```
+
+### Step 2. Verify if Deno is properly installed
+
+```
+deno -V
+deno 1.19.0
+```
+
+
+### Step 2. Run Redis locally
+ 
+```
+docker run -d -p 6379:6379 redislabs/redis
+```
+
+### Step 3. Create an empty file with the following content
+
+
+The following code creates a connection to Redis using Deno
+
+```javascript
+import { connect } from "https://deno.land/x/redis/mod.ts";
+const redis = await connect({
+  hostname: "127.0.0.1",
+  port: 6379,
+});
+const ok = await redis.set("foo", "bar");
+const foo = await redis.get("foo");
+```
+
+Replace the following values with those of your database and save this file as redis.ts
+
+### Step 4. Executing the script
+
+Deno can grab the scripts from multiple sources, a filename, a url, and '-' to read the file from stdin. 
+You can run a JavaScript or TypeScript program by executing the ```deno run```.
+
+
+```
+deno run --allow-net redis.ts
+
+```
+
+It should display the value of foo output. You can verify this by running the monitor command
+
+```
+monitor
+OK
+1645524375.012602 [0 172.17.0.1:63288] "SET" "foo" "bar"
+1645524375.020807 [0 172.17.0.1:63288] "GET" "foo"
+
+```
+
+
+
+### Further Reference:
+
+- [Getting Started with Deno Commandline Interface](https://deno.land/manual@v1.19.0/getting_started/command_line_interface)
+- [Deno Releases Page](https://github.com/denoland/deno/releases)
+- [Deno GitHub Repository](https://github.com/denoland/deno)
+- [Deno Runtimes](https://deno.land/manual@v1.19.0/runtime)
+
+
+ 
+
+<div>
+<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+</div> 
