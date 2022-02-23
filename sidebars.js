@@ -259,6 +259,7 @@ module.exports = {
           'develop/golang/index-golang',
           'develop/ruby/index-ruby',
           'develop/php/index-php',
+          'develop/deno/index-deno',
      ]
     },
     {
