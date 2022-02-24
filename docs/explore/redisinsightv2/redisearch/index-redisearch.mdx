@@ -1,7 +1,7 @@
 ---
 id: index-redisearch
-title: Perform Database Search and Analytics using RediSearch Browser Tool in RedisInsight v2.0
-sidebar_label: Perform Database Search and Analytics using RediSearch Browser Tool in RedisInsight v2.0
+title: Perform Database Search and Analytics using the RediSearch Browser Tool in RedisInsight v2.0
+sidebar_label: Perform Database Search and Analytics using the RediSearch Browser Tool in RedisInsight v2.0
 slug: /explore/redisinsightv2/redisearch
 authors: [ajeet]
 ---
@@ -12,40 +12,39 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 
-A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redis.com/redisearch/)  is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules.With RedisInsight, the below functionalities are possible
+A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redis.com/redisearch/) is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules. With RedisInsight, the following functionalities are possible:
 
 ![MyImage](images/redisearch.png)
 
 *   Multi-line for building queries
-*   Added ability to submit query with ‘ctrl + enter’ in single line mode
+*   Ability to submit query with ‘ctrl + enter’ in single line mode
 *   Better handling of long index names in index selector dropdown
-*   Fixed bug with pagination on queries with whitespace in the query string
-*   Support Aggregation
-*   Support Fuzzy logic
-*   Simple and complex conditions
+*   Supports Aggregation
+*   Supports Fuzzy logic
+*   Supports simple and complex conditions
 *   Sorting
 *   Pagination
 *   Counting
 
-RediSearch allows you to quickly create indexes on datasets (Hashes), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
+RediSearch allows you to quickly create indexes on datasets (stored as Redis Hashes or, with RedisJSON, as JSON documents), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
 
 
-### Step 1. Create Redis database
+### Step 1. Create a Redis Database
 
-[Follow this link to create Redis database using Docker container ](/explore/redismod)that comes with RediSearch module enabled
+[Follow this link to create a Redis database using a Docker container](/explore/redismod) that comes with the RediSearch module enabled.
 
 ### Step 2: Download RedisInsight
 
 
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
 
-[Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+[Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
 
 ![My Image](images/redisinsight-register.png)
 
 
 Run the installer. 
-Once the installation gets completed, you should be able to connect to a Redis database connection.
+Once the installation  completes, you should be able to connect to a Redis database.
 
 Select "Connect to a Redis database".
 
@@ -74,11 +73,11 @@ A movie is represented by the following attributes:
 * **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
 
 
-#### Key and Data structure
+#### Key and Data Structure
 
-As a Redis developer, one of the first things to look when building your application is to define the structure of the key and data (data design/data modeling).
+As a Redis developer, one of the first things to look at when building your application is to define the structure of the key and data (data design/data modeling).
 
-A common way of defining the keys in Redis is to use specific patterns in them. For example in this application where the database will probably deal with various business objects: movies, actors, theaters, users, ... we can use the following pattern:
+A common strategy for Redis is to use specific patterns when naming keys. For example in this application where the database will probably deal with various business objects: movies, actors, theaters, users, ... we can use the following pattern:
 
 * `business_object:key`
 
@@ -87,7 +86,7 @@ For example:
 * `user:001` the user with the id 001
 
 
-and for the movies information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes). 
+and for the movie's information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes). 
 
 A Redis Hash allows the application to structure all the movie attributes in individual fields; also RediSearch will index the fields based on the index definition.
 
@@ -166,7 +165,7 @@ Using RediSearch if you want to query on a field, you must first index that fiel
 * Rating
 * Genre
 
-When creating a index you define:
+When creating an index you define:
 
 * which data you want to index: all *hashes* with a key starting with `movies` 
 * which fields in the hashes you want to index using a Schema definition.
@@ -235,7 +234,7 @@ FT.SEARCH idx:movie "war"
 #### Query: Limit the list of fields returned by the query using the RETURN parameter
 
 
-The FT.SEARCH commands returns a list of results starting with the number of results, then the list of elements (keys & fields).
+The `FT.SEARCH` commands returns a list of results starting with the number of results, then the list of elements (keys & fields).
 
 ```
 FT.SEARCH idx:movie "war" RETURN 2 title release_year
@@ -263,7 +262,7 @@ Later when looking at the query syntax in more detail you will learn more about 
 
 It is also possible to limit the list of fields returned by the query using the `RETURN` parameter, let's run the same query, and return only the title and release_year.
 
-#### Query: All the movies that contains the string "war but NOT the jedi one"
+#### Query: All the movies that contains the string "war" but NOT the "jedi" one
 
 Adding the string `-Jedi` (minus) will ask the query engine not to return values that contain `jedi`.
 
@@ -358,11 +357,11 @@ FT.SEARCH "idx:movie" "@genre:{Thriller|Action}" RETURN 2 title release_year
 
 #### Query : All the movies released between 1970 and 1980 (included)
 
-The FT.SEARCH syntax has two ways to query numeric fields:
+The `FT.SEARCH` syntax has two ways to query numeric fields:
 
 
 
-*   using the FILTER parameter
+*   using the `FILTER` parameter
 
 ```
 FT.SEARCH "idx:movie" "@genre:{Thriller|Action}" FILTER release_year 1970  1980 RETURN 2 title release_year
@@ -380,7 +379,7 @@ FT.SEARCH "idx:movie" "@genre:{Thriller|Action}" FILTER release_year 1970  1980 
 ```
 
 
-### Step 8. AGGREGATION
+### Step 8. Aggregation
 
 #### Query: Number of movies by year
 
