@@ -277,6 +277,7 @@ module.exports = {
            'explore/redisinsightv2/getting-started/index-gettingstarted',
            'explore/redisinsightv2/browser/index-browser',
            'explore/redisinsightv2/profiler/index-profiler',
+           'explore/redisinsightv2/redisearch/index-redisearch',
            ]
          },
         {
