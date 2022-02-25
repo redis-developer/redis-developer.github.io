@@ -6,6 +6,8 @@ slug: /develop/node/redis-om
 authors: [guyroyse]
 ---
 
+# Up and Running with Express and Redis OM for Node.js in 5-minutes
+
 OK. So that title is a bold claim. And this is a read-and-follow-along sort of tutorial. So, it might be 6 minutes or 4 minutes depending on how fast you type. Regardless, this should get you building something useful quickly and could make a nice foundation for something bigger.
 
 Oh, and you might be wondering what [Redis OM](https://github.com/redis/redis-om-node) is. Well, there's an extensive [README](https://github.com/redis/redis-om-node/blob/main/README.md) on GitHub. Go check it out!
@@ -80,7 +82,7 @@ Now, you should have a `package.json` that looks something like this:
   "private": true,
   "dependencies": {
     "express": "^4.17.1",
-    "redis-om": "^0.1.0"
+    "redis-om": "^0.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.14"
@@ -160,22 +162,19 @@ Schemas define the fields on your entity, their types, and how they are mapped i
 let schema = new Schema(Song, {
   title: { type: 'string' }, // the title of the song
   artist: { type: 'string' }, // who performed the song
-  genres: { type: 'array' }, // array of strings for the genres of the song
-  lyrics: { type: 'string', textSearch: true }, // the full lyrics of the song
-  music: { type: 'string', textSearch: true }, // who wrote the music for the song
-  year: { type: 'number' }, // the year the song was released
+  genres: { type: 'string[]' }, // array of strings for the genres of the song
+  lyrics: { type: 'text' }, // the full lyrics of the song
+  music: { type: 'text' }, // who wrote the music for the song
+  year: { type: 'number' }, // the year the song was releases
   duration: { type: 'number' }, // the duration of the song in seconds
   link: { type: 'string' } // link to a YouTube video of the song
-}, {
-  dataStructure: 'JSON' // change this to HASH (or just omit it) if you want to store with HASHes instead
 })
 ```
 
 Clients are used to connect to Redis. Create a `Client` and pass your Redis URL in the constructor. If you don't specify a URL, it will default to `redis://localhost:6379`. Clients have methods to `.open`, `.close`, and `.execute` raw Redis commands, but we're just going to open it:
 
 ```javascript
-let client = new Client()
-await client.open()
+let client = await new Client().open()
 ```
 
 > Remember that _top-level await_ stuff I mentioned at the top of the document? There it is!
@@ -183,13 +182,12 @@ await client.open()
 Now we have all the pieces that we need to create a `Repository`. Repositories are the main interface into Redis OM. They give us the methods to read, write, and remove entities. Create a repository—and make sure it's exported as you'll need it when we get into the Express stuff:
 
 ```javascript
-export let songRepository = new Repository(schema, client)
+export let songRepository = client.fetchRepository(schema)
 ```
 
-We're almost done with setting up our repository. But we still need to create an index or we won't be able to search on anything. We do that by calling `.createIndex`. But, if an index already exists, this will result in an error. So, we need to call `.dropIndex` first, and then call `.createIndex`. In a real environment, you'd probably want to create your index as part of CI/CD. But we'll just cram them into our main code for this example:
+We're almost done with setting up our repository. But we still need to create an index or we won't be able to search on anything. We do that by calling `.createIndex`. If an index already exists and it's the same, this function won't do anything. If it is different, it'll drop it and create a new one. In a real environment, you'd probably want to create your index as part of CI/CD. But we'll just cram them into our main code for this example:
 
 ```javascript
-await songRepository.dropIndex()
 await songRepository.createIndex()
 ```
 
@@ -313,84 +311,24 @@ Now you can use `curl` or your browser to load `http://localhost:8080/song/01FKR
 
     $ curl -X GET http://localhost:8080/song/01FKRW9WMVXTGF71NBEM3EBRPY -s | json_pp
 
-And you should get back...
+And you should get back the JSON for the song:
 
 ```json
 {
-   "entityId" : "01FKRW9WMVXTGF71NBEM3EBRPY",
-   "entityData" : {
-      "artist" : "Dylan Beattie and the Linebreakers",
-      "title" : "HTML",
-      "lyrics" : "W3C, RFC, a JIRA ticket and a style guide.\\nI deploy with FTP, run it all on the client side\\nDon’t need Ruby, don’t need Rails,\\nAin’t nothing running on my stack\\nI’m hard wired, for web scale,\\nYeah, I’m gonna bring the 90s back\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\nNo logins, no trackers,\\nNo cookie banners to ignore\\nI ain’t afraid of, no hackers\\nJust the occasional 404\\nThey hatin’, what I do,\\nBut that’s ‘cos they don’t understand\\nMark it up, break it down,\\nRemember to escape your ampersands…\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\n(But it’s really just markdown.)",
-      "link" : "https://www.youtube.com/watch?v=woKUEIJkwxI",
-      "genres" : [
-         "blues rock",
-         "hard rock",
-         "parody",
-         "rock"
-      ],
-      "duration" : 220,
-      "music" : "\"Highway to Hell\" by AC/DC",
-      "year" : 2020
-   }
-}
-```
-
-...completely wrong results! What's up with that? Well, our entity doesn't know how to serialize itself to JSON so Express is doing that for us. And since `JSON.stringify`, which Express is using, can't see the properties that the `Schema` class added to our entity, it's just rendering the internal implementation of the entity. We can fix that by making our `Song` smarter.
-
-To make `Song` smarter, add a `.toJSON` method to it. This creates something that `JSON.stringify` can deal with and that looks exactly how we want it to.  And while we're at it, let's add a computed field as well, just to show off that capability:
-
-```javascript
-class Song extends Entity {
-
-  // converts duration to minutes and seconds
-  get durationAsString() {
-    let minutes = Math.floor(this.duration / 60).toString()
-    let seconds = (this.duration % 60).toString().padStart(2, '0')
-    return `${minutes}:${seconds}`
-  }
-
-  // called by JSON.stringify
-  toJSON() {
-    return {
-      id: this.entityId, // the underlying ID is worthy of being exposed 
-      title: this.title,
-      artist: this.artist,
-      genres: this.genres,
-      lyrics: this.lyrics,
-      music: this.music,
-      year: this.year,
-      duration: this.duration,
-      durationString: this.durationAsString, // returning a computed field
-      link: this.link
-    }
-  }
-}
-```
-
-Now let's try getting that again:
-
-    $ curl -X GET http://localhost:8080/song/01FKRW9WMVXTGF71NBEM3EBRPY -s | json_pp
-
-Much better!
-
-```json
-{
-   "link" : "https://www.youtube.com/watch?v=woKUEIJkwxI",
-   "genres" : [
-      "blues rock",
-      "hard rock",
-      "parody",
-      "rock"
-   ],
-   "id" : "01FKRW9WMVXTGF71NBEM3EBRPY",
-   "title" : "HTML",
-   "lyrics" : "W3C, RFC, a JIRA ticket and a style guide.\\nI deploy with FTP, run it all on the client side\\nDon’t need Ruby, don’t need Rails,\\nAin’t nothing running on my stack\\nI’m hard wired, for web scale,\\nYeah, I’m gonna bring the 90s back\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\nNo logins, no trackers,\\nNo cookie banners to ignore\\nI ain’t afraid of, no hackers\\nJust the occasional 404\\nThey hatin’, what I do,\\nBut that’s ‘cos they don’t understand\\nMark it up, break it down,\\nRemember to escape your ampersands…\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\n(But it’s really just markdown.)",
-   "duration" : 220,
-   "artist" : "Dylan Beattie and the Linebreakers",
-   "durationString" : "3:40",
-   "music" : "\"Highway to Hell\" by AC/DC",
-   "year" : 2020
+  "link" : "https://www.youtube.com/watch?v=woKUEIJkwxI",
+  "genres" : [
+    "blues rock",
+    "hard rock",
+    "parody",
+    "rock"
+  ],
+  "entityId" : "01FKRW9WMVXTGF71NBEM3EBRPY",
+  "title" : "HTML",
+  "lyrics" : "W3C, RFC, a JIRA ticket and a style guide.\\nI deploy with FTP, run it all on the client side\\nDon’t need Ruby, don’t need Rails,\\nAin’t nothing running on my stack\\nI’m hard wired, for web scale,\\nYeah, I’m gonna bring the 90s back\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\nNo logins, no trackers,\\nNo cookie banners to ignore\\nI ain’t afraid of, no hackers\\nJust the occasional 404\\nThey hatin’, what I do,\\nBut that’s ‘cos they don’t understand\\nMark it up, break it down,\\nRemember to escape your ampersands…\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\n(But it’s really just markdown.)",
+  "duration" : 220,
+  "artist" : "Dylan Beattie and the Linebreakers",
+  "music" : "\"Highway to Hell\" by AC/DC",
+  "year" : 2020
 }
 ```
 
@@ -616,4 +554,3 @@ If you have any questions or are stuck, feel free to jump on the [Redis Discord]
 And, if you find a flaw, bug, or just think this tutorial could be improved, send a pull request or open an issue.
 
 Thanks!
-
