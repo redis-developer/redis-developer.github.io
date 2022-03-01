@@ -54,13 +54,13 @@ deno 1.19.0
 ```
 
 
-### Step 2. Run Redis locally
+### Step 3. Run Redis locally
  
 ```
 docker run -d -p 6379:6379 redislabs/redismod
 ```
 
-### Step 3. Create an empty file with the following content
+### Step 4. Create an empty file with the following content
 
 
 The following code creates a connection to Redis using Deno:
@@ -79,7 +79,7 @@ const foo = await redis.get("foo");
 Replace the values of hostname and port to match those of your Redis database, and add an extra password field if needed.
 
 
-### Step 4. Executing the script
+### Step 5. Executing the script
 
 Deno can grab scripts from multiple sources.  For example, you can provide a filename, a url, or'-' to read the file from stdin. 
 You can run a JavaScript or TypeScript program by executing ```deno run```.
