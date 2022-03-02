@@ -6,20 +6,20 @@ slug: /develop/deno/
 ---
 
 
-[With over 80,000 stars and 670+ contributors](https://github.com/denoland/deno), Deno is a popular modern runtime for JavaScript and TypeScript. It is built on [V8](https://v8.dev/) - an open-source JavaScript engine developed by the Chromium Project for Google Chrome and Chromium web browsers. 
+[With over 80,000 stars and 670+ contributors](https://github.com/denoland/deno), Deno is a popular modern runtime for JavaScript and TypeScript. It is built on [V8](https://v8.dev/), an open-source JavaScript engine developed by the Chromium Project for Google Chrome and Chromium web browsers. 
 
 ### Features of Deno
 
 
-- Deno is secure by default. It executes code in a sandbox environment, disallowing runtime access to the underlying filesystem, environment variables and scripts.  
+- Deno is secure by default. It executes code in a sandbox environment, disallowing runtime access to the underlying filesystem, environment variables and scripts. 
 - Deno supports both JavaScript and TypeScript out of the box.
 - Deno ships as a single executable with no dependencies.
-- Comes with built-in utilities like a dependency inspector (deno info) and a code formatter (deno fmt).
+- Comes with built-in utilities such as a dependency inspector (deno info) and a code formatter (deno fmt).
 
 
 ### Getting Started
 
-[deno.land/x](https://deno.land/x) is a hosting service for Deno scripts. It caches releases of open source modules stored on GitHub and serves them at one easy to remember domain. These modules contain small scripts that demonstrate use of Deno and its standard module.
+[deno.land/x](https://deno.land/x) is a hosting service for Deno scripts. It caches releases of open source modules stored on GitHub and serves them at one easy-to-remember domain. These modules contain small scripts that demonstrate use of Deno and its standard module.
 
 The basic format of code URLs is 
 
@@ -54,13 +54,13 @@ deno 1.19.0
 ```
 
 
-### Step 2. Run Redis locally
+### Step 3. Run Redis locally
  
 ```
 docker run -d -p 6379:6379 redislabs/redismod
 ```
 
-### Step 3. Create an empty file with the following content
+### Step 4. Create an empty file with the following content
 
 
 The following code creates a connection to Redis using Deno:
@@ -79,9 +79,9 @@ const foo = await redis.get("foo");
 Replace the values of hostname and port to match those of your Redis database, and add an extra password field if needed.
 
 
-### Step 4. Executing the script
+### Step 5. Executing the script
 
-Deno can grab scripts from multiple sources.  For example, you can provide a filename, a url, or'-' to read the file from stdin. 
+Deno can grab scripts from multiple sources.  For example, you can provide a filename, a URL, or'-' to read the file from stdin. 
 You can run a JavaScript or TypeScript program by executing ```deno run```.
 
 
@@ -102,7 +102,7 @@ OK
 
 
 
-### Further References:
+### Additional references:
 
 - [Getting Started with Deno Command Line Interface](https://deno.land/manual@v1.19.0/getting_started/command_line_interface)
 - [Deno Releases Page](https://github.com/denoland/deno/releases)
