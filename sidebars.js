@@ -79,10 +79,17 @@ module.exports = {
            items: [
              'create/vercel/index-vercel',
            ]
+         },
+       {
+          type: 'category',
+          label: 'Redis using Cloud Run',
+          items: [
+            'create/cloudrun/index-cloudrun',
+          ]
        },
-       ]
-    },
-    {
+     ]
+   }, 
+ {
       type: 'category',
       label: 'Develop',
       items: [
