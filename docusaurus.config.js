@@ -104,13 +104,13 @@ module.exports = {
         image: 'profile_pic_brian_sam-bodden.jpeg'
       }
     }
- },
+  },
   themeConfig: {
     // ...
     googleTagManager: {
       trackingID: 'GTM-W8Z6BLQ',
     },
-    prism : {
+    prism: {
       additionalLanguages: ['csharp', 'php', 'ruby', 'java', 'rust', 'elixir', 'groovy']
 
     },
@@ -208,9 +208,9 @@ module.exports = {
           ],
         },
       ],
-   copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`,
-   },
-     colorMode: {
+      copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`,
+    },
+    colorMode: {
       // Hides the switch in the navbar
       // Useful if you want to support a single color mode
       disableSwitch: false,
@@ -218,7 +218,7 @@ module.exports = {
     announcementBar: {
       id: 'redisconf20201cfp', // Any value that will identify this message.
       content: '<p class="text"> RedisDays Reg is open! Don’t miss our big announcements. </p> <a href="https://redis.com/redisdays/" target="_blank" rel="noopener" class="btn">Register Now</a>',
-    //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
+      //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
       backgroundColor: '#fff', // Defaults to `#fff`.
       textColor: '#000', // Defaults to `#000`.
       isCloseable: true, // Defaults to `true`.
@@ -234,7 +234,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           showLastUpdateTime: true,
           editUrl:
-          'https://github.com/redis-developer/redis-developer/edit/master/',
+            'https://github.com/redis-developer/redis-developer/edit/master/',
         },
         blog: {
           showReadingTime: true,
