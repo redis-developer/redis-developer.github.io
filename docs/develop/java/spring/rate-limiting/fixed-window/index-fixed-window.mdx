@@ -3,14 +3,12 @@ id: index-fixed-window
 title: How to Implement Fixed Window Rate Limiting using Redis
 sidebar_label: Overview
 slug: /develop/java/spring/rate-limiting/fixed-window
+authors: [bsb]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
-
-Author: [Brian Sam-Bodden](https://twitter.com/bsbodden)
-
 
 The simplest approach to build a rate limiter is the "fixed window" implementation in which we cap the
 maximum number of requests in a fixed window of time. For exmaple, if the window size is 1 hour, we can
