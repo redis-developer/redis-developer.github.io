@@ -3,7 +3,7 @@ import React from 'react';
 
 const Vercel = ({ color = '#EA2D2E', ...rest }) => (
 
-<svg width="115" height="100" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="90" height="100" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path
     fill-rule="evenodd"
     clip-rule="evenodd"
