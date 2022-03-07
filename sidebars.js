@@ -50,7 +50,15 @@ module.exports = {
               'create/aws/analytics-using-aws/index-analytics-using-aws'
             ]
           },
-        'create/docker/index-docker',
+        {
+           type: 'category',
+           label: 'Redis on Docker',
+           items: [
+               'create/docker/index-docker',
+               'create/docker/redis-on-docker/index-redis-on-docker',
+               'create/docker/nodejs-nginx-redis/index-nodejs-nginx-redis' 
+            ]
+          },
         {
           type: 'category',
           label: 'Redis on Kubernetes',

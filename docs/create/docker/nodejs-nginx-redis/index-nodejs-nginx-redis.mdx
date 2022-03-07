@@ -1,0 +1,339 @@
+---
+id: index-nodejs-nginx-redis
+title: How to build and run a Node.js application using Nginx, Docker and Redis
+sidebar_label: Node.js, Nginx, Redis and Docker
+slug: /create/docker/nodejs-nginx-redis
+authors: [ajeet]
+---
+
+Thanks to [Node.js](https://nodejs.dev/) - Millions of frontend developers that write JavaScript for the browser are now able to write the server-side code in addition to the client-side code without the need to learn a completely different language. Node.js is a free, open-sourced, cross-platform JavaScript run-time environment. It is capable to handle thousands of concurrent connections with a single server without introducing the burden of managing thread concurrency, which could be a significant source of bugs.
+
+
+In this quickstart guide, you will see how to build a Node.js application (visitor counter) using Nginx, Redis and Docker.
+
+
+### What do you need?
+
+- **Node.js**: An open-source, cross-platform, back-end JavaScript runtime environment that runs on the V8 engine and executes JavaScript code outside a web browser.
+- **Nginx**: An open source software for web serving, reverse proxying, caching, load balancing, media streaming, and more.
+- **Docker**: a containerization platform for developing, shipping, and running applications.
+- **Docker Compose**: A tool for defining and running multi-container Docker applications. 
+ 
+
+### Project structure
+
+```
+.
+├── docker-compose.yml
+├── nginx
+│   ├── Dockerfile
+│   └── nginx.conf
+├── web
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+├── web1
+│   ├── Dockerfile
+│   ├── package.json
+│   └── server.js
+└── web2
+    ├── Dockerfile
+    ├── package.json
+    └── server.js
+
+```
+
+
+### Prerequisite:
+
+– Install Docker Desktop
+
+Visit https://docs.docker.com/desktop/mac/install/ to setup Docker Desktop for Mac or Windows on your local system.
+
+![Image1](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kgrkqga3c78h693vy33p.png)
+ 
+
+:::info
+
+Docker Desktop comes with Docker compose installed by default, hence you don't need to install it separately.
+
+:::
+
+
+
+### Step 1. Create a Docker compose file
+
+Create an empty file with the below content and save it by name - "docker-compose.yml"
+
+```
+version: '3.9'
+services:
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+  web1:
+    restart: on-failure
+    build: ./web1
+    ports:
+      - '81:5000'
+  web2:
+    restart: on-failure
+    build: ./web2
+    ports:
+      - '82:5000'
+  nginx:
+    build: ./nginx
+    ports:
+    - '80:80'
+    depends_on:
+    - web1
+    - web2
+```
+
+The compose file defines an application with four services `redis`, `web`, `web1` and `web2`.
+When deploying the application, docker-compose maps port 80 of the web service container to port 80 of the host as specified in the file.
+
+
+:::info  
+
+Redis runs on port 6379 by default. Make sure you don't run another instance of Redis on your system or port 6379 on the host is not being used by another container, otherwise the port should be changed.
+:::
+
+### Step 2. Create an nginx directory and add the below files:
+
+#### File: nginx/nginx.conf
+
+```
+FROM nginx
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+```
+
+#### File: Dockerfile
+
+```
+FROM nginx
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+```
+
+### Step 3. Create a web directory and add the below files:
+
+#### File: web/Dockerfile
+
+```
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+COPY ./package.json ./
+RUN npm install
+COPY ./server.js ./
+
+CMD ["npm","start"]
+```
+
+#### File: web/package.json
+
+```
+
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Running Node.js and Express.js on Docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "redis": "3.1.2"
+  },
+  "author": "",
+  "license": "MIT"
+}
+```
+
+#### File: web/server.js
+
+```
+const express = require('express');
+const redis = require('redis');
+const app = express();
+const redisClient = redis.createClient({
+  host: 'redis',
+  port: 6379
+});
+
+app.get('/', function(req, res) {
+    redisClient.get('numVisits', function(err, numVisits) {
+        numVisitsToDisplay = parseInt(numVisits) + 1;
+        if (isNaN(numVisitsToDisplay)) {
+            numVisitsToDisplay = 1;
+        }
+        res.send('Number of visits is: ' + numVisitsToDisplay);
+        numVisits++;
+        redisClient.set('numVisits', numVisits);
+    });
+});
+
+app.listen(5000, function() {
+    console.log('Web application is listening on port 5000');
+});
+```
+
+### Step 4. Creating a web1 directory and add the below files:
+
+#### File: Dockerfile
+
+```
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+COPY ./package*.json ./
+RUN npm install
+COPY ./server.js ./
+
+CMD ["npm","start"]
+
+```
+
+#### File: server.js
+
+```
+const express = require('express');
+const redis = require('redis');
+const app = express();
+const redisClient = redis.createClient({
+  host: 'redis',
+  port: 6379
+});
+
+
+app.get('/', function(req, res) {
+    redisClient.get('numVisits', function(err, numVisits) {
+        numVisitsToDisplay = parseInt(numVisits) + 1;
+        if (isNaN(numVisitsToDisplay)) {
+            numVisitsToDisplay = 1;
+        }
+        res.send('web1: Total number of visits is: ' + numVisitsToDisplay);
+        numVisits++;
+        redisClient.set('numVisits', numVisits);
+    });
+});
+
+app.listen(5000, function() {
+    console.log('Web app is listening on port 5000');
+});
+```
+
+#### File: package.json
+
+```
+{
+  "name": "web1",
+  "version": "1.0.0",
+  "description": "Running Node.js and Express.js on Docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "redis": "3.1.2"
+  },
+  "author": "",
+  "license": "MIT"
+}
+```
+
+
+### Step 5. Deploy the application
+
+Let us deploy the full-fledged app using docker-compose
+
+```
+$ docker-compose up -d
+```
+```
+Creating nginx-nodejs-redis_redis_1 ... done
+Creating nginx-nodejs-redis_web1_1  ... done
+Creating nginx-nodejs-redis_web2_1  ... done
+Creating nginx-nodejs-redis_nginx_1 ... done
+```
+
+
+#### Expected result
+
+Listing containers must show three containers running and the port mapping as below:
+
+
+```
+docker-compose ps
+           Name                        Command              State           Ports         
+------------------------------------------------------------------------------------------
+nginx-nodejs-redis_nginx_1   /docker-entrypoint.sh ngin     Up      0.0.0.0:80->80/tcp    
+                             ...                                                          
+nginx-nodejs-redis_redis_1   docker-entrypoint.sh redis     Up      0.0.0.0:6379->6379/tcp
+                             ...                                                          
+nginx-nodejs-redis_web1_1    docker-entrypoint.sh npm       Up      0.0.0.0:81->5000/tcp  
+                             start                                                        
+nginx-nodejs-redis_web2_1    docker-entrypoint.sh npm       Up      0.0.0.0:82->5000/tcp  
+                             start   
+```
+
+### Step 6. Testing the app
+
+After the application starts, navigate to `http://localhost:80` in your web browser or run:
+
+```
+curl localhost:80
+curl localhost:80
+web1: Total number of visits is: 1
+```
+
+```
+curl localhost:80
+web1: Total number of visits is: 2
+```
+```
+$ curl localhost:80
+web2: Total number of visits is: 3
+```
+
+```
+$ curl localhost:80
+web2: Total number of visits is: 4
+``` 
+
+
+
+### Step 7. Monitoring Redis keys 
+
+If you want to monitor the Redis keys, you can use monitor command. Install redis-client in your Mac system using ```brew install redis``` and then directly connect to Redis container by issuing the below command:
+
+```
+% redis-cli
+127.0.0.1:6379> monitor
+OK
+1646485507.290868 [0 172.24.0.2:34330] "get" "numVisits"
+1646485507.309070 [0 172.24.0.2:34330] "set" "numVisits" "5"
+1646485509.228084 [0 172.24.0.2:34330] "get" "numVisits"
+1646485509.241762 [0 172.24.0.2:34330] "set" "numVisits" "6"
+1646485509.619369 [0 172.24.0.4:52082] "get" "numVisits"
+1646485509.629739 [0 172.24.0.4:52082] "set" "numVisits" "7"
+1646485509.990926 [0 172.24.0.2:34330] "get" "numVisits"
+1646485509.999947 [0 172.24.0.2:34330] "set" "numVisits" "8"
+1646485510.270934 [0 172.24.0.4:52082] "get" "numVisits"
+1646485510.286785 [0 172.24.0.4:52082] "set" "numVisits" "9"
+1646485510.469613 [0 172.24.0.2:34330] "get" "numVisits"
+1646485510.480849 [0 172.24.0.2:34330] "set" "numVisits" "10"
+1646485510.622615 [0 172.24.0.4:52082] "get" "numVisits"
+1646485510.632720 [0 172.24.0.4:52082] "set" "numVisits" "11"
+```
+
+### Further References
+
+- [ Complete Source Code](https://github.com/ajeetraina/awesome-compose/tree/master/nginx-nodejs-redis)
+- [How to Deploy and Run Redis in a Docker container](https://developer.redis.com/create/docker/)
