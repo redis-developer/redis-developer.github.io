@@ -87,6 +87,13 @@ module.exports = {
             'create/cloudrun/index-cloudrun',
           ]
        },
+     {  
+       type: 'category',
+       label: 'Redis using Azure Functions',
+       items: [
+           'create/azurefunctions/index-azurefunctions',
+         ]
+      },
      ]
    }, 
  {
