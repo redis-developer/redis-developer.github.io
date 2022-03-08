@@ -31,6 +31,12 @@ module.exports = {
         title: 'Developer Growth Manager at Redis',
         image: 'profile_pic_ajeet_raina.jpg'
       },
+      alex: {
+        name: 'Alex Mikhalev',
+        link: 'https://www.linkedin.com/in/alexmikhalev',
+        title: 'AI/ML Architect at Nationwide Building Society',
+        image: 'profile_pic_alex_mikhalev.jpg'
+      },
       will: {
         name: 'Will Johnston',
         link: 'https://twitter.com/wjohnsto',
