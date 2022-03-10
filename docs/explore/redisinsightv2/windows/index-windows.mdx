@@ -122,10 +122,14 @@ Open up the CLI terminal and run the following command:
 
 ### Step 7. Import the user database keys
 
-Open up the CLI terminal and run the following command:
+Open up the CLI terminal and run the following command.
+
+:::note NOTE
+You will need a hostname, port and password to run this for a cloud database.
+:::
 
  ```bash
-  redis-cli -h redis-15411.c264.ap-south-1-1.ec2.cloud.redislabs.com -p 15411 < ./import_users.redis
+  redis-cli -h redis-15411.c264.ap-south-1-1.ec2.cloud.redislabs.com -p 15411 -a <enter your password> < ./import_users.redis
  ```
 
 
