@@ -5,6 +5,11 @@ sidebar_label: Redis on Windows
 slug: /create/windows
 authors: [ajeet]
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
 
 You can install Redis on Windows 10 using Windows Subsystem for Linux(a.k.a WSL2).
 WSL2 is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019.
@@ -65,6 +70,41 @@ Please note: By default, Redis has 0-15 indexes for databases, you can change th
  ```bash
   sudo service redis-server stop
  ```
+### Next Step
+
+
+
+<div class="row text--center">
+
+<div class="col ">
+<div className="ri-container">
+
+#### How to run Redis GUI tool on Windows 
+
+![Windows logo](/img/logos/windows.png)
+
+[Follow this tutorial](/explore/redisinsightv2/windows/index-windows) in order to run RedisInsight on Windows 
+
+
+</div>
+</div>
+
+<div class="col">
+<div className="ri-container">
+
+#### Model Redis data in your .NET Applications 
+
+
+
+
+![redis OM logo](/img/logos/redisom.gif)
+
+Learn how to [connect to Redis database with Redis OM Dotnet](/develop/dotnet/redis-om-dotnet/connecting-to-redis)
+
+</div>
+</div>
+</div>
+
 
 
 ### References

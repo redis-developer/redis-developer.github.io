@@ -1,0 +1,177 @@
+---
+id: index-windows
+title: How to run RedisInsight on Windows
+sidebar_label: How to run RedisInsight on Windows
+authors: [ajeet]
+---
+
+RedisInsight is a visual tool that provides capabilities to design, develop and optimize your Redis application. It is a 100% free Redis GUI that allows developers like you to interact with your databases and manage your data.
+
+![featured image](images/redisinsight_photo.png)
+
+
+RedisInsight v2.0 incorporates a completely new tech stack based on the popular Electron and Elastic UI frameworks. You can run the application locally along with your favorite IDE, and it remains cross-platform, supported on Linux, Windows, and MacOS. RedisInsight Browser lets you explore keys in your Redis server. You can add, edit and delete a key. You can even update the key expiry and copy the key name to be used in different parts of the application.
+
+## RedisInsight Windows Installer
+
+The RedisInsight desktop client installer for Windows is just 70 MB in size. It allows you to download and use the RedisInsight GUI locally. The desktop client is supported on Windows operating systems and works with all variants of Redis. RedisInsight should install and run on a fresh Windows system.
+
+:::info INFO
+There is no need to install the .NET framework in order to install RedisInsight on Windows.
+:::
+
+## Getting Started
+
+- Step 1. Setup a free Redis Enterprise Cloud account
+- Step 2. Download and Install RedisInsight
+- Step 3. Connect to Redis database
+- Step 4. Use Browser Tool
+- Step 5. Overview of User database
+- Step 6. Clone the repository
+- Step 7. Import user database keys
+- Step 8. Modify a Redis key
+- Step 9. Cleaning up
+
+
+### Step 1. Set up a free Redis Enterprise Cloud account
+
+Visit [developer.redis.com/create/rediscloud/](/create/rediscloud/) and create [a free Redis Enterprise Cloud account](https://redis.com/try-free/). Once you complete this tutorial, you will be provided with the database endpoint URL and password. Save it for future reference.
+
+:::tip TIP
+For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
+
+:tada: [Click here to sign up](https://redis.com/try-free)
+
+:::
+
+![endpoint of redis enterprise cloud](images/rediscloud_endpoint.png "image_tooltip")
+
+### Step 2. Download and Install RedisInsight
+
+
+To use RedisInsight on a local Windows, you can download the software directly from the Redis official website:
+
+[Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice(in our case, it's Microsoft Windows).
+
+
+![form to fill to download RedisInsight](images/redisinsight-form.png)
+
+Fill out the rest of the form and click “Download”.  
+
+#### Install RedisInsight
+
+Click on the RedisInsight executable (.exe file) and install it in your system.
+
+![setup redisinsight](images/redisinsight-setup.png)
+
+Once the RedisInsight software is installed, click on its icon to open the RedisInsight application. It will display the End-User License Agreement and Privacy Settings. Enable Analytics and Encrypt sensitive information as per your preference.
+
+![accept redisinsight licence](images/redisinsight-eula.png)
+
+### Step 3. Connect to a Redis Database
+
+Enter the requested details, including Host (endpoint), Port, and Alias in the form, as shown below. You can use "default" as the username for now. Then click “ADD REDIS DATABASE”.
+
+![adding redis database](images/redisinsight-add-database.png)
+
+Once added, you will see the database name listed as shown below:
+
+![listing the redis database](images/redisinsight-db-added.png)
+
+### Step 4. Use "Browser Tool"
+
+Click on the "Key" icon on the left sidebar to open up the browser tool.
+
+![redis database with no keys](images/redisinsight-no-keys.png "image_tooltip")
+
+
+### Step 5. Overview of User database keys
+
+Let us import a user database (6k keys). This dataset contains users stored as Redis Hashes.
+
+
+### 
+**Users**
+
+The user hashes contain the following fields:
+
+
+
+*   `user:id` : The key of the hash.
+*   `first_name` : First Name.
+*   `last_name` : Last name.
+*   `email` : email address.
+*   `gender` : Gender (male/female).
+*   `ip_address` : IP address.
+*   `country` : Country Name.
+*   `country_code` : Country Code.
+*   `city` : City of the user.
+*   `longitude` : Longitude of the user.
+*   `latitude` : Latitude of the user.
+*   `last_login` : Epoch time of the last login.
+
+### Step 6. Clone the repository
+
+Open up the CLI terminal and run the following commands:
+
+ ```bash
+  git clone https://github.com/redis-developer/redis-datasets
+  cd redis-datasets/user-database
+ ```
+
+
+### Step 7. Import the user database keys
+
+Open up the CLI terminal and run the following command.
+
+:::note NOTE
+You will need a hostname, port and password to run this for a cloud database.
+:::
+
+ ```bash
+  redis-cli -h redis-15411.c264.ap-south-1-1.ec2.cloud.redislabs.com -p 15411 -a <enter your password> < ./import_users.redis
+ ```
+
+
+Refresh the keys view by clicking as shown below:
+
+
+![listing the keys](images/redisinsight-keys-added.png "image_tooltip")
+
+
+You can get a real-time view of the data in your Redis database as shown below:
+
+
+
+Select any key in the keys view and the key's value gets displayed in the right hand side that includes fields and values.
+
+![hash keys listed](images/redisinsight_hashes.png)
+
+
+### Step 8. Modify a key
+
+The RedisInsight browser tool allows you to modify the data instantly.
+Select any key and change the values as shown in the following screenshot
+
+![modify the redis keys](images/redisinsight_modify_keys.png)
+
+
+
+### Step 9. Cleaning up
+
+Run the following command to clean up all the Redis keys:
+
+![flushing the database](images/redisinsight_flushdb.png)
+
+
+## Further References
+
+- [How to Install Redis on Windows](/create/windows)
+- [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
+- [Explore Redis keys using RedisInsight browser tool](/explore/redisinsight/browser)
+- [Memory Analysis using RedisInsight](/explore/redisinsight/memoryanalyzer)
+
+
+<div>
+<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+</div>

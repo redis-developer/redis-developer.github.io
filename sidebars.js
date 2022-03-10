@@ -297,10 +297,11 @@ module.exports = {
           items: [
            'explore/redisinsightv2/index-redisinsightv2',
            'explore/redisinsightv2/getting-started/index-gettingstarted',
+           'explore/redisinsightv2/windows/index-windows',
            'explore/redisinsightv2/browser/index-browser',
            'explore/redisinsightv2/profiler/index-profiler',
            'explore/redisinsightv2/redisearch/index-redisearch',
-           ]
+          ]
          },
         {
          type: 'category',
