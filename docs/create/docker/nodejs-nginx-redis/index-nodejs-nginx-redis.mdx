@@ -26,13 +26,10 @@ In this quickstart guide, you will see how to build a Node.js application (visit
 ```
 .
 ├── docker-compose.yml
+├── redis 
 ├── nginx
 │   ├── Dockerfile
 │   └── nginx.conf
-├── web
-│   ├── Dockerfile
-│   ├── package.json
-│   └── server.js
 ├── web1
 │   ├── Dockerfile
 │   ├── package.json
@@ -92,7 +89,7 @@ services:
     - web2
 ```
 
-The compose file defines an application with four services `redis`, `web`, `web1` and `web2`.
+The compose file defines an application with four services `redis`, `web1`, `web2` and `nginx`.
 When deploying the application, docker-compose maps port 80 of the web service container to port 80 of the host as specified in the file.
 
 
