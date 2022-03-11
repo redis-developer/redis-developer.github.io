@@ -1,0 +1,131 @@
+---
+id: index-azure-cache-terraform
+title: Azure Cache for Redis Enterprise using Terraform
+sidebar_label: Azure Cache for Redis Enterprise using Terraform
+slug: /operate/provisioning/azure-cache-terraform
+---
+
+
+The Enterprise Tiers of Azure Cache for Redis is generally available as a native fully managed service on Microsoft Azure. This offering combines Azure’s global presence, flexibility, security, and compliance with Redis Enterprise’s unmatched availability, performance, and extended data structure functionality to create the best experience for enterprises. Enterprise features include: 
+
+- [Open source Redis 6.0](https://redis.com/blog/diving-into-redis-6/)
+- [Zone redundancy, with up to 99.99% availability](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-high-availability#zone-redundancy)
+- [Active geo-replication, with up to 99.999% availability](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/) - Preview
+- [Redis on Flash (RoF)](https://redis.com/redis-enterprise/technology/redis-on-flash/)
+- [Disk persistence with recovery](https://redis.com/redis-enterprise/technology/durable-redis/) - Preview
+- Redis Enterprise modules:
+   - [RediSearch 2.0](https://redis.com/blog/redisearch-2-build-modern-applications-interactive-search/)
+   - [RedisTimeSeries](https://redis.com/modules/redis-timeseries/)
+   - [RedisBloom](https://redis.com/modules/redis-bloom/)
+- Scaling
+   - Datasets up to 13TB 
+   - Up to 2M concurrent client connections 
+   - Over 1M ops/second
+- Security 
+   - [Private Link support](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-private-link)
+   - TLS connectivity 
+- Integrated billing and the ability to apply Azure-commitment spend
+
+Azure Resource Manager(a.k.a AzureRM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. You use management features, like access control, locks, and tags, to secure and organize your resources after deployment.
+
+The "azurerm_redis_enterprise_cluster" is a resource that manages a Redis Enterprise cluster. This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
+
+### Prerequisite
+
+1.  [Terraform CLI](https://terraform.io)
+2.  [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+### Step 1. Getting Started
+
+Login in Azure using the Azure CLI
+
+```bash
+az login
+```
+
+
+### Step 2: Clone the repository
+
+```bash
+git clone https://github.com/redis-developer/acre-terraform-simple
+```
+
+
+### Step 3: Initialize the repository
+
+```bash
+cd acre-terraform-simple
+terraform init
+```
+>The output should include: ```Terraform has been successfully initialized```
+
+
+### Step 4: Modify the variables(optional)
+
+The default variables are setup to deploy the smallest 'E10' instance into the 'East US' region.
+Changes can be made by updating the ```variables.tf``` file.
+
+
+### Step 5: Verify the plan
+
+The 'plan' output will show you everything being created by the template.
+
+```bash
+terraform plan
+```
+>The plan step does not make any changes in Azure
+
+### Step 6: Apply the plan
+
+When the plan looks good, 'apply' the template.
+
+```bash
+terraform apply
+```
+
+### Step 7: Connect using generated output
+
+The access key is sensitive, so viewing the outputs must be requested specifically.
+The output is also in JSON format.
+
+```bash
+terraform output redisgeek_config
+```
+> Example output:
+```
+{
+"hostname" = "redisgeek-8jy4.eastus.redisenterprise.cache.azure.net"
+"access_key" = "DQYABC3uRMyDguEXXXXXXXXXXWTRkfgOPjs82Y="
+"port" = "10000"
+}
+```
+
+### Resources
+
+##### How to use Redis Cache for Redis like a Pro
+
+<div class="text--center">
+    <iframe width="760" height="415" src="https://www.youtube.com/embed/eThj-jwViZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+
+##### Do More with Azure Cache for Redis, Enterprise Tiers
+
+
+<div class="text--center">
+   <iframe width="760" height="415" src="https://www.youtube.com/embed/t6XQHsKFMKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+
+
+
+### References
+
+- [Azure Cache for Redis Enterprise](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redisga_redislabs_cloudpartner_cta1)
+- [Accelerate Modern Application Delivery with Redis Enterprise on Microsoft Azure](https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWGGx3)
+- [.Net and Redis](/develop/dotnet/)
+- [Quickstart: Create a Redis Enterprise cache](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/quickstart-create-redis-enterprise)
+
+
+
+

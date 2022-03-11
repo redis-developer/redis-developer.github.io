@@ -330,6 +330,54 @@ module.exports = {
      ]
     },
     {
+     type: 'category',
+     label: 'Operate',
+     items: [
+      'operate/index-operate',
+     {
+       type: 'category',
+       label: 'Continuous Integration/Deployment',
+       items: [
+         'operate/continuous-integration-continuous-deployment/index-continuous-integration-continuous-deployment',
+         'operate/continuous-integration-continuous-deployment/jenkins/index-jenkins',
+        ]
+      },
+      {
+       type: 'category',
+       label: 'Observability',
+       items: [
+        'operate/observability/index-observability',
+        'operate/observability/redisdatasource/index-redisdatasource',
+        'operate/observability/redisexplorer/index-redisexplorer',
+        'operate/observability/datadog/index-datadog',
+        'operate/observability/prometheus/index-prometheus',
+        ]
+      },
+      {
+        type: 'category',
+        label: 'Provisioning',
+        items: [
+          'operate/provisioning/index-provisioning',
+          'operate/provisioning/terraform/index-terraform',
+          'operate/provisioning/azure-cache-terraform/index-azure-cache-terraform',
+          'operate/provisioning/azure-cache-terraform-private/index-azure-cache-terraform-private',
+          ]
+       },
+      {
+        type: 'category',
+        label: 'Orchestration',
+        items: [
+          'operate/orchestration/index-orchestration',
+          'operate/orchestration/docker/index-docker',
+          'operate/orchestration/nodejs-nginx-redis/index-nodejs-nginx-redis',  
+          'operate/orchestration/kubernetes/index-kubernetes',
+          'operate/orchestration/kubernetes-operator/index-kubernetes-operator',
+    ]
+       },
+      ]
+
+    },
+    {
       type: 'category',
       label: 'HowTos & Tutorials',
       items: [
