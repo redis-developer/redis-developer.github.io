@@ -13,7 +13,10 @@ import SvgDevelop from '@site/src/svg/Develop';
 import SvgDevelopBg from '@site/src/svg/DevelopBg';
 import SvgExplore from '@site/src/svg/Explore';
 import SvgExploreBg from '@site/src/svg/ExploreBg';
+import SvgOperateBg from '@site/src/svg/OperateBg';
 import SvgArrowRight from '@site/src/svg/ArrowRight';
+
+
 
 function Hero() {
 	return (
@@ -71,6 +74,21 @@ function Hero() {
                 </div>
                 <a href={useBaseUrl('/explore/redisinsight/')} className="link">Read More</a>
               </div>
+
+              <div className="box box-operate">
+                <SvgExploreBg color="#FFFFFF" className="bg" />
+                <span className="icon">
+                  <SvgExplore color="#FFFFFF" />
+                </span>
+                <div className="text">
+                  <h3 className="title">Operate</h3>
+                  <p className="description">Provision and accelerate app deployment using DevOps </p>
+                  <span className="more">Operate your application<SvgArrowRight color="#DC382C" /></span>
+                </div>
+                <a href={useBaseUrl('/operate/')} className="link">Read More</a>
+              </div>
+
+
             </div>
           </div>
 
