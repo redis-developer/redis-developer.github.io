@@ -31,6 +31,12 @@ module.exports = {
         title: 'Developer Growth Manager at Redis',
         image: 'profile_pic_ajeet_raina.jpg'
       },
+      talon: {
+        name: 'Talon Miller',
+        link: 'https://www.linkedin.com/in/talon-miller-005054109/',
+        title: 'Technical Product Marketing Manager at Redis',
+        image: 'profile_pic_talon_miller.jpg'
+      },
       alex: {
         name: 'Alex Mikhalev',
         link: 'https://www.linkedin.com/in/alexmikhalev',
