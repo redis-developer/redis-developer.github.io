@@ -114,6 +114,7 @@ Data sources allow Terraform to use information defined outside of Terraform, de
 
 
 A data block requests that Terraform read from a given data source ("rediscloud_payment_method") and export the result under the given local name ("card"). The name is used to refer to this resource from elsewhere in the same Terraform module, but has no significance outside of the scope of a module.
+
 Within the block body (between { and }) are query constraints defined by the data source. Most arguments in this section depend on the data source, and indeed in this example card_type and last_four_numbers are all arguments defined specifically for the rediscloud_payment_method data source.
 
 
