@@ -64,7 +64,7 @@ The following is an architectural diagram of how a Jenkins pipeline adds a datab
 
 
 1. The Jenkins pipeline clones a remote git repository, containing the application code and the pipeline code.
-2. The Redis host, port, user, and password are decrypted from the credentials store and are exported as Environment variables.
+2. The Redis host, port, user, and password are decrypted from the credentials store and are exported as environment variables.
 3. Jenkins runs the Python pipeline script, specifying the deployment configuration file in the git repo.
 4. The Python script uses the deployment configuration file to choose and customize a pre-populated template to use as the body of the REST create database request to Redis.
 
