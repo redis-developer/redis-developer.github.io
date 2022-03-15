@@ -1,0 +1,71 @@
+---
+id: index-operate
+title: Operating Your Redis Database
+sidebar_label: Overview
+slug: /operate
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+The following links provide information about how to operate your Redis database using DevOps tools.
+
+
+<div class="row text--left">
+
+<div class="col ">
+<div className="ri-container">
+
+## Top 5 Reasons why DevOps Teams Love Redis Enterprise
+[---> Read the blog](https://redis.com/blog/why-devops-teams-love-redis-enterprise/) 
+</div>
+</div>
+
+<div class="col ">
+<div className="ri-container">
+
+## DevOps Tools
+![DevOps logo](/img/logos/devopslogo.jpg)
+
+</div>
+</div>
+</div>
+
+# Explore by Category
+
+<div class="row">
+    <div class="col">
+        <RedisCard
+            title="CI-CD"
+            description="Continous Integration & Deployment"
+            preview="/img/logos/devops.png"
+            page="/operate/CI-CD"
+            />
+    </div>
+ <div class="col">
+     <RedisCard
+        title="Observability"
+        description="Observe your database"
+        page="/operate/observability"
+        />
+  </div>
+ <div class="col">
+     <RedisCard
+        title="Provisioning"
+        description="Provision your database"
+        page="/operate/provisioning"
+        />
+  </div>
+
+ <div class="col">
+        <RedisCard
+            title="Orchestration"
+            description="Orchestrating Redis"
+            page="/operate/orchestration"
+            />
+    </div>
+</div>
+
+
+
