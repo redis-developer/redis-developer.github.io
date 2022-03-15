@@ -42,13 +42,13 @@ In this quickstart guide, you will see how to build a Node.js application (visit
 ```
 
 
-### Prerequisite:
+### Prerequisites:
 
 – Install Docker Desktop
 
-Visit https://docs.docker.com/desktop/mac/install/ to setup Docker Desktop for Mac or Windows on your local system.
+Use [Docker's install guide](https://docs.docker.com/desktop/mac/install/) to setup Docker Desktop for Mac or Windows on your local system.
 
-![Image1](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kgrkqga3c78h693vy33p.png)
+![Docker Deskto](desktop.png)
  
 
 :::info
@@ -72,12 +72,14 @@ services:
       - '6379:6379'
   web1:
     restart: on-failure
-    build: ./web1
+    build: ./web
+    hostname: web1
     ports:
       - '81:5000'
   web2:
     restart: on-failure
-    build: ./web2
+    build: ./web
+    hostname: web2
     ports:
       - '82:5000'
   nginx:
@@ -98,7 +100,7 @@ When deploying the application, docker-compose maps port 80 of the web service c
 By default, Redis runs on port 6379. Make sure you don't run another instance of Redis on your system or port 6379 on the host is not being used by another container, otherwise the port should be changed.
 :::
 
-### Step 2. Create an nginx directory and add the below files:
+### Step 2. Create an nginx directory and add the following files:
 
 #### File: nginx/nginx.conf
 
@@ -120,17 +122,17 @@ server {
 #### File: Dockerfile
 
 ```
-FROM nginx
+FROM nginx:1.21.6
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 ```
 
-### Step 3. Create a web directory and add the below files:
+### Step 3. Create a web directory and add the following files:
 
 #### File: web/Dockerfile
 
 ```
-FROM node:alpine
+FROM node:14.17.3-alpine3.14
 
 WORKDIR /usr/src/app
 
@@ -189,76 +191,11 @@ app.listen(5000, function() {
 });
 ```
 
-### Step 4. Creating a web1 directory and add the below files:
-
-#### File: Dockerfile
-
-```
-FROM node:alpine
-
-WORKDIR /usr/src/app
-
-COPY ./package*.json ./
-RUN npm install
-COPY ./server.js ./
-
-CMD ["npm","start"]
-
-```
-
-#### File: server.js
-
-```
-const express = require('express');
-const redis = require('redis');
-const app = express();
-const redisClient = redis.createClient({
-  host: 'redis',
-  port: 6379
-});
 
 
-app.get('/', function(req, res) {
-    redisClient.get('numVisits', function(err, numVisits) {
-        numVisitsToDisplay = parseInt(numVisits) + 1;
-        if (isNaN(numVisitsToDisplay)) {
-            numVisitsToDisplay = 1;
-        }
-        res.send('web1: Total number of visits is: ' + numVisitsToDisplay);
-        numVisits++;
-        redisClient.set('numVisits', numVisits);
-    });
-});
+### Step 4. Deploy the application
 
-app.listen(5000, function() {
-    console.log('Web app is listening on port 5000');
-});
-```
-
-#### File: package.json
-
-```
-{
-  "name": "web1",
-  "version": "1.0.0",
-  "description": "Running Node.js and Express.js on Docker",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.17.2",
-    "redis": "3.1.2"
-  },
-  "author": "",
-  "license": "MIT"
-}
-```
-
-
-### Step 5. Deploy the application
-
-Let us deploy the full-fledged app using docker-compose
+Let us deploy the full-fledged app using docker-compose:
 
 ```
 $ docker-compose up -d
@@ -273,7 +210,7 @@ Creating nginx-nodejs-redis_nginx_1 ... done
 
 #### Expected result
 
-Listing containers must show three containers running and the port mapping as below:
+Listing the running containers. You should see  three containers running and the port mapping as below:
 
 
 ```
@@ -290,9 +227,9 @@ nginx-nodejs-redis_web2_1    docker-entrypoint.sh npm       Up      0.0.0.0:82->
                              start   
 ```
 
-### Step 6. Testing the app
+### Step 5. Testing the app
 
-After the application starts, navigate to `http://localhost:80` in your web browser or run:
+After the application starts, navigate to `http://localhost` in your web browser or run:
 
 ```
 curl localhost:80
@@ -316,9 +253,9 @@ web2: Total number of visits is: 4
 
 
 
-### Step 7. Monitoring Redis keys 
+### Step 6. Monitoring Redis keys 
 
-If you want to monitor the Redis keys, you can use monitor command. Install redis-client in your Mac system using ```brew install redis``` and then directly connect to Redis container by issuing the below command:
+If you want to monitor the Redis keys, you can use the `MONITOR` command. Install `redis-cli` on your Mac system using `brew install redis` and then directly connect to Redis container by issuing the following command:
 
 ```
 % redis-cli

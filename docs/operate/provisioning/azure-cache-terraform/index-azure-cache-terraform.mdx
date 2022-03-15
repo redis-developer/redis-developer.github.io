@@ -6,7 +6,7 @@ slug: /operate/provisioning/azure-cache-terraform
 ---
 
 
-The Enterprise Tiers of Azure Cache for Redis is generally available as a native fully managed service on Microsoft Azure. This offering combines Azure’s global presence, flexibility, security, and compliance with Redis Enterprise’s unmatched availability, performance, and extended data structure functionality to create the best experience for enterprises. Enterprise features include: 
+The Enterprise Tiers of Azure Cache for Redis are generally available as a native fully managed service on Microsoft Azure. This offering combines Azure’s global presence, flexibility, security, and compliance with Redis Enterprise’s unmatched availability, performance, and extended data structure functionality to create the best experience for enterprises. Enterprise features include:
 
 - [Open source Redis 6.0](https://redis.com/blog/diving-into-redis-6/)
 - [Zone redundancy, with up to 99.99% availability](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-high-availability#zone-redundancy)
@@ -26,18 +26,18 @@ The Enterprise Tiers of Azure Cache for Redis is generally available as a native
    - TLS connectivity 
 - Integrated billing and the ability to apply Azure-commitment spend
 
-Azure Resource Manager(a.k.a AzureRM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. You use management features, like access control, locks, and tags, to secure and organize your resources after deployment.
+Azure Resource Manager (a.k.a AzureRM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. You use management features, like access control, locks, and tags, to secure and organize your resources after deployment.
 
 The "azurerm_redis_enterprise_cluster" is a resource that manages a Redis Enterprise cluster. This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
 
-### Prerequisite
+### Prerequisites
 
 1.  [Terraform CLI](https://terraform.io)
 2.  [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 ### Step 1. Getting Started
 
-Login in Azure using the Azure CLI
+Login in to Azure using the Azure CLI
 
 ```bash
 az login

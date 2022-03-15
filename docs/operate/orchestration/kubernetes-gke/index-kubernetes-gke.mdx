@@ -12,7 +12,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 
 
-### Step 1. Pre-requisites
+### Step 1. Prerequisites
 
 
 - A Linux system
@@ -74,7 +74,7 @@ customresourcedefinition.apiextensions.k8s.io/redisenterprisedatabases.app.redis
 
 ### Step 7. Verifying the Deployment:
 
-Run the command below to verify redis-enterprise-operator deployment is running.
+Run the following command to verify redis-enterprise-operator deployment is running.
 
 
 ```
@@ -96,7 +96,7 @@ redisenterprisecluster.app.redislabs.com/redis-enterprise created
 
 ### Step 9. Verifying the Redis Enterprise Cluster
 
-The rec is a shortcut for RedisEnterpriseCluster. The cluster takes around 5-10 minutes to come up. Run the command below to check that the RedisEnterpriseCluster is up: 
+`rec` is a shortcut for RedisEnterpriseCluster. The cluster takes around 5-10 minutes to come up. Run the command below to check that the RedisEnterpriseCluster is up: 
 
 ```
 $ kubectl get rec

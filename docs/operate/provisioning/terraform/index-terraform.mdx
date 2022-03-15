@@ -1,6 +1,6 @@
 ---
 id: index-terraform
-title: How to Deploy and Manage Redis Database on AWS Using Terraform
+title: How to Deploy and Manage Redis Databases on AWS Using Terraform
 sidebar_label: Deploy and Manage Redis Database on AWS using Terraform
 slug: /operate/provisioning/terraform
 authors: [ajeet,rahul]
@@ -10,7 +10,8 @@ authors: [ajeet,rahul]
 
 
 Development teams today are embracing more and more DevOps principles, such as continuous integration and continuous delivery (CI/CD). Therefore, the need to manage infrastructure-as-code (IaC) has become an essential capability for any cloud service.  IaC tools allow you to manage infrastructure with configuration files rather than through a graphical user interface. IaC allows you to build, change, and manage your infrastructure in a safe, consistent, and repeatable way by defining resource configurations that you can version, reuse, and share. 
-A leading tool in the IaC is HashiCorp Terraform, which supports the major cloud providers and services with its providers and modules cloud infrastructure automation ecosystem for provisioning, compliance, and management of any cloud, infrastructure, and service.
+
+A leading tool in the IaC space is HashiCorp Terraform, which supports the major cloud providers and services with its providers and modules cloud infrastructure automation ecosystem for provisioning, compliance, and management of any cloud, infrastructure, and service
 
 ### What is Terraform?
 
@@ -32,6 +33,7 @@ Terraform is an open source IaC software tool that provides a consistent CLI wor
 ### The HashiCorp Terraform Redis Enterprise Cloud provider
 
 Redis has developed a Terraform provider for Redis Enterprise Cloud. The HashiCorp Terraform Redis Enterprise Cloud provider allows customers to deploy and manage Redis Enterprise Cloud subscriptions, databases, and network peering easily as code, on any cloud provider. It is a plugin for Terraform that allows Redis Enterprise Cloud Flexible customers to manage the full life cycle of their subscriptions and related Redis databases.
+
 The Redis Enterprise Cloud provider is used to interact with the resources supported by Redis Enterprise Cloud. The provider needs to be configured with the proper credentials before it can be used. Use the navigation to the left to read about the available provider resources and data sources.
 
 ![rediscloud](terraform_rediscloud.png)
@@ -46,6 +48,7 @@ Before we jump into the implementation, let us take a moment to better understan
 ### Providers
 
 A provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves. 
+
 A provider defines resources and data for a particular infrastructure, such as AWS. As shown below, the terraform block {} contains terraform settings, including the required providers Terraform will use to provision your infrastructure (for example, rediscloud provider).
 
 ```
@@ -60,9 +63,8 @@ A provider defines resources and data for a particular infrastructure, such as A
 ```
 
 
+The provider {} block configures the specific provider. In the following example, it is AWS.
 
-
-The provider {} block configures the specific provider. In the below example, it is AWS.
 
 ```
  cloud_provider {
