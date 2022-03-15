@@ -20,6 +20,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 - [Azure Cache](https://developer.redis.com/create/azure)
 - [Google Cloud](https://developer.redis.com/create/gcp)
 - [AWS](https://developer.redis.com/create/aws)
+- [Redis using Portainer](https://developer.redis.com/create/portainer)
 
 ### Local
 
