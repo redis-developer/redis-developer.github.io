@@ -117,7 +117,7 @@ Note - On Windows and Mac, install Docker version 18.03 or higher. You can run `
 
 #### Step 2. Run Grafana Docker container
 
-Pass the plugins you want installed to Docker with the GF_INSTALL_PLUGINS environment variable as a comma-separated list. This sends each plugin name to grafana-cli plugins install ${plugin} and installs them when Grafana starts. 
+Specify the plugins you want installed to Docker as a comma-separated list in the `GF_INSTALL_PLUGINS` environment. This sends each plugin name to `grafana-cli plugins install ${plugin}` and installs them when Grafana starts. 
 In our case, we will be using redis-datasource.
 
  ```bash
