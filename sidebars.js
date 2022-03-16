@@ -102,6 +102,13 @@ module.exports = {
            'create/azurefunctions/index-azurefunctions',
          ]
       },
+    {
+       type: 'category',
+       label: 'Redis using Portainer',
+       items: [
+            'create/portainer/index-portainer',
+         ]
+    },
      ]
    }, 
  {
