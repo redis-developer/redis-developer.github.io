@@ -1,12 +1,20 @@
-# Redis, Redis, Redis, and Portainer
+---
+id: index-portainer
+title: Getting Started with Portainer and Redis
+sidebar_label: Redis using Portainer
+slug: /create/portainer
+---
 
-> Redis is an in-memory data structure store, used as a distributed, in-memory key–value database, cache and message broker, with optional durability. Redis supports different kinds of abstract data structures, such as strings, lists, maps, sets, sorted sets, HyperLogLogs, bitmaps, streams, and spatial indices. [~Wikipedia](https://en.wikipedia.org/wiki/Redis)
+
+
+
+Redis is an in-memory data structure store, used as a distributed, in-memory key–value database, cache and message broker, with optional durability. Redis supports different kinds of abstract data structures, such as strings, lists, maps, sets, sorted sets, HyperLogLogs, bitmaps, streams, and spatial indices. [~Wikipedia](https://en.wikipedia.org/wiki/Redis)
 
 You can’t travel far in the modern software world without finding that you need an in-memory data store. Today, the answer to “Which data store?” is often Redis. Also today, the answer to “How to Redis?” can be Portainer.
 
 In this blog we'll take you through using Portainer to turn up Redis in three common scenarios.
 
-## Scenario 1: Kubernetes
+### Scenario 1: Kubernetes
 
 Many organizations are either already using Kubernetes in some capacity or they are on a journey to adopt it, so let’s start there.
 
@@ -60,7 +68,7 @@ With that in hand, you can test that your Redis server is running. My typical ru
 ![k8s-test](images/redis9.png)
 In a shocking plot twist, this worked.
 
-## Scenario 2: Docker Swarm
+### Scenario 2: Docker Swarm
 
 Long live Docker Swarm! There is still plenty of Swarm in the wild and Portainer is managing a lot of it. Let’s bring up Redis in Swarm.
 
@@ -98,7 +106,7 @@ In case it’s difficult to see, the command used to connect to a redis node is 
 
 ![swarm-test](images/redis16.png)
 
-## Scenario 3: Docker & Docker Swarm - Can I just have a container?
+### Scenario 3: Docker & Docker Swarm - Can I just have a container?
 
 Sometimes I just want a Redis container, not a whole situation. Just a quick, unsophisticated Redis container. Here’s how to get that done in Portainer.
 
