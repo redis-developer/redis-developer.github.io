@@ -49,6 +49,12 @@ module.exports = {
         title: 'Developer Growth Manager at Redis',
         image: 'profile_pic_will_johnston.jpg'
       },
+      ryan: {
+        name: 'Ryan Gray',
+        link: 'https://www.linkedin.com/in/ryan-t-gray/',
+        title: 'Technical Consultant at Portainer.io',
+        image: 'profile_pic_ryan_gray.jpg'
+     },
       rahul: {
         name: 'Rahul Chauhan',
         link: 'https://www.linkedin.com/in/rchauhan2/',
