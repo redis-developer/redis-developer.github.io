@@ -1,20 +1,20 @@
 .rds-hero {
   margin-top: -63px;
-  padding: 114px 0 65px;
+  padding: 100px 0 100px;
   border-radius: 0 0 10px 10px;
   background-color: $primary-blue;
   color: $white;
 
-  @media only screen and (min-width: 997px) and (max-width: 1100px) {
-    padding-left: 15px;
-    padding-right: 15px;
+  @media only screen and (min-width: 1000px) and (max-width: 1000px) {
+    padding-left: 30px;
+    padding-right: 30px;
 
     .row {
       flex-wrap: nowrap;
     }
 
     .col--7 {
-      min-width: 665px;
+      min-width: 1500px;
     }
 
     .col--5 {
@@ -61,7 +61,7 @@
 
   .hero-subtitle {
     margin: 17px 0 0 0;
-    line-height: 1.5;
+    line-height: 2.0;
     font-size: 18px;
     font-weight: 400;
 
@@ -88,7 +88,7 @@
       flex: 1;
       position: relative;
       border: 1px dashed $red;
-      border-radius: 3px;
+      border-radius: 10px;
       transition: background-color .2s ease-in-out;
 
       @include mobile {
@@ -116,18 +116,24 @@
       }
 
       &.box-create .bg {
-        top: 0;
-        left: 13px;
+        top: 900px;
+        left: 520px;
       }
 
       &.box-develop .bg {
-        top: 9px;
-        left: 5px;
+        top: 900px;
+        left: 520px;
       }
 
       &.box-explore .bg {
-        top: 15px;
-        left: 43px;
+        top: 900px;
+        left: 520px;
+      }
+
+
+      &.box-operate .bg {
+        top: 900px;
+        left: 520px;
       }
 
       .icon {
@@ -168,7 +174,7 @@
         }
 
         .description {
-          margin: 5px 0 0 0;
+          margin: 10px 0 0 0;
           line-height: 1.5;
           font-size: 14.5px;
 
@@ -224,10 +230,6 @@
 
   .illustration {
     max-width: 100%;
-
-    @include desktop {
-      margin-left: 66px;
-    }
 
     @media only screen and (min-width: 997px) and (max-width: 1100px) {
       float: right;
