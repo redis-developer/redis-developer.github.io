@@ -19,12 +19,12 @@
   }
 
   .languages-list {
+    align-items: center;
     z-index: 2;
     display: flex;
-    // justify-content: space-between;
     justify-content: space-around;
     position: relative;
-    margin: 0 auto;
+    margin: 0 auto .5rem;
     padding: 0;
     max-width: 1050px;
     list-style: none;
@@ -35,7 +35,7 @@
     }
 
     &:not(:first-child) {
-      margin-top: 76px;
+      margin-top: 2rem;
 
       @include mobile {
         margin-top: 12px;
@@ -58,11 +58,10 @@
         text-decoration: none;
 
         svg {
-          margin-bottom: 27px;
+          margin-bottom: 1rem;
 
           @include mobile {
             zoom: .85;
-            margin-bottom: 21px;
           }
         }
 

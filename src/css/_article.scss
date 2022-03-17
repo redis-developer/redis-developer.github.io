@@ -344,6 +344,84 @@ main:not(.home-main) {
   }
 }
 
+.orchestration {
+  .ri-container {
+    .ri-detail {
+      padding-top: 2.5rem;
+      position: relative;
+      &:before {
+        background: url("/img/orchestrating-icon-black.svg") no-repeat;
+        background-size: contain;
+        content: '';
+        height: 40px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 40px;
+
+        html[data-theme="dark"] & {
+          background: url("/img/orchestrating-icon.svg") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
+}
+
+.provisioning {
+  @extend .orchestration;
+
+  .ri-container {
+    .ri-detail {
+      &:before {
+        background: url("/img/provisioning-icon-black.svg") no-repeat;
+        background-size: contain;
+
+        html[data-theme="dark"] & {
+          background: url("/img/provisioning-icon.svg") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
+}
+
+.observability {
+  @extend .orchestration;
+
+  .ri-container {
+    .ri-detail {
+      &:before {
+        background: url("/img/observability-icon-black.svg") no-repeat;
+        background-size: contain;
+
+        html[data-theme="dark"] & {
+          background: url("/img/observability-icon.svg") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
+}
+
+.continuous {
+  @extend .orchestration;
+
+  .ri-container {
+    .ri-detail {
+      &:before {
+        background: url("/img/ci-cd-icon-black.svg") no-repeat;
+        background-size: contain;
+
+        html[data-theme="dark"] & {
+          background: url("/img/ci-cd-icon.svg") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
+}
+
 .ri-container {
   position: relative;
   margin-bottom: 30px;

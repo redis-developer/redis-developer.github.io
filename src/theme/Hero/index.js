@@ -12,6 +12,7 @@ import SvgCreateBg from '@site/src/svg/CreateBg';
 import SvgDevelop from '@site/src/svg/Develop';
 import SvgDevelopBg from '@site/src/svg/DevelopBg';
 import SvgExplore from '@site/src/svg/Explore';
+import SvgOperate from '@site/src/svg/Operate';
 import SvgExploreBg from '@site/src/svg/ExploreBg';
 import SvgArrowRight from '@site/src/svg/ArrowRight';
 
@@ -21,17 +22,23 @@ function Hero() {
       <div className="container">
         <div className="row">
 
-          <div className="col col--7">
-            <h1 className="hero-title">The Home of<br /> Redis Developers</h1>
+          <div className="col col--12">
+            <div className="row">
+              <div className="col col--8">
+                <h1 className="hero-title">The Home of<br /> Redis Developers</h1>
 
-            <h2 className="hero-subtitle">
-              <Typed
-                strings={['>_ Made by developers for developers']}
-                typeSpeed={75}
-              >
-              </Typed>
-            </h2>
-
+                <h2 className="hero-subtitle">
+                  <Typed
+                    strings={['>_ Made by developers for developers']}
+                    typeSpeed={75}
+                  >
+                  </Typed>
+                </h2>
+              </div>
+              <div className="col col--4">
+                <SvgHero color="#FFFFFF" className="illustration" />
+              </div>
+            </div>
             <div className="boxes">
               <div className="box box-create">
                 <SvgCreateBg color="#FFFFFF" className="bg" />
@@ -66,18 +73,28 @@ function Hero() {
                 </span>
                 <div className="text">
                   <h3 className="title">Explore</h3>
-                  <p className="description">Insert, update, and explore your database using RedisInsight</p>
-                  <span className="more">Explore your data <SvgArrowRight color="#DC382C" /></span>
+                  <p className="description">Insert,update and explore your database using RedisInsight </p>
+                  <span className="more">Explore your data<SvgArrowRight color="#DC382C" /></span>
                 </div>
-                <a href={useBaseUrl('/explore/redisinsight/')} className="link">Read More</a>
+                <a href={useBaseUrl('/explore/')} className="link">Read More</a>
               </div>
+
+              <div className="box box-operate">
+                <SvgExploreBg color="#FFFFFF" className="bg" />
+                <span className="icon">
+                  <SvgOperate />
+                </span>
+                <div className="text">
+                  <h3 className="title">Operate</h3>
+                  <p className="description">Provision Redis and accelerate app deployment using DevOps </p>
+                  <span className="more">Operate your database<SvgArrowRight color="#DC382C" /></span>
+                </div>
+                <a href={useBaseUrl('/operate/')} className="link">Read More</a>
+              </div>
+
+
             </div>
           </div>
-
-          <div className="col col--5">
-            <SvgHero color="#FFFFFF" className="illustration" />
-          </div>
-          
         </div>
       </div>
     </header>
