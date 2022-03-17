@@ -8,7 +8,7 @@ import SvgPython from '@site/src/svg/Python';
 import SvgNode from '@site/src/svg/Node';
 import SvgCSharp from '@site/src/svg/CSharp';
 import SvgGo from '@site/src/svg/Go';
-import SvgRuby from '@site/src/svg/Ruby';
+import SvgApple from '@site/src/svg/Apple';
 import SvgCloudRun from '@site/src/svg/CloudRun';
 import SvgPhp from '@site/src/svg/Php';
 import SvgHeroku from '@site/src/svg/Heroku';
@@ -68,9 +68,9 @@ function Languages() {
 
 
         <li>
-        <a href={useBaseUrl('/develop/ruby/')}>
-            <SvgRuby />
-            <span className="btn">Ruby</span>
+        <a href={useBaseUrl('/create/homebrew/')}>
+            <SvgApple />
+            <span className="btn">Mac</span>
           </a>
         </li>
     </ul>
