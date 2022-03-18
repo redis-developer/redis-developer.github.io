@@ -18,7 +18,10 @@ import SvgKubernetes from '@site/src/svg/Kubernetes';
 import SvgNetlify from '@site/src/svg/Netlify';
 import SvgVercel from '@site/src/svg/Vercel';
 import SvgWindows from '@site/src/svg/Windows';
+import SvgLinux from '@site/src/svg/Linux';
 import SvgJenkins from '@site/src/svg/Jenkins';
+import SvgAWS from '@site/src/svg/AWS';
+import SvgGCP from '@site/src/svg/GCP';
 import SvgDatadog from '@site/src/svg/Datadog';
 import SvgGrafana from '@site/src/svg/Grafana';
 
@@ -68,29 +71,23 @@ function Languages() {
 
 
         <li>
-        <a href={useBaseUrl('/create/homebrew/')}>
-            <SvgApple />
-            <span className="btn">Mac</span>
-          </a>
-        </li>
-    </ul>
-     </div>
-   <div className="container">
-    <ul className="languages-list">
-     <li>
         <a href={useBaseUrl('/develop/php/')}>
             <SvgPhp />
             <span className="btn">Php</span>
           </a>
-       </li> 
-      
-       <li>
-        <a href={useBaseUrl('/create/Heroku/')}>
-            <SvgHeroku />
-            <span className="btn">Heroku</span>
-          </a>
        </li>
-
+     </ul>
+   </div>
+   
+   <div className="container">
+    <ul className="languages-list">
+        <li>
+        <a href={useBaseUrl('/create/aws/')}>
+            <SvgAWS />
+            <span className="btn">AWS</span>
+          </a>
+        </li>
+   
       <li>
         <a href={useBaseUrl('/create/azure/')}>
             <SvgAzure />
@@ -99,7 +96,56 @@ function Languages() {
        </li>
 
       <li>
-        <a href={useBaseUrl('/create/netlify/')}>
+        <a href={useBaseUrl('/create/gcp/')}>
+            <SvgGCP />
+            <span className="btn">GCP</span>
+          </a>
+       </li>      
+
+       <li>
+        <a href={useBaseUrl('/create/docker/')}>
+            <SvgDocker />
+            <span className="btn">Docker</span>
+          </a>
+       </li>
+
+       <li>
+        <a href={useBaseUrl('/create/kubernetes/')}>
+            <SvgKubernetes />
+            <span className="btn">Kubernetes</span>
+          </a>
+       </li>
+
+
+       <li>
+        <a href={useBaseUrl('/create/from-source/')}>
+            <SvgLinux />
+            <span className="btn">Linux</span>
+          </a>
+       </li>
+      </ul>
+    </div>
+     
+      <div className="container">
+      <ul className="languages-list">
+
+      <li>
+        <a href={useBaseUrl('/create/windows/')}>
+            <SvgWindows />
+            <span className="btn">Windows</span>
+          </a>
+       </li>
+
+       <li>
+        <a href={useBaseUrl('/create/homebrew/')}>
+            <SvgApple />
+            <span className="btn">Mac</span>
+          </a>
+        </li>
+
+ 
+      <li>
+        <a href={useBaseUrl('/create/netlify/getting-started-with-netlify')}>
             <SvgNetlify />
             <span className="btn">Netlify</span>
           </a>
@@ -112,31 +158,6 @@ function Languages() {
           </a>
        </li>
 
-
-     <li>
-        <a href={useBaseUrl('/create/docker/')}>
-            <SvgDocker />
-            <span className="btn">Docker</span>
-          </a>
-       </li>
-     </ul>
-    </div>
-      <div className="container">
-    <ul className="languages-list">
-
-     <li>
-        <a href={useBaseUrl('/create/kubernetes/')}>
-            <SvgKubernetes />
-            <span className="btn">Kubernetes</span>
-          </a>
-       </li>
-
-      <li>
-        <a href={useBaseUrl('/create/windows/')}>
-            <SvgWindows />
-            <span className="btn">Windows</span>
-          </a>
-       </li>
 
      <li>
         <a href={useBaseUrl('/create/cloudrun/')}>
@@ -152,19 +173,7 @@ function Languages() {
           </a>
        </li>
 
-      <li>
-        <a href={useBaseUrl('/explore/datadog/')}>
-            <SvgDatadog />
-            <span className="btn">Datadog</span>
-          </a>
-       </li>
 
-       <li>
-        <a href={useBaseUrl('/explore/redisdatasource')}>
-            <SvgGrafana />
-            <span className="btn">Grafana</span>
-          </a>
-       </li>
 
        </ul>
     </div>

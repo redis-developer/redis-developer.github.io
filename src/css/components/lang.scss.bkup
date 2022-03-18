@@ -20,14 +20,15 @@
 
   .languages-list {
     align-items: center;
-    z-index: 2;
-    display: flex;
+    display: inline-flex;
+    flex-direction: column;
+    height: 100%;
     justify-content: space-around;
     position: relative;
-    margin: 0 auto .5rem;
-    padding: 0;
-    max-width: 1050px;
-    list-style: none;
+    text-decoration: none;
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 7%), 0 7px 17px 0 rgb(0 0 0 / 10%);
+    width: 150px;
+    padding-top: 20px;
 
     @include mobile {
       flex-wrap: wrap;
@@ -56,12 +57,9 @@
         height: 100%;
         text-align: center;
         text-decoration: none;
-        box-shadow: 0 1px 5px 0 RGB(0 0 0 / 7%), 0 7px 17px 0 RGB(0 0 0 / 10%);
-        width: 150px;
-        padding-top: 20px;
 
         svg {
-          margin-bottom: 0.25rem;
+          margin-bottom: 1rem;
 
           @include mobile {
             zoom: .85;
