@@ -1,6 +1,6 @@
 ---
 id: index-redis-stack
-title: Create database using Redis Stack
+title: Create a database using Redis Stack
 sidebar_label: Redis Stack
 slug: /create/redis-stack
 authors: [ajeet]
@@ -17,7 +17,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 Redis Stack is an extension of Redis that adds modern data models and processing engines to provide a complete developer experience.Redis Stack provides a simple and seamless way to access different data models such as full-text search, document store, graph, time series, and probabilistic data structures enabling developers to build any real-time data application. 
 
 
-### Redis OSS Vs Redis Stack
+### Redis OSS vs Redis Stack
 
 In addition to all of the features of OSS Redis, Redis stack supports:
 
@@ -32,8 +32,8 @@ In addition to all of the features of OSS Redis, Redis stack supports:
 
 Redis Stack is made up of several components, licensed as follows:
 
-- Redis Stack Server combines open source Redis with RediSearch, RedisJSON RedisGraph, RedisTimeSeries and RedisBloom is licensed under the Redis Source Available License (RSAL).
-- RedisInsight is licensed under the Server Side Public License (SSPL).
+- Redis Stack Server combines open source Redis with RediSearch, RedisJSON RedisGraph, RedisTimeSeries and RedisBloom is licensed under the [Redis Source Available License](https://github.com/RediSearch/RediSearch/blob/master/LICENSE) (RSAL).
+- RedisInsight is licensed under the [Server Side Public License](https://en.wikipedia.org/wiki/Server_Side_Public_License) (SSPL).
 
 
 ### Which client libraries support Redis Stack?
@@ -248,7 +248,7 @@ Add the local Redis database endpoint and port.
 ![access redisinsight](images/testredis1.png)
 
 
-### Step 5. Redis for time series
+### Step 4. Redis for time series
 
 
 Redis Stack provides you with a native time series data structure. Let's see how a time series might be useful in our bike shop.
@@ -261,7 +261,7 @@ Click "Guides" icon(just below the key) in the left sidebar and choose "Redis fo
 
 ![redis for timeseries](images/testredis2.png)
 
-### Step 6. Create time series per shop
+### Step 5. Create time series per shop
 
 
  ```bash
@@ -277,11 +277,11 @@ Since the metrics are collected with a millisecond timestamp, we can compact our
 
 ![create time series per shop](images/testredis3.png)
 
-### Step 7. Running the query
+### Step 6. Running the query
 
 ![execute the query](images/testredis4.png)
 
-### Step 8. Time series compaction
+### Step 7. Time series compaction
 
 RedisTimeSeries supports downsampling with the following aggregations: avg, sum, min, max, range, count, first and last. If you want to keep all of your raw data points indefinitely, your data set grows linearly over time. However, if your use case allows you to have less fine-grained data further back in time, downsampling can be applied. This allows you to keep fewer historical data points by aggregating raw data for a given time window using a given aggregation function.
 
