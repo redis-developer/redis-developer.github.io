@@ -32,50 +32,80 @@ RedisInsight Browser lets you explore keys in your Redis server. You can add, ed
 
 In order to understand the capabilities of the browser tool, let us take a simple example and demonstrate each of the browser tool's options:
 
-### Step 1. Download RedisInsight
+### Step 1. Install RedisInsight
 
-To use RedisInsight on a local Mac, you can download the software directly from the Redis official website:
+To use RedisInsight on a local Mac, you can install Redis Stack by running the following commands:
 
-[Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+Follow the quick step to setup Redis Stack on your Mac:
 
+First, tap the Redis Stack Homebrew tap and then run `brew install` as shown below:
 
-![My Image](images/image1.png)
+ ```bash
+  brew tap redis-stack/redis-stack
+  brew install --cask redis-stack
+ ```
 
-Fill out the rest of the form and click “Download”. Please note that the package name is the combination of the platform and version as shown here: redisinsight-preview-platform-version
-
-### Step 2. Install RedisInsight
-
-Click on the RedisInsight executable and install it in your system.
-
-![My Image](images/image2.png)
-
-Once the RedisInsight software is installed, click on its icon to open the RedisInsight application. It will display the End-User License Agreement and Privacy Settings. Enable Analytics and Encrypt sensitive information as per your preference.
+This will install all Redis and Redis Stack binaries. How you run these binaries depends on whether you already have Redis installed on your system.
 
 
-### Step 3. Connect to a Redis Database
+ ```
+  ==> Installing Cask redis-stack-redisinsight
+  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+  🍺  redis-stack-redisinsight was successfully installed!
+  ==> Installing Cask redis-stack
+  🍺  redis-stack was successfully installed!
+ ```
 
-There are multiple ways you can connect to a Redis database - either by creating a new Redis Enterprise Cloud database or connecting to an existing database. To connect to Redis Enterprise Cloud, choose the "Create a Free on Redis Cloud" option.
+:::info TIP
 
-![My Image](images/image31.png)
+If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in the $PATH.
 
-Once clicked, it will redirect to [the link](https://redis.com/try-free/?utm_source=redis&utm_medium=app&utm_campaign=redisinsight) where you will need to complete the form.
+To check this, run:
 
-![My Image](images/image41.png)
+ ```bash
+  echo $PATH
+ ```
 
-You can follow [this link](/create/rediscloud) to create a New Redis Enterprise Cloud database.
-In case you have an existing Redis database, follow the below steps.
 
-Assuming that you already have Redis database up and running locally, proceed to the next step to select "ADD REDIS DATABASE".
+Then, confirm that the output contains /opt/homebrew/bin (M1 Mac) or /usr/local/bin (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
+:::
 
-### Step 4. Add Redis database
+### Step 2. Start Redis Stack Server
 
-Enter the requested details, including Host (endpoint), Port, and Alias in the form, as shown below. You can skip username for now. Then click “ADD REDIS DATABASE”:
+You can now start Redis Stack Server as follows:
 
-![My Image](images/image_61.png)
+ ```bash
+  redis-stack-server
+ ```
 
-Once added, you will see the database added as shown below:
 
-![My Image](images/image_db.png)
+### Existing Redis installation
+
+If you have an existing Redis installation on your system, then you’ll need to modify your `$PATH` to ensure that you’re using the latest Redis Stack binaries.
+
+Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the following lines.
+
+
+ ```bash
+   export PATH=/usr/local/Caskroom/redis-stack-server/<VERSION>/bin:$PATH
+ ```
+
+
+Go to Applications and click "RedisInsight Preview" to bring up the Redis Desktop GUI tool.
+
+
+
+
+### Step 3. Add Redis database
+
+![access redisinsight](images/add_database.png)
+
+### Step 4. Enter Redis database details
+
+Add the local Redis database endpoint and port.
+
+
+![access redisinsight](images/testredis1.png)
 
 ### Step 5: Open "Browser Tool"
 

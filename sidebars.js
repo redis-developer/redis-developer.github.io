@@ -10,6 +10,7 @@ module.exports = {
       label: 'Create',
       items: [
         'create/index-create',
+        'create/redis-stack/index-redis-stack',
         'create/rediscloud/index-rediscloud',
           {
              type: 'category',

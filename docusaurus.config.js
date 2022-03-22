@@ -196,8 +196,8 @@ module.exports = {
             //   to: '#',
             // },
             {
-              label: 'Build with Redis Modules',
-              href: '/howtos/redisearch/',
+              label: 'Redis Stack',
+              href: '/create/redis-stack/',
             },
           ],
         },
