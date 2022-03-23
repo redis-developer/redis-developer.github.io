@@ -1,6 +1,6 @@
 ---
 id: index-redis-stack
-title: Create a database using Redis Stack
+title: Introduction to Redis Stack
 sidebar_label: Redis Stack
 slug: /create/redis-stack
 authors: [ajeet]
@@ -14,10 +14,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ![redis stack](images/redis-stack.png)
 
-Redis Stack is an extension of Redis that adds modern data models and processing engines to provide a complete developer experience.Redis Stack provides a simple and seamless way to access different data models such as full-text search, document store, graph, time series, and probabilistic data structures enabling developers to build any real-time data application. 
+Redis Stack is an extension of Redis that adds modern data models and processing engines to provide a complete developer experience. Redis Stack provides a simple and seamless way to access different data models such as full-text search, document store, graph, time series, and probabilistic data structures enabling developers to build any real-time data application. 
 
 
-### Redis OSS vs Redis Stack
+### Redis OSS vs. Redis Stack
 
 In addition to all of the features of OSS Redis, Redis stack supports:
 
@@ -38,7 +38,7 @@ Redis Stack is made up of several components, licensed as follows:
 
 ### Which client libraries support Redis Stack?
 
-Redis Stack supports various client libraries. The following core client libraries support Redis Stack:
+The following core client libraries support Redis Stack:
 
 - [Jedis](https://github.com/redis/jedis) >= 4.0
 - [node-redis](https://github.com/redis/node-redis) >= 4.0
@@ -58,8 +58,8 @@ The Redis OM client libraries let you use the document modeling, indexing, and q
   defaultValue="Redis Enterprise Cloud"
   values={[
     {label: 'Redis Enterprise Cloud', value: 'Redis Enterprise Cloud'},
-    {label: 'Mac', value: 'Mac'},
     {label: 'Docker', value: 'Docker'},
+    {label: 'Mac', value: 'Mac'},
   ]}>
   <TabItem value="Redis Enterprise Cloud">
 
@@ -79,19 +79,20 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 ### Step 2. Create Your database
 
-Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
+For the cloud provider, select your preferred cloud (for demo purpose).
+Select the region of your choice and then click "Let's start free".
 
 :::info TIP
 If you want to create a custom database with your preferred name and type of redis,
-click "Create a custom database" option shown in the image.
+click "Create a custom database".
 :::
 
 ![create database ](images/select_cloud_vendor.png)
 
 
-### Step 3.  Verify the database details
+### Step 3.  Listing the database details
 
-You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
+Once fully activated, you will see the database endpoints as shown below
 
 
 
@@ -99,7 +100,7 @@ You will be provided with Public endpoint URL and "Redis Stack" as the type of d
 
 
 
-### Step 4. Install RedisInsight
+### Step 4. Connecting to the database via RedisInsight
 
 RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
@@ -119,7 +120,7 @@ You can install Redis Stack on your local system to get RedisInsight GUI tool up
   🍺  redis-stack was successfully installed!
  ```
 
-Go to Applications and click "RedisInsight Preview" to bring up the Redis Desktop GUI tool.
+You can easily find the Applications folder on your Mac with Finder. Search "RedisInsight Preview" and click the icon to bring up the Redis Desktop GUI tool.
 
 
 
@@ -133,7 +134,7 @@ Go to Applications and click "RedisInsight Preview" to bring up the Redis Deskto
 Add the Redis Enterprise cloud database endpoint, port and password. 
 
 
-![access redisinsight](images/database_creds.png)
+![access redisinsight](images/database_creDs.png)
 
 
 ### Step 7. Verify the database under RedisInsight dashboard
@@ -146,7 +147,7 @@ Add the Redis Enterprise cloud database endpoint, port and password.
 
 In this tutorial, we will go through an example of a bike shop. We will show the different capabilities of Redis Stack.
 
-Choose "Redis Stack" in the left sidebar.
+Choose "Redis Stack" from the left sidebar menu.
 
 ![access json workbench](images/stack1.png)
 
@@ -160,7 +161,7 @@ It will display JSON.SET command with model, brand, price, type, specs and descr
 
 ### Step 10. Accessing the part of stored JSON document 
 
-Click "Get specific fileds" to access a part of stored JSON document as shown in the following diagram:
+Click "Get specific fileds" to access a part of stored JSON document as shown in the following image:
 
 ![access json keys](images/stack3.png)
 
@@ -170,13 +171,16 @@ Click "Get specific fileds" to access a part of stored JSON document as shown in
 
 <TabItem value="Mac">
 
-To install Redis Stack on macOS, use Homebrew. Make sure that you have Homebrew installed before starting on the installation instructions below.
+To install Redis Stack on macOS, use Homebrew.  Follow the below set of instructions:
 
 
+### Step 1. Install Homebrew
 
-Follow the quick step to setup Redis Stack on your Mac:
+ ```bash
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+ ```
 
-### Step 1. Install Redis Stack using Homebrew
+### Step 2. Install Redis Stack using Homebrew
 
 First, tap the Redis Stack Homebrew tap and then run `brew install` as shown below:
 
@@ -198,7 +202,7 @@ This will install all Redis and Redis Stack binaries. How you run these binaries
 
 :::info TIP
 
-If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in the $PATH.
+If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries will be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in the $PATH.
 
 To check this, run:
 
@@ -236,11 +240,11 @@ Go to Applications and click "RedisInsight Preview" to bring up the Redis Deskto
 
 
 
-### Step 2. Add Redis database
+### Step 3. Add Redis database
 
 ![access redisinsight](images/add_database.png)
 
-### Step 3. Enter Redis database details
+### Step 4. Enter Redis database details
 
 Add the local Redis database endpoint and port.
 
@@ -248,7 +252,7 @@ Add the local Redis database endpoint and port.
 ![access redisinsight](images/testredis1.png)
 
 
-### Step 4. Redis for time series
+### Step 5. Redis for time series
 
 
 Redis Stack provides you with a native time series data structure. Let's see how a time series might be useful in our bike shop.
@@ -261,7 +265,7 @@ Click "Guides" icon(just below the key) in the left sidebar and choose "Redis fo
 
 ![redis for timeseries](images/testredis2.png)
 
-### Step 5. Create time series per shop
+### Step 6. Create time series per shop
 
 
  ```bash
@@ -277,11 +281,11 @@ Since the metrics are collected with a millisecond timestamp, we can compact our
 
 ![create time series per shop](images/testredis3.png)
 
-### Step 6. Running the query
+### Step 7. Run the query
 
 ![execute the query](images/testredis4.png)
 
-### Step 7. Time series compaction
+### Step 8. Time series Aggregations
 
 RedisTimeSeries supports downsampling with the following aggregations: avg, sum, min, max, range, count, first and last. If you want to keep all of your raw data points indefinitely, your data set grows linearly over time. However, if your use case allows you to have less fine-grained data further back in time, downsampling can be applied. This allows you to keep fewer historical data points by aggregating raw data for a given time window using a given aggregation function.
 
@@ -370,8 +374,63 @@ Here’s how to set a retention policy for RedisTimeSeries:
 
 ### Next Steps 
 
-- [Perform Database Search and Analytics using the RediSearch Plugin in RedisInsight v2.0](/explore/redisinsightv2/redisearch)
-- [Visualize Redis Database Keys using the RedisInsight Browser Tool](/explore/redisinsightv2/browser)
-- [RedisInsight Profiler Tool - Analyze Your Redis Commands Using Redis Monitor Command](/explore/redisinsightv2/profiler)
 
 
+<div class="row text--center">
+
+<div class="col ">
+<div className="ri-container">
+
+#### Storing and querying JSON documents 
+
+
+[Follow this tutorial](/howtos/redisjson/getting-started) in order to store and query JSON documents using Redis Stack
+
+
+</div>
+</div>
+
+<div class="col">
+<div className="ri-container">
+
+#### Full-text search 
+
+
+
+
+
+Learn how to [perform full-text search](/howtos/redisearch/) using Redis Stack
+
+</div>
+</div>
+</div>
+
+
+<div class="row text--center">
+
+<div class="col ">
+<div className="ri-container">
+
+#### Probabilistic data structure
+
+
+Follow this tutorial to learn [how to implement low latency and compact Probabilistic data structure](/howtos/redisbloom) using Redis Stack
+
+
+</div>
+</div>
+
+<div class="col">
+<div className="ri-container">
+
+#### Storing and querying time seris data
+
+
+
+
+
+[Learn how to store and query time series data](/howtos/redistimeseries/getting-started) using Redis Stack
+
+</div>
+</div>
+</div>

@@ -22,11 +22,10 @@ function Demos() {
               <h5 className="title">Getting started with Redis Stack</h5>
               <ul className="links">
                 <li><a href="/create/redis-stack/">Introduction to Redis Stack</a></li>
-                <li><a href="/create/rediscloud">Create Redis Stack database on Redis Enterprise Cloud</a></li>
                 <li><a href="/howtos/redisjson/getting-started/">Storing and querying JSON documents</a></li> 
-                <li><a href="/howtos/redisearch/">Support for Full-text search</a></li>
+                <li><a href="/howtos/redisearch/">Full-text search using Redis Stack</a></li>
                 <li><a href="/howtos/redistimeseries/getting-started/">Storing and Querying Time Series data</a></li>
-                <li><a href="/howtos/redisbloom/">Support for Probabilistic data structure</a></li>
+                <li><a href="/howtos/redisbloom/">Probabilistic data structure using Redis Stack</a></li>
              </ul>
             </div>
           </div>
