@@ -3,6 +3,7 @@ id: blocking-reads
 title: Blocking Stream Reads
 sidebar_label: Blocking Stream Reads
 slug: /develop/dotnet/streams/blocking-reads
+authors: [steve]
 ---
 
 [Redis Streams](https://redis.io/topics/streams-intro) can be used to build a message bus for our applications. The ability of multiple readers to consume messages from a Redis Stream in a consumer group makes Redis Streams ideal for a variety of use cases where you want the assurance of message delivery and where you have high volumes of data you want to distribute across multiple consumers.

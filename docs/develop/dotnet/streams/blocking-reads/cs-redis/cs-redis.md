@@ -3,6 +3,7 @@ id: cs-redis
 title: Blocking Stream reads with CSRedis
 sidebar_label: Blocking Stream Reads with CSRedis
 slug: /develop/dotnet/streams/blocking-reads/cs-redis
+authors: [steve]
 ---
 
 [CSRedis](https://github.com/2881099/csredis) is an MIT Licensed Open source project which provides a straightforward interface for executing commands. CSRedis can be used effectively for performing blocking stream reads with the one major downside that it does not support any async API for them.

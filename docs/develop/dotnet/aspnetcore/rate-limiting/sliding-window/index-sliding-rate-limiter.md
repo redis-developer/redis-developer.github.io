@@ -3,6 +3,7 @@ id: sliding-window-rate-limiting
 title: How to implement Sliding Window Rate Limiting app using ASP.NET Core & Redis
 sidebar_label: Sliding Window Rate Limiting app  using ASP.NET
 slug: /develop/dotnet/aspnetcore/rate-limiting/sliding-window
+authors: [steve]
 ---
 
 In this tutorial, we'll learn how to build a sliding window rate limiter for ASP.NET Core using Redis.

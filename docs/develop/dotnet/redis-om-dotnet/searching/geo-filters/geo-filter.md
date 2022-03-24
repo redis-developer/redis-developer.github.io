@@ -3,6 +3,7 @@ id: geo-filters
 title: Geo Filters
 sidebar_label: Geo Filters
 slug: /develop/dotnet/redis-om-dotnet/searching/geo-filters
+authors: [steve]
 ---
 
 A really nifty bit of indexing you can do with Redis OM is geo-indexing. To GeoIndex, all you need to do is to mark a `GeoLoc` field in your model as `Indexed` and create the index 

@@ -3,6 +3,7 @@ id: byo-rate-limiter-middleware
 title: Configurable Sliding Window Rate Limiting Middleware for Redis & ASP.NET Core
 sidebar_label: Rate Limiting Middleware
 slug: /develop/dotnet/aspnetcore/rate-limiting/middleware
+authors: [steve]
 ---
 
 Let's consider the case (which is probably most cases) where we have multiple endpoints we want to rate limit; it doesn't make an awful lot of sense to embed rate-limiting in those cases in the logic of the routes themselves. Instead, have something that will intercept requests and check to see if the request is rate-limited before moving onto the appropriate endpoint. To accomplish this, we'll build some middleware for just this purpose. And with some light configuration work, we'll be able to build some middleware to handle a configurable set of limits.

@@ -3,6 +3,7 @@ id: service-stack
 title: How to handle blocking stream reads with ServiceStack.Redis
 sidebar_label: Blocking Stream Reads with ServiceStack.Redis
 slug: /develop/dotnet/streams/blocking-reads/service-stack
+authors: [steve]
 ---
 
 [ServiceStack.Redis](https://github.com/ServiceStack/ServiceStack.Redis) is part of the ServiceStack suite, it has some restrictions when used for commercial purposes - see their [license](https://github.com/ServiceStack/ServiceStack.Redis/blob/master/license.txt)

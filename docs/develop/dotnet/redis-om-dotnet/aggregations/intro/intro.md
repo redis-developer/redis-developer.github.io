@@ -3,6 +3,7 @@ id: intro
 title: Aggregations Intro
 sidebar_label: Aggregations Intro
 slug: /develop/dotnet/redis-om-dotnet/aggregations
+authors: [steve]
 ---
 
 [Aggregations](https://oss.redis.com/redisearch/Aggregations/) are a method of grouping documents together and run processing on them on the server to transform them into data that you need in your application, without having to perform the computation client-side.

@@ -3,6 +3,7 @@ id: index-basic-caching
 title: How to add a basic API Cache to your ASP.NET Core application
 sidebar_label: Basic API Caching using ASP.NET Core
 slug: /develop/dotnet/aspnetcore/rate-limiting/fixed-window
+authors: [steve]
 ---
 
 Redis is synonymous with caching, and for a good reason, Redis is fast and easy to get up and running with and does an excellent job as a cache. 
