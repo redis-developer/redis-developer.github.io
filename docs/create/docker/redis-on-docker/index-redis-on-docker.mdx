@@ -104,7 +104,7 @@ OK
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-You can run Redis Stack using Docker container. There are two types of Docker images available in Docker Hub.
+You can run Redis Stack using a Docker container. There are two types of Docker images available in Docker Hub.
 
 - The `redis/redis-stack` Docker image contains both Redis Stack server and RedisInsight. This container is recommended for local development because you can use RedisInsight to visualize your data.
 
@@ -136,13 +136,13 @@ To persist your Redis data to a local path, specify -v to configure a local volu
   docker run -v /local-data/:/data redis/redis-stack:latest
  ```
 
-If you want to expose Redis Stack server or RedisInsight on a different port, update the left hand of portion of the -p argument. This command exposes Redis Stack server on port 10001 and RedisInsight on port 13333:
+If you want to expose Redis Stack server or RedisInsight on a different port, update the left hand of portion of the `-p` argument. This command exposes Redis Stack server on port 10001 and RedisInsight on port 13333:
 
  ```bash
   docker run -p 10001:6379 -p 13333:8001 redis/redis-stack:latest
  ```
 
-By default, the Redis Stack Docker containers use internal configuration files for Redis. To start Redis with local configuration file, you can use the -v volume options:
+By default, the Redis Stack Docker containers use internal configuration files for Redis. To start Redis with local a configuration file, you can use the -v volume options:
 
  ```bash
   docker run -v `pwd`/local-redis-stack.conf:/redis-stack.conf -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
@@ -150,14 +150,14 @@ By default, the Redis Stack Docker containers use internal configuration files f
 
 To pass in arbitrary configuration changes, you can set any of these environment variables:
 
-- REDIS_ARGS: extra arguments for Redis
-- REDISEARCH_ARGS: arguments for RediSearch
-- REDISJSON_ARGS: arguments for RedisJSON
-- REDISGRAPH_ARGS: arguments for RedisGraph
-- REDISTIMESERIES_ARGS: arguments for RedisTimeSeries
-- REDISBLOOM_ARGS: arguments for RedisBloom
+- `REDIS_ARGS`: extra arguments for Redis
+- `REDISEARCH_ARGS`: arguments for RediSearch
+- `REDISJSON_ARGS`: arguments for RedisJSON
+- `REDISGRAPH_ARGS`: arguments for RedisGraph
+- `REDISTIMESERIES_ARGS`: arguments for RedisTimeSeries
+- `REDISBLOOM_ARGS`: arguments for RedisBloom
 
-For example, here’s how to use the REDIS_ARGS environment variable to pass the requirepass directive to Redis:
+For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
 
  ```
   docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest

@@ -1,7 +1,7 @@
 ---
 id: index-redisbloom
-title: Probabilistic data structure using Redis Stack
-sidebar_label: Probabilistic data structure using Redis Stack
+title: Probabilistic data structures using Redis Stack
+sidebar_label: Probabilistic data structures using Redis Stack
 slug: /howtos/redisbloom
 authors: [ajeet]
 ---
@@ -14,9 +14,9 @@ The RedisBloom module provides four data types:
 - Bloom filter: A probabilistic data structure that can test for presence. A Bloom filter is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set. Bloom filters typically exhibit better performance and scalability when inserting items (so if you're often adding items to your dataset then Bloom may be ideal). 
 - Cuckoo filter: An alternative to Bloom filters, Cuckoo filters comes with additional support for deletion of elements from a set. These filters are quicker on check operations.
 - Count-min sketch: A count-min sketch is generally used to determine the frequency of events in a stream. You can query the count-min sketch to get an estimate of the frequency of any given event.  
-- Top-K: The Top-k probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. 
+- Top-K: The Top-K probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. 
 
-In this tutorial, you will see how Redis Stack provides Redis with support for low latency and compact  probabilistic data structures.
+In this tutorial, you will see how Redis Stack provides Redis with support for low latency and compact probabilistic data structures.
 
 ### Step 1. Create a free Cloud account
 
@@ -92,7 +92,7 @@ Add the Redis Enterprise cloud database endpoint, port and password.
 
 ### Step 8. Getting Started with RedisBloom
 
-In the next steps you will use some basic RedisBloom commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.) To interact with RedisBloom, you use the BF.ADD and BF.EXISTS commands. 
+In the next steps you will use some basic RedisBloom commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI) To interact with RedisBloom, you use the `BF.ADD` and `BF.EXISTS` commands. 
 
 Let’s go ahead and test drive some RedisBloom-specific operations. We will create a basic dataset based on unique visitors’ IP addresses, and you will see how to:
 

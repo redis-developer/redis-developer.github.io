@@ -25,7 +25,7 @@ function Demos() {
                 <li><a href="/howtos/redisjson/getting-started/">Storing and querying JSON documents</a></li> 
                 <li><a href="/howtos/redisearch/">Full-text search using Redis Stack</a></li>
                 <li><a href="/howtos/redistimeseries/getting-started/">Storing and Querying Time Series data</a></li>
-                <li><a href="/howtos/redisbloom/">Probabilistic data structure using Redis Stack</a></li>
+                <li><a href="/howtos/redisbloom/">Probabilistic data structures using Redis Stack</a></li>
              </ul>
             </div>
           </div>

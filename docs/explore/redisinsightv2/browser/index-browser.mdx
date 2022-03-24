@@ -36,7 +36,6 @@ In order to understand the capabilities of the browser tool, let us take a simpl
 
 To use RedisInsight on a local Mac, you can install Redis Stack by running the following commands:
 
-Follow the quick step to setup Redis Stack on your Mac:
 
 First, tap the Redis Stack Homebrew tap and then run `brew install` as shown below:
 
@@ -58,7 +57,7 @@ This will install all Redis and Redis Stack binaries. How you run these binaries
 
 :::info TIP
 
-If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in the $PATH.
+If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries be installed and accessible on your path. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, `/usr/local/bin` should be in the $PATH.
 
 To check this, run:
 
@@ -67,7 +66,7 @@ To check this, run:
  ```
 
 
-Then, confirm that the output contains /opt/homebrew/bin (M1 Mac) or /usr/local/bin (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
+Then, confirm that the output contains `/opt/homebrew/bin` (M1 Mac) or `/usr/local/bin` (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
 :::
 
 ### Step 2. Start Redis Stack Server
@@ -81,7 +80,7 @@ You can now start Redis Stack Server as follows:
 
 ### Existing Redis installation
 
-If you have an existing Redis installation on your system, then you’ll need to modify your `$PATH` to ensure that you’re using the latest Redis Stack binaries.
+If you have an existing Redis installation on your system, then you’ll need to modify your path to ensure that you’re using the latest Redis Stack binaries.
 
 Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the following lines.
 
@@ -91,7 +90,7 @@ Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the fo
  ```
 
 
-Go to Applications and click "RedisInsight Preview" to bring up the Redis Desktop GUI tool.
+Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
 
 
 

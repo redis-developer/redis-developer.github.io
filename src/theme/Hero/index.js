@@ -47,7 +47,7 @@ function Hero() {
                 </span>
                 <div className="text">
                   <h3 className="title">Create</h3>
-                  <p className="description">Create a new database using cloud, Docker or from sources</p>
+                  <p className="description">Create a new database using cloud, Docker or from source</p>
                   <span className="more">Create a database <SvgArrowRight color="#DC382C" /></span>
                 </div>
                 <a href={useBaseUrl('/create/redis-stack')} className="link">Read More</a>

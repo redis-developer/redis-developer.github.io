@@ -10,7 +10,7 @@ To install Redis Stack on macOS, use Homebrew. Make sure that you have Homebrew 
 
 
 
-Follow the quick step to setup Redis Stack on your Mac:
+Follow the instructions below to setup Redis Stack on your Mac:
 
 ### Step 1. Install Redis Stack using Homebrew
 
@@ -34,7 +34,7 @@ This will install all Redis and Redis Stack binaries. How you run these binaries
 
 :::info TIP
 
-If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in the $PATH.
+If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries will be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in your path.
 
 To check this, run:
 
@@ -43,7 +43,7 @@ To check this, run:
  ```
 
 
-Then, confirm that the output contains /opt/homebrew/bin (M1 Mac) or /usr/local/bin (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
+Then, confirm that the output contains `/opt/homebrew/bin` (M1 Mac) or `/usr/local/bin` (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
 :::
 
 ### Start Redis Stack Server
@@ -56,9 +56,9 @@ You can now start Redis Stack Server as follows:
 
 ### Existing Redis installation
 
-If you have an existing Redis installation on your system, then you’ll need to modify your `$PATH` to ensure that you’re using the latest Redis Stack binaries.
+If you have an existing Redis installation on your system, then you’ll need to modify your `PATH` environment variable to ensure that you’re using the latest Redis Stack binaries.
 
-Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the following lines.
+Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the following line.
 
 
  ```bash
@@ -92,7 +92,7 @@ Redis Stack provides you with a native time series data structure. Let's see how
 As we have multiple physical shops too, alongside our online shop, it could be helpful to have an overview of the sales volume. We will create one time series per shop tracking the total amount of all sales. In addition, we will mark the time series with the appropriate region label, east or west. This kind of representation will allow us to easily query bike sales performance per certain time periods, per shop, per region or across all shops.
 
 
-Click "Guides" icon(just below the key) in the left sidebar and choose "Redis for the time series" for this demonstration. i
+Click "Guides" icon (just below the key) in the left sidebar and choose "Redis for the time series" for this demonstration.
 
 
 ![redis for timeseries](images/testredis2.png)
@@ -107,7 +107,7 @@ Click "Guides" icon(just below the key) in the left sidebar and choose "Redis fo
   TS.CREATE bike_sales_4 DUPLICATE_POLICY SUM LABELS region west compacted no
   TS.CREATE bike_sales_5 DUPLICATE_POLICY SUM LABELS region west compacted no
  ```
-As shown in the following query, we make the shop id (1,2,3,4,5) a part of the time series name. You might also notice the DUPLICATE_POLICY SUM argument; this describes what should be done when two events in the same time series share the same timestamp: In this case, it would mean that two sales happened at exactly the same time, so the resulting value should be a sum of the two sales amounts.
+As shown in the following query, we make the shop id (1,2,3,4,5) a part of the time series name. You might also notice the `DUPLICATE_POLICY SUM` argument; this describes what should be done when two events in the same time series share the same timestamp: In this case, it would mean that two sales happened at exactly the same time, so the resulting value should be a sum of the two sales amounts.
 
 Since the metrics are collected with a millisecond timestamp, we can compact our time series into sales per hour:
 
