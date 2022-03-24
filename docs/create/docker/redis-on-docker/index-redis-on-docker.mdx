@@ -104,65 +104,73 @@ OK
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
 
-### Step 1: Run the Redis container
+You can run Redis Stack using a Docker container. There are two types of Docker images available in Docker Hub.
 
-Execute the following command to run Redis container in the background in a “detached” mode.
+- The `redis/redis-stack` Docker image contains both Redis Stack server and RedisInsight. This container is recommended for local development because you can use RedisInsight to visualize your data.
 
-```
-$ docker run --name myredis -d redis
-```
+- The `redis/redis-stack-server` provides Redis Stack but excludes RedisInsight. This container is best for production deployment.
 
-where,
-myredis is the name of Docker container
--d represent running Redis in a background in a “detached” mode.
-redis is the name of Docker Image that it fetches from Docker Hub.
+### Getting started
 
-### Step 2: Verify if Redis container is running or not:
+To start Redis Stack server using the redis-stack image, run the following command in your terminal:
 
-```
-$ docker ps
-CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS      NAMES
-241f2411637e   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   6379/tcp   myredis
-```
+ ```bash
+  docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+ ````
 
-### Step 3: Connect to your database
+You can use `redis-cli` to connect to the server, just as you connect to any Redis instance.
+If you don’t have redis-cli installed locally, you can run it from the Docker container:
 
-The below CLI uses the first three alphanumeric character of Container ID  and opens up "sh" shell of Redis Docker container:
+ ```bash
+  docker exec -it redis-stack redis-cli
+ ```
 
-```
-$ docker exec -it 241 sh
-# redis-cli
-```
+:::info TIP
+The `docker run` command above also exposes RedisInsight on port 8001. You can use RedisInsight by pointing your browser to http://localhost:8001.
+:::
 
-### Step 4: Testing Redis container
 
-Execute the below command to test the Redis server:
+To persist your Redis data to a local path, specify -v to configure a local volume. This command stores all data in the local directory local-data:
 
-```
-127.0.0.1:6379>ping
-PONG
-```
+ ```bash
+  docker run -v /local-data/:/data redis/redis-stack:latest
+ ```
 
-Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+If you want to expose Redis Stack server or RedisInsight on a different port, update the left hand of portion of the `-p` argument. This command exposes Redis Stack server on port 10001 and RedisInsight on port 13333:
 
-### Step 5: Running Redis container with Persistent Storage
+ ```bash
+  docker run -p 10001:6379 -p 13333:8001 redis/redis-stack:latest
+ ```
 
-In order to enable persistence,  you have to pass the "appendonly" option as "yes" as shown in the below example:
+By default, the Redis Stack Docker containers use internal configuration files for Redis. To start Redis with local a configuration file, you can use the -v volume options:
 
-```
-$ docker run --name some-redis -d redis redis-server --appendonly yes
-```
+ ```bash
+  docker run -v `pwd`/local-redis-stack.conf:/redis-stack.conf -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+ ```
 
-If persistence is enabled, data is stored in the VOLUME /data, which can be used with --volumes-from some-volume-container or -v /docker/host/dir:/data 
+To pass in arbitrary configuration changes, you can set any of these environment variables:
 
- 
+- `REDIS_ARGS`: extra arguments for Redis
+- `REDISEARCH_ARGS`: arguments for RediSearch
+- `REDISJSON_ARGS`: arguments for RedisJSON
+- `REDISGRAPH_ARGS`: arguments for RedisGraph
+- `REDISTIMESERIES_ARGS`: arguments for RedisTimeSeries
+- `REDISBLOOM_ARGS`: arguments for RedisBloom
+
+For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
+
+ ```
+  docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest
+ ```
+
 </TabItem>
+
   
 </Tabs>
 
 ### Next Step
 
-- [Connect to Redis database using RedisInsight](/explore/redisinsight/)
+- [Connect to Redis database using RedisInsight](/explore/redisinsightv2/)
 - [Connect to Redis database using Redis datasource for Grafana](/explore/redisdatasource/)
 
 ##

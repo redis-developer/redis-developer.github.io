@@ -1,48 +1,81 @@
 ---
 id: index-gettingstarted
-title: Getting Started with RedisJSON
-sidebar_label: Getting Started with RedisJSON 
+title: Storing and Querying JSON documents using Redis Stack
+sidebar_label: Storing and Querying JSON documents 
 slug: /howtos/redisjson/getting-started
 authors: [ajeet]
 ---
 
-The RedisJSON module provides in-memory manipulation of JSON documents at high velocity and volume. With RedisJSON, you can natively store document data in a hierarchical, tree-like format to scale and query documents efficiently, significantly improving performance over storing and manipulating JSON with Lua scripts and core Redis data structures.
+Redis Stack is an extension of Redis that adds modern data models and processing engines to provide a complete developer experience. Redis Stack provides a simple and seamless way to access different data models such as full-text search, document store, graph, time series, and probabilistic data structures enabling developers to build any real-time data application.
 
+In this tutorial, you will see how Redis Stack can help you in storing and querying JSON documents.
 
-### Step 1. Register and subscribe
-
+### Step 1. Create a free Cloud account
 
 Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-![My Image](try-free.png)
+:::info TIP
+For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
+
+:tada: [Click here to sign up](https://redis.com/try-free)
+
+:::
+
+### Step 2. Create Your database
+
+Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
+
+:::info TIP
+If you want to create a custom database with your preferred name and type of Redis,
+click "Create a custom database" option shown in the image.
+:::
+
+![create database ](select_cloud_vendor.png)
+
+### Step 3.  Verify the database details
+
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
 
 
-### Step 2. Create Your subscription
 
-Next, you will have to create  Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "Create your Subscription".
+![verify database](details_database.png)
 
-![My Image](create_subscription.png)
+### Step 4. Install RedisInsight
 
+RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
-
-### Step 3. Create database
-
-Click "Create Database". Enter database name and your preferred module.
-
-![My Image](create_database.png)
+You can install Redis Stack on your local system to get RedisInsight GUI tool up and running. Ensure that you have `brew` package installed in your Mac system.
 
 
+ ```bash
+  brew tap redis-stack/redis-stack
+  brew install --cask redis-stack
+ ```
 
-### Step 4. Launch database
+```
+  ==> Installing Cask redis-stack-redisinsight
+  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+  🍺  redis-stack-redisinsight was successfully installed!
+  ==> Installing Cask redis-stack
+🍺  redis-stack was successfully installed!
+ ```
 
-Click "Activate" and wait for few seconds till it gets activated. Once fully activated, you will see the database endpoints as shown below:
+Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
 
-![My Image](launch_database.png)
+### Step 6. Enter Redis Enterprise Cloud details
 
-### Step 5. Connect to a database
+Add the Redis Enterprise cloud database endpoint, port and password.
 
 
-Follow [this](explore/redisinsight) link to know how to connect to a database
+![access redisinsight](database_creds.png)
+
+
+### Step 7. Verify the database under RedisInsight dashboard
+
+
+![database details](database_details.png)
+
+
 
 
 
@@ -260,9 +293,6 @@ A JSON object can also have another object. Here is a simple example of a JSON o
 ### Next Steps
 
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
-- [RedisJSON and Python](/howtos/redisjson/using-python)
-- [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
-- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs) 
 - Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
 - [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)

@@ -1,7 +1,7 @@
 ---
 id: index-redisbloom
-title: RedisBloom Tutorial
-sidebar_label: RedisBloom Tutorial
+title: Probabilistic data structures using Redis Stack
+sidebar_label: Probabilistic data structures using Redis Stack
 slug: /howtos/redisbloom
 authors: [ajeet]
 ---
@@ -14,42 +14,85 @@ The RedisBloom module provides four data types:
 - Bloom filter: A probabilistic data structure that can test for presence. A Bloom filter is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set. Bloom filters typically exhibit better performance and scalability when inserting items (so if you're often adding items to your dataset then Bloom may be ideal). 
 - Cuckoo filter: An alternative to Bloom filters, Cuckoo filters comes with additional support for deletion of elements from a set. These filters are quicker on check operations.
 - Count-min sketch: A count-min sketch is generally used to determine the frequency of events in a stream. You can query the count-min sketch to get an estimate of the frequency of any given event.  
-- Top-K: The Top-k probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. 
+- Top-K: The Top-K probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned. 
 
+In this tutorial, you will see how Redis Stack provides Redis with support for low latency and compact probabilistic data structures.
 
-
-### Step 1. Create free cloud account
+### Step 1. Create a free Cloud account
 
 Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-![My Image](images/try-free.png)
+:::info TIP
+For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
+
+:tada: [Click here to sign up](https://redis.com/try-free)
+
+:::
+
+### Step 2. Create Your database
+
+Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
+
+:::info TIP
+If you want to create a custom database with your preferred name and type of redis,
+click "Create a custom database" option shown in the image.
+:::
+
+![create database ](images/select_cloud_vendor.png)
+
+
+### Step 3.  Verify the database details
+
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
 
 
 
-### Step 2. Create Your subscription
+![verify database](images/details_database.png)
 
-Next, you will have to create  Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "Create your Subscription". 
-
-![My Image](images/create_subscription.png)
+### Step 4. Install RedisInsight
 
 
+RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
-### Step 3. Create database
-
-Click "Create Database". Enter database name and your preferred module.
-
-![My Image](images/rediscloud_redisbloom.png)
-
-### Step 4. Connect to a database
+You can install Redis Stack on your local system to get RedisInsight GUI tool up and running. Ensure that you have `brew` package installed in your Mac system.
 
 
-Follow [this](explore/redisinsight) link to know how to connect to a database
+ ```bash
+  brew tap redis-stack/redis-stack
+  brew install --cask redis-stack
+ ```
+
+```
+  ==> Installing Cask redis-stack-redisinsight
+  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+  🍺  redis-stack-redisinsight was successfully installed!
+  ==> Installing Cask redis-stack
+  🍺  redis-stack was successfully installed!
+ ```
+
+Go to Applications and click "RedisInsight Preview" to bring up the Redis Desktop GUI tool.
+
+### Step 5. Add Redis database
+
+![access redisinsight](images/add_database.png)
+
+### Step 6. Enter Redis Enterprise Cloud details
+
+Add the Redis Enterprise cloud database endpoint, port and password.
 
 
+![access redisinsight](images/database_creds.png)
 
-### Step 5. Getting Started with RedisBloom
 
-In the next steps you will use some basic RedisBloom commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.) To interact with RedisBloom, you use the BF.ADD and BF.EXISTS commands. 
+### Step 7. Verify the database under RedisInsight dashboard
+
+
+![database details](images/database_details.png)
+
+
+### Step 8. Getting Started with RedisBloom
+
+In the next steps you will use some basic RedisBloom commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI) To interact with RedisBloom, you use the `BF.ADD` and `BF.EXISTS` commands. 
 
 Let’s go ahead and test drive some RedisBloom-specific operations. We will create a basic dataset based on unique visitors’ IP addresses, and you will see how to:
 

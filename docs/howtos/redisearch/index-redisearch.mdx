@@ -1,6 +1,6 @@
 ---
 id: index-redisearch
-title: RediSearch Tutorial
+title: Full-text search using Redis Stack
 sidebar_label: RediSearch Tutorial
 slug: /howtos/redisearch
 authors: [ajeet]
@@ -9,10 +9,9 @@ authors: [ajeet]
 
 RediSearch is a powerful text search and secondary indexing engine, built on top of Redis as a Redis module. Written in C, RediSearch is extremely fast compared to other open-source search engines. It implements multiple data types and commands that fundamentally change what you can do with Redis. RediSearch supports capabilities for search and filtering such as geo-spatial queries, retrieving only IDs (instead of whole documents), and custom document scoring. Aggregations can combine map, filter, and reduce/group-by operations in custom pipelines that run across millions of elements in an instant. 
 
-RediSearch also supports auto-completion with fuzzy prefix matching, and atomic real-time insertion of new documents to a search index.With the latest RediSearch 2.0 release, it’s now easier than ever to create a secondary index on top of your existing data. You can just add RediSearch to your existing Redis database, create an index, and start querying it, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new RediSearch users and lets you create indexes on your existing Redis databases—without even having to restart them.
+RediSearch also supports auto-completion with fuzzy prefix matching, and atomic real-time insertion of new documents to a search index. With the latest RediSearch 2.0 release, it’s now easier than ever to create a secondary index on top of your existing data. You can just add RediSearch to your existing Redis database, create an index, and start querying it, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new RediSearch users and lets you create indexes on your existing Redis databases—without even having to restart them.
 
-
-### Step 1. Create free cloud account
+### Step 1. Create a free Cloud account
 
 Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
@@ -23,33 +22,71 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 :::
 
-![My Image](images/try-free.png)
+
+### Step 2. Create Your database
+
+Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
+
+:::info TIP
+If you want to create a custom database with your preferred name and type of Redis,
+click "Create a custom database" option shown in the image.
+:::
+
+![create database ](images/select_cloud_vendor.png)
+
+
+### Step 3.  Verify the database details
+
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
 
 
 
-### Step 2. Create Your subscription
+![verify database](images/details_database.png)
 
-Next, you will have to create  Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "Create your Subscription".
+### Step 4. Install RedisInsight
 
-![My Image](images/create_subscription.png)
+RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
-
-
-### Step 3. Create database
-
-Click "Create Database". Enter database name and your preferred module.
-
-![My Image](images/rediscloud_redisearch.png)
+You can install Redis Stack on your local system to get the RedisInsight GUI tool up and running. Ensure that you have `brew` package installed in your Mac system.
 
 
-### Step 4. Connect to a database
+ ```bash
+  brew tap redis-stack/redis-stack
+  brew install --cask redis-stack
+ ```
+
+```
+  ==> Installing Cask redis-stack-redisinsight
+  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+  🍺  redis-stack-redisinsight was successfully installed!
+  ==> Installing Cask redis-stack
+  🍺  redis-stack was successfully installed!
+ ```
+
+Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
 
 
-Follow [this](explore/redisinsight) link to know how to connect to a database
+### Step 5. Add Redis database
+
+![access redisinsight](images/add_database.png)
+
+### Step 6. Enter Redis Enterprise Cloud details
+
+Add the Redis Enterprise cloud database endpoint, port and password.
+
+
+![access redisinsight](images/database_creds.png)
+
+
+### Step 7. Verify the database under RedisInsight dashboard
+
+
+![database details](images/database_details.png)
 
 
 
-### Step 5. Getting Started with Redisearch
+
+### Step 8. Getting Started with Redisearch
 
 
 To begin, let’s create a basic dataset based on movies information, which we will use to show how to:
