@@ -21,43 +21,50 @@ There is no need to install the .NET framework in order to install RedisInsight 
 
 ## Getting Started
 
-- Step 1. Setup a free Redis Enterprise Cloud account
-- Step 2. Download and Install RedisInsight
-- Step 3. Connect to Redis database
-- Step 4. Use Browser Tool
-- Step 5. Overview of User database
-- Step 6. Clone the repository
-- Step 7. Import user database keys
-- Step 8. Modify a Redis key
-- Step 9. Cleaning up
+- Step 1. Create a free Cloud account
+- Step 2. Create a database
+- Step 3. Verify the database details
+- Step 4. Install RedisInsight
+- Step 5. Connect to the Redis database
+- Step 6. Use Browser Tool
+- Step 7. Clone the repository
+- Step 8. Import user database keys
+- Step 9. Modify a Redis key
+- Step 10. Cleaning up
 
+### Step 1. Create a free Cloud account
 
-### Step 1. Set up a free Redis Enterprise Cloud account
+Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-Visit [developer.redis.com/create/rediscloud/](/create/rediscloud/) and create [a free Redis Enterprise Cloud account](https://redis.com/try-free/). Once you complete this tutorial, you will be provided with the database endpoint URL and password. Save it for future reference.
-
-:::tip TIP
+:::info TIP
 For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
 
 :tada: [Click here to sign up](https://redis.com/try-free)
 
 :::
 
-![endpoint of redis enterprise cloud](images/rediscloud_endpoint.png "image_tooltip")
+### Step 2. Create a database
 
-### Step 2. Download and Install RedisInsight
+Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
+
+:::info TIP
+If you want to create a custom database with your preferred name and type of redis,
+click "Create a custom database" option shown in the image.
+:::
+
+![create database ](images/select_cloud_vendor.png)
 
 
-To use RedisInsight on a local Windows, you can download the software directly from the Redis official website:
+### Step 3.  Verify the database details
 
-[Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice(in our case, it's Microsoft Windows).
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
 
 
-![form to fill to download RedisInsight](images/redisinsight-form.png)
 
-Fill out the rest of the form and click “Download”.  
+![verify database](images/details_database.png)
 
-#### Install RedisInsight
+
+### Step 4. Install RedisInsight
 
 Click on the RedisInsight executable (.exe file) and install it in your system.
 
@@ -67,17 +74,17 @@ Once the RedisInsight software is installed, click on its icon to open the Redis
 
 ![accept redisinsight licence](images/redisinsight-eula.png)
 
-### Step 3. Connect to a Redis Database
+### Step 5. Connect to the Redis Database
 
 Enter the requested details, including Host (endpoint), Port, and Alias in the form, as shown below. You can use "default" as the username for now. Then click “ADD REDIS DATABASE”.
 
-![adding redis database](images/redisinsight-add-database.png)
+![adding redis database](images/database_creds.png)
 
 Once added, you will see the database name listed as shown below:
 
-![listing the redis database](images/redisinsight-db-added.png)
+![listing the redis database](images/database_details.png)
 
-### Step 4. Use "Browser Tool"
+### Step 6. Use "Browser Tool"
 
 Click on the "Key" icon on the left sidebar to open up the browser tool.
 
@@ -128,7 +135,7 @@ You will need a hostname, port and password to run this for a cloud database.
 :::
 
  ```bash
-  redis-cli -h redis-15411.c264.ap-south-1-1.ec2.cloud.redislabs.com -p 15411 -a <enter your password> < ./import_users.redis
+  redis-cli -h redis-18386.c110-qa.us-east-1-1.ec2.cloud.redislabs.com -p 18386 -a <enter your password> < ./import_users.redis
  ```
 
 
