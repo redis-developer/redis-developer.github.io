@@ -70,7 +70,7 @@ jane = {
      'Location': "Chawton"
    }
 
-client.json().set('person:1', Path.rootPath(), jane)
+client.json().set('person:1', Path.root_path(), jane)
 
 result = client.json().get('person:1')
 print(result)
@@ -80,7 +80,7 @@ In the code above, we first connect to Redis and store a reference to the connec
 
 Next, we create a Python dictionary to represent a person object.
 
-And finally, we store the object in Redis using the `json().set()` method. The first argument, `person:1` is the name of the key that will reference the JSON. The second argument is a JSON path. We use `Path.rootPath()`, as this is a new object. Finally, we pass in the Python dictionary, which will be serialized to JSON.
+And finally, we store the object in Redis using the `json().set()` method. The first argument, `person:1` is the name of the key that will reference the JSON. The second argument is a JSON path. We use `Path.root_path()`, as this is a new object. Finally, we pass in the Python dictionary, which will be serialized to JSON.
 
 To retrieve the JSON object, we run `json().get()`, passing in the key. The result is a Python dictionary representing the JSON object stored in Redis.
 
