@@ -11,84 +11,88 @@ RedisInsight provides built-in support for the RedisJSON, RediSearch, RedisGraph
 
 Below steps shows how to get started with RedisJSON using RedisInsight:
 
-### Step 1. Register and subscribe
+### Step 1. Create a free Cloud account
 
-Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
+Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-![RedisJSON](redisjson3.png)
+:::info TIP
+For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
 
-### Step 2. Create a database with RedisJSON Module
+:tada: [Click here to sign up](https://redis.com/try-free)
 
-![RedisJSON](redisjson1.png)
+:::
 
+### Step 2. Create Your database
 
-### Step 3. Download RedisInsight
+Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
 
-To use RedisInsight on a local Mac, you can download from the RedisInsight page on the RedisLabs website:
+:::info TIP
+If you want to create a custom database with your preferred name and type of redis,
+click "Create a custom database" option shown in the image.
+:::
 
-[Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
-
-![My Image](redisinsightmac.png)
-
-Fill out the rest of the form and click “Download.” Please note that the package name is the combination of the platform and version as shown here:
-
-redisinsight-platform-version
-
-### Step 4. Install RedisInsight
-
-Click on the RedisInsight executable and install it in your system.
-
-![My Image](redisinsight2.png)
+![create database ](images/select_cloud_vendor.png)
 
 
-Head over to your web browser and go to http://localhost:8001
+### Step 3.  Verify the database details
 
-Congratulations! You have successfully installed RedisInsight and are now ready to inspect your Redis data, monitor database health, and perform runtime server configuration with this browser-based management interface for your Redis deployment.
-
-### Step 5. Connect to Redis database
-
-![My Image](redisinsight3.png)
-
-Assuming that you already have Redis database up and running, select "Connect to a Redis database"
-![My Image](redisinsight4.png)
-
-### Step 6. Add Redis Database
-
-Enter the requested details, including Name, Host (endpoint), Port, and Password in the form, as shown below. You can skip username for now. Then click “ADD REDIS DATABASE”:
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
 
 
 
-### Step 7. Execute JSON queries
+![verify database](images/details_database.png)
+
+### Step 4. Using RedisInsight
+
+
+RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
+
+[Follow this link](/explore/redisinsightv2/getting-started) to install RedisInsight v2 on your local system.
+Assuming that you already have RedisInsight v2 installed on your MacOS, you can browse through the Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
+
+
+### Step 5. Add Redis database
+
+![access redisinsight](images/add_database.png)
+
+### Step 6. Enter Redis Enterprise Cloud details
+
+Add the Redis Enterprise cloud database endpoint, port and password.
+
+
+![access redisinsight](images/database_creds.png)
+
+
+### Step 7. Verify the database under RedisInsight dashboard
+
+
+![database details](images/database_details.png)
+
+
+### Step 8. Execute JSON queries
 
 ```bash
- JSON.SET employee_profile . '{ "employee": " { "name": "carol", "age": 40, "married": true } }'
+ JSON.SET employee_profile . '{ "employee":  { "name": "carol", "age": 40, "married": true } }'
 ```
 
 
-![My Image](image_1_1.png)
+![My Image](images/json_0.png)
 
 ### Step 8. Accessing RedisInsight Browser Tool
 
 Select "employee_profile" to display the JSON data 
 
-![My Image](image_1_2.png)
+![My Image](images/json_1.png)
 
 ### Step 9. Add a new key 
 
-![My Image](image_1_3.png)
+![My Image](images/json_2.png)
 
 ### Step 10. Expand the JSON field
 
-![My Image](image_1_4.png)
+![My Image](images/json_3.png)
 
 
-### Step 11. Using RedisInsight Browser CLI 
-
-![My Image](image_1_5.png)
-
-### Step 12. Deleting the existing key 
-
-![My Image](image_1_6.png)
 
 ### References
 
