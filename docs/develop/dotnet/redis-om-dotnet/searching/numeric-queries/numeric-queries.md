@@ -3,6 +3,7 @@ id: numeric-queries
 title: Numeric Queries
 sidebar_label: Numeric Queries
 slug: /develop/dotnet/redis-om-dotnet/searching/numeric-queries
+authors: [steve]
 ---
 
 In addition to providing capabilities for text queries, Redis OM also provides you the ability to perform numeric equality and numeric range queries. Let us assume a model of:

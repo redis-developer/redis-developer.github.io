@@ -246,7 +246,7 @@ module.exports = {
                 type: 'category',
                 label: 'Redis OM Dotnet',
                 items: [
-                  'develop/dotnet/redis-om-dotnet/connecting-to-redis/connecting',
+                  'develop/dotnet/redis-om-dotnet/getting-started/getting-started',                  
                   'develop/dotnet/redis-om-dotnet/add-and-retrieve-objects/add-and-retrieve-objects',
                   'develop/dotnet/redis-om-dotnet/creating-an-index/creating-an-index',
                   {

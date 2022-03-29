@@ -3,6 +3,7 @@ id: stream-basics
 title: How to use Redis Streams with .NET
 sidebar_label: Using Redis Streams with .NET
 slug: /develop/dotnet/streams/stream-basics
+authors: [steve]
 ---
 
 Redis Streams are a powerful data structure that allows you to use Redis as a sort of Message bus to transport messages between different application components. The way streams operate in Redis is very fast and memory efficient. This article will not go over the minutia of every command available for Redis Streams, but rather it's aimed to provide a high-level tutorial for how you can use Redis Streams with .NET.

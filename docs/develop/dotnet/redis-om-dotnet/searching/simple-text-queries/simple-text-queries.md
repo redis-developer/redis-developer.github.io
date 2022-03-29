@@ -3,6 +3,7 @@ id: simple-text-queries
 title: Simple Text Queries
 sidebar_label: Simple Text Queries
 slug: /develop/dotnet/redis-om-dotnet/simple-text-queries
+authors: [steve]
 ---
 
 The `RedisCollection` provides a fluent interface for querying objects stored in redis. This means that if you store an object in Redis with the Redis OM library, and you have [RediSearch](https://oss.redis.com/redisearch/) enabled, you can query objects stored in Redis with ease using the LINQ syntax you're used to.
