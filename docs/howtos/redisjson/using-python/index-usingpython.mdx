@@ -7,42 +7,62 @@ slug: /howtos/redisjson/using-python
 
 [RedisJSON](https://oss.redis.com/redisjson/) is a source-available Redis module that lets you store, manipulate, and query JSON documents in Redis. The standard Redis Python client (v4.0 or greater) supports all of the features of RedisJSON, and in this tutorial, we'll see how to get started with them.
 
-## Getting started with RedisJSON
+### Step 1. Create a free Cloud account
 
-To run the examples below, you'll need to ensure that you have an instance of Redis that includes RedisJSON. If you're developing locally, you can use Docker for this:
+Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-```bash
- docker run -p 6379:6379 --name redis-redisjson redislabs/rejson:latest
-```
+:::info TIP
+For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
 
-## Verify that the RedisJSON module is loaded
+:tada: [Click here to sign up](https://redis.com/try-free)
 
-Connect to Redis using `redis-cli`, and run the `info modules` command:
+:::
 
-```bash
- redis-cli
- 127.0.0.1:6379> info modules
- # Modules
- module:name=ReJSON,ver=20004,api=1,filters=0,usedby=[],using=[],options=[]
- 127.0.0.1:6379> 
-```
+### Step 2. Create Your database
 
-Ensure that you're running RedisJSON v2.0 or greater (here indicated as `20004`).
+Choose your preferred cloud vendor. Select the region and then click "Let's start free" to create your free database automatically.
 
-## Load the latest version of `redis-py`
+:::info TIP
+If you want to create a custom database with your preferred name and type of redis,
+click "Create a custom database" option shown in the image.
+:::
 
-You'll need `redis-py` version 4.0 or later. If you're using `pipenv`, you can install the client library like so:
+![create database ](images/select_cloud_vendor.png)
 
-```bash
-pipenv install redis
-```
 
-Then you can run `pipenv graph` to make sure you're running the latest version of the client:
+### Step 3.  Verify the database details
 
-```
-$ pipenv graph
-redis==4.0.2
-```
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
+
+
+
+![verify database](images/details_database.png)
+
+### Step 4. Using RedisInsight
+
+
+RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
+
+[Follow this link](/explore/redisinsightv2/getting-started) to install RedisInsight v2 on your local system.
+Assuming that you already have RedisInsight v2 installed on your MacOS, you can browse through the Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
+
+
+### Step 5. Add Redis database
+
+![access redisinsight](images/add_database.png)
+
+### Step 6. Enter Redis Enterprise Cloud details
+
+Add the Redis Enterprise cloud database endpoint, port and password.
+
+
+![access redisinsight](images/database_creds.png)
+
+
+### Step 7. Verify the database under RedisInsight dashboard
+
+
+![database details](images/database_details.png)
 
 ## Storing JSON in Redis
 
@@ -55,6 +75,25 @@ Let's consider a simple JSON document structure representing a user:
   "location: "Chawton"
  }
 ```
+
+## Installing Redis
+
+```
+ $ pip3 install redis
+Collecting redis
+  Downloading redis-4.2.0-py3-none-any.whl (225 kB)
+Collecting async-timeout>=4.0.2
+  Downloading async_timeout-4.0.2-py3-none-any.whl (5.8 kB)
+Collecting typing-extensions
+  Downloading typing_extensions-4.1.1-py3-none-any.whl (26 kB)
+..
+ Requirement already satisfied: packaging>=20.4 in /usr/lib/python3.8/site-packages (from redis) (20.4)
+Collecting wrapt<2,>=1.10
+Installing collected packages: async-timeout, typing-extensions, wrapt, deprecated, redis
+    Running setup.py install for wrapt ... done
+    Successfully installed async-timeout-4.0.2 deprecated-1.2.13 redis-4.2.0 typing-extensions-4.1.1 wrapt-1.14.0
+```
+
 
 Here's the Python code to store this document in Redis using RedisJSON:
 
