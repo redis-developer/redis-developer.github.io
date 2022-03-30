@@ -44,7 +44,7 @@ In order to use Redis with Deno you will need a Deno Redis client. In the follow
 
 Visit [developer.redis.com/create/rediscloud/](/create/rediscloud/) and create [a free Redis Enterprise Cloud account](https://redis.com/try-free/). Once you complete this tutorial, you will be provided with the database endpoint URL and password. Save it for future reference.
 
-:::tip TIP
+:::info TIP
 For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
 
 :tada: [Click here to sign up](https://redis.com/try-free)
@@ -53,7 +53,7 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 
 
-![alt_text](rediscloud_endpoint.png "image_tooltip")
+![Database details](details_database.png "image_tooltip")
 
 
 ### Step 2. Get Deno 
@@ -79,8 +79,8 @@ The following code creates a connection to Redis using Deno:
 ```javascript
 import { connect } from "https://deno.land/x/redis/mod.ts";
 const redis = await connect({
-  hostname: "redis-15692.c264.ap-south-1-1.ec2.cloud.redislabs.com",
-  port: 15692,
+  hostname: "redis-18386.c110-qa.us-east-1-1.ec2.qa-cloud.redislabs.com",
+  port: 18386,
   password: 'XXXX',
 });
 const ok = await redis.set("foo", "bar");

@@ -1,0 +1,198 @@
+---
+id: index-begin
+title: Getting Started with Begin and Redis
+sidebar_label: Getting Started with Begin and Redis
+slug: /create/begin
+authors: [ajeet]
+---
+
+import RedisCard from '@site/src/theme/RedisCard';
+
+### Table of Contents
+
+
+
+* Step 1. Set up a free Redis Enterprise Cloud account
+* Step 2. Install Vercel CLI
+* Step 3. Log in to your Vercel Account
+* Step 4. Clone your GitHub repository
+* Step 5. Create a vercel.json file
+* Step 6. Set up environment variables
+* Step 7. Deploy the Node.js app
+* Step 8. Access your app
+
+### Step 1. Set up a free Redis Enterprise Cloud account
+
+Visit [developer.redis.com/create/rediscloud/](https://developer.redis.com/create/rediscloud/) and create [a free Redis Enterprise Cloud account](https://redis.com/try-free/). Once you complete this tutorial, you will be provided with the database endpoint URL and password. Save it for future reference.
+
+:::info TIP
+For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
+
+:tada: [Click here to sign up](https://redis.com/try-free)
+
+:::
+
+
+
+![alt_text](images/details_database.png "image_tooltip")
+
+
+### Step 2. Install Vercel CLI 
+
+
+```
+npm i -g vercel
+
+vercel -v     
+Vercel CLI 23.1.2
+23.1.2
+
+```
+
+### Step 3. Log in to your Vercel account
+
+The ```vercel login``` command allows you to log in to your Vercel account through Vercel CLI.
+
+
+```
+vercel login
+Vercel CLI 23.1.2
+> Log in to Vercel github
+> Success! GitHub authentication complete for xx@xx.com
+Congratulations! You are now logged in. In order to deploy something, run `vercel`.
+💡  Connect your Git Repositories to deploy every branch push automatically (https://vercel.link/git).
+```
+
+
+Once Vercel gets connected to your GitHub account, it displays your public repositories. Let us clone [https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs) to the local repository.
+
+### Step 4. Clone the GitHub repository
+
+The complete source code of the Redis Chat application is hosted [here](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs). React and Socket.IO are used for building the frontend while Node.js and Redis power the backend. Redis is used mainly as a database to keep the user/messages data and for sending messages between connected servers.
+
+```
+git clone https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs
+```
+
+
+### Step 5. Create a vercel.json for Node.js app
+
+If you run the ```vercel init``` command, it will list various frameworks but you won’t be able to find Node.js, hence you will need to create a ```vercel.json``` file as shown below:
+
+
+```
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./index.vercel.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
+
+```
+
+
+### Step 6. Set up environment variables
+
+The ```vercel env``` command is used to manage [environment variables](https://vercel.com/docs/concepts/projects/environment-variables) under a Project, providing functionality to list, add, remove, and pull.
+
+Let us first set up environment variables.
+
+
+```
+ vercel env add
+Vercel CLI 23.1.2
+? What's the name of the variable? REDIS_ENDPOINT_URI
+? What's the value of REDIS_ENDPOINT_URI? redis-XXXX.c110-qa.us-east-1-1-1.ec2.qa-cloud.redislabs.com:XXX
+
+```
+
+
+Listing the environment variables:
+
+
+```
+vercel env ls
+Vercel CLI 23.1.2
+> Environment Variables found in Project basic-redis-chat-app-demo-nodejs [684ms]
+
+ name                       value               environments                        created
+ REDIS_PASSWORD             Encrypted           Production, Preview, Development    2d ago
+ REDIS_ENDPOINT_URL         Encrypted           Production, Preview, Development    2d ago
+
+```
+
+
+### Step 7. Deploy the Node.js app
+
+When you run a vercel command in a directory for the first time, [Vercel CLI](https://vercel.com/cli) needs to know which [scope](https://vercel.com/docs/cli#options/global-options/scope) and [Project](https://vercel.com/docs/concepts/projects/overview) you want to deploy your directory to. You can choose to either link an existing project or create a new one.
+
+
+```
+vercel  
+Vercel CLI 23.1.2
+? Set up and deploy "~/projects/10feb/basic-redis-chat-app-demo-nodejs"? [Y/n] y
+? Which scope do you want to deploy to? redis-developer
+? Found project "redis-developer/basic-redis-chat-app-demo-nodejs". Link to it? [Y/n] y
+🔗  Linked to redis-developer/basic-redis-chat-app-demo-nodejs (created .vercel)
+🔍  Inspect: https://vercel.com/redis-developer/basic-redis-chat-app-demo-nodejs/5KZydRNsXwnjRxDYa65x4Ak8KwZT [4s]
+✅  Preview: https://basic-redis-chat-app-demo-nodejs-redis-developer.vercel.app [copied to clipboard] [27s]
+📝  To deploy to production (basic-redis-chat-app-demo-nodejs.vercel.app), run `vercel --prod`
+❗️  Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+
+```
+
+
+Once the deployment process has completed, a new `.vercel` directory will be added to your directory. The `.vercel` directory contains both the organization and project ID of your project. 
+
+The "project.json" file contains:
+
+- The ID of the Vercel project that you linked ("projectId")
+
+- The ID of the user or team your Vercel project is owned by ("orgId")
+
+
+
+
+:::note
+Vercel CLI automatically detects the framework you are using and offers default project settings accordingly.
+:::
+
+### Step 8. Accessing the app 
+
+Run the following command to deploy the Redis chat app to the Prod environment.
+```
+vercel --prod
+Vercel CLI 23.1.2
+🔍  Inspect: https://vercel.com/redis-developer/basic-redis-chat-app-demo-nodejs/GoRdy7LKxqhBfJNW8hSvvFLQC6EN [2s]
+✅  Production: https://basic-redis-chat-app-demo-nodejs.vercel.app [copied to clipboard] [14s]
+
+
+```
+
+By now, you will be able to login to Chat app and start chatting.
+
+![Using the chat app](images/vercel13.png "image_tooltip")
+
+The chat server works as a basic REST API which involves keeping the session and handling the user state in the chat rooms (besides the WebSocket/real-time part). When a WebSocket/real-time server is instantiated, which listens for the next events:
+
+![Listening for events](images/vercel3.png "image_tooltip")
+
+If you want to know how the chat app works internally, [refer to this detailed blog tutorial](/howtos/chatapp#how-it-works)
+
+### References
+
+
+
+* [Getting Started with Vercel](https://vercel.com/docs/get-started)
+* [Serverless Functions under Vercel](https://vercel.com/docs/concepts/functions/serverless-functions)
+* [A Look at Vercel Supported Languages](https://vercel.com/docs/concepts/functions/supported-languages) 
+* [Next.js on Vercel](https://vercel.com/docs/concepts/next.js/overview)
