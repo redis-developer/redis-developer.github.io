@@ -18,7 +18,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 
 
 
-## 1. How to Contribute
+## How to contribute
 
 This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator. Follow the below steps to contribute to this developer site:
 
@@ -60,7 +60,7 @@ If you are using GitHub pages for hosting, this command is a convenient way to b
 npm run serve
 ```
 
-## 2. How to add an author
+## How to add a new author
 
 Add a new author as follows:
 
@@ -103,7 +103,7 @@ authors: [suze,simon]
 
 * Note that multiple authors are supported as shown above.
 
-## 3. How to modify the homepage banner
+## How to modify the homepage banner
 
 In order to modify the homepage banner, you will need to edit the ```docusaurus.config.js``` file placed under the root of the repository.
 You can directly search for `announcementBar` and make your preferred changes.
