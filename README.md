@@ -14,7 +14,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 
 1. [How to contribute?](#how-to-contribute)
 2. [How to add a new author?](#how-to-add-a-new-author)
-3. [How to modify the homepage banner](#how-to-modifuy-the-homepage-banner)
+3. [How to modify the homepage banner](#how-to-modify-the-homepage-banner)
 
 
 
