@@ -1,5 +1,10 @@
-# **CircleCI: What It Is and Why It Should Be Part of Your Redis CI/CD**
-
+---
+id: index-circleci
+title: "CircleCI: What It Is and Why It Should Be Part of Your Redis CI/CD"
+sidebar_label: Redis using CircleCI
+slug: /operate/continuous-integration-continuous-deployment/circleci
+authors: [talon, ajeet]
+---
 
 ## **What is CircleCI?**
 
@@ -11,20 +16,15 @@ CircleCI supports many different languages and a varied amount of cloud-hosted c
 
 To deploy, CircleCI takes artifacts from your pipeline and sends them to wherever you need them deployed, whether it's Docker, Heroku, Kubernetes, cloud platforms, and more.
 
-
 ## **How does CircleCI work?**
 
 ![CircleCI Overview](images/circlecidiagram.png "image_tooltip")
 
-
 After GitHub or Bitbucket are authorized and added as a project to cirlceci.com, every code change triggers CircleCI jobs. CircleCI sends an email notification of success or failure after the test completes. CircleCI finds and runs `config.yml`, tests the build, runs security scans, goes through approval steps, and then deploys.
-
 
 ## **What are CircleCI’s capabilities?**
 
 As a DevOps engineer or developer, you can:
-
-
 
 * SSH into any job to debug build issues.
 * Set up jobs to run in parallel to reduce time.
@@ -37,18 +37,13 @@ As a DevOps engineer or developer, you can:
 * Use the CLI to access advanced tools locally. 
 * Get flaky test detection with test insights. 
 
-
 ## **Deploy a Redis Rate Limiting application on Heroku using CircleCI**
 
-
 ## **Prerequisites:**
-
-
 
 * A CircleCI account
 * A GitHub account
 * A Heroku account
-
 
 ## **Getting started**
 
@@ -56,41 +51,27 @@ In this demo, we will be using the Redis Rate Limiting app built using Python an
 
 Rate limiting is a mechanism that many developers may have to deal with at some point in their life. It’s useful for a variety of purposes, such as sharing access to limited resources or limiting the number of requests made to an API endpoint and responding with a 429 status code. The complete source code of the project is [hosted over GitHub](https://github.com/redis-developer/basic-rate-limiting-demo-python). In this example, we will configure CircleCI to deploy the Rate Limiting app directly on the Heroku platform.
 
+## Step 1. Log in to CircleCI
 
-## Step 1. Go to [https://circleci.com](https://circleci.com) and log in using your GitHub account
-
+Go to [https://circleci.com](https://circleci.com) and log in using your GitHub account
 
 ![CircleCI Login](images/circleci-login.png "image_tooltip")
 
-
 Choose your preferred login method. To make it easier, let us choose “GitHub” for this demonstration.
 
+## Step 2. Verify your permissions on GitHub
 
-## Step 2. Verify your permission on GitHub
-
-
-
-
-![alt_text](images/circleci-auth.png "image_tooltip")
-
-
+![Authenticating](images/circleci-auth.png "image_tooltip")
 
 ## Step 3. Select your project repository and click “Setup Project”
 
 We will be using the Redis rate-limiting project for this demonstration.
 
-
-
-
 ![alt_text](images/circleci-proj.png "image_tooltip")
-
-
 
 ## Step 4. Create a new CircleCI configuration file
 
 CircleCI believes in _configuration as code_. As a result, the entire delivery process from build to deploy is orchestrated through a single file called config.yml. The config.yml file is located in a folder called .circleci at the top of your project. CircleCI uses the YAML syntax for config.
-
-
 
 
 ![alt_text](images/circleci-config.png "image_tooltip")
@@ -98,22 +79,13 @@ CircleCI believes in _configuration as code_. As a result, the entire delivery p
 
 As we haven’t yet created a config.yml file, let’s choose the “Fast” option to create a new config.yml based on the available template that is editable.
 
-
-
-
 ![alt_text](images/circleci-config2.png "image_tooltip")
-
 
 Once you click “Set Up project,” it will ask you to select sample configs as shown in the following screenshot:
 
-
-
-
 ![alt_text](images/circleci-demoapp.png "image_tooltip")
 
-
 Add the following content under .circleci/config.yml and save the file:
-
 
 ```
 version: 2.1
@@ -123,78 +95,46 @@ workflows:
   heroku_deploy:
     jobs:
       - heroku/deploy-via-git
-      
-     
-
-
 ```
-
 
 In the configuration above, we pull in the Heroku orb circleci/heroku@1.2.6, which automatically gives us access to a powerful set of Heroku jobs and commands.
 
 One of those jobs is the heroku/deploy-via-git, which deploys your application straight from your GitHub repo to your Heroku account.
 
-
 ## Step 5. Merge the pull request
 
 Once you make the new change, it will ask you to raise a new PR. Go ahead and merge the changes as of now.
 
-
-
-
 ![alt_text](images/circleci-merge.png "image_tooltip")
 
+## Step 6. Set up a Heroku account
 
-
-## Step 6. Set up Heroku account
-
-
-## [Follow these steps ](https://developer.redis.com/create/heroku/portal)to set up a Heroku account and create a new app `rate-limit-python`. You will need the Heroku API key for this demo.
-
-
-## 
-
+[Follow these steps ](https://developer.redis.com/create/heroku/portal)to set up a Heroku account and create a new app `rate-limit-python`. You will need the Heroku API key for this demo.
 
 ![alt_text](images/heroku-setup.png "image_tooltip")
 
+## Step 7. Configuring Heroku access on CircleCI
 
-
-## Configuring Heroku access on CircleCI
-
-
-## Before you push your project to Heroku from CircleCI, you will need to configure an authenticated handshake between CircleCI and Heroku. Configure the handshake by creating two [environment variables](https://circleci.com/docs/2.0/env-vars/) in the settings for your CircleCI project:
-
-
+Before you push your project to Heroku from CircleCI, you will need to configure an authenticated handshake between CircleCI and Heroku. Configure the handshake by creating two [environment variables](https://circleci.com/docs/2.0/env-vars/) in the settings for your CircleCI project:
 
 * `HEROKU_APP_NAME` is the name of your Heroku application (in this case, `simple-node-api-circleci`)
 * `HEROKU_API_KEY` is your Heroku account API key. This can be found under the Account tab of your Heroku account under Account Settings. Scroll to the API Key section and click **Reveal** to copy your API key.
 
-
-## Step 7. Set up the environment variables on CircleCI
+## Step 8. Set up the environment variables on CircleCI
 
 On the sidebar menu of the settings page, click **Environment Variables** under Build Settings. On the environment variables page, create two variables named `HEROKU_APP_NAME` and `HEROKU_API_KEY` and enter the values for them.
 
 With these in place, our CircleCI configuration will be able to make authenticated deployments to the Heroku platform.
 
-
-
-
 ![Heroku Environment Variables](images/heroku-envir.png "image_tooltip")
 
-
-
-## Step 8. Trigger the build
+## Step 9. Trigger the build
 
 As soon as you merge the pull request, the tool will trigger the build automatically.
 
-
-
-
 ![Triggering the build](images/heroku-trigger.png "image_tooltip")
 
-
 By now, you should be able to access your application. 
-
 
 ```
 remote:        Collecting attrs>=19.2.0        
@@ -216,21 +156,12 @@ remote:        Done: 75.3M
 remote: -----> Launching...        
 remote:        Released v11        
 remote:        https://*****************.herokuapp.com/ deployed to Heroku 
-
 ```
-
-
-
-
 
 ![Application running](images/rate-limiting-example.png "image_tooltip")
 
-
-
 ## Additional references:
 
-
-
-* [https://circleci.com/blog/what-is-a-CI/CD-pipeline/](https://circleci.com/blog/what-is-a-ci-cd-pipeline/)
-* [https://circleci.com/docs/2.0/getting-started/](https://circleci.com/docs/2.0/getting-started/)
-* [https://developer.redis.com/create/heroku/portal](https://developer.redis.com/create/heroku/portal) 
+* [What is a CI/CI Pipeline?](https://circleci.com/blog/what-is-a-ci-cd-pipeline/) (article at circleci.com)
+* [Getting Started with CircleCI](https://circleci.com/docs/2.0/getting-started/) (article at circleci.com)
+* [Creating a Redis database on Heroku](https://developer.redis.com/create/heroku/portal) 
