@@ -20,7 +20,7 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 
 ## How to contribute
 
-This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator. Follow the below steps to contribute to this developer site:
+This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator. Follow these steps to contribute to this developer site:
 
 
 ```console
