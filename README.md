@@ -10,104 +10,17 @@
 
 Redis Developer Hub is basically a journey carved out for Redis developer community. The journey is defined in terms of "Create > Develop > Explore" . The "Create" section allows you to get started with Redis, creating Redis database locally as well as over Cloud in the form of DBaaS. The "Develop" section allows you to build your app using Redis clients. Finally, the "Explore" section helps you to explore your Redis database using robust tools like RedisInsight, Redis Data Source for Grafana, RIOT and many more...
 
+## Table of Contents
 
-# Create
-
-### Cloud
-
-- [Redis Enterprise Cloud](https://developer.redis.com/create/rediscloud)
-- [Heroku](https://developer.redis.com/create/heroku)
-- [Azure Cache](https://developer.redis.com/create/azure)
-- [Google Cloud](https://developer.redis.com/create/gcp)
-- [AWS](https://developer.redis.com/create/aws)
-- [Redis using Portainer](https://developer.redis.com/create/portainer)
-
-### Local
-
-- [Docker](https://developer.redis.com/create/docker/)
-- [Google Kubernetes Engine](https://developer.redis.com/create/kubernetes/)
-- [Mac using Homebrew](https://developer.redis.com/create/homebrew/)
-- [Microsoft Windows 10](https://developer.redis.com/create/windows)
-- [Build from Source](https://developer.redis.com/create/from-source/)
-- [RedisMod](https://developer.redis.com/explore/redismod)
-
-
-# Develop
-
-- [Java](https://developer.redis.com/develop/java/)
-  - [Java based application on Heroku using Redis](https://developer.redis.com/howtos/herokujava)
-- [Python](https://developer.redis.com/develop/python/)
-  - [Python based application on Heroku using Redis](https://developer.redis.com/howtos/herokupython)
-- [C](https://developer.redis.com/develop/C/)
-- [NodeJS](https://developer.redis.com/develop/nodejs/)
-  - [NodeJS based application on Heroku using Redis](https://developer.redis.com/howtos/herokunodejs)
-- [Ruby](https://developer.redis.com/develop/ruby/) 
-- [Php](https://developer.redis.com/develop/php/)
-
-# Explore
-
-### RedisInsight - Redis GUI
-
-- [Getting Started](https://developer.redis.com/explore/redisinsight/getting-started)
-- [Visualize Redis database keys using RedisInsight Browser Tool](https://developer.redis.com/explore/redisinsight/browser)
-- [Debugging Redis using RedisInsight Slowlog Tool](https://developer.redis.com/explore/redisinsight/slowlog)
-- [Reduce Redis Memory usage using RedisInsight Memory Analyzer Tool](https://developer.redis.com/explore/redisinsight/memoryanalyzer)
-- [Manage Your Redis Cluster using RedisInsight Cluster Management Tool](https://developer.redis.com/explore/redisinsight/cluster)
-- [Using Redis Streams](https://developer.redis.com/explore/redisinsight/streams)
-- [Analyze Your Redis commands using RedisInsight Profiler tool](https://developer.redis.com/explore/redisinsight/profiler)
-- [Query, Visualize and Manipulate Graphs using RedisGraph Browser Tool](https://developer.redis.com/explore/redisinsight/redisgraph)
-- [Writing Your Serverless function using RedisGears Browser Tool](https://developer.redis.com/explore/redisinsight/redisgears)
-- [Managing time-series data using RedisTimeSeries Browser Tool](https://developer.redis.com/explore/redisinsight/redistimeseries)
-- [Unified Search and Analytics using RediSearch Browser Tool](https://developer.redis.com/explore/redisinsight/redisearch)
-- [Using Helm](https://developer.redis.com/explore/redisinsight/usinghelm)
+1. [How to contribute?](#how-to-contribute)
+2. [How to add a new author?](#how-to-add-a-new-author)
+3. [How to modify the homepage banner](#how-to-modify-the-homepage-banner)
 
 
 
-## Extensibility via Redis Modules
+## How to contribute
 
-### RediSearch
-
-- [Getting Started](https://developer.redis.com/howtos/redisearch)
-- [Building Movie Database app using RediSearch](https://developer.redis.com/howtos/moviesdatabase/getting-started)
-
-
-### RedisJSON
-
-- [Getting Started](https://developer.redis.com/howtos/redisjson)
-- [How to build a Shopping cart app using NodeJS and RedisJSON](https://developer.redis.com/howtos/shoppingcart)
-- [HackerNews Clone using RedisJSON](https://developer.redis.com/howtos/hackernews)
-
-
-### RedisGears
-
-- [Getting Started](https://developer.redis.com/howtos/redisgears)
-- [How to build a Fraud Detection System using RedisGears and RedisBloom](https://developer.redis.com/howtos/frauddetection)
-- [Building a Pipeline for Natural Language Processing using RedisGears](https://developer.redis.com/howtos/nlp)
-
-### RedisGraph
-
-- [Getting Started](https://developer.redis.com/howtos/redisgraph)
-- [Building Movies database app using RedisGraph and NodeJS](https://developer.redis.com/howtos/redisgraphmovies)
-
-### RedisBloom
-
-- [Getting Started](https://developer.redis.com/howtos/redisbloom)
-- [How to build a Fraud Detection System using RedisGears and RedisBloom](https://developer.redis.com/howtos/frauddetection)
-
-### RedisTimeSeries
-
-- [Getting Started](https://developer.redis.com/howtos/redistimeseries)
-- [How to Manage IoT Sensor data using RedisTimeSeries](https://redis.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
-
-### RedisAI
-
-- [Getting Started](https://developer.redis.com/howtos/redisai)
-
-
-
-## How to Contribute
-
-This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator. Follow the below steps to contribute to this developer site:
+This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator. Follow these steps to contribute to this developer site:
 
 
 ```console
@@ -147,7 +60,7 @@ If you are using GitHub pages for hosting, this command is a convenient way to b
 npm run serve
 ```
 
-## How to add an author
+## How to add a new author
 
 Add a new author as follows:
 
@@ -189,3 +102,22 @@ authors: [suze,simon]
 ```
 
 * Note that multiple authors are supported as shown above.
+
+## How to modify the homepage banner
+
+In order to modify the homepage banner, you will need to edit the ```docusaurus.config.js``` file placed under the root of the repository.
+You can directly search for `announcementBar` and make your preferred changes.
+
+
+```
+announcementBar: {
+       id: 'redisconf20201cfp', // Any value that will identify this message.
+       content: '<p class="text"> RedisDays Available Now On-Demand. </p> <a href="https://redis.com/redisdays/" target="_blank" rel="noopener"     class="btn">Learn More</a>',
+       //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
+       backgroundColor: '#fff', // Defaults to `#fff`.
+       textColor: '#000', // Defaults to `#000`.
+       isCloseable: true, // Defaults to `true`.
+     },
+```
+
+
