@@ -349,6 +349,7 @@ module.exports = {
        items: [
          'operate/continuous-integration-continuous-deployment/index-continuous-integration-continuous-deployment',
          'operate/continuous-integration-continuous-deployment/jenkins/index-jenkins',
+         'operate/continuous-integration-continuous-deployment/circleci/index-circleci',
          'operate/continuous-integration-continuous-deployment/argocd/index-argocd', 
        ]
       },
