@@ -67,23 +67,23 @@ Choose your preferred login method. To make it easier, let us choose “GitHub�
 
 We will be using the Redis rate-limiting project for this demonstration.
 
-![alt_text](images/circleci-proj.png)
+![Selecting the project](images/circleci-proj.png)
 
 ## Step 4. Create a new CircleCI configuration file
 
 CircleCI believes in _configuration as code_. As a result, the entire delivery process from build to deploy is orchestrated through a single file called config.yml. The config.yml file is located in a folder called .circleci at the top of your project. CircleCI uses the YAML syntax for config.
 
 
-![alt_text](images/circleci-config.png)
+![Selecting a config file](images/circleci-config.png)
 
 
 As we haven’t yet created a config.yml file, let’s choose the “Fast” option to create a new config.yml based on the available template that is editable.
 
-![alt_text](images/circleci-config2.png)
+![Selecting the fast option](images/circleci-config2.png)
 
 Once you click “Set Up project,” it will ask you to select sample configs as shown in the following screenshot:
 
-![alt_text](images/circleci-demoapp.png)
+![Sample configs](images/circleci-demoapp.png)
 
 Add the following content under .circleci/config.yml and save the file:
 
@@ -105,13 +105,13 @@ One of those jobs is the heroku/deploy-via-git, which deploys your application s
 
 Once you make the new change, it will ask you to raise a new PR. Go ahead and merge the changes as of now.
 
-![alt_text](images/circleci-merge.png)
+![Open a pull request](images/circleci-merge.png)
 
 ## Step 6. Set up a Heroku account
 
-[Follow these steps ](https://developer.redis.com/create/heroku/portal)to set up a Heroku account and create a new app `rate-limit-python`. You will need the Heroku API key for this demo.
+[Follow these steps](https://developer.redis.com/create/heroku/portal) to set up a Heroku account and create a new app `rate-limit-python`. You will need the Heroku API key for this demo.
 
-![alt_text](images/heroku-setup.png)
+![Set up a Heroku account](images/heroku-setup.png)
 
 ## Step 7. Configuring Heroku access on CircleCI
 
