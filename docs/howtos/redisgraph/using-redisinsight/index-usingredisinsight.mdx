@@ -58,7 +58,7 @@ Select RedisGraph from the menu.
 
 
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](images/image2.png)
 
 
 ## Step 4. Create a new Graph called “Friends”
@@ -66,7 +66,7 @@ Select RedisGraph from the menu.
 
 
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/image3.png)
 
 
 ## Step 5. Add new nodes(individuals) and links
@@ -82,7 +82,7 @@ CREATE (:Person{name:"Tom" }),  (:Person{name:"Alex" }), (:Person{name:"Susan" }
 
 
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image4.png)
 
 
 As we see that “1” label is added and that refers to a person label. It’s the same for every node and hence created once. Overall there are 5 nodes created. The five “name” properties refer to 5 name properties that have been added.
@@ -104,14 +104,14 @@ MATCH (p:Person) RETURN p
 
 
 
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/image5.png)
 
 
 
 You can select "Graph View" on the right menu to display the graphical representation as shown below:
 
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/image6.png)
 
 
 ## Step 7. Viewing just one individual(node)
@@ -124,7 +124,7 @@ MATCH (p:Person {name:"Tom"}) RETURN p
 
 
 
-![alt_text](images/image7.png "image_tooltip")
+![alt_text](images/image7.png)
 
 
 ## Step 8: Visualize the relationship between the individuals
@@ -142,13 +142,13 @@ The symbol “>” (greater than) shows which way the relationship flows.
 
 
 
-![alt_text](images/image8.png "image_tooltip")
+![alt_text](images/image8.png)
 
 
 You can view the relationship in the form of graph as shown below:
 
 
-![alt_text](images/image9.png "image_tooltip")
+![alt_text](images/image9.png)
 
 
 ## Step 9. Create and visualize the multiple relationships 
@@ -163,7 +163,7 @@ MATCH (p1:Person {name: "Tom" }), (p2:Person {name: "Susan" }), (p3:Person {name
 
 
 
-![alt_text](images/image10.png "image_tooltip")
+![alt_text](images/image10.png)
 
 
 ## Step 10. Create and visualize the relationship between two individuals (Susan and Bill)
@@ -176,7 +176,7 @@ MATCH (p1:Person {name: "Susan"}), (p2:Person {name: "Bill"}) CREATE (p1)-[:Know
 ```
 
 
-![alt_text](images/image11.png "image_tooltip")
+![alt_text](images/image11.png)
 
 
 ## Step 11. Create and visualize the relationship between two indiviual (Bill and Jane)
@@ -187,10 +187,10 @@ MATCH (p1:Person {name: "Bill"}), (p2:Person {name: "Jane"}) CREATE (p1)-[:Knows
 ```
 
 
-![alt_text](images/image12.png "image_tooltip")
+![alt_text](images/image12.png)
 
 
-![alt_text](images/image13.png "image_tooltip")
+![alt_text](images/image13.png)
 
 
 ## Step 12. Building a social networking
@@ -199,7 +199,7 @@ This can be achieved by “friend of friends” kind of relationship. Say, If To
 
 
 
-![alt_text](images/image14.png "image_tooltip")
+![alt_text](images/image14.png)
 
 
 
@@ -212,14 +212,14 @@ In this query, we assign a variable “p” to a node graph path. We search for 
 
 
 
-![alt_text](images/image15.png "image_tooltip")
+![alt_text](images/image15.png)
 
 
 ## Step 13. Cleaning up the Graph
 
 
 
-![alt_text](images/image16.png "image_tooltip")
+![alt_text](images/image16.png)
 
 
 
@@ -264,7 +264,7 @@ GRAPH.QUERY GOT_DEMO "MATCH (w:writer)-[wrote]->(b:book) return w,b"
 
 
 
-![alt_text](images/image18.png "image_tooltip")
+![alt_text](images/image18.png)
 
 
 
