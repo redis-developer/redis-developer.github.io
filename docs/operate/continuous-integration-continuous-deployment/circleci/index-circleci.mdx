@@ -8,7 +8,7 @@ authors: [talon, ajeet]
 
 ## **What is CircleCI?**
 
-![CircleCI and Redis logos](images/circleci-redis.png "image_tooltip")
+![CircleCI and Redis logos](images/circleci-redis.png)
 
 CircleCI is a CI/CD platform built by DevOps professionals to help you fine-tune your entire development process from start to finish. It helps engineering teams build, test, and deploy software while checking code changes in real time with the CircleCI dashboard UI. More control over pipelines is possible with the ability to build in the CI/CD process per project or configure workflows to decide on when and how jobs run, plus data- and image-caching options that optimize continuous delivery. 
 
@@ -18,7 +18,7 @@ To deploy, CircleCI takes artifacts from your pipeline and sends them to whereve
 
 ## **How does CircleCI work?**
 
-![CircleCI Overview](images/circlecidiagram.png "image_tooltip")
+![CircleCI Overview](images/circlecidiagram.png)
 
 After GitHub or Bitbucket are authorized and added as a project to cirlceci.com, every code change triggers CircleCI jobs. CircleCI sends an email notification of success or failure after the test completes. CircleCI finds and runs `config.yml`, tests the build, runs security scans, goes through approval steps, and then deploys.
 
@@ -55,35 +55,35 @@ Rate limiting is a mechanism that many developers may have to deal with at some 
 
 Go to [https://circleci.com](https://circleci.com) and log in using your GitHub account
 
-![CircleCI Login](images/circleci-login.png "image_tooltip")
+![CircleCI Login](images/circleci-login.png)
 
 Choose your preferred login method. To make it easier, let us choose “GitHub” for this demonstration.
 
 ## Step 2. Verify your permissions on GitHub
 
-![Authenticating](images/circleci-auth.png "image_tooltip")
+![Authenticating](images/circleci-auth.png)
 
 ## Step 3. Select your project repository and click “Setup Project”
 
 We will be using the Redis rate-limiting project for this demonstration.
 
-![alt_text](images/circleci-proj.png "image_tooltip")
+![alt_text](images/circleci-proj.png)
 
 ## Step 4. Create a new CircleCI configuration file
 
 CircleCI believes in _configuration as code_. As a result, the entire delivery process from build to deploy is orchestrated through a single file called config.yml. The config.yml file is located in a folder called .circleci at the top of your project. CircleCI uses the YAML syntax for config.
 
 
-![alt_text](images/circleci-config.png "image_tooltip")
+![alt_text](images/circleci-config.png)
 
 
 As we haven’t yet created a config.yml file, let’s choose the “Fast” option to create a new config.yml based on the available template that is editable.
 
-![alt_text](images/circleci-config2.png "image_tooltip")
+![alt_text](images/circleci-config2.png)
 
 Once you click “Set Up project,” it will ask you to select sample configs as shown in the following screenshot:
 
-![alt_text](images/circleci-demoapp.png "image_tooltip")
+![alt_text](images/circleci-demoapp.png)
 
 Add the following content under .circleci/config.yml and save the file:
 
@@ -105,13 +105,13 @@ One of those jobs is the heroku/deploy-via-git, which deploys your application s
 
 Once you make the new change, it will ask you to raise a new PR. Go ahead and merge the changes as of now.
 
-![alt_text](images/circleci-merge.png "image_tooltip")
+![alt_text](images/circleci-merge.png)
 
 ## Step 6. Set up a Heroku account
 
 [Follow these steps ](https://developer.redis.com/create/heroku/portal)to set up a Heroku account and create a new app `rate-limit-python`. You will need the Heroku API key for this demo.
 
-![alt_text](images/heroku-setup.png "image_tooltip")
+![alt_text](images/heroku-setup.png)
 
 ## Step 7. Configuring Heroku access on CircleCI
 
@@ -126,13 +126,13 @@ On the sidebar menu of the settings page, click **Environment Variables** under 
 
 With these in place, our CircleCI configuration will be able to make authenticated deployments to the Heroku platform.
 
-![Heroku Environment Variables](images/heroku-envir.png "image_tooltip")
+![Heroku Environment Variables](images/heroku-envir.png)
 
 ## Step 9. Trigger the build
 
 As soon as you merge the pull request, the tool will trigger the build automatically.
 
-![Triggering the build](images/heroku-trigger.png "image_tooltip")
+![Triggering the build](images/heroku-trigger.png)
 
 By now, you should be able to access your application. 
 
@@ -158,7 +158,7 @@ remote:        Released v11
 remote:        https://*****************.herokuapp.com/ deployed to Heroku 
 ```
 
-![Application running](images/rate-limiting-example.png "image_tooltip")
+![Application running](images/rate-limiting-example.png)
 
 ## Additional references:
 
