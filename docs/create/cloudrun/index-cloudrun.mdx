@@ -7,7 +7,7 @@ authors: [ajeet]
 ---
 
 
-![alt_text](images/cloudrun_logo.png "image_tooltip")
+![alt_text](images/cloudrun_logo.png)
 
 
 If you’re looking for a solution that lets you go from container to URL within seconds, check out Google Cloud Run. [Cloud Run](https://cloud.google.com/run) is Google’s fully managed compute platform for running stateless, HTTP-driven containers. By using a single command (“[gcloud run deploy”](https://cloud.google.com/sdk/gcloud/reference/run/deploy)) you can convert a container image to a fully managed web application and run it in a production environment with auto-scalability, high availability, and security.
@@ -85,7 +85,7 @@ Allow Google Cloud SDK access to your Google Account:
 
 
 
-![Authenticating with Google Cloud](images/authenticate_gcloud.png "image_tooltip")
+![Authenticating with Google Cloud](images/authenticate_gcloud.png)
 
 
 ### Step 4. Enable Google Services
@@ -192,11 +192,11 @@ Service URL: https://django-redis-rate-limiting-example-opcboau66a-de.a.run.app
 
 
 
-![Verifying if the service is listed](images/gcloud1.png "image_tooltip")
+![Verifying if the service is listed](images/gcloud1.png)
 
 
 
-![Verifying if the service is listed](images/gcloud2.png "image_tooltip")
+![Verifying if the service is listed](images/gcloud2.png)
 
 
 #### Verifying the service via terminal UI
@@ -235,7 +235,7 @@ Last updated on 2022-02-19T02:50:03.100357Z by ajeet.raina@redis.com:
 
 
 
-![Setting up environment variables](images/gcloud3.png "image_tooltip")
+![Setting up environment variables](images/gcloud3.png)
 
 
 
@@ -245,7 +245,7 @@ Last updated on 2022-02-19T02:50:03.100357Z by ajeet.raina@redis.com:
 
 
 
-![Enabling HTTPS](images/gcloud4.png "image_tooltip")
+![Enabling HTTPS](images/gcloud4.png)
 
 
 
@@ -253,7 +253,7 @@ Last updated on 2022-02-19T02:50:03.100357Z by ajeet.raina@redis.com:
 
 
 
-![Configuring the VPC connector](images/gcloud5.png "image_tooltip")
+![Configuring the VPC connector](images/gcloud5.png)
 
 
 
@@ -261,7 +261,7 @@ Last updated on 2022-02-19T02:50:03.100357Z by ajeet.raina@redis.com:
 
 
 
-![Allowing all traffic](images/gcloud6.png "image_tooltip")
+![Allowing all traffic](images/gcloud6.png)
 
 
 ### Step 8. Access your app
@@ -274,7 +274,7 @@ Open [https://django-redis-rate-limiting-example-opcboau66a-de.a.run.app/](https
 
 
 
-![Running the application](images/ratelimit.png "image_tooltip")
+![Running the application](images/ratelimit.png)
 
 
 This app allows you to choose the desired number of requests in each 10 second period. The app blocks connections from a client after surpassing a certain amount of requests (default: 10) in the time window (default: 10 sec). That will let the user know how many requests they have remaining before they run over the limit. On the tenth run, the server should return an HTTP status code of 429 (“Too Many Requests”).
