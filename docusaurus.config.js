@@ -120,8 +120,24 @@ module.exports = {
         link: 'https://twitter.com/bsbodden',
         title: 'Developer Advocate at Redis',
         image: 'profile_pic_brian_sam-bodden.jpeg'
-      }
-    }
+      },
+      justin: {
+        name: 'Justin Castilla',
+        link: 'https://twitter.com/JustCastilla',
+        title: 'Senior Developer Advocate at Redis',
+        image: 'profile_pic_justin_castilla.jpg'
+      },
+      kurt: {
+        name: 'Kurt Moeller',
+        title: 'Technical Enablement Manager, US',
+        image: 'profile_pic_kurt_moeller.png'
+      },
+      elena: {
+        name: 'Elena Kolevska',
+        title: 'Technical Enablement Manager, EMEA',
+        image: 'profile_pic_elena_kolevska.jpeg'
+      }            
+    },
   },
   themeConfig: {
     // ...
