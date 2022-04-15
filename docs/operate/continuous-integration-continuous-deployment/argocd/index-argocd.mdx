@@ -26,7 +26,7 @@ Please note that Argo CD isn’t just deployed inside of Kubernetes but should b
 
 
 
-![how argocd work](images/argocd_2.png "image_tooltip")
+![how argocd work](images/argocd_2.png)
 
 
 It solves the problems above in the CD process by being a more integral part of the Kubernetes cluster. Instead of pushing changes to the Kubernetes cluster, Argo CD pulls Kubernetes manifest changes and applies them to the cluster. Once you set up Argo CD inside of your Kubernetes cluster, you configure Argo CD to connect and track your Git repo changes. 
@@ -125,7 +125,7 @@ Forwarding from [::1]:8080 -> 8080
 ```
 
 
-![access argocd](images/argocd_3.png "image_tooltip")
+![access argocd](images/argocd_3.png)
 
 
 
@@ -139,7 +139,7 @@ HcD1I0XXXXXQVrq-
 ```
 
 
-![login](images/argocd_4.png "image_tooltip")
+![login](images/argocd_4.png)
 
 
 
@@ -214,11 +214,11 @@ Cluster 'https://kubernetes.docker.internal:6443' added
 Click “Create” and provide a repository URL as [https://github.com/argoproj/argo-cd/tree/master/manifests/base/redis](https://github.com/argoproj/argo-cd/tree/master/manifests/base/redis) 
 
 
-![create new redis app](images/argocd_5.png "image_tooltip")
+![create new redis app](images/argocd_5.png)
 
 
 
-![arogocd app](images/argocd_6.png "image_tooltip")
+![arogocd app](images/argocd_6.png)
 
 
 ```
@@ -230,15 +230,15 @@ redisdemo  https://kubernetes.docker.internal:6443  argocd     default  Synced  
 ```
 
 
-![redisdemo app](images/argocd_7.png "image_tooltip")
+![redisdemo app](images/argocd_7.png)
 
  
 
-![summary of the app](images/argocd_8.png "image_tooltip")
+![summary of the app](images/argocd_8.png)
 
 
 
-![health of the redisdemo app](images/argocd_10.png "image_tooltip")
+![health of the redisdemo app](images/argocd_10.png)
 
 
 
@@ -257,7 +257,7 @@ argocd app delete redisdemo
 
 Let’s try to deploy a voting app. The voting application only accepts one vote per client. It does not register votes if a vote has already been submitted from a client.
 
-![voting app](images/argocd_21.png "image_tooltip")
+![voting app](images/argocd_21.png)
 
 
 
@@ -272,7 +272,7 @@ Let’s try to deploy a voting app. The voting application only accepts one vote
 Go to the Argo CD dashboard, enter the [repository URL](https://github.com/dockersamples/example-voting-app/tree/master/k8s-specifications), and supply the right PATH. Click “Create App” to deploy the application on your Docker Desktop.
 
 
-![enter the repo](images/argocd_11.png "image_tooltip")
+![enter the repo](images/argocd_11.png)
 
 
 Next, visualize the complete application by choosing “Group by Node.”
@@ -280,36 +280,36 @@ Next, visualize the complete application by choosing “Group by Node.”
 
 
 
-![votingapp status](images/argocd_12.png "image_tooltip")
+![votingapp status](images/argocd_12.png)
 
 
 ### Step 14. Grouping by Parent Resources
 
 
 
-![parent resources and grouping](images/argocd_13.png "image_tooltip")
+![parent resources and grouping](images/argocd_13.png)
 
 
 Keep a close watch over the events by clicking on “Events” section.
 
 
-![events](images/argocd_14.png "image_tooltip")
+![events](images/argocd_14.png)
 
 
 Below is the complete overview of the voting application.
 
 
-![overview](images/argocd_15.png "image_tooltip")
+![overview](images/argocd_15.png)
 
 
 Access the app via [http://localhost:31000/](http://localhost:31000/) 
 
-![access app](images/argocd_16.png "image_tooltip")
+![access app](images/argocd_16.png)
 
 
 The results are accessible via [http://localhost:31001/](http://localhost:31001/) 
 
-![results](images/argocd_17.png "image_tooltip")
+![results](images/argocd_17.png)
 
 
 ### Additional References:

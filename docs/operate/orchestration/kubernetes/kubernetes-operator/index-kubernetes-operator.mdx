@@ -76,7 +76,7 @@ Let us verify if the Deployment was created successfully by running the followin
 
 The example above shows the name of the Deployment in the namespace. It also displays how many replicas of the application are available to your users. You can also see that the number of desired replicas that have been updated to achieve the desired state is 2. 
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](images/image2.png)
 
 You can run the `kubectl describe` command to get detailed information of deployment resources. To show details of a specific resource or group of resources:
 
@@ -146,7 +146,7 @@ The above YAML specification creates a new Service object named "nginx-service,"
 
 ```
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/image3.png)
 
 
 Let’s scale the Deployment to 4 replicas. We are going to use the `kubectl scale` command, followed by the deployment type, name, and desired number of instances. The output is similar to this:
@@ -161,7 +161,7 @@ deployment.extensions/nginx-deployment scaled
 The change was applied, and we have 4 instances of the application available. Next, let’s check if the number of Pods changed. There should now be 4 Pods running in the cluster (as shown in the diagram below)
 
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image4.png)
 
 
 
@@ -202,7 +202,7 @@ Scaling stateless applications in Kubernetes is easy but it’s not the same cas
 
 
 
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/image5.png)
 
 
 Consider a Kubernetes cluster with 6 worker Nodes hosting a Nginx web application connected to a persistent volume as shown above. Here is the snippet of StatefulSets YAML file:
@@ -256,7 +256,7 @@ An Operator is basically an application-specific controller that can help you ma
 
 A Kubernetes Operator uses the Kubernetes API to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. There is a public repository called [OperatorHub.io](https://operatorhub.io) that is designed to be the public registry for finding Kubernetes Operator backend services. With Operator Hub, developers can easily create an application based on an operator without going through the complexity of crafting an operator from scratch.
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/image6.png)
 
 Below are a few examples of popular Kubernetes Operators and their functions and capabilities.
 
@@ -292,7 +292,7 @@ The Redis Enterprise Operator acts as a [custom controller](https://kubernetes.i
 ### How does the Redis Enterprise Operator work?
 
 
-![alt_text](images/image7.png "image_tooltip")
+![alt_text](images/image7.png)
 
 
 
@@ -337,7 +337,7 @@ If you change the number of nodes to 5, the Operator talks to StatefulSets, and 
 
 
 
-![alt_text](images/image8.png "image_tooltip")
+![alt_text](images/image8.png)
 
 
 
@@ -361,7 +361,7 @@ spec:
 
 
 
-![alt_text](images/image9.png "image_tooltip")
+![alt_text](images/image9.png)
 
 
 

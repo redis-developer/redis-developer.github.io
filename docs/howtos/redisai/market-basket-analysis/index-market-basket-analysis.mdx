@@ -22,7 +22,7 @@ Say you are in a mobile retail shop to buy a mobile phone. Based on the analysis
 
 
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](images/image2.png)
 
 
 If someone buys a mobile phone, they are more likely to buy accessories like a leather cover, battery pack, wireless headphones, and so on. 
@@ -179,7 +179,7 @@ Open [https://localhost:8080](https://localhost:8080) to access the application.
 
 
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/image3.png)
 
 
 Select your preferred user from the list (e.g., pcgamer)
@@ -187,7 +187,7 @@ Select your preferred user from the list (e.g., pcgamer)
 Once you select the user, click login and that will open the profile page:
 
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image4.png)
 
 
 Click on the cart tab and add new items.
@@ -196,7 +196,7 @@ Click on the cart tab and add new items.
 
 
 
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/image5.png)
 
 
 Click “Score” and you will find that all the previously purchased categories will get pre-checked.
@@ -204,7 +204,7 @@ Click “Score” and you will find that all the previously purchased categories
 
 
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/image6.png)
 
 
 As shown above, red indicates that this category of item has not been purchased by the customer before, while green indicates what has previously been purchased. Let us select a different user and experiment with baskets.
@@ -212,7 +212,7 @@ As shown above, red indicates that this category of item has not been purchased 
 
 
 
-![alt_text](images/image_7.png "image_tooltip")
+![alt_text](images/image_7.png)
 
 
 Click “Login.”
@@ -220,7 +220,7 @@ Click “Login.”
 
 
 
-![alt_text](images/image_8.png "image_tooltip")
+![alt_text](images/image_8.png)
 
 
 Click “Cart.”
@@ -228,7 +228,7 @@ Click “Cart.”
 
 
 
-![alt_text](images/image_9.png "image_tooltip")
+![alt_text](images/image_9.png)
 
 
 Click “Score.”
@@ -236,7 +236,7 @@ Click “Score.”
 
 
 
-![alt_text](images/image_10.png "image_tooltip")
+![alt_text](images/image_10.png)
 
 
 
@@ -245,7 +245,7 @@ Click “Score.”
 
 
 
-![alt_text](images/image_11.png "image_tooltip")
+![alt_text](images/image_11.png)
 
 
 User profiles are stored in Redis as [hash data structures](https://redis.io/commands#hash). After the user adds items to the cart for scoring, the cart is transformed into a tensor scored by [RedisAI](https://redisai.io/), and a confidence score is returned.
@@ -260,7 +260,7 @@ The scores vary between 0 and 1. A score closer to 1 indicates that the basket o
 
 
 
-![alt_text](images/image_12.png "image_tooltip")
+![alt_text](images/image_12.png)
 
 
 If we add Wireless, then this is a highly likely basket with a score of 0.99989. Adding items categorized as "Wireless" results in a basket with a high likelihood of matching the purchasing patterns that we have modeled from previous data.
@@ -268,7 +268,7 @@ If we add Wireless, then this is a highly likely basket with a score of 0.99989.
 
 
 
-![alt_text](images/image_13.png "image_tooltip")
+![alt_text](images/image_13.png)
 
 
 You can use the Redis [MONITOR](https://redis.io/commands/monitor) command in order to stream back every command processed by the Redis server. As shown below, you will find Redis data structures called “Hashes” commands that hold various field-value pairs for representing data objects. 
@@ -292,7 +292,7 @@ But if we add Major_Appliances, it will be an unlikely basket with a score of 0.
 
 
 
-![alt_text](images/image_14.png "image_tooltip")
+![alt_text](images/image_14.png)
 
 
 

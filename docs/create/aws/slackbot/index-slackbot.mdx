@@ -6,7 +6,7 @@ slug: /create/aws/slackbot
 authors: [ajeet]
 ---
 
-![alt_text](images/image7.png "image_tooltip")
+![alt_text](images/image7.png)
 
 If you work remotely then you’re likely to have come across Slack at some point. And if you use Slack on a daily basis, then you’ll be all too aware of how easy it can be to lose files. Being pinged every day by different employees across different channels makes it difficult to keep track of files. 
 
@@ -22,7 +22,7 @@ Let’s take a look at how this was done. Before we dive in, we’d also like to
 
 
 
-![alt_text](images/image21.png "image_tooltip")
+![alt_text](images/image21.png)
 
 
 1. What will you build?
@@ -60,7 +60,7 @@ Ready to get started? OK, let’s dive straight in.
 Let’s look at each of the components that creates the Reeko-Slack bot:
 
 
-![alt_text](images/image31.png "image_tooltip")
+![alt_text](images/image31.png)
 
 
 
@@ -171,10 +171,10 @@ The foundational framework we’ll be using is Bolt. This will make it easier to
 
 
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/image3.png)
  
 
-![alt_text](images/image35.png "image_tooltip")
+![alt_text](images/image35.png)
 
 
 3. Requesting scopes - [Scopes](https://api.slack.com/scopes) give your app permission to do things (for example, post messages) in your development workspace. You can select the scopes to add to your app by navigating over to the _OAuth & Permissions_ sidebar.
@@ -238,7 +238,7 @@ SLACK_BOT_TOKEN=xoxb-your-bot-token
 
 
 
-![alt_text](images/image20.png "image_tooltip")
+![alt_text](images/image20.png)
 
 
 
@@ -255,7 +255,7 @@ SLACK_SIGNING_SECRET=your-signing-secret
 
 
 
-![alt_text](images/image8.png "image_tooltip")
+![alt_text](images/image8.png)
 
 
 
@@ -270,7 +270,7 @@ python3 app.py
 
 
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/image6.png)
 
 
 Open a new terminal and ensure that you've installed [ngrok. Make sure to](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#ngrok) tell ngrok to use port 3000 (which Bolt for Python uses by default):
@@ -284,7 +284,7 @@ ngrok http 3000
 
 
 
-![alt_text](images/image22.gif "image_tooltip")
+![alt_text](images/image22.gif)
 
 
 For local slack development, we'll use your ngrok URL from above, so copy it to your clipboard.
@@ -312,7 +312,7 @@ If the challenge was successful, you’ll get “verified” right next to the R
 
 
 
-![alt_text](images/image15.png "image_tooltip")
+![alt_text](images/image15.png)
 
 
 On the same page click on the `Subscribe to bot events` menu that sits at the bottom of the page. Click on the `Add Bot User Event`.
@@ -333,7 +333,7 @@ Add the following scopes
 
 
 
-![alt_text](images/image26.png "image_tooltip")
+![alt_text](images/image26.png)
 
 
 
@@ -349,7 +349,7 @@ Request URL: https://your-own-url.ngrok.io/slack/events
 
 
 
-![alt_text](images/image16.png "image_tooltip")
+![alt_text](images/image16.png)
 
 
 
@@ -366,7 +366,7 @@ Options Load URL: https://your-own-url.ngrok.io/slack/events
 
 
 
-![alt_text](images/image32.png "image_tooltip")
+![alt_text](images/image32.png)
 
 
 
@@ -391,34 +391,34 @@ Click on Save to return to the _Slash Commands._
 
 
 
-![alt_text](images/image28.png "image_tooltip")
+![alt_text](images/image28.png)
 
 
 
 
 
-![alt_text](images/image19.png "image_tooltip")
-
-
-
-
-
-
-![alt_text](images/image27.png "image_tooltip")
+![alt_text](images/image19.png)
 
 
 
 
 
 
-![alt_text](images/image19.png "image_tooltip")
+![alt_text](images/image27.png)
 
 
 
 
 
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image19.png)
+
+
+
+
+
+
+![alt_text](images/image4.png)
 
 
 
@@ -441,7 +441,7 @@ Click on Save to return to the _Slash Commands._
 
 
 
-![alt_text](images/image13.png "image_tooltip")
+![alt_text](images/image13.png)
 
 
 
@@ -456,7 +456,7 @@ You can find the suitable release from [http://www.graphicsmagick.org/download.h
 
 
 
-![alt_text](images/image17.png "image_tooltip")
+![alt_text](images/image17.png)
 
 
 
@@ -490,7 +490,7 @@ npm run start
 
 
 
-![alt_text](images/image18.png "image_tooltip")
+![alt_text](images/image18.png)
 
 
 ### 7: Connecting Slack to S3
@@ -510,7 +510,7 @@ If the file is found, then the JSON.GET command will capture its name and downlo
 JSON.GET amazonshareholderletterpdf
 ```
 
-![alt_text](images/image11.png "image_tooltip")
+![alt_text](images/image11.png)
 
 
 #### /s3-delete filename
@@ -645,7 +645,7 @@ So how can you change the world using Redis? For more inspiration, make sure to 
 
 
 
-![alt_text](images/image21.png "image_tooltip")
+![alt_text](images/image21.png)
 
 
 
