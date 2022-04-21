@@ -1,10 +1,27 @@
 ---
 id: index-homebrew
-title: Create Redis database on Mac 
-sidebar_label: Redis on Mac
+title: Create Redis database on Mac OS 
+sidebar_label: Redis on Mac OS
 slug: /create/homebrew/
 authors: [ajeet]
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RedisCard from '@site/src/theme/RedisCard';
+
+
+
+
+<Tabs
+  defaultValue="redis-stack"
+  values={[
+    {label: 'Using Redis on Mac OS', value: 'redis-on-macos'},
+    {label: 'Using Redis Stack', value: 'redis-stack'},
+  ]}>
+  <TabItem value="redis-stack">
+
 
 To install Redis Stack on macOS, use Homebrew. Make sure that you have Homebrew installed before starting on the installation instructions below.
 
@@ -32,7 +49,7 @@ This will install all Redis and Redis Stack binaries. How you run these binaries
   🍺  redis-stack was successfully installed!
  ```
 
-:::info TIP
+:::info INFO
 
 If this is the first time you’ve installed Redis on your system, then all Redis Stack binaries will be installed and accessible from the `$PATH`. On M1 Macs, this assumes that `/opt/homebrew/bin` is in your path. On Intel-based Macs, /usr/local/bin should be in your path.
 
@@ -129,6 +146,118 @@ RedisTimeSeries supports downsampling with the following aggregations: avg, sum,
  ```
 
 ![time series compaction](images/testredis6.png)
+
+
+</TabItem>
+<TabItem value="redis-on-macos">
+
+There are two ways to install Redis on Mac OS:
+
+- [Installing Redis from source](/create/from-source/)
+- Using Homebrew
+
+Homebrew is the easiest and most flexible way to install Redis on MacOS. It is a package management software for MacOS.
+It automates Redis installation process, making it quick and easy to add Redis to your system. 
+
+Follow the below steps to install Redis on Mac OS using brew service:
+
+
+### Step 1: Install Homebrew
+
+Run the below command to install and start brew service:
+
+
+ ```bash
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+ ```
+
+### Step 2: Install Redis using Homebrew package manager
+
+Follow the below command line to install Redis using brew service:
+ 
+ ```bash
+  brew update
+  brew install redis
+ ```
+
+
+### Step 3: Start Redis server
+
+
+Run the below command line to start the Redis database in the background:
+
+ ```bash
+  brew services start redis
+ ```
+
+In order to run the latest version of Redis, you will need to compil Redis from the source.
+[Follow this link](/create/from-source/) to learn more about it.
+
+
+### Step 4: Test if Redis server is running.
+
+ ```bash
+  redis-cli ping
+ ```
+
+It should return PONG. This command is often used to test if a connection is still alive.
+
+### Step 5: Launch Redis on system boot
+
+
+ ```bash
+  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+ ```
+
+### Start Redis server via “launchctl” command
+
+```bash
+ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+```
+
+### Step 6: Run Redis service using a redis configuration file 
+
+ ```bash
+  redis-server /usr/local/etc/redis.conf
+ ```
+
+### Step 7: Interacting with Redis Client
+
+ ```bash
+  redis-cli
+  redis> set foo bar
+  OK
+  redis> get foo
+  "bar"
+ ``` 
+
+Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+
+
+
+### Step 8: Stop the Redis service
+
+ ```
+  brew services stop redis
+ ```
+
+### Step 9: Uninstall Redis 
+
+ ```bash
+  brew uninstall redis
+ ```
+
+
+### Next Step
+
+
+- [Connect to Redis database using RedisInsight](/explore/redisinsight)
+- [Develop with Java and Redis](/develop/java)
+- [Develop with Python and Redis](/develop/python)
+
+</TabItem>
+</Tabs> 
+
 
 
 ##
