@@ -20,7 +20,7 @@ Golang community has built many client libraries that you can find [here](https:
 
 
  <Tabs
-  defaultValue="redigo"
+  defaultValue="go-redis"
   values={[
     {label: 'Redigo', value: 'redigo'},
     {label: 'Go-Redis', value: 'go-redis'},
@@ -139,15 +139,25 @@ Go-redis is a type-safe, Redis client library for Go with support for features l
 - Comes with Auto reconnects / Auto-rediscovers cluster slots on error/migration
 - Support instrumentations
 - Allows for a custom dialer (this is useful for Enterprise)
+- Support for Redis Sentinel
 
 The go-redis library is located in the https://github.com/go-redis/redis that you must import in your application.
+Do check [Redis Cache Library for Golang](https://github.com/go-redis/cache)
 
-#### Step 1. Run the Redis Docker container
+#### Step 1. Run a Redis server
+
+You can run a Redis database directly over your local mac os or  in a container.
+If you have Docker installed in your sytem, type the below command:
 
 ```bash
  docker run -d -p 6379:6379 redislabs/redismod
 ```
 
+You can verify if Redis database using the below redis command:
+
+```
+ redis-cli -p 6379
+```
 
 #### Step 2. Initialise the Go Module
 
@@ -174,7 +184,7 @@ import (
 )
 
 func main() {
-    fmt.Println("Testing Go-Redis")
+    fmt.Println("Testing Golang Redis")
 
     client := redis.NewClient(&redis.Options{
         Addr: "localhost:6379",
@@ -239,7 +249,7 @@ Check out a few of these apps below, or [click here to access the complete list]
 ### Technical Articles & Whitepapers
 
 **[Redis and Golang: Designed to Improve Performance](https://redis.com/blog/redis-go-designed-improve-performance/)**
-
+**[Redisqueue - A producer and consumer of a queue that uses Redis streams](https://pkg.go.dev/github.com/robinjoseph08/redisqueue#section-readme)
 **[A High Performance Recommendation Engine with Redis and Go](https://redis.com/docs/ultra-fast-recommendations-engine-using-redis-go/)**
 
 
