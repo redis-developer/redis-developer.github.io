@@ -28,7 +28,33 @@ For your first steps with Python and Redis, this article will show how to use th
   <TabItem value="redis-py">
 
 
-### Step 1. Install the Redis library using `pip`
+#### Step 1. Run a Redis server
+
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+You can either run Redis in a Docker container or directly on your Mac OS.
+Follow the below commands to setup a Redis server locally:
+
+
+```
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
+
+:::info INFO
+Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack bundles five Redis modules: RedisJSON, RedisSearch, RedisGraph, RedisTimeSeries, and RedisBloom.
+[Learn more](/create/redis-stack)
+:::
+
+Ensure that you are able to use the following Redis command to connect to the Redis instance.
+
+```bash
+ redis-cli -h localhost -p 6379
+ localhost>
+```
+
+
+### Step 2. Install the Redis client library using `pip`
 
    ```bash
     pip3 install redis
@@ -54,7 +80,7 @@ For your first steps with Python and Redis, this article will show how to use th
     print(vehicles)
    ```
 
-Find more information about Redis & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/python/redispy)".
+Find more information about Redis database & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/python/redispy)".
 
  </TabItem>
 </Tabs>

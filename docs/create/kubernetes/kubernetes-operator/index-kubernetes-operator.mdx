@@ -16,7 +16,7 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Kubernetes is designed for automation. Out of the box, you get lots of built-in automation from the core of Kubernetes. It can speed up your development process by making easy, automated deployments, updates (rolling update), and by managing your apps and services with almost zero downtime. However,  Kubernetes can’t automate the process natively for stateful applications. For example, say you have a stateful workload, such as a database application, running on several nodes. If a majority of nodes go down, you’ll need to reload the database from a specific snapshot following specific steps. Using existing default objects, types, and controllers in Kubernetes, this would be impossible to achieve. 
 
-Think of scaling nodes up, or upgrading to a new version, or disaster recovery for your stateful application — these kinds of operations often need very specific steps, and typically require manual intervention. Kubernetes cannot know all about every stateful, complex, clustered application. Kubernetes, on its own, does not know the configuration values for, say, a Redis database cluster, with its arranged memberships and stateful, persistent storage. Additionally, scaling stateful applications in Kubernetes is not an easy task and requires manual intervention.
+Think of scaling nodes up, or upgrading to a new version, or disaster recovery for your stateful application — these kinds of operations often need very specific steps, and typically require manual intervention. Kubernetes cannot know all about every stateful, complex, clustered application. Kubernetes, on its own, does not know the configuration values for, say, a Redis cluster, with its arranged memberships and stateful, persistent storage. Additionally, scaling stateful applications in Kubernetes is not an easy task and requires manual intervention.
 
 ### Stateful vs Stateless Applications
 
@@ -377,4 +377,5 @@ In the next tutorial, you will learn how to get started with the Redis Enterpris
 
 * [Create Redis database on Google Kubernetes Engine](/create/kubernetes/)
 * [Redis Enterprise Software on Kubernetes architecture ](https://docs.redis.com/latest/kubernetes/deployment/quick-start/)
+* [Installing RedisInsight using Helm chart](/explore/redisinsight/usinghelm)
 * [Deploy Redis Enterprise Software on Kubernetes](https://docs.redis.com/latest/kubernetes/deployment/quick-start/)
