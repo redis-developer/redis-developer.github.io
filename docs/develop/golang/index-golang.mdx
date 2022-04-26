@@ -146,20 +146,24 @@ Do check [Redis Cache Library for Golang](https://github.com/go-redis/cache)
 
 #### Step 1. Run a Redis server
 
-You can run a Redis database directly over your local mac os or  in a container.
-If you have Docker installed in your sytem, type the below command:
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT. You can run a Redis database directly over your local mac os or in a container. If you have Docker installed in your sytem, type the below command:
 
 ```bash
  docker run -d -p 6379:6379 redislabs/redismod
 ```
 
-You can verify if Redis database using the below redis command:
+You can connect to Redis server using the below redis client command:
 
 ```
  redis-cli -p 6379
 ```
 
+The above command will make a connection to Redis server. It will then  return a prompt that allows you to run redis command and get some data value.
+
+
 #### Step 2. Initialise the Go Module
+
+In order to connect to the redis instance and return some data value, first you need to initialize the Go module as shown:
 
 ```bash
  go mod init github.com/my/repo
@@ -173,7 +177,9 @@ You can verify if Redis database using the below redis command:
 
 #### Step 4. Create a main.go file 
 
-Let us create a main.go file and write the following code to check for your connection
+Let us create a main.go file and write the following code to check for your redis instance connection
+
+
 
 ```bash
  package main
@@ -205,8 +211,7 @@ func main() {
  go run main.go
 ```
 
-By now, the Go application should successfully connect to the Redis instance and  return a successful PONG response.
-
+By now, the Go application should successfully connect to the Redis instance and return data value (a successful PONG response).
 
 
  </TabItem>
