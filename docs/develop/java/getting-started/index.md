@@ -27,7 +27,35 @@ The blog post “[Jedis vs. Lettuce: An Exploration](https://redis.com/blog/jedi
   ]}>
   <TabItem value="jedis">
 
-## Using Jedis
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+
+### Run a Redis server
+
+You can either run Redis in a Docker container or directly on your Mac OS.
+Follow the below commands to setup a Redis server locally:
+
+
+```
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
+
+:::info INFO
+Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack bundles five Redis modules: RedisJSON, RedisSearch, RedisGraph, RedisTimeSeries, and RedisBloom.
+[Learn more](/create/redis-stack)
+:::
+
+
+Ensure that you are able to use the following Redis command to connect to the Redis instance.
+
+```bash
+ redis-cli -h localhost -p 6379
+ localhost>
+```
+
+
+### Using Jedis
 
 ### Step 1. Add dependencies Jedis dependency to your Maven (or Gradle) project file:
 

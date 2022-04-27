@@ -21,21 +21,12 @@ In order to use Redis with PHP you will need a PHP Redis client. In the followin
 
 
 
-<Tabs
-  defaultValue="Phpredis"
-  values={[
-    {label: 'Phpredis', value: 'Phpredis'},
-  ]}>
-  <TabItem value="Phpredis">
-
-Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
 
 
 #### Step 1. Run a Redis server
 
-You can either run Redis in a Docker container or directly on your Mac OS.
-Follow the below commands to setup a Redis server locally:
-
+You can either run Redis server in a Docker container or directly on your Mac OS. Follow the below command to setup a Redis server locally:
 
 ```
  brew tap redis-stack/redis-stack
@@ -54,7 +45,7 @@ Ensure that you are able to use the following Redis command to connect to the Re
  redis-cli -h localhost -p 6379
  localhost>
 ```
-
+Now you should be able to perform CRUD operation with Redis keys. The above redis client command might require password if you have setup authentication in your redis configuration file. If Redis password is not set, then it will perform the default connection to Redis server. You can play around inserting data to Redis via SET and then fetching it back via GET command.
 
 ### Step 2. Get pecl 
 
@@ -65,13 +56,13 @@ apt install pkg-php-tools
 
 
 
-### Step 2. Install PhpRedis
+### Step 3. Install PhpRedis
  
 ```
 pecl install redis
 ```
 
-### Step 3. Opening a Connection to Redis Using PhpRredis
+### Step 4. Opening a Connection to Redis Using PhpRredis
 
 The following code creates a connection to Redis using Phpredis
 
@@ -92,7 +83,7 @@ if ($redis->ping()) {
 
 Replace the following values with those of your database and save this file as connect.php
 
-### Step 4. Executing the script
+### Step 5. Executing the script
 
 ```
 php connect.php
@@ -114,10 +105,8 @@ OK
 - [PHP extension for Redis based on Hiredis](https://github.com/nrk/phpiredis)
 - [Redis distributed locks in PHP](https://github.com/ronnylt/redlock-php)  
 - [Support for Redis Cluster ](https://github.com/phpredis/phpredis/blob/develop/cluster.markdown#redis-cluster)
+- [Support for Redis Sentinel](https://github.com/phpredis/phpredis/blob/develop/sentinel.markdown#readme)
 
-
-  </TabItem>
-</Tabs>
  
 
 <div>
