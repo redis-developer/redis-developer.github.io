@@ -6,10 +6,12 @@ slug: /howtos/analytics
 authors: [ajeet]
 ---
 
+An interactive analytics dashboard serves several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic  dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands.
 
-An interactive analytics dashboard serves several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands. 
 
-This tutorial shows a basic analytics dashboard app that uses Redis Bitmap written in NodeJS (JavaScript)
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+This tutorial shows a basic analytics dashboard app that uses Redis Bitmap written in NodeJS (JavaScript).
+
 
 <div class="text--center">
 <iframe width="760" height="415" src="https://www.youtube.com/embed/Ugym4yUeIhA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -54,6 +56,18 @@ Go to /server folder (cd ./server) and then execute the following command:
    docker network create global
    docker-compose up -d --build
   ```
+
+In most of the cases, you might require to preface the docker command with `sudo`. If you don't want to use sudo, create a Unix group called docker and add users to it. When the Docker daemon starts, it creates a Unix socket accessible by members of the docker group.
+Once the Redis database is up and running, you can verify the connection to redis instance using the  redis client software.
+
+
+:::info TIP
+- By default, Redis runs on port 6379 but you can change it by specifying the right host port in the docker compose file. 
+- You can use Redis configuration file and mount it as volumes in the docker compose YAML file. 
+- You can connect to the redis instance by using `redis-cli -h hostname -p port` command. 
+- You can even run redis info command to get overall statistic details of redis instance like cache, memory stats, redis metrics and modules enabled. 
+- You can use a redis cli command called `redis monitor` to get real time redis logs . 
+:::
 
 ### Step 6. Run the backend
 
