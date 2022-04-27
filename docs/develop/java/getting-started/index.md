@@ -32,7 +32,7 @@ Redis is an open source, in-memory, key-value data store most commonly used as a
 
 ### Run a Redis server
 
-You can either run Redis in a Docker container or directly on your Mac OS.
+You can either run Redis in a Docker container or directly on your machine.
 Follow the below commands to setup a Redis server locally:
 
 
