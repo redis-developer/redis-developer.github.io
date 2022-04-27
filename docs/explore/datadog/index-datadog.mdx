@@ -37,8 +37,9 @@ Datadog allows you to:
 
 - Collect metrics from various infrastructure components out of the box
 - Display that data in easy to read dashboards
-- Monitor performance metrics and alert accordingly
+- Monitoring performance metrics and alerting accordingly
 - Correlate log entries with metrics to quickly drill down to root causes
+- Distributed tracing
 
 ### Key Performance Indicators
 
@@ -61,7 +62,7 @@ Since Redis is popular due to performance, generally you would expect most opera
 |   Cause    | Factors     |
 | ---------- | ----------- | 
 | Spike in requests | Check both the Network Traffic and Operations Per Second metrics to determine if there is a corresponding increase |
-| Slow-running queries | Check the slow log in the Redis Enterprise UI for the database |
+| Slow-running queries | Check the slow logs in the Redis Enterprise UI for the database |
 | Insufficient compute resources | Check to see if the CPU Usage, Memory Usage Percentage, or Evictions are increasing |
 
 
@@ -71,7 +72,7 @@ Since Redis is popular due to performance, generally you would expect most opera
 |   Action   | Method     |
 | ---------- | ----------- | 
 | Increase resources | The database can be scaled up online by going to the Web UI and enabling clustering on the database. In extreme cases, more nodes can be added to the cluster and resources rebalanced |
-| Inefficient queries | Redis allows you to view a slow log with a tunable threshold. It can be viewed either in the Redis Enterprise UI or by running:   redis-cli -h HOST -p PORT -a PASSWORD SLOWLOG GET 100 |
+| Inefficient queries | Redis allows you to view slow logs with a tunable threshold. It can be viewed either in the Redis Enterprise UI or by running:   redis-cli -h HOST -p PORT -a PASSWORD SLOWLOG GET 100 |
 
 
 
@@ -368,7 +369,7 @@ instances:
 
 
 
-### Step 5. Viewing the Datadog Dashboard UI
+### Step 5. Viewing the Datadog UI
 
 Find the Redis Enterprise Integration under the Integration Menu:
 
