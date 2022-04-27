@@ -29,6 +29,15 @@ Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming l
 
 ### Using Redis Enterprise Cloud directly
 
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+Redis Cloud is a fully-managed cloud service for hosting and running your Redis dataset in a highly-available and scalable manner, with predictable and stable top performance. Redis Enterprise cloud allows you to run Redis server over the Cloud and access instance via multiple ways like RedisInsight, redis command line as well as client tools. You can quickly and easily get your apps up and running with Redis Cloud through its Redis Heroku addons , just tell us how much memory you need and get started instantly with your first Redis database. You can then add more Redis databases (each running in a dedicated process, in a non-blocking manner) and increase or decrease the memory size of your plan without affecting your existing data.
+
+::tip INFO
+Heroku addons are set of  tools and services for developing, extending, and operating your app.
+:::
+
+
 
 You can quickly and easily get your apps up and running with Redis Enterprise Cloud directly. Follow the below steps:
 
@@ -46,6 +55,8 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 ![recloud](tryfree.png)
 
 [Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database. Once you create the database, you will be provisioned with a unique database endpoint URL, port and password. Save these for future reference.
+
+Before you proceed with heroku redis , ensure that you can connect to Redis instance and verify if it is accessible via redis-cli command. You can run `info` command that is available in redis client software to see the version, memory usage, stats, and modules enabled in Redis cloud database.
 
 #### Step 2. Create a Heroku account
 
@@ -98,8 +109,7 @@ Run the commands below to get a functioning Git repository that contains a simpl
 
 #### Step 6. Setting up environment variables
 
-[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database as shown below:
-Go to the Heroku dashboard, click "Settings" and set `REDIS_ENDPOINT_URI` and `REDIS_PASSWORD` under the Config Vars.(Please note that the database endpoint is unique and might be different in your case. Please enter the values accordingly)
+[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database connection as shown below: Go to the Heroku dashboard, click "Settings" and set Redis URL and REDIS_PASSWORD under the Config Vars.(Please note that the Redis URL endpoint is unique and might be different in your case. Please enter the values accordingly)
 
 Refer to [Step 1](/create/heroku/portal#step-1-create-redis-enterprise-cloud) for the correct values to use.
 
