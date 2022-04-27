@@ -11,11 +11,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 
-You can install Redis on Windows 10 using Windows Subsystem for Linux(a.k.a WSL2).
-WSL2 is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019.
-WSL2 lets developers run a GNU/Linux environment(that includes command-line tools, utilities, and applications) directly on Windows.
+You can run Redis on Windows 10 using Windows Subsystem for Linux(a.k.a WSL2). WSL2 is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019. WSL2 lets developers run a GNU/Linux environment(that includes command-line tools, utilities, and applications) directly on Windows.
 
-Follow the below steps to create Redis database on Microsoft Windows 10.
+Follow the below steps to run Redis database  on Microsoft Windows 10.
 
 
 ### Step 1: Turn on Windows Subsystem for Linux
@@ -23,11 +21,12 @@ Follow the below steps to create Redis database on Microsoft Windows 10.
 In Windows 10, Microsoft replaces Command Prompt with PowerShell as the default shell. Open PowerShell as Administrator and run this command to enable Windows Subsystem for Linux (WSL):
 
 
+
  ```powershell
   Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
  ```
 
-Reboot Windows after making the change—note that you only need to do this one time.
+Reboot Windows service after making the change—note that you only need to do this one time.
 
 ### Step 2: Launch Microsoft Windows Store 
 
@@ -35,10 +34,9 @@ Reboot Windows after making the change—note that you only need to do this one 
   start ms-windows-store:
  ```
 
-### Step 3: Install Redis
+### Step 3: Install Redis server
 
-The following example works with Ubuntu (you’ll need to wait for initialization and create a login upon first use):
-
+Installing Redis is simple and straightforward. The following example works with Ubuntu (you'll need to wait for initialization and create a login upon first use):
 
  ```bash
   sudo apt-add-repository ppa:redislabs/redis
@@ -46,8 +44,12 @@ The following example works with Ubuntu (you’ll need to wait for initializatio
   sudo apt-get upgrade
   sudo apt-get install redis-server
  ```
+Please note that the sudo command might or mightn't be required based on the user configuration on your Mac OS system.
+
 
 ### Step 4: Restart the Redis server
+
+Running Redis require restart of the redis server and that can be achieved by the below commands:
 
  ```bash
   sudo service redis-server restart
@@ -55,6 +57,10 @@ The following example works with Ubuntu (you’ll need to wait for initializatio
 
 
 ### Step 5: Verify if your Redis server is running
+
+In order to test redis database connectivity, you can use `redis-cli` command line to connect to the redis client. The redis command 'redis-cli ` can be used to connect to the Redis server by using the default port 6379. 
+
+
 
  ```
   $ redis-cli 
