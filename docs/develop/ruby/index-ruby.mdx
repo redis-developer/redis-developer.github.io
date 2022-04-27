@@ -47,7 +47,7 @@ Ensure that you are able to use the following Redis command to connect to the Re
 
 ```bash
  redis-cli
- localhost>
+ 127.0.0.1:6379>
 ```
 
 Now you should be able to perform CRUD operation with Redis commands. For example, you can insert data to Redis via SET command and the fetch it via GET command. The above redis client command might require password if you have setup authentication in your redis configuration file. If Redis password is not set, then you can connect to Redis instance flawlessly. Be default, Redis uses the port 6379 that can be modified in the redis configuration file.
