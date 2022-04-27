@@ -13,6 +13,8 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 
 Hacker News (sometimes abbreviated as HN) is a social news website focusing on computer science and entrepreneurship.
+It developed as a project of Graham's company Y Combinator, functioning as a real-world application of the Arc . programming language which Graham co-developed.
+
 This is a HackerNews clone built upon React, NextJS as a frontend and NodeJS, ExpressJS & Redis as a backend.
 This application uses RedisJSON module for storing the data and RediSearch module for searching.
 
@@ -30,7 +32,13 @@ This application uses RedisJSON module for storing the data and RediSearch modul
 
 ### Step 2. Create Redis Enterprise Cloud database
 
-[Follow this link](../create/rediscloud) to create Redis Enterprise Cloud account with 2 databases - one with RedisJSON module and other with RediSearch module enabled. Please note that under Free subscription, only one module can be enabled. If you want to create 2 databases, then you might need to create 2 different subscriptions.
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis is popular among the developers as it delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+Redis Cloud is a fully-managed cloud service for hosting and running your Redis dataset in a highly-available and scalable manner, with predictable and stable top performance. Redis Enterprise cloud allows you to run Redis server over the Cloud and access instance via multiple ways like RedisInsight, Redis command line as well as client tools. You can quickly and easily get your apps up and running with Redis Cloud through its Redis Heroku addons , just tell us how much memory you need and get started instantly with your first Redis database. You can then add more Redis databases (each running in a dedicated process, in a non-blocking manner) and increase or decrease the memory size of your plan without affecting your existing data.
+
+
+
+[Follow this link](../create/rediscloud) to create a Redis Enterprise Cloud account with 2 databases - one with the RedisJSON module and other with RediSearch (full-text search and secondary indexing) module enabled. 
 
 Save the database endpoint URL and password for our future reference
 

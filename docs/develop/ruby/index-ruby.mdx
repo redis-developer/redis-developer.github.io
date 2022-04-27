@@ -24,15 +24,41 @@ Additional Ruby clients for Redis can be found under the Ruby section of the Red
   ]}>
   <TabItem value="redis-rb">
 
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+#### Step 1. Run a Redis server
+
+You can either run Redis in a Docker container or directly on your machine.
+Follow the below commands to setup a Redis server on Mac OS:
 
 
-### Step 1. Clone the repository
+```
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
+
+:::info INFO
+Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack bundles five Redis modules: RedisJSON, RedisSearch, RedisGraph, RedisTimeSeries, and RedisBloom.
+[Learn more](/create/redis-stack)
+:::
+
+
+Ensure that you are able to use the following Redis command to connect to the Redis instance.
+
+```bash
+ redis-cli
+ 127.0.0.1:6379>
+```
+
+Now you should be able to perform CRUD operations with Redis commands. For example, you can insert data to Redis with the `SET` command and the fetch it with the `GET` command. The above Redis client command might require a password if you have setup authentication in your Redis configuration file. By default, Redis listens on port 6379.  This can be modified in the Redis configuration file.
+
+### Step 2. Clone the repository
 
 ```
 git clone https://github.com/redis-developer/redis-ruby-getting-started
 ```
 
-### Step 2.  Install redis-rb:
+### Step 3.  Install redis-rb:
 
 ```
 $ gem install redis
@@ -40,7 +66,7 @@ $ gem install redis
 
 OR
 
-### Step 3. Use Gemfile
+### Step 4. Use Gemfile
 
 ```
 $cat Gemfile
@@ -48,7 +74,7 @@ gem 'redis'
 ```
 
 
-### Step 4. Execute
+### Step 5. Execute
 
 ```
 $ bundle install
@@ -70,7 +96,7 @@ Bundle complete! 1 Gemfile dependency, 2 gems now installed.
 Use `bundle info [gemname]` to see where a bundled gem is installed.
 ```
 
-### Step 5. Verifying 
+### Step 6. Verifying 
   
 ```
 bundle info redis
@@ -84,7 +110,7 @@ bundle info redis
 	Path: /Library/Ruby/Gems/2.6.0/gems/redis-4.2.5
 ```
 
-### Step 6. Opening a Connection to Redis Using redis-rb
+### Step 7. Opening a Connection to Redis Using redis-rb
 
 The following code creates a connection to Redis using redis-rb:
 
@@ -104,7 +130,7 @@ Just execute the below command:
 ```
 ruby connect.rb
 ```
-### Step 7.  Verifying
+### Step 8.  Verifying
 ```
 127.0.0.1:6379> monitor
 OK

@@ -252,9 +252,15 @@ Kubernetes makes physical storage devices available to your cluster in the form 
 
 An Operator is basically an application-specific controller that can help you manage a Kubernetes application. It is a way to package, run, and maintain a Kubernetes application. It is designed to extend the capabilities of Kubernetes, and also simplify application management. This is especially useful for stateful applications, which include persistent storage and other elements external to the application, and may require extra work to manage and maintain. 
 
-### Functions of Kubernetes Operator
 
-A Kubernetes Operator uses the Kubernetes API to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. There is a public repository called [OperatorHub.io](https://operatorhub.io) that is designed to be the public registry for finding Kubernetes Operator backend services. With Operator Hub, developers can easily create an application based on an operator without going through the complexity of crafting an operator from scratch.
+:::info TIP
+The Operator Framework is an open source project that provides developer and runtime Kubernetes tools, enabling you to accelerate the development of an operator. 
+[Learn more about operator framework here](https://operatorframework.io/)
+:::
+
+### Functions of Kubernetes Operators
+
+A Kubernetes Operator uses the Kubernetes API server to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. There is a public repository called [OperatorHub.io](https://operatorhub.io) that is designed to be the public registry for finding Kubernetes Operator backend services. With Operator Hub, developers can easily create an application based on an operator without going through the complexity of crafting an operator from scratch.
 
 ![alt_text](images/image6.png)
 
@@ -278,7 +284,7 @@ Below are a few examples of popular Kubernetes Operators and their functions and
 ### How does an Operator work?
 
 
-Operators work by extending the Kubernetes control plane and API. Operators allows you to define a Custom Controller that watches your application and performs custom tasks based on its state. The application you want to watch is usually defined in Kubernetes as a new object: a [Custom Resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) (CR) that has its own YAML spec and object type that is well understood by the API server. That way, you can define any specific criteria in the custom spec to watch out for, and reconcile the instance when it doesn’t match the spec. The way an Operator’s controller reconciles against a spec is very similar to native Kubernetes controllers, though it is using mostly custom components.
+Operators work by extending the Kubernetes control plane and API server. Operators allows you to define a Custom Controller that watches your application and performs custom tasks based on its state. The application you want to watch is usually defined in Kubernetes as a new object: a [Custom Resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) (CR) that has its own YAML spec and object type that is well understood by the API server. That way, you can define any specific criteria in the custom spec to watch out for, and reconcile the instance when it doesn’t match the spec. The way an Operator’s controller reconciles against a spec is very similar to native Kubernetes controllers, though it is using mostly custom components.
 
 ### What is the Redis Enterprise Operator?
 
@@ -379,3 +385,4 @@ In the next tutorial, you will learn how to get started with the Redis Enterpris
 * [Redis Enterprise Software on Kubernetes architecture ](https://docs.redis.com/latest/kubernetes/deployment/quick-start/)
 * [Installing RedisInsight using Helm chart](/explore/redisinsight/usinghelm)
 * [Deploy Redis Enterprise Software on Kubernetes](https://docs.redis.com/latest/kubernetes/deployment/quick-start/)
+* [Operator Framework](https://operatorframework.io/)
