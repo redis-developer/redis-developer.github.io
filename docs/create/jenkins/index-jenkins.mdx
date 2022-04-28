@@ -7,7 +7,7 @@ authors: [ajeet, matthew]
 ---
 
 
-[Jenkins](https://www.jenkins.io/) is currently [the most popular CI tool](https://cd.foundation/announcement/2019/08/14/jenkins-celebrates-15-years/), with ~15M users. It is an open source automation server which enables developers to reliably build, test, and deploy their software. It was forked in 2011 from a project called Hudson after a [dispute with Oracle](https://www.infoq.com/news/2011/01/jenkins/), and is used for [Continuous Integration and Continuous Delivery (CI/CD)](https://stackoverflow.com/questions/28608015/continuous-integration-vs-continuous-delivery-vs-continuous-deployment) and test automation. Jenkins is based on Java and provides over [1700 plugins](https://plugins.jenkins.io/) to automate your developer workflow and save a lot of your time in executing your repetitive tasks.
+[Jenkins](https://www.jenkins.io/) is currently [the most popular CI(Continuous Integration) tool](https://cd.foundation/announcement/2019/08/14/jenkins-celebrates-15-years/), with ~15M users. It is an open source automation server which enables developers to reliably build, test, and deploy their software. It was forked in 2011 from a project called Hudson after a [dispute with Oracle](https://www.infoq.com/news/2011/01/jenkins/), and is used for [Continuous Integration and Continuous Delivery (CI/CD)](https://stackoverflow.com/questions/28608015/continuous-integration-vs-continuous-delivery-vs-continuous-deployment) and test automation. Jenkins is based on Java and provides over [1700 plugins](https://plugins.jenkins.io/) to automate your developer workflow and save a lot of your time in executing your repetitive tasks.
 
 
 
@@ -16,7 +16,7 @@ authors: [ajeet, matthew]
 
 [Source:](https://www.datanyze.com/market-share/ci--319) Datanyze market analysis
 
-[Jenkins Pipeline](https://www.jenkins.io/solutions/pipeline/) performs Continuous Delivery tasks declared in a `Jenkinsfile` stored alongside code. The [Pipeline plugin](https://plugins.jenkins.io/workflow-aggregator) has a fairly comprehensive [tutorial](https://github.com/jenkinsci/pipeline-plugin/blob/master/TUTORIAL.md) checked into its source tree. Using Pipeline, you can configure Jenkins to automatically deploy key pieces of infrastructure, such as a Redis database.
+[Jenkins Pipeline](https://www.jenkins.io/solutions/pipeline/) performs Continuous Delivery tasks declared in a `Jenkinsfile` stored alongside code. The [Pipeline plugin](https://plugins.jenkins.io/workflow-aggregator) has a fairly comprehensive [tutorial](https://github.com/jenkinsci/pipeline-plugin/blob/master/TUTORIAL.md) checked into its source tree.  Plugin is the primary means of enhancing the functionality of a Jenkins environment to suit organization- or user-specific needs. Using Pipeline, you can configure Jenkins to automatically deploy key pieces of infrastructure, such as a Redis database.
 
 
 ### Architecture
@@ -73,7 +73,7 @@ The following is an architectural diagram of how a Jenkins pipeline adds a datab
 
 
 
-- [jenkins-re-pipeline.py](https://github.com/masyukun/redis-jenkins-pipeline/blob/main/jenkins-re-pipeline.py)
+- [jenkins-re-pipeline.py](https://github.com/masyukun/redis-jenkins-pipeline/blob/main/jenkins-re-pipeline.py) config file
     * The Python script that creates a Redis database through the Redis REST API.
 - [deployment-configuration-file.json](https://github.com/masyukun/redis-jenkins-pipeline/blob/main/deployment-configuration-file.json)
     * The user-specified configuration file for creating a database.
@@ -100,11 +100,11 @@ The installation will generate a first-run password in the docker-cli output.
 
 
 
-Then open[ http://localhost:8080/](http://localhost:8080/) and enter the password to unlock your instance and begin installation.
+Then open the jenkins URL [ http://localhost:8080/](http://localhost:8080/) and enter the password to unlock your instance and begin installation.
 
 ![alt_text](images/image3.png)
 
-Choose "Install suggested plugins"
+Choose "Install suggested plugins" to perform the Jenkins configuration.
 
 ![alt_text](images/image4.png)
 
