@@ -6,12 +6,14 @@ slug: /howtos/redisgraph/using-rust
 authors: [ajeet]
 ---
 
-RedisGraph is based on a unique approach and architecture that translates Cypher queries to matrix operations executed over a GraphBLAS engine. This new design allows use cases like social graph operation, fraud detection, and real-time recommendation to be executed 10x – 600x faster than any other graph database. Undoubtedly, it is the fastest graph database that processes complex graph operations in real time, 10x – 600x faster than any other graph database. It primariy shows how your data is connected through multiple visualization integrations including RedisInsight, Linkurious, and Graphileon. 
+RedisGraph is the first queryable Property Graph database to use sparse matrices to represent the adjacency matrix
+in graphs and linear algebra to query the graph. RedisGraph is based on a unique approach and architecture that translates Cypher queries to matrix operations executed over a GraphBLAS engine. This new design allows use cases like social graph operation, fraud detection, and real-time recommendation to be executed 10x – 600x faster than any other graph database. Undoubtedly, it is the fastest graph database that processes complex graph operations in real time, 10x – 600x faster than any other graph database. It primariy shows how your data is connected through multiple visualization integrations including RedisInsight, Linkurious, and Graphileon. 
 
+RedisGraph is a graph database developed from scratch on top of Redis, using the new Redis Modules API to extend Redis with new commands and capabilities. Its main features include: Simple, fast indexing and querying data stored in RAM using memory-efficient custom data structure.
 Below are the primary use cases of RedisGraph:
 
 - Recommendation: It allows you to rapidly find connections between your customers and the experiences they want by examining the relationships between them.
-- Graph-aided search: It allows you to search for single or multiple words or phrases and execute full-text and linguistic queries in real time over your graph.
+- Graph-aided search: It allows you to search for single or multiple words or phrases and execute full-text and linguistic queries in real time over your graph structure.
 - Identity and access management: It allows you to define complex resources access permissions as a graph and enable rapid real-time verification of these permissions with a single query.
 
 ## RedisGraph Rust Client
