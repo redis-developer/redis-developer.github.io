@@ -9,14 +9,17 @@ authors: [ajeet]
 RedisGraph is the first queryable Property Graph database to use sparse matrices to represent the adjacency matrix
 in graphs and linear algebra to query the graph. RedisGraph is based on a unique approach and architecture that translates Cypher queries to matrix operations executed over a GraphBLAS engine. This new design allows use cases like social graph operation, fraud detection, and real-time recommendation to be executed 10x – 600x faster than any other graph database. Undoubtedly, it is the fastest graph database that processes complex graph operations in real time, 10x – 600x faster than any other graph database. It primariy shows how your data is connected through multiple visualization integrations including RedisInsight, Linkurious, and Graphileon. 
 
-RedisGraph is a graph database developed from scratch on top of Redis, using the new Redis Modules API to extend Redis with new commands and capabilities. Its main features include: Simple, fast indexing and querying data stored in RAM using memory-efficient custom data structure.
+RedisGraph is a graph database developed from scratch on top of Redis, using the new Redis Modules API to extend Redis with new commands and capabilities. Its main features include: Simple, fast indexing and querying data stored in RAM using memory-efficient custom data structure. Redis Graph is a directed graph where both nodes and relationships are typed - nodes with labels and edges with types. Node/s and edges can and often do contain properties like columns in a SQL-db or keys in a document store.The newer RedisGraph 2.0 benchmark reveals a significant improvements on parallel workload (multiple clients) with a latency improvements up to 6x and throughput improvements up to 5x when performing graph traversals. 
+
 Below are the primary use cases of RedisGraph:
 
 - Recommendation: It allows you to rapidly find connections between your customers and the experiences they want by examining the relationships between them.
-- Graph-aided search: It allows you to search for single or multiple words or phrases and execute full-text and linguistic queries in real time over your graph structure.
+- Graph-aided search: It allows you to search for single or multiple words or phrases and execute full-text and linguistic queries and implementation in real time over your graph structure.
 - Identity and access management: It allows you to define complex resources access permissions as a graph and enable rapid real-time verification of these permissions with a single query.
 
 ## RedisGraph Rust Client
+
+Rust programming language is blazingly fast and memory-efficient: with no runtime or garbage collector, it can power performance-critical services, run on embedded devices, and easily integrate with other languages.  It is an open-source project developed originally at Mozilla Research. The Rust Library is the foundation of portable Rust software, a set of minimal and battle-tested shared abstractions for the broader Rust ecosystem.
 
 redisgraph-rs is an idiomatic Rust client for RedisGraph, the graph database by Redis.This crate parses responses from RedisGraph and converts them into ordinary Rust values. It exposes a very flexible API that allows you to retrieve a single value, a single record or multiple records using only one function: Graph::query.
 
