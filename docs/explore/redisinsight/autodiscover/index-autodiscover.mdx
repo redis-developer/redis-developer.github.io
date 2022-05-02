@@ -12,7 +12,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 
-RedisInsight is a 100% free Redis GUI that allows you to visualise, monitor, and optimize while developing your applications with Redis. It provides an intuitive and efficient GUI for Redis allowing developers like you to interact with your databases and manage your data. RedisInsight lets you automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. RedisInsight also allows you to automatically discover Elasticache Redis caches. 
+RedisInsight is a 100% free Redis GUI that allows you to visualise, monitor, and optimize while developing your applications with Redis. It provides an intuitive and efficient GUI for Redis allowing developers like you to interact with your databases and manage your data.  RedisInsight comes with the compatibility to connect to your database through the Sentinel instance too. Please note that RedisInsight v2.0 is an open source visual tool built by Redis Labs that lets you do both GUI- and CLI-based interactions with your Redis database.
+
+RedisInsight lets you automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. RedisInsight also allows you to automatically discover Elasticache Redis caches.
 
 
 :::important
@@ -101,6 +103,9 @@ Assign the below permissions:
 
 ### Step 7. Connect to Elasticache from EC2 instance
 
+You can use redis client softwarsofte to connect to the remote Amazon Elasticache for Redis server endpoint URL.
+
+
  ```bash
   ubuntu@ip-10-0-0-254:~$ redis-cli -h redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com -p 6379
   redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com:6379>
@@ -108,6 +113,8 @@ Assign the below permissions:
 
 
 ### Step 8. Setup RedisInsight
+
+In order to access Redis GUI, run the below docker command:
 
  ```bash
   ubuntu@ip-10-0-0-254:~$ sudo docker run -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
@@ -122,6 +129,9 @@ Assign the below permissions:
  ```
 
 ### Step 9. Access RedisInsight
+
+To access the Redis GUI, open your preferred browser and access https://localhost:8001
+
 
 ![elasticache](images/image13.png)
 ![elasticache](images/image14.png)
