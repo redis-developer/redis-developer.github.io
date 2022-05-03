@@ -11,19 +11,19 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-Redis Streams is a Redis data type that represents a log, so you can add new information and message in an append-only mode. 
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and message queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT. The Stream is a new data type introduced with Redis 5.0, which models a log data structure in a more abstract way.
+A Redis Stream is a Redis data type that represents a log, so you can add new information and message in an append-only mode. 
 Redis Streams lets you build “Kafka-like” applications, which can:
 
 
 
-*   Create applications that publish and consume messages. Nothing extraordinary here, you could already do that with Redis Pub/Sub.
+*   Create applications that publish and consume messages. Nothing extraordinary here, you could already do that with Redis Pub/Sub(Publisher/Subscriber).
 *   Consume messages that are published even when the client application (consumer) is not running. This is a big difference from Redis Pub/Sub.
 *   Consume messages starting from a specific point. For example, read the whole history or only new messages. 
 
-In addition, Redis Streams has the concept of consumer groups. Redis Streams consumer groups, like the similar concept in [Apache Kafka](https://kafka.apache.org/), allows client applications to consume messages in a distributed fashion (multiple clients), making it easy to scale and create highly available systems.
+In addition, Redis Streams has the concept of a consumer group. Redis Streams consumer groups, like the similar concept in [Apache Kafka](https://kafka.apache.org/), allows client applications to consume messages in a distributed fashion (multiple clients), making it easy to scale and create highly available systems.
 
-Let’s dive under the covers and see [Redis Streams](https://redis.io/topics/streams-intro) through the lens of RedisInsight. You will see how to use [Lettuce Java client](https://developer.redis.com/develop/java/#using-lettuce) to publish and consume messages using consumer groups.This is the first basic example that uses a single consumer.
+Let’s dive under the covers and see [Redis Streams](https://redis.io/topics/streams-intro) through the lens of RedisInsight. You will see how to use the [Lettuce Java client](https://developer.redis.com/develop/java/#using-lettuce) to publish and consume messages using consumer group.This is the first basic example that uses a single consumer.
 
 ## Prerequisite:
 
@@ -33,8 +33,24 @@ Let’s dive under the covers and see [Redis Streams](https://redis.io/topics/st
 -   [Install Apache Maven](https://maven.apache.org/install.html)
 -   [Install Redis](https://developer.redis.com/create)
 
+### Step 1. Run a Redis server
 
-## Step 1: Download RedisInsight
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT. You can run a Redis database directly over your local mac os or in a container. If you have Docker installed in your sytem, type the following command:
+
+```bash
+ docker run -d -p 6379:6379 redislabs/redismod
+```
+
+You can connect to Redis server using the `redis-cli` command like this:
+
+```
+ redis-cli
+```
+
+The above command will make a connection to the Redis server. It will then present a prompt that allows you to run Redis commands.
+Please note that you can connect to Redis server using multiple clients.
+
+## Step 2: Download RedisInsight
 
 
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
@@ -53,7 +69,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 
 
 
-## Step 2. Cloning the repository
+## Step 3. Cloning the repository
 
 
  ```bash
@@ -63,7 +79,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
  ```
 
 
-## Step 3. Run the producer(Post a new message)
+## Step 4. Run the producer(Post a new message)
 
 
  ```bash
@@ -96,7 +112,7 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
  ```
 
 
-## Step 4. Run the consumer(Consume messages)
+## Step 5. Run the consumer(Consume messages)
 
 Open a new terminal and run this command:
 
@@ -109,9 +125,9 @@ Open a new terminal and run this command:
 
 The consumer will start and consume the message you just posted, and wait for any new messages.
 
-## Step 5: Posting the new messages
+## Step 6: Posting the new messages
 
-In the first terminal, post 100 new messages:
+In the first terminal, let us post new entries to a Redis stream:
 
 
  ```bash
@@ -119,7 +135,7 @@ In the first terminal, post 100 new messages:
  ```
 
 
-Let us try to visualise using the RedisInsight browser tool. Make sure ‘Stream Data’ is selected and select any one of the streams. You’ll see a table showing data in that stream along with a timestamp of when each entry was added.
+Let us try to visualise the latest message using the RedisInsight browser tool. Make sure ‘Stream Data’ is selected and select any one of the streams. For a specified stream, you’ll find a table showing data in that stream along with a timestamp of when each entry was added.
 
 
 
@@ -137,7 +153,7 @@ To see the processing side of the stream select ‘Stream Data”. You will see 
 ![alt_text](images/image17.png)
 
 
-Click on “Consumer Groups” to see application_1 as promising consumer.
+Click on “Consumer Group” to see application_1 as promising active consumers.
 
 
 
@@ -154,13 +170,17 @@ RedisInsight also provide you to select fields as shown under “View Columns”
 
 ![alt_text](images/image19.png)
 
-
+It also displays pending items/messages for the specific streams as shown above.
 ## Additional Links
 
 - [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
 - [Explore Redis keys using RedisInsight browser tool](/explore/redisinsight/browser)
 - [Memory Analysis using RedisInsight](/explore/redisinsight/memoryanalyzer)
-
+- [Add data to a Redis Stream using the XADD command](https://redis.io/commands/xadd/)
+- [XREAD with support for consumer groups using XREADGROUP command](https://redis.io/commands/xreadgroup/)
+- [How to use the XREAD command (XREAD count)](https://redis.io/commands/xread/)
+- [Remove one or multiple messages from consumer group using XACK command](https://redis.io/commands/xack/)
+- [Removing single items from a stream using stream ID](https://redis.io/docs/manual/data-types/streams/#removing-single-items-from-a-stream)
 ##
 
 <div>
