@@ -209,7 +209,7 @@ User data is stored in a hash set where each user entry contains the next values
 
 - Rooms which a user belongs to are stored at `user:{userId}:rooms` as a set of chat room ids. A room is added by `SADD user:{userId}:rooms {roomId}` command.
 
-- Messages are stored at room:{roomId} key in a sorted set (as mentioned above). They are added with ZADD room:{roomId} {timestamp} {message} command. Message is serialized to an app-specific JSON string.
+- Messages are stored at `room:{roomId}` key in a sorted set (as mentioned above). They are added with the `ZADD room:{roomId} {timestamp} {message}` command. Messages are serialized to an app-specific JSON string.
 
 ### How the data is accessed?
 
