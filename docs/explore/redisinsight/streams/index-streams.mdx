@@ -21,7 +21,7 @@ Redis Streams lets you build “Kafka-like” applications, which can:
 *   Consume messages that are published even when the client application (consumer) is not running. This is a big difference from Redis Pub/Sub.
 *   Consume messages starting from a specific point. For example, read the whole history or only new messages. 
 
-In addition, Redis Stream has the concept of a consumer group. Redis Streams consumer groups, like the similar concept in [Apache Kafka](https://kafka.apache.org/), allows client applications to consume messages in a distributed fashion (multiple clients), making it easy to scale and create highly available systems.
+In addition, Redis Streams has the concept of a consumer group. Redis Streams consumer groups, like the similar concept in [Apache Kafka](https://kafka.apache.org/), allows client applications to consume messages in a distributed fashion (multiple clients), making it easy to scale and create highly available systems.
 
 Let’s dive under the covers and see [Redis Streams](https://redis.io/topics/streams-intro) through the lens of RedisInsight. You will see how to use [Lettuce Java client](https://developer.redis.com/develop/java/#using-lettuce) to publish and consume messages using consumer group.This is the first basic example that uses a single consumer.
 
