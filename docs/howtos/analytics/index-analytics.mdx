@@ -66,7 +66,7 @@ Once the Redis database is up and running, you can connect to it using the `redi
 - You can use a Redis configuration file and mount it as volumes in the docker compose YAML file. 
 - You can connect to the Redis instance by using `redis-cli -h hostname -p port` command. 
 - You can run the Redis `INFO` command to get statistics, metrics and health information from the Redis instance like cache, memory stats, Redis metrics and modules enabled. 
-- You can use a redis cli command called `redis monitor` to get real time redis logs . 
+- Use the Redis `MONITOR` command to get a real time view of commands that clients send to Redis. 
 :::
 
 ### Step 6. Run the backend
