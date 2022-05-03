@@ -57,7 +57,7 @@ Go to /server folder (cd ./server) and then execute the following command:
    docker-compose up -d --build
   ```
 
-In most of the cases, you might require to preface the docker command with `sudo`. If you don't want to use sudo, create a Unix group called docker and add users to it. When the Docker daemon starts, it creates a Unix socket accessible by members of the docker group.
+You may need to preface the docker command with `sudo`. If you don't want to use sudo, create a Unix group called docker and add users to it. When the Docker daemon starts, it creates a Unix socket accessible by members of the docker group.
 Once the Redis database is up and running, you can verify the connection to redis instance using the  redis client software.
 
 
