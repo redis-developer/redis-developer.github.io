@@ -205,7 +205,7 @@ User data is stored in a hash set where each user entry contains the next values
 - Online set is global for all users is used for keeping track on which user is online.
 - User hash set is accessed by key user:{userId}. The data for it stored with HSET key field data. User id is calculated by incrementing the total_users key (INCR total_users)
 
-- Username is stored as a separate key (username:{username}) which returns the userId for quicker access and stored with SET username:{username} {userId}.
+- Usernames are stored as separate keys (`username:{username}`) which returns the userId for quicker access and stored with `SET username:{username} {userId}`.
 
 - Rooms which user belongs too are stored at user:{userId}:rooms as a set of chat room ids. A room is added by SADD user:{userId}:rooms {roomId} command.
 
