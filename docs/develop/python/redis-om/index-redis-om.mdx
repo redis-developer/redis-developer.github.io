@@ -64,7 +64,7 @@ Docker for more information.
 Instead of installing Redis manually or with a package manager, you can run
 Redis with Docker.
 
-We recommend the [redismod](https://hub.docker.com/r/redislabs/redismod) image
+We recommend the [redis-stack](https://hub.docker.com/r/redis/redis-stack) image
 because it includes Redis modules that Redis OM can use to give you extra
 features. Later sections of this guide will provide more detail about these
 features.
@@ -85,7 +85,7 @@ You don't need these Redis modules to use Redis OM's data modeling, validation,
 and persistence features, but we recommend them to get the most out of Redis OM.
 
 The easiest way to run these Redis modules during local development is to use
-the [redismod](https://hub.docker.com/r/redislabs/redismod) Docker image.
+the [redis-stack](https://hub.docker.com/r/redis/redis-stack) Docker image.
 
 For other installation methods, follow the "Quick Start" guides on both modules'
 home pages.
@@ -118,9 +118,9 @@ use.
 **TIP:** The `-d` option in these examples runs Redis in the background, while 
 `-p 6379:6379` makes Redis reachable at port 6379 on your localhost.
 
-#### Docker with the `redismod` image (recommended)
+#### Docker with the `redis-stack` image (recommended)
 
-    $ docker run -d -p 6379:6379 redislabs/redismod
+    $ docker run -d -p 6379:6379 redis/redis-stack
 
 #### Docker with the `redis` image
 
@@ -802,6 +802,6 @@ If you're a FastAPI user, check out [how to integrate Redis OM with FastAPI](htt
 
 <!-- Links -->
 
-[redisearch-url]: https://oss.redis.com/redisearch/
-[redis-json-url]: https://oss.redis.com/redisjson/
+[redisearch-url]: https://redis.io/docs/stack/search/
+[redis-json-url]: https://redis.io/docs/stack/json/
 [pydantic-url]: https://github.com/samuelcolvin/pydantic
