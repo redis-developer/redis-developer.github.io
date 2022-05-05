@@ -158,7 +158,7 @@ E.g. Create a private room between 2 users:
   SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
  ```
 
-Then we add conversations messages to this room by writing to a sorted set: 
+Then we add messages for each conversation to this room by writing to a sorted set: 
 
  ```bash
   ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
