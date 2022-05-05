@@ -1,12 +1,12 @@
 ---
 id: index-chatapp
-title: How to Build a Real-Time Chat application on AWS using Python and Redis
+title: How to Build a Real Time Chat application on Amazon Web Service using Python and Redis
 sidebar_label: Building a Real-Time Chat application on AWS using Python and Redis
 slug: /create/aws/chatapp
 authors: [ajeet]
 ---
 
-Chat messaging apps are surging in popularity exponentially. Mobile apps like WhatsApp, Facebook, Telegram, Slack, Discord have become “a part and parcel” of our life. Users are addicted to these apps as they bring  a personal touch and offer a real-time interaction.
+Real time chat messaging apps are surging in popularity exponentially. Mobile apps like WhatsApp, Facebook, Telegram, Slack, Discord have become “a part and parcel” of our life. Users are addicted to these live chat mobile app conversation as they bring a personal touch and offer a real-time interaction
 
 ![chatapp](image_chatapp1.png)
 
@@ -23,7 +23,7 @@ There’s been a rise in the number of social media apps that bring social eleme
 
 ### 1. What will you build?
 
-In this tutorial, we will see how to build a basic chat application built with Flask, Socket.IO and Redis Enterprise Cloud running on AWS Cloud. This example uses pub/sub features combined with web-sockets for implementing the message communication between client and server.
+In this tutorial, we will see how to build a realtime chat app built with Flask, Socket.IO and Redis Enterprise Cloud running on Amazon Web Service. This example uses pub/sub features combined with web-sockets for implementing the message communication between client and server.
 
 ![image](chatapp2.png)
 
@@ -38,12 +38,19 @@ In this tutorial, we will see how to build a basic chat application built with F
 ### Step 1. Sign up for a Free Redis Enterprise Cloud Account
 
 [Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for a free Redis Enterprise Cloud account.
+If you already have an existing account, then all you need is an authentication detail to access your subscription.
 
 ![image](chatapp3.png)
 
-Choose AWS as a Cloud vendor while creating your new subscription. At the end of the database creation process, you will get a Redis Enterprise CLoud database endpoint and password. You can save it for later use.
+Choose AWS as a Cloud vendor while creating your new subscription. While creating a new database, ensure that you add your own password for the authentication. At the end of the database creation process, you will get a Redis Enterprise Cloud database endpoint and password. You can save it for later use.
 
 ![image](chatapp4.png)
+
+:::info TIP
+You don't need to create AWS account for setting up your Redis database. Redis Enterprise Cloud on AWS is a fully managed database-as-a-service trusted by thousands of customers for high performance, infinite scalability, true high availability, and best-in-class support.
+:::
+
+
 
 ### Step 2. Clone the repository 
 
@@ -52,7 +59,7 @@ git clone https://github.com/redis-developer/basic-redis-chat-app-demo-python
 ```
 
 
-### Step 3. Installing the requred packages
+### Step 3. Installing the required packages
 
 ```
 cd client
@@ -110,7 +117,7 @@ python3 app.py
 ### Step 7. How it works?
 
 
-The chat server works as a basic REST API which involves keeping the session and handling the user state in the chat rooms (besides the WebSocket/real-time part).
+The chat app server works as a basic REST API which involves keeping the session and handling the user state in the chat rooms (besides the WebSocket/real-time part).
 When the server starts, the initialization step occurs. At first, a new Redis connection is established and it's checked whether it's needed to load the demo data.
 
 #### Initialization
@@ -151,7 +158,7 @@ E.g. Create a private room between 2 users:
   SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
  ```
 
-Then we add messages to this room by writing to a sorted set: 
+Then we add conversations messages to this room by writing to a sorted set: 
 
  ```bash
   ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
@@ -257,11 +264,11 @@ It will return 50 messages with 0 offsets for the private room between users wit
 
 ### Further References
 
-- [Building a sample Redis Chat application demo in .Net](https://github.com/redis-developer/basic-redis-chat-app-demo-dotnet)
-- [Building a Sample Redis Chat application demo in Java](https://github.com/redis-developer/basic-redis-chat-app-demo-java)
-- [Building a Sample Redis Chat application demo in NodeJS](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs)
-- [Building a Sample Redis Chat application demo in Go](https://github.com/redis-developer/basic-redis-chat-demo-go)
-- [Building a Sample Redis Chat application demo in Ruby](https://github.com/redis-developer/basic-redis-chat-demo-ruby)
+- [Building a realtime chat app demo in .Net](https://github.com/redis-developer/basic-redis-chat-app-demo-dotnet)
+- [Building a realtime chat app demo in Java](https://github.com/redis-developer/basic-redis-chat-app-demo-java)
+- [Building a realtime chat demo in NodeJS](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs)
+- [Building a realtime chat app demo in Go](https://github.com/redis-developer/basic-redis-chat-demo-go)
+- [Building a Redis chat application demo in Ruby](https://github.com/redis-developer/basic-redis-chat-demo-ruby)
  
 
 
