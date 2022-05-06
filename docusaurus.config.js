@@ -120,6 +120,12 @@ module.exports = {
         link: 'https://twitter.com/bsbodden',
         title: 'Developer Advocate at Redis',
         image: 'profile_pic_brian_sam-bodden.jpeg'
+      },
+      elena: {
+        name: 'Elena Kolevska',
+        link: 'https://twitter.com/elena_kolevska',
+        title: 'Technical Enablement Manager',
+        image: 'profile_pic_elena_kolevska.jpg'
       }
     }
   },

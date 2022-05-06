@@ -1,0 +1,552 @@
+---
+id: index-redis-functions
+title: Getting started with Redis Functions
+sidebar_label: Redis Functions
+slug: /create/redis-functions
+authors: [elena]
+---
+
+# Getting started with Redis Functions
+
+The most impactful addition to Redis version 7.0 is **Redis Functions** - a new programmability option, improving on scripts by **adding modularity, reusability and better overall developer experience**. 
+
+Functions are, in contrast to scripts, persisted in the .rdb and .aof files as well as automatically replicated to all the replicas, which makes them a first-class citizen of Redis.
+
+Redis has the capability of supporting multiple execution engines so in one of the future releases we’ll be able to write Redis Functions in Lua, Javascript and more languages, but at the moment (Redis v7.0) the only supported language is Lua.
+
+A common pain point for developers is to maintain a consistent view of  data entities through a logical schema. Redis Functions are ideally suited for solving this problem and in this tutorial we will demonstrate just that - we’ll create a library with two functions; the first one will make sure that we can automatically  set  `_created_at` and `_updated_at`  timestamps for hash keys and the second one will simply update the `_updated_at` timestamp without changing the other elements, simulating the “touch” Unix function. Let's go!
+
+
+### Environment setup
+
+First, let’s set up a working environment with Redis 7. You can follow the installation instructions in the guides below, according to your operating system:
+
+
+
+* [Install Redis from Source](https://redis.io/docs/getting-started/installation/install-redis-from-source/)
+* [Install Redis on Linux](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
+* [Install Redis on macOS](https://redis.io/docs/getting-started/installation/install-redis-on-mac-os/)
+* [Install Redis on Windows](https://redis.io/docs/getting-started/installation/install-redis-on-windows/)
+
+Alternatively, you can  spin up a Docker container with Redis Stack:
+
+
+```
+$ docker run -p 6379:6379 --name redis-7.0 -it --rm redis/redis-stack:7.0.0-RC4
+```
+
+
+
+> Note: In the rest of this tutorial we’ll use the `$` character to indicate that the command needs to be run on the command prompt and `redis-cli>` to indicate the same for a redis-cli prompt._
+
+
+### Warm-Up
+
+Now that we have our Redis server running, we can create a file named `mylib.lua` and in it create a function named `hset` that would receive the keys and arguments we pass on the command line as parameters. 
+
+**_Functions in Redis are always a part of a library, and a single library can have multiple functions. _**
+
+For starters, let's create a simple function that returns "Hello Redis 7.0" and save it in the `mylib.lua` file. 
+
+
+```
+#!lua name=mylib
+
+local function hset(keys, args)
+   return "Hello Redis 7.0"
+end
+```
+
+
+The first line specifies that we want to use the Lua engine to run this function and that its name is `mylib`.The name is the library identifier and we will use it every time we need to update it.
+
+Next, we need to register this function so it can be accessed through the Functions api. In the registration we specify that the function `hset` can be called with the name of `my_hset`:
+
+
+```
+redis.register_function('my_hset', hset)
+```
+
+
+The full code, so far, is:
+
+
+```
+#!lua name=mylib
+local function hset(keys, args)
+   return "Hello Redis 7.0"
+end
+
+redis.register_function('my_hset', hset)
+```
+
+
+Before we can call the function on the command line, we need to load and register it with the Redis server:
+
+
+```
+$ cat /path/to/mylib.lua | redis-cli -x FUNCTION LOAD
+```
+
+
+Finally, let’s run the function we registered:
+
+
+```
+redis-cli> FCALL my_hset 1 foo
+```
+
+
+You should see the greeting "Hello Redis 7.0" as a response.
+
+
+### Maintaining a consistent view of data entities through a logical schema
+
+We're now ready to start working on the requirement. First, let's implement the part that adds an <code><em>_updated_</em>at</code>  timestamp:
+
+
+```
+#!lua name=mylib
+local function hset(keys, args)
+   local hash = keys[1]  -- Get the key name
+   local time = redis.call('TIME')[1]  -- Get the current time from the Redis server
+
+   -- Add the current timestamp to the arguments that the user passed to the function, stored in `args`
+   table.insert(args, '_updated_at') 
+   table.insert(args, time)
+
+   -- Run HSET with the updated argument list
+   return redis.call('HSET', hash, unpack(args))
+end
+
+redis.register_function('my_hset', hset)
+```
+
+
+After you updated the code, you will have to reload the library in the Redis server, using the `replace` argument to specify that you want to overwrite the previous version:
+
+
+```
+$ cat /path/to/mylib.lua | redis-cli -x FUNCTION LOAD REPLACE
+```
+
+
+If you try to create and update a hash through our function now, you will see that a timestamp is automatically added to it:
+
+
+```
+redis-cli> FCALL my_hset 1 foo k1 v1 k2 v2
+3
+
+redis-cli> HGETALL foo
+1) "k1"
+2) "v1"
+3) "k2"
+4) "v2"
+5) "_updated_at"
+6) "1643581494"
+```
+
+
+If we try to update the same key, we will see that the `_updated_at` timestamp got updated too:
+
+
+```
+redis-cli> FCALL my_hset 1 foo k4 v4
+1
+
+redis-cli> HGETALL foo
+1) "k1"
+2) "v1"
+3) "k2"
+4) "v2"
+5) "_updated_at"
+6) "1643581580"
+7) "k4"
+8) "v4"
+```
+
+
+Now let's add the logic that checks if the key is being created or updated, and adds the `_created_at` timestamp accordingly:
+
+
+```
+#!lua name=mylib
+local function hset(keys, args)
+   local hash = keys[1]  -- Get the key name
+   local time = redis.call('TIME')[1]  -- Get the current time from the Redis server
+
+   -- Check if the key exists and if not - add a `_created_at` timestamp
+   local exists = redis.call('exists', hash)
+   if exists==0 then
+       table.insert(args, '_created_at')
+       table.insert(args, time)
+   end
+
+   -- Add the current timestamp to the arguments that the user passed to the function, stored in `args`
+   table.insert(args, '_updated_at') 
+   table.insert(args, time)
+
+   -- Run HSET with the updated argument list
+   return redis.call('HSET', hash, unpack(args))
+end
+
+redis.register_function('my_hset', hset)
+```
+
+
+Reload the library:
+
+
+```
+$ cat /path/to/mylib.lua | redis-cli -x FUNCTION LOAD REPLACE
+```
+
+
+And try to create a new key:
+
+
+```
+redis-cli> FCALL my_hset 1 bar k1 v1 k2 v2
+4
+
+redis-cli> HGETALL bar
+1) "k1"
+2) "v1"
+3) "k2"
+4) "v2"
+5) "_updated_at"
+6) "1643581710"
+7) "_created_at"
+8) "1643581710"
+```
+
+
+Both a `_created_at` and `_updated_at` timestamps were added. If we update the key, we will see that the `_updated_at` timestamp will change, while the `_created_at` will stay the same:
+
+
+```
+redis-cli> FCALL my_hset 1 bar k4 v4
+1
+
+redis-cli> HMGET bar _created_at _updated_at
+1) "1643581710"
+2) "1643581992"
+```
+
+
+The second requirement was to implement a function that will allow us to update the `_updated_at` timestamp without updating any other fields. For that, we'll have to create a new function in our library:
+
+
+```
+local function touch(keys, args)
+   local time = redis.call('TIME')[1]
+   return redis.call('HSET', keys[1], '_updated_at', time)
+end
+```
+
+
+And we should also add the function registration:
+
+
+```
+redis.register_function('my_touch', touch)
+```
+
+
+The full code will now look like this:
+
+
+```
+#!lua name=mylib
+local function hset(keys, args)
+   local hash = keys[1]  -- Get the key name
+   local time = redis.call('TIME')[1]  -- Get the current time from the Redis server
+
+   local exists = redis.call('exists', hash)
+   if exists==0 then
+       table.insert(args, '_created_at')
+       table.insert(args, time)
+   end
+
+   -- Add the current timestamp to the arguments that the user passed to the function, stored in `args`
+   table.insert(args, '_updated_at') 
+   table.insert(args, time)
+
+   -- Run HSET with the updated argument list
+   return redis.call('HSET', hash, unpack(args))
+end
+
+local function touch(keys, args)
+   local time = redis.call('TIME')[1]
+   return redis.call('HSET', keys[1], '_updated_at', time)
+end   
+
+redis.register_function('my_hset', hset)
+redis.register_function('my_touch', touch)
+```
+
+
+Reload the updated library:
+
+
+```
+$ cat /path/to/mylib.lua | redis-cli -x FUNCTION LOAD REPLACE
+```
+
+
+And try running the new function and confirm that the `_updated_at` timestamp has indeed changed:
+
+
+```
+redis-cli> FCALL my_touch 1 bar
+0
+
+redis-cli> HMGET bar _created_at _updated_at
+1) "1643581710"
+2) "1643582276"
+```
+
+
+
+### Thinking ahead
+
+One of the basic rules of software development is that you can not rely on user input, so let’s make sure we don’t do that. If a user creates a string named `my_string` and tries to run the touch function on it they will get an error:
+
+
+```
+redis-cli> SET my_string hello
+OK
+
+redis-cli> FCALL my_hset 1 my_string k1 v1
+(error) WRONGTYPE Operation against a key holding the wrong kind of value script: my_hset, on @user_function:17.
+```
+
+
+Let’s handle this error by adding a type check:
+
+
+```
+if exists==1 and redis.call('TYPE', hash)["ok"] ~= 'hash' then
+   error = 'The key ' .. hash .. ' is not a hash'
+   redis.log(redis.LOG_WARNING, error);
+   return redis.error_reply(error)
+end
+```
+
+
+The complete code:
+
+
+```
+#!lua name=mylib
+local function hset(keys, args)
+   local hash = keys[1]  -- Get the key name
+   local time = redis.call('TIME')[1]  -- Get the current time from the Redis server
+
+   local exists = redis.call('exists', hash)
+   if exists==0 then
+       table.insert(args, '_created_at')
+       table.insert(args, time)
+   end
+
+   if exists==1 and redis.call('TYPE', hash)["ok"] ~= 'hash' then
+       local error = 'The key ' .. hash .. ' is not a hash'
+       redis.log(redis.LOG_WARNING, error);
+       return redis.error_reply(error)
+   end
+
+   -- Add the current timestamp to the arguments that the user passed to the function, stored in `args`
+   table.insert(args, '_updated_at') 
+   table.insert(args, time)
+
+   -- Run HSET with the updated argument list
+   return redis.call('HSET', hash, unpack(args))
+end
+
+local function touch(keys, args)
+   local time = redis.call('TIME')[1]
+   return redis.call('HSET', keys[1], '_updated_at', time)
+end   
+
+redis.register_function('my_hset', hset)
+redis.register_function('my_touch', touch)
+```
+
+
+If we reload the library and try again, we'll get an error with a helpful message:
+
+
+```
+$ cat /path/to/mylib.lua | redis-cli -x FUNCTION LOAD REPLACE
+
+redis-cli> FCALL my_hset 1 my_string
+(error) The key my_string is not a hash
+```
+
+
+
+### Refactoring
+
+We can notice that we have some code repetition in our library, namely the type check and the getting of the timestamp in both our functions. That's a good opportunity for some code reuse. Let's extract the logic into their own functions:
+
+
+```
+local function get_time()
+     return redis.call('TIME')[1]
+end
+
+local function is_not_hash(key_name)
+   if redis.call('TYPE', key_name)['ok'] ~= 'hash' then
+       return 'The key ' .. key_name .. ' is not a hash.'
+   end
+
+   return nil
+end
+```
+
+
+This function is only going to be called by our two existing functions and not from the outside, so that's why we don't need to register it. The refactored code will now look like this:
+
+
+```
+#!lua name=mylib
+
+-- Get the current time from the Redis server
+local function get_time()
+     return redis.call('TIME')[1]
+end
+
+local function is_not_hash(key_name)
+   if redis.call('TYPE', key_name)['ok'] ~= 'hash' then
+       return 'The key ' .. key_name .. ' is not a hash.'
+   end
+
+   return nil
+end
+
+local function hset(keys, args)
+   local hash = keys[1]  -- Get the key name
+   local time = get_time()
+
+   local exists = redis.call('exists', hash)
+   if exists==0 then
+       table.insert(args, '_created_at')
+       table.insert(args, time)
+   end
+
+   local hash_error = is_not_hash(hash)
+   if exists==1 and hash_error ~= nil then
+       return redis.error_reply(hash_error)
+   end
+
+   -- Add the current timestamp to the arguments that the user passed to the function, stored in `args`
+   table.insert(args, '_updated_at') 
+   table.insert(args, time)
+
+   -- Run HSET with the updated argument list
+   return redis.call('HSET', hash, unpack(args))
+end
+
+local function touch(keys, args)
+   local hash = keys[1]
+
+   local hash_error = is_not_hash(hash)
+   if hash_error ~= nil then
+       return redis.error_reply(hash_error)
+   end
+
+   return redis.call('HSET', hash, '_updated_at', get_time())
+end   
+
+redis.register_function('my_hset', hset)
+redis.register_function('my_touch', touch)
+```
+
+
+
+### Using Function flags
+
+In this step, we'll get familiar with the use of [Function flags](https://redis.io/docs/manual/programmability/functions-intro/#function-flags) - a piece of information that describes the circumstances under which a function is allowed to run. Currently, we support 5 flags:
+
+
+
+* `no-writes` - this flag indicates that the script only reads data but never writes.
+* `allow-oom` - this flag allows a script to execute even when the server is out of memory (OOM).
+* `allow-stale` - this flag enables running the script against a stale replica.
+* `no-cluster` - this flag doesn't allow the script to run in a clustered database.
+* `allow-cross-slot-keys` - this flag allows a script to access keys from multiple slots.
+
+To best illustrate why function flags are useful we'll work with a simple example that gets the basic info and favourite colours of a user. Save the following snippet in a file named `get_user.lua`:
+
+
+```
+#!lua name=mynewlib
+local function get_user(keys, args)
+   local hash = keys[1]  -- Get the key name
+
+   local user = redis.call('HGETALL', hash)
+   local user_colours = redis.call('SMEMBERS', hash .. ':colours')
+
+   table.insert(user, #user+1, 'colours')
+   table.insert(user, #user+1, user_colours)
+
+
+   return user
+end
+
+redis.register_function('get_user', get_user)
+```
+
+
+If we try to execute this function with `FCALL_RO` - the read-only variant of `FCALL`, we will get an error, even though it only performs read operations. In order to demonstrate that the function is read-only, we need to use the `no-writes` flag in its registration:
+
+
+```
+$ cat /path/to/get_user.lua | redis-cli -x FUNCTION LOAD
+
+redis-cli> FCALL_RO get_user 1 user:1
+(error) ERR Can not execute a script with write flag using *_ro command.
+
+#!lua name=mynewlib
+
+local function get_user(keys, args)
+   local hash = keys[1]  -- Get the key name
+
+   local user = redis.call('HGETALL', hash)
+   local user_colours = redis.call('SMEMBERS', hash .. ':colours')
+
+   table.insert(user, #user+1, 'colours')
+   table.insert(user, #user+1, user_colours)
+
+
+   return user
+end
+
+redis.register_function{
+ function_name='get_user',
+ callback=get_user,
+ flags={ 'no-writes' }
+}
+```
+
+
+Finally this will give us the expected result:
+
+
+```
+$ cat /path/to/get_user.lua | redis-cli -x FUNCTION LOAD REPLACE
+
+redis-cli> FCALL_RO get_user 1 user:1
+1) "email"
+2) "foo@bar.com"
+3) "colours"
+4) 1) "green"
+  2) "red"
+  3) "blue"
+```
+
+
+That's it, you now know how to write, load and execute Redis Function. Congratulations!
+
+For more information on Redis Functions you can check the [Redis Functions documentation](https://redis.io/docs/manual/programmability/functions-intro/) and to learn more about the Lua API you can check the [Redis Lua API Reference](https://redis.io/docs/manual/programmability/lua-api/).
