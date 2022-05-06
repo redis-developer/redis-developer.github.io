@@ -139,7 +139,7 @@ If your app doesn point to the right repository, you can manually add it:
 ```
 
 
-### Step 8. Accessing the application
+### Step 8. Accessing the heroku app
 
 Open [https://powerful-fortress-83061.herokuapp.com/](https://powerful-fortress-83061.herokuapp.com/) to see your application.
 
@@ -169,7 +169,7 @@ The application uses cookies to identify users.  On the first request, the user 
 - Get requests number for user: `GET requests.<USER_IDENTIFIER>`
   - E.g `GET requests.0cbc6611f5540bd0809a388dc95a615b`
 
-### Code for rate limiting
+### Code for rate limit
 
 ```Go
 func (c Controller) AcceptedRequest(user string, limit int) (int, bool) {
