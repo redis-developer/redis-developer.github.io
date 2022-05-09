@@ -7,6 +7,12 @@ authors: [ajeet]
 ---
 
 ### Step 1: Download, extract and compile Redis
+
+Redis stands for  REmote  DIctionary  Server. Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+In order to install Redis from source, first you need to download the latest Redis source code. 
+The Redis source code files are available on [this download](https://download.redis.io/redis-stable.tar.gz). You can verify the integrity of these downloads by checking them against the digests in the [redis-hashes git repository](https://github.com/redis/redis-hashes)
+
  
 ```
 wget http://download.redis.io/redis-stable.tar.gz
@@ -27,13 +33,18 @@ The binaries that are now compiled are available in the src directory.
 
 
 ### Step 2: Running Redis Server
+
+Install Redis server by running the following redis command:
  
 ```
 $ redis-server
 ```
+Please note that you don't need to restart the Redis service
 
 ### Step 3: Interacting with Redis Client
 
+Once the redis installation gets completed, you can use redis client software to perform the remote connection to the redis instance.
+Use the below redis cli command to SET and GET the data values:
 ```
 $ src/redis-cli
 redis> set foo bar
@@ -43,9 +54,12 @@ redis> get foo
 ```
 
 Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+The redis.conf is a configuration file recommended in case you want to configure Redis.
+
 
 ### Next Step
 
 - [Connect to Redis database using RedisInsight](/explore/redisinsight)
 - [Develop with Java and Redis](/develop/java)
+- [High availability with Redis Sentinel](https://redis.io/docs/manual/sentinel/)
 - [Develop with Python and Redis](/develop/python)
