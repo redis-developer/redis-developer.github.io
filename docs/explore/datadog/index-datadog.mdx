@@ -37,8 +37,9 @@ Datadog allows you to:
 
 - Collect metrics from various infrastructure components out of the box
 - Display that data in easy to read dashboards
-- Monitor performance metrics and alert accordingly
+- Monitoring performance metrics and alerting accordingly
 - Correlate log entries with metrics to quickly drill down to root causes
+- Distributed tracing
 
 ### Key Performance Indicators
 
@@ -61,7 +62,7 @@ Since Redis is popular due to performance, generally you would expect most opera
 |   Cause    | Factors     |
 | ---------- | ----------- | 
 | Spike in requests | Check both the Network Traffic and Operations Per Second metrics to determine if there is a corresponding increase |
-| Slow-running queries | Check the slow log in the Redis Enterprise UI for the database |
+| Slow-running queries | Check the slow logs in the Redis Enterprise UI for the database |
 | Insufficient compute resources | Check to see if the CPU Usage, Memory Usage Percentage, or Evictions are increasing |
 
 
@@ -71,7 +72,7 @@ Since Redis is popular due to performance, generally you would expect most opera
 |   Action   | Method     |
 | ---------- | ----------- | 
 | Increase resources | The database can be scaled up online by going to the Web UI and enabling clustering on the database. In extreme cases, more nodes can be added to the cluster and resources rebalanced |
-| Inefficient queries | Redis allows you to view a slow log with a tunable threshold. It can be viewed either in the Redis Enterprise UI or by running:   redis-cli -h HOST -p PORT -a PASSWORD SLOWLOG GET 100 |
+| Inefficient queries | Redis allows you to view slow logs with a tunable threshold. It can be viewed either in the Redis Enterprise UI or by running:   `redis-cli -h HOST -p PORT -a PASSWORD SLOWLOG GET 100` |
 
 
 
@@ -224,7 +225,7 @@ Follow the steps below to set up the Datadog agent to monitor your Redis Enterpr
 
 
 
-![alt_text](images/image1.png "image_tooltip")
+![alt_text](images/image1.png)
 
 
 
@@ -237,7 +238,7 @@ Follow the steps below to set up the Datadog agent to monitor your Redis Enterpr
 
 
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](images/image2.png)
 
 
 
@@ -255,7 +256,7 @@ Before we jump into the installation, let’s look at the various modes that you
 
 
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/image3.png)
 
 
 
@@ -268,7 +269,7 @@ In external monitor mode, a Datadog agent running outside of the cluster can mon
 
 Using localhost mode, the integration can be installed on every node of a Redis Enterprise cluster. This allows the user to correlate OS level metrics with Redis-specific metrics for faster root cause analysis. Only the  Redis Enterprise cluster leader will submit metrics and events to Datadog. In the event of a migration of the cluster leader, the new cluster leader will begin to submit data to Datadog.
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image4.png)
 
 For this demo, we will be leveraging localhost mode as we just have two nodes to configure.
 
@@ -279,7 +280,7 @@ For this demo, we will be leveraging localhost mode as we just have two nodes to
 Pick up your preferred OS distribution and install the Datadog agent
 
 
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/image5.png)
 
 
 Run the following command to install the integration wheel with the Agent. Replace the integration version with 1.0.1.
@@ -368,33 +369,33 @@ instances:
 
 
 
-### Step 5. Viewing the Datadog Dashboard UI
+### Step 5. Viewing the Datadog UI
 
 Find the Redis Enterprise Integration under the Integration Menu:
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/image6.png)
 
 Displaying the host reporting data to Datadog:
 
-![alt_text](images/image7.png "image_tooltip")
+![alt_text](images/image7.png)
 
 Listing the Redis Enterprise dashboards:
 
-![alt_text](images/image8.png "image_tooltip")
+![alt_text](images/image8.png)
 
 Host details under Datadog Infrastructure list:
 
 
 
-![alt_text](images/image10.png "image_tooltip")
+![alt_text](images/image10.png)
 
 Datadog dashboard displaying host metrics of the 1st host (CPU, Memory Usage, Load Average etc):
 
-![alt_text](images/image11.png "image_tooltip")
+![alt_text](images/image11.png)
 
 Datadog dashboard displaying host metrics of the 2nd host:
 
-![alt_text](images/image12.png "image_tooltip")
+![alt_text](images/image12.png)
 
 
 
@@ -429,7 +430,7 @@ Running the `datadog-agent` command shows that the Redis Enterprise integration 
 ### Redis Enterprise Cluster Top View
 
 
-![alt_text](images/image13.png "image_tooltip")
+![alt_text](images/image13.png "")
 
 
 
@@ -443,7 +444,7 @@ Let’s run a memory benchmark tool called redis-benchmark to simulate an arbitr
 ```
 
 
-![alt_text](images/image14.png "image_tooltip")
+![alt_text](images/image14.png)
 
 
 
@@ -467,7 +468,7 @@ Run this command until it fills up your database to where you want it for testin
 ```
 
 
-![alt_text](images/image15.png "image_tooltip")
+![alt_text](images/image15.png)
 
 
 
@@ -475,7 +476,7 @@ Run this command until it fills up your database to where you want it for testin
 The Datadog Events Stream shows an instant view of your infrastructure and services events to help you troubleshoot issues happening now or in the past. The event stream displays the most recent events generated by your infrastructure and the associated monitors, as shown in the diagram below.
 
 
-![alt_text](images/image15.png "image_tooltip")
+![alt_text](images/image15.png)
 
 
 

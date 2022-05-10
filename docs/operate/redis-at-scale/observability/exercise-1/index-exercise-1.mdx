@@ -7,4 +7,117 @@ slug: /operate/redis-at-scale/observability/exercise-1
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Hello World! Observability
+Clone this repo if you have not already: [https://github.com/redislabs-training/ru301](https://github.com/redislabs-training/ru301)
+
+Change into the observability-stats directory.
+
+<strong>Requirements</strong>
+
+- docker
+- docker-compose
+- internet connection
+
+<strong>Starting Environment</strong>
+
+```bash
+$ docker-compose up -d
+```
+
+<strong>Connect to the Environment</strong>
+
+In a terminal run this command to get a shell prompt inside the running docker container:
+
+```bash
+$ docker-compose exec redis_stats bash
+```
+
+<strong>Generate load</strong>
+
+A simple way to to generate some load is to open another terminal and run:
+
+```bash
+$ docker-compose exec redis_stats redis-benchmark
+```
+
+<strong>Info</strong>
+
+Since most of the stats data comes from the INFO command you should first run this to view that there.
+
+```bash
+$ redis-cli INFO
+```
+
+Try piping this output to a file.
+
+<strong>Memory usage</strong>
+
+Since we generally recommend setting the `maxmemory` size, it is possible to calculate the percentage of memory in use and alert based on results of the `maxmemory` configuration value and the used_memory stat.
+
+First set the maxmemory.
+
+```bash
+$ redis-cli config set maxmemory 100000
+```
+
+Then you can pull the two data points to see how that could be used to calculate memory usage.
+
+```bash
+$ redis-cli INFO | grep used_memory:
+$ redis-cli CONFIG GET maxmemory
+```
+
+<strong>Client data</strong>
+
+You can pull the clients section of the INFO command:
+
+```bash
+$ redis-cli info clients
+```
+or maybe a particular metric you would want to track:
+
+```bash
+$ redis-cli info clients | grep connected_clients
+```
+<strong>Stats section</strong>
+
+Use `redis-cli` to list the full 'stats' section.
+
+<strong>Hit ratio</strong>
+
+A cache hit/miss ratio could be generated using two data points in the stats section.
+
+```bash
+$ redis-cli INFO stats | grep keyspace 
+```
+
+<strong>Evicted keys</strong>
+
+Eviction occurs when redis has reached its maximum memory and maxmemory-policy in redis.conf is set to something other than volatile-lru.
+
+```bash
+$ redis-cli INFO stats | grep evicted_keys
+```
+
+<strong>Expired keys</strong>
+
+It is a good idea to keep an eye on the expirations to make sure redis is performing as expected.
+
+```bash
+$ redis-cli INFO stats | grep expired_keys
+```
+
+<strong>Keyspace</strong>
+
+The following data could be used for graphing the size of the keyspace as a quick drop or spike in the number of keys is a good indicator of issues.
+
+```bash
+$ redis-cli INFO keyspace
+```
+
+<strong>Workload (connections received, commands processed)</strong>
+
+The following stats are a good indicator of workload on the Redis server.
+
+```bash
+$ redis-cli INFO stats | egrep "^total_"
+```

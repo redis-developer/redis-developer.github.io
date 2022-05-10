@@ -7,4 +7,222 @@ slug: /operate/redis-at-scale/observability/identifying-issues
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Hello World! Observability
+Besides the metrics from the data points from info, memory and the latency framework in the sections above, you may need to pull data from other sources when troubleshooting.
+
+## Availability
+The redis server will respond to the `PING` command when running properly:
+
+```bash
+$ redis-cli -h redis.example.com -p 6379 PING
+PONG
+```
+
+## Slowlog
+Redis Slow Log is a system to log queries that exceed a specific execution time which does not include I/0 operations like client communication.  It is enabled by default with two configuration parameters.
+
+```bash
+slowlog-log-slower-than 1000000
+```
+
+This indicates if there is an execution time longer than the time in microseconds, in this case one second, it will be logged. The slowlog can be disabled using a value of -1.  It can also be set to log every command with a value of 0.
+
+```bash
+slowlog-max-len 128
+```
+
+This sets the length of the slow log.  When a new command is logged the oldest one is removed from the queue.
+
+
+These values can also be changed at runtime using the `CONFIG SET` command.
+
+
+You can view the current length of the slow log using the `LEN` subcommand:
+
+
+```bash
+redis.cloud:6379> slowlog len
+(integer) 11
+```
+
+Entries can be pulled off of the slow log using the `GET` subcommand.
+
+
+```bash
+redis.cloud:6379> slowlog get 2
+1) 1) (integer) 10
+   2) (integer) 1616372606
+   3) (integer) 600406
+   4) 1) "debug"
+      2) "sleep"
+      3) ".6"
+   5) "172.17.0.1:60546"
+   6) ""
+2) 1) (integer) 9
+   2) (integer) 1616372602
+   3) (integer) 600565
+   4) 1) "debug"
+      2) "sleep"
+      3) ".6"
+   5) "172.17.0.1:60546"
+   6) ""
+```
+
+The slow log can be reset using the `RESET` subcommand.
+
+
+```bash
+redis.cloud:6379> slowlog reset
+OK
+redis.cloud:6379> slowlog len
+(integer) 0
+```
+
+## Scanning keys
+There are a few options that can be passed to redis-cli that will trigger a keyspace analysis.  They use the `SCAN` command so they should be safe to run without impacting operations.  You can see in the output of all of them there is a throttling option if needed.
+
+<hr/>
+<strong>Big Keys:</strong> This option will scan the dataset for big keys and provide information about them.
+
+
+```bash
+$ redis-cli --bigkeys 
+
+# Scanning the entire keyspace to find biggest keys as well as
+# average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec
+# per 100 SCAN commands (not usually needed).
+
+[00.00%] Biggest string found so far '"counter:__rand_int__"' with 6 bytes
+[00.00%] Biggest hash   found so far '"myhash"' with 1 fields
+[00.00%] Biggest list   found so far '"mylist"' with 200000 items
+
+-------- summary -------
+
+Sampled 4 keys in the keyspace!
+Total key length in bytes is 48 (avg len 12.00)
+
+Biggest   list found '"mylist"' has 200000 items
+Biggest   hash found '"myhash"' has 1 fields
+Biggest string found '"counter:__rand_int__"' has 6 bytes
+
+1 lists with 200000 items (25.00% of keys, avg size 200000.00)
+1 hashs with 1 fields (25.00% of keys, avg size 1.00)
+2 strings with 9 bytes (50.00% of keys, avg size 4.50)
+0 streams with 0 entries (00.00% of keys, avg size 0.00)
+0 sets with 0 members (00.00% of keys, avg size 0.00)
+0 zsets with 0 members (00.00% of keys, avg size 0.00)
+```
+
+<hr/>
+<strong>Mem Keys:</strong> Similarly to big keys mem keys will look for the biggest keys but also report on the average sizes.
+
+
+```bash
+$ redis-cli --memkeys
+
+# Scanning the entire keyspace to find biggest keys as well as
+# average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec
+# per 100 SCAN commands (not usually needed).
+
+[00.00%] Biggest string found so far '"counter:__rand_int__"' with 62 bytes
+[00.00%] Biggest string found so far '"key:__rand_int__"' with 63 bytes
+[00.00%] Biggest hash   found so far '"myhash"' with 86 bytes
+[00.00%] Biggest list   found so far '"mylist"' with 860473 bytes
+
+-------- summary -------
+
+Sampled 4 keys in the keyspace!
+Total key length in bytes is 48 (avg len 12.00)
+
+Biggest   list found '"mylist"' has 860473 bytes
+Biggest   hash found '"myhash"' has 86 bytes
+Biggest string found '"key:__rand_int__"' has 63 bytes
+
+1 lists with 860473 bytes (25.00% of keys, avg size 860473.00)
+1 hashs with 86 bytes (25.00% of keys, avg size 86.00)
+2 strings with 125 bytes (50.00% of keys, avg size 62.50)
+0 streams with 0 bytes (00.00% of keys, avg size 0.00)
+0 sets with 0 bytes (00.00% of keys, avg size 0.00)
+0 zsets with 0 bytes (00.00% of keys, avg size 0.00)
+```
+<hr/>
+<strong>Hot Keys:</strong> The hot keys scan is only available when the `maxmemory-policy` is set to `volatile-lfu` or `allkeys-lfu`. If you need to identity hot keys you can add this argument to redis-cli.
+
+```bash
+$ redis-cli --hotkeys
+
+# Scanning the entire keyspace to find hot keys as well as
+# average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec
+# per 100 SCAN commands (not usually needed).
+
+[00.00%] Hot key '"key:__rand_int__"' found so far with counter 37
+
+-------- summary -------
+
+Sampled 5 keys in the keyspace!
+hot key found with counter: 37  keyname: "key:__rand_int__"
+```
+<hr/>
+<strong>Monitor:</strong> The `MONITOR` command allows you to see a stream of every command running against your Redis instance.
+
+
+```bash
+127.0.0.1:6379 > monitor
+OK
+1616541192.039933 [0 127.0.0.1:57070] "PING"
+1616541276.052331 [0 127.0.0.1:57098] "set" "user:2398423hu" "KutMo"
+```
+<strong>
+Note: because `MONITOR` streams back all commands, its use comes at a cost. It has been known to reduce performance by up to 50% so use with caution!
+</strong>
+
+## Setting up and using the Redis Log File
+The Redis log file is the other important log you need to be aware of. It contains useful information for troubleshooting configuration and deployment errors. If you don't configure Redis logging, troubleshooting will be significantly harder.
+
+
+Redis has four logging levels, which you can configure directly in `redis.conf` file. 
+
+
+Log Levels:
+
+
+- WARNING
+- NOTICE
+- VERBOSE
+- DEBUG
+
+Redis also supports sending the log files to a remote logging server through the use of syslog.
+
+
+Remote logging is important to many security professionals. These remote logging servers are frequently used to monitor security events and manage incidents. These centralized log servers perform three common functions: ensure the integrity of your log files, ensure that logs are retained for a specific period of time, and to correlate logs against other system logs to discover potential attacks on your infrastructure.
+
+
+Let's set up logging on our Redis deployment. First we'll open our `redis.conf` file
+
+```bash
+$ sudo vi /etc/redis/redis.conf
+```
+The `redis.conf` file has an entire section dedicated to logging.
+
+
+First, find the logfile directive in the `redis.conf` file. This will allow you to define the logging directory. For this example lets use `/var/log/redis/redis.log`.
+
+If you'd like to use a remote logging server, then you'll need to  uncomment the lines `syslog-enabled`, `syslog-ident` and `syslog-facility`, and ensure that `syslog-enabled` is set to yes.
+
+Next, we'll restart the Redis server.
+
+
+You should see the log events indicating that  Redis is starting.
+
+
+```bash
+$ sudo tail -f /var/log/redis/redis.log
+```
+
+And next let's check that we are properly writing to syslog. You should see these same logs.
+
+
+```bash
+$ less /var/log/syslog | grep redis
+```
+
+Finally, you’ll need to send your logs to your remote logging server to ensure your logs will be backed up to this server. To do this, you’ll also have to modify the rsyslog configuration. This configuration varies depending on your remote logging server provider.

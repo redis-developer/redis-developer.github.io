@@ -12,9 +12,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
 
+Real-time chat app is an online communication channel that allows you to conduct real-time conversations. More and more developers are tapping into the power of Redis as it is extremely fast & due to its support for variety of rich data structure such as Lists, Sets, Sorted Sets, Hashes etc. Redis comes along with a Pub/Sub messaging feature functionality that allows developers to scale the backend by spawning multiple server instances.
+Please note that this code is open source. You can find the link at the end of this tutorial.
 
-Real-time chat is an online communication channel that allows you to conduct real-time conversations. More and more developers are tapping into the power of Redis as it is extremely fast & due to its support for variety of rich data structure such as Lists, Sets, Sorted Sets, Hashes etc. 
-Redis comes along with a Pub/Sub messaging functionality that allows developers to scale the backend by spawning multiple server instances
 
 <div class="text--center">
 <iframe width="760" height="415" src="https://www.youtube.com/embed/miK7xDkDXF0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -22,17 +22,22 @@ Redis comes along with a Pub/Sub messaging functionality that allows developers 
 
 
 
-In this tutorial, we will see how to build a basic chat application built with Flask, Socket.IO and Redis.
-This example uses pub/sub feature combined with web-sockets for implementing the message communication between client and server.
+In this tutorial, we will see how to develop real time messaging apps with Flask, Socket.IO and Redis. This example uses Redis Pub/sub feature  combined with websockets for implementing the real time chat app communication between client and server.
 
 
+Please note that this code is open source and implements the basic features of a live chat app. You can find the link at the end of this tutorial.
 
 
-### Step 1. Prerequisite
+### Step 1. Prerequisites
+
+In order to perform this instant messaging app development, you will need the following software:
 
 - Python 3.6+
 
 ### Step 2. Clone the repository 
+
+First of all, we will clone the project that implements basic chat functionality.
+
 
 ```
 git clone https://github.com/redis-developer/basic-redis-chat-app-demo-python
@@ -48,12 +53,14 @@ yarn install
 
 ### Step 4. Starting the frontend
 
+To run the frontend of the chat app, run the following command:
+
 ```
 yarn start
 ```
 
 ```
-You can now view client in the browser.
+You can now access a chat window in the browser.
 
   Local:            http://localhost:3000
   On Your Network:  http://192.168.1.9:3000
@@ -72,10 +79,9 @@ cd ..
 pip3 install -r requirements.txt
 ```
 
-### Step 5: Running  Backend
+### Step 5: Running the Backend
 
-
-
+To start the fully chat app, run the following commands:
 
 
 ```
@@ -94,11 +100,10 @@ python3 app.py
 
 ![Chatapp](chatapp_homepage.png)
 
-### How it works?
+### How does it work?
 
+This instant messaging app server works as a basic REST API which involves keeping the session and handling the user state in the chat room (besides the WebSocket/real-time part). When the server starts, the initialization step occurs. At first, a new Redis connection is established and it's checked whether it's needed to load the demo data.
 
-The chat server works as a basic REST API which involves keeping the session and handling the user state in the chat rooms (besides the WebSocket/real-time part).
-When the server starts, the initialization step occurs. At first, a new Redis connection is established and it's checked whether it's needed to load the demo data.
 
 #### Initialization
 
@@ -122,7 +127,7 @@ Example:
  ```
 
 Additionally, each user is added to the default "General" room. 
-For handling rooms for each user, we have a set that holds the room ids. Here's an example command of how to add the room: 
+For handling chat rooms for each user, we have a set that holds the chat room ids. Here's an example command of how to add the room: 
 
  ```bash
   SADD user:1:rooms "0"
@@ -194,17 +199,17 @@ User data is stored in a hash set where each user entry contains the next values
 - username: unique user name;
 - password: hashed password
 
-- Additionally a set of rooms is associated with user
+- Additionally a set of chat rooms is associated with user
 - Rooms are sorted sets which contains messages where score is the timestamp for each message
-- Each room has a name associated with it
-- Online set is global for all users is used for keeping track on which user is online.
-- User hash set is accessed by key user:{userId}. The data for it stored with HSET key field data. User id is calculated by incrementing the total_users key (INCR total_users)
+- Each chat room has a name associated with it
+- The "online" set is global for all users is used for keeping track on which user is online.
+- Each user hash's set is accessed by key user:{userId}. The data for it stored with `HSET key field data`. User ID is calculated by incrementing the `total_users` key (`INCR total_users`)
 
-- Username is stored as a separate key (username:{username}) which returns the userId for quicker access and stored with SET username:{username} {userId}.
+- Usernames are stored as separate keys (`username:{username}`) which returns the userId for quicker access and stored with `SET username:{username} {userId}`.
 
-- Rooms which user belongs too are stored at user:{userId}:rooms as a set of room ids. A room is added by SADD user:{userId}:rooms {roomId} command.
+- Rooms which a user belongs to are stored at `user:{userId}:rooms` as a set of chat room ids. A room is added by `SADD user:{userId}:rooms {roomId}` command.
 
-- Messages are stored at room:{roomId} key in a sorted set (as mentioned above). They are added with ZADD room:{roomId} {timestamp} {message} command. Message is serialized to an app-specific JSON string.
+- Messages are stored at `room:{roomId}` key in a sorted set (as mentioned above). They are added with the `ZADD room:{roomId} {timestamp} {message}` command. Messages are serialized to an app-specific JSON string.
 
 ### How the data is accessed?
 
@@ -225,9 +230,9 @@ Example:
   SMEMBERS user:2:rooms
  ```
 
-This will return IDs of rooms for user with ID: 2
+This will return IDs of chat rooms for user with ID: 2
 
-- Get list of messages ZREVRANGE room:{roomId} {offset_start} {offset_end}. 
+- Get list of messages `ZREVRANGE room:{roomId} {offset_start} {offset_end}`. 
 Example: 
 
  ```
@@ -237,13 +242,13 @@ It will return 50 messages with 0 offsets for the private room between users wit
 
 
 
-## Further References
+## Related Posts
 
-- [Building a sample Redis Chat application demo in .Net](https://github.com/redis-developer/basic-redis-chat-app-demo-dotnet)
-- [Building a Sample Redis Chat application demo in Java](https://github.com/redis-developer/basic-redis-chat-app-demo-java)
-- [Building a Sample Redis Chat application demo in NodeJS](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs)
-- [Building a Sample Redis Chat application demo in Go](https://github.com/redis-developer/basic-redis-chat-demo-go)
-- [Building a Sample Redis Chat application demo in Ruby](https://github.com/redis-developer/basic-redis-chat-demo-ruby)
+- [Building a Chat application demo in .Net](https://github.com/redis-developer/basic-redis-chat-app-demo-dotnet)
+- [Building a Chat application demo in Java](https://github.com/redis-developer/basic-redis-chat-app-demo-java)
+- [Building a Chat application demo in NodeJS](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs)
+- [Building a Chat application demo in Go](https://github.com/redis-developer/basic-redis-chat-demo-go)
+- [Building a Chat application demo in Ruby](https://github.com/redis-developer/basic-redis-chat-demo-ruby)
  
 
 

@@ -51,7 +51,7 @@ Select "Connect to a Redis database"
 Enter the requested details, including Name, Host (endpoint), Port, and Password.  Then click “ADD REDIS DATABASE”.
 
 
-![alt_text](images/image1.png "image_tooltip")
+![alt_text](images/image1.png)
 
 We will look at 2 datasets - one is OpenBeerDB and other is Movie datasets.
 Let us begin with OpenBeerDB sample dataset.
@@ -64,7 +64,7 @@ To demonstrate RediSearch, we will use OpenbeerDB dataset. The dataset is availa
 
 
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](images/image2.png)
 
 
 Let us clone the repository to access the dataset:
@@ -101,7 +101,7 @@ Adding beer data to RediSearch..
 
 
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/image3.png)
 
 
 Run the below query:
@@ -111,18 +111,18 @@ Run the below query:
 "@abv:[5 6]"
 ```
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image4.png)
 
 
 You can click on “{:} “ to get a JSON view as shown below:
 
 
 
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/image5.png)
 
 
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/image6.png)
 
 
 You can download the data in CSV format.
@@ -130,11 +130,11 @@ You can download the data in CSV format.
 
 
 
-![alt_text](images/image7.png "image_tooltip")
+![alt_text](images/image7.png)
 
 
 
-![alt_text](images/image8.png "image_tooltip")
+![alt_text](images/image8.png)
 
 
 #### Query: All beers with ABV higher than 5% but lower than 6%
@@ -143,7 +143,7 @@ The beers are added to the RediSearch index weighted by ABV. So by default, the 
 
 
 
-![alt_text](images/image9.png "image_tooltip")
+![alt_text](images/image9.png)
 
 
 #### Query: All beers with ABV higher than 5% but lower than 6% within the specified limits
@@ -153,14 +153,14 @@ The beers are added to the RediSearch index weighted by ABV. So by default, the 
 ```
 
 
-![alt_text](images/image10.png "image_tooltip")
+![alt_text](images/image10.png)
 
 
 #### Query: Find out Irish Ale and German Ale beers with ABV greater than 9%:
 
 
 
-![alt_text](images/image11.png "image_tooltip")
+![alt_text](images/image11.png)
 
 
 ### Step 7. Using AGGREGATION
@@ -177,7 +177,7 @@ FT.AGGREGATE "beerIdx" "@abv:[5 6]" limit 0 1060 GROUPBY 1 @breweryid
 ```
 
 
-![alt_text](images/image12.png "image_tooltip")
+![alt_text](images/image12.png)
 
 
 Let us look at Movie sample dataset too.
@@ -192,7 +192,7 @@ Let us look at Movie sample dataset too.
 [Follow this link](/explore/redisinsight/getting-started) to setup RedisInsight locally in your system
 
 
-![alt_text](images/image1.png "image_tooltip")
+![alt_text](images/image1.png)
 
 
 
@@ -252,7 +252,7 @@ Once you are connected to your Redis instance run the following commands:
 
 ```
 
-![alt_text](images/image13.png "image_tooltip")
+![alt_text](images/image13.png)
 
 Now it is possible to get information from the hash using the movie ID. For example if you want to get the title, and rating execute the following command:
 
@@ -317,7 +317,7 @@ When creating a index you define:
 
 
 
-![alt_text](images/image14.png "image_tooltip")
+![alt_text](images/image14.png)
 
 The database contains a few movies, and an index, it is now possible to execute some queries.
 
@@ -326,7 +326,7 @@ The database contains a few movies, and an index, it is now possible to execute 
 
 
 
-![alt_text](images/image15.png "image_tooltip")
+![alt_text](images/image15.png)
 
 
 #### Query: Limit the list of fields returned by the query using the RETURN parameter
@@ -340,7 +340,7 @@ Later when looking at the query syntax in more detail you will learn more about 
 
 It is also possible to limit the list of fields returned by the query using the `RETURN` parameter, let's run the same query, and return only the title and release_year:
 
-![alt_text](images/image16.png "image_tooltip")
+![alt_text](images/image16.png)
 
 
 #### Query: All the movies that contains the string "war but NOT the jedi one"
@@ -354,7 +354,7 @@ _"war -jedi" RETURN 2 title release_year_
 
 
 
-![alt_text](images/image17.png "image_tooltip")
+![alt_text](images/image17.png)
 
 
 ### Step 14: Fuzzy Search
@@ -364,7 +364,7 @@ All the movies that contains the string "gdfather using fuzzy search"
 
 
 
-![alt_text](images/image18.png "image_tooltip")
+![alt_text](images/image18.png)
 
 
 #### Query: All Thriller movies
@@ -375,7 +375,7 @@ All the movies that contains the string "gdfather using fuzzy search"
 ```
 
 
-![alt_text](images/image19.png "image_tooltip")
+![alt_text](images/image19.png)
 
 
 #### Query: All Thriller or Action movies
@@ -387,7 +387,7 @@ All the movies that contains the string "gdfather using fuzzy search"
 
 
 
-![alt_text](images/image20.png "image_tooltip")
+![alt_text](images/image20.png)
 
 
 #### Query : All the movies released between 1970 and 1980 (included)
@@ -403,7 +403,7 @@ The FT.SEARCH syntax has two ways to query numeric fields:
 
 
 
-![alt_text](images/image21.png "image_tooltip")
+![alt_text](images/image21.png)
 
 
 ### Step 15. AGGREGATION
@@ -418,7 +418,7 @@ The FT.SEARCH syntax has two ways to query numeric fields:
 ```
 
 
-![alt_text](images/image22.png "image_tooltip")
+![alt_text](images/image22.png)
 
 
 #### Query: Number of movies by year from the most recent to the oldest
@@ -431,7 +431,7 @@ The FT.SEARCH syntax has two ways to query numeric fields:
 ```
 
 
-![alt_text](images/image23.png "image_tooltip")
+![alt_text](images/image23.png)
 
 
 ### Additional Links
