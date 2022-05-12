@@ -10,21 +10,21 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 Besides the metrics from the data points from info, memory and the latency framework in the sections above, you may need to pull data from other sources when troubleshooting.
 
 ## Availability
-The redis server will respond to the `PING` command when running properly:
+The Redis server will respond to the `PING` command when running properly:
 
 ```bash
 $ redis-cli -h redis.example.com -p 6379 PING
 PONG
 ```
 
-## Slowlog
-Redis Slow Log is a system to log queries that exceed a specific execution time which does not include I/0 operations like client communication.  It is enabled by default with two configuration parameters.
+## Slow Log
+Redis Slow Log is a system to log queries that exceed a specific execution time which does not include I/O operations like client communication.  It is enabled by default with two configuration parameters.
 
 ```bash
 slowlog-log-slower-than 1000000
 ```
 
-This indicates if there is an execution time longer than the time in microseconds, in this case one second, it will be logged. The slowlog can be disabled using a value of -1.  It can also be set to log every command with a value of 0.
+This indicates if there is an execution time longer than the time in microseconds, in this case one second, it will be logged. The slow log can be disabled using a value of -1.  It can also be set to log every command with a value of 0.
 
 ```bash
 slowlog-max-len 128
@@ -80,8 +80,8 @@ redis.cloud:6379> slowlog len
 ## Scanning keys
 There are a few options that can be passed to redis-cli that will trigger a keyspace analysis.  They use the `SCAN` command so they should be safe to run without impacting operations.  You can see in the output of all of them there is a throttling option if needed.
 
-<hr/>
-<strong>Big Keys:</strong> This option will scan the dataset for big keys and provide information about them.
+***
+**Big Keys:** This option will scan the dataset for big keys and provide information about them.
 
 
 ```bash
@@ -112,8 +112,8 @@ Biggest string found '"counter:__rand_int__"' has 6 bytes
 0 zsets with 0 members (00.00% of keys, avg size 0.00)
 ```
 
-<hr/>
-<strong>Mem Keys:</strong> Similarly to big keys mem keys will look for the biggest keys but also report on the average sizes.
+***
+**Mem Keys:** Similarly to big keys, mem keys will look for the biggest keys but also report on the average sizes.
 
 
 ```bash
@@ -144,8 +144,10 @@ Biggest string found '"key:__rand_int__"' has 63 bytes
 0 sets with 0 bytes (00.00% of keys, avg size 0.00)
 0 zsets with 0 bytes (00.00% of keys, avg size 0.00)
 ```
-<hr/>
-<strong>Hot Keys:</strong> The hot keys scan is only available when the `maxmemory-policy` is set to `volatile-lfu` or `allkeys-lfu`. If you need to identity hot keys you can add this argument to redis-cli.
+
+***
+
+**Hot Keys:** The hot keys scan is only available when the `maxmemory-policy` is set to `volatile-lfu` or `allkeys-lfu`. If you need to identity hot keys you can add this argument to redis-cli.
 
 ```bash
 $ redis-cli --hotkeys
@@ -161,8 +163,8 @@ $ redis-cli --hotkeys
 Sampled 5 keys in the keyspace!
 hot key found with counter: 37  keyname: "key:__rand_int__"
 ```
-<hr/>
-<strong>Monitor:</strong> The `MONITOR` command allows you to see a stream of every command running against your Redis instance.
+***
+**Monitor:** The `MONITOR` command allows you to see a stream of every command running against your Redis instance.
 
 
 ```bash
@@ -171,9 +173,8 @@ OK
 1616541192.039933 [0 127.0.0.1:57070] "PING"
 1616541276.052331 [0 127.0.0.1:57098] "set" "user:2398423hu" "KutMo"
 ```
-<strong>
-Note: because `MONITOR` streams back all commands, its use comes at a cost. It has been known to reduce performance by up to 50% so use with caution!
-</strong>
+
+**Note: because `MONITOR` streams back all commands, its use comes at a cost. It has been known to reduce performance by up to 50% so use with caution!**
 
 ## Setting up and using the Redis Log File
 The Redis log file is the other important log you need to be aware of. It contains useful information for troubleshooting configuration and deployment errors. If you don't configure Redis logging, troubleshooting will be significantly harder.
@@ -185,10 +186,10 @@ Redis has four logging levels, which you can configure directly in `redis.conf` 
 Log Levels:
 
 
-- WARNING
-- NOTICE
-- VERBOSE
-- DEBUG
+- `WARNING`
+- `NOTICE`
+- `VERBOSE`
+- `DEBUG`
 
 Redis also supports sending the log files to a remote logging server through the use of syslog.
 
@@ -196,7 +197,7 @@ Redis also supports sending the log files to a remote logging server through the
 Remote logging is important to many security professionals. These remote logging servers are frequently used to monitor security events and manage incidents. These centralized log servers perform three common functions: ensure the integrity of your log files, ensure that logs are retained for a specific period of time, and to correlate logs against other system logs to discover potential attacks on your infrastructure.
 
 
-Let's set up logging on our Redis deployment. First we'll open our `redis.conf` file
+Let's set up logging on our Redis deployment. First we'll open our `redis.conf` file:
 
 ```bash
 $ sudo vi /etc/redis/redis.conf
@@ -206,12 +207,12 @@ The `redis.conf` file has an entire section dedicated to logging.
 
 First, find the logfile directive in the `redis.conf` file. This will allow you to define the logging directory. For this example lets use `/var/log/redis/redis.log`.
 
-If you'd like to use a remote logging server, then you'll need to  uncomment the lines `syslog-enabled`, `syslog-ident` and `syslog-facility`, and ensure that `syslog-enabled` is set to yes.
+If you'd like to use a remote logging server, then you'll need to uncomment the lines `syslog-enabled`, `syslog-ident` and `syslog-facility`, and ensure that `syslog-enabled` is set to yes.
 
 Next, we'll restart the Redis server.
 
 
-You should see the log events indicating that  Redis is starting.
+You should see the log events indicating that Redis is starting.
 
 
 ```bash

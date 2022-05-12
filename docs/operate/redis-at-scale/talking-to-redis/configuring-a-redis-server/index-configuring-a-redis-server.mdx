@@ -7,9 +7,9 @@ slug: /operate/redis-at-scale/talking-to-redis/configuring-a-redis-server
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-The self-documented Redis configuration file called redis.conf has been mentioned many times as an example of well written documentation. In this file you can find all possible Redis configuration directives, together with a detailed description of what they do and their default values.
+The self-documented Redis configuration file called `redis.conf` has been mentioned many times as an example of well written documentation. In this file you can find all possible Redis configuration directives, together with a detailed description of what they do and their default values.
 
-You should always adjust the redis.conf file to your needs and instruct Redis to run based on it's parameters when running Redis in production.
+You should always adjust the `redis.conf` file to your needs and instruct Redis to run based on it's parameters when running Redis in production.
 
 The way to do that is by providing the path to the file when starting up your server:
 
@@ -39,5 +39,5 @@ It is possible to reconfigure a running Redis server without stopping or restart
 
 Not all the configuration directives are supported in this way, but you can check the output of the command `CONFIG GET *` first for a list of all the supported ones.
 
-Note that modifying the configuration on the fly has no effects on the `redis.conf` file so at the next restart of Redis the old configuration will be used instead. If you want to force update the redis.conf file with your current configuration settings you can run the `CONFIG REWRITE` command, which will automatically scan your redis.conf file and update the fields which don't match the current configuration value.
+Note that modifying the configuration on the fly has no effects on the `redis.conf` file so at the next restart of Redis the old configuration will be used instead. If you want to force update the `redis.conf` file with your current configuration settings you can run the `CONFIG REWRITE` command, which will automatically scan your `redis.conf` file and update the fields which don't match the current configuration value.
 

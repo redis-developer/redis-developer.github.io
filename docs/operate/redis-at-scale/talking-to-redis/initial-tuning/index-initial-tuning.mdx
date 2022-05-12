@@ -27,9 +27,9 @@ maxmemory 1288490188
 ```
 
 ## Set TCP-BACKLOG
-The Redis server uses the value of tcp-backlog to specify the size of the complete connection queue.
+The Redis server uses the value of `tcp-backlog` to specify the size of the complete connection queue.
 
-Redis passes this configuration as the second parameter of the listen(int s, int backlog) call.
+Redis passes this configuration as the second parameter of the `listen(int s, int backlog)` call.
 
 If you have many connections, you will need to set this higher than the default of 511. You can update this in Redis config file:
 
@@ -43,7 +43,7 @@ If you have many connections, you will need to set this higher than the default 
 # in order to get the desired effect.
 tcp-backlog 65536
 ```
-As the comment in redis.conf indicates, the value of somaxconn and tcp_max_syn_backlog may need to be increased at the OS level as well.
+As the comment in `redis.conf` indicates, the value of `somaxconn` and `tcp_max_syn_backlog` may need to be increased at the OS level as well.
 
 ## Set Read Replica Configurations
 One simple way to scale Redis is to add read replicas and take load off of the primary. This is most effective when you have a read-heavy (as opposed to write-heavy) workload. You will probably want to have the replica available and still serving stale data, even if the replication is not completed. You can update this in the Redis config:
