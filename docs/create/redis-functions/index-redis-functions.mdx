@@ -14,7 +14,7 @@ Functions are, in contrast to scripts, persisted in the .rdb and .aof files as w
 
 Redis has the capability of supporting multiple execution engines so in one of the future releases we’ll be able to write Redis Functions in Lua, Javascript and more languages, but at the moment (Redis v7.0) the only supported language is Lua.
 
-A common pain point for developers is to maintain a consistent view of  data entities through a logical schema. Redis Functions are ideally suited for solving this problem and in this tutorial we will demonstrate just that - we’ll create a library with two functions; the first one will make sure that we can automatically  set  `_created_at` and `_updated_at`  timestamps for hash keys and the second one will simply update the `_updated_at` timestamp without changing the other elements, simulating the “touch” Unix function. Let's go!
+A common pain point for developers is to maintain a consistent view of data entities through a logical schema. Redis Functions are ideally suited for solving this problem and in this tutorial we will demonstrate just that - we’ll create a library with two functions; the first one will make sure that we can automatically  set  `_created_at` and `_updated_at`  timestamps for hash keys and the second one will simply update the `_updated_at` timestamp without changing the other elements, simulating the “touch” Unix function. Let's go!
 
 
 ### Environment setup
