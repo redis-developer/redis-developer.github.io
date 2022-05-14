@@ -169,7 +169,7 @@ The application uses cookies to identify users.  On the first request, the user 
 - Get requests number for user: `GET requests.<USER_IDENTIFIER>`
   - E.g `GET requests.0cbc6611f5540bd0809a388dc95a615b`
 
-### Code for rate limit
+### Code for Rate Limiting
 
 ```Go
 func (c Controller) AcceptedRequest(user string, limit int) (int, bool) {
