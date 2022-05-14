@@ -16,7 +16,7 @@ Here are few popular terminologies used in Heroku:
 - Dynos: The Heroku Platform uses the container model to run and scale all Heroku apps. The containers used at Heroku are called “dynos". Dynos are isolated, virtualized Linux containers that are designed to execute code based on a user-specified command.
 - Buildpack: This is a config script for the build automation process, describing how a container image should be created.
 - Add-ons: These are tools and services for extending a Heroku application's functionality, such as data storage and processing, monitoring, or analytics.
-- Heroku CLI: It is a tool for building and running Heroku app from within the terminal. (Docker, too, uses its own CLI for working with the platform.) Learn about [Heroku Dev Center](https://devcenter.heroku.com/)
+- Heroku CLI: This is a tool for building and running Heroku apps from within the terminal. (Docker, too, uses its own CLI for working with the platform.) Learn about [Heroku Dev Center](https://devcenter.heroku.com/)
 - Git: It is a popular version control system for tracking changes to a software's source code. Heroku makes it easy to manage your app deployments with git, and has built-in integrations with the GitHub hosting platform for git repositories.
 
 Heroku recognizes an app as being written in Go by the existence of a `go.mod` file in the root directory. Heroku also supports govendor, godep & GB, but this tutorial focuses only on Go modules. Here's a quickstart guide to deploy Go apps on Heroku using Redis. We will be deploying a sample Chat application written in Go.
