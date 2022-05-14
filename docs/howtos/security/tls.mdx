@@ -78,7 +78,7 @@ docker cp redis-node1:/etc/opt/redislabs/proxy_cert.pem ./certificates
 
 ## Step 3. Generate a New Client Certificate
 
-Using the Two-Way SSL, you need to have a certificate for the client that will be used by Redis database proxy to trust the client.In this tutorial, we will use a self-signed certificate using OpenSSL. We will be creating a certificate for an application named `app_001`. Please note that you can create as many certificates as you want, or reuse this one for all servers/applications.
+Using the Two-Way SSL, you need to have a certificate for the client that will be used by Redis database proxy to trust the client. In this tutorial, we will use a self-signed certificate using OpenSSL. We will be creating a certificate for an application named `app_001`. Please note that you can create as many certificates as you want, or reuse this one for all servers/applications.
 
 Open a terminal and run the following commands:
 
