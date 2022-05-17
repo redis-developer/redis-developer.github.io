@@ -430,6 +430,13 @@ module.exports = {
                 'operate/redis-at-scale/observability/identifying-issues/index-identifying-issues',
               ]
             },
+            {
+              type: 'category',
+              label: '6 Course wrap-up',
+              items: [
+                'operate/redis-at-scale/course-wrap-up/index-wrap-up',
+              ]
+            },
           ]
         },
         {
