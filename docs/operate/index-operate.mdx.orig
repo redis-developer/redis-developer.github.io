@@ -57,7 +57,13 @@ The following links provide information about how to operate your Redis database
         page="/operate/provisioning"
         />
   </div>
-
+ <div class="col scale">
+     <RedisCard
+        title="Running Redis at Scale"
+        description="Create a performant, stable, and secure deployment of Redis"
+        page="/operate/redis-at-scale"
+        />
+  </div>
  <div class="col">
         <RedisCard
             title="Orchestration"

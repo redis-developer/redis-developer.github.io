@@ -1,0 +1,323 @@
+---
+id: index-data-points-in-redis
+title: 5.1 Data points in Redis
+sidebar_label: 5.1 Data points in Redis
+slug: /operate/redis-at-scale/observability/data-points-in-redis
+isEditable: false
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+There are several Redis metrics that can be viewed through `redis-cli`.
+
+## Redis INFO command
+Running the `INFO` command provides many of the metrics available in a single view.
+
+```bash
+127.0.0.1:6379> INFO
+# Server
+redis_version:6.0.1
+redis_git_sha1:00000000
+redis_git_dirty:0
+redis_build_id:e02d1d807e41d65
+redis_mode:standalone
+os:Linux 4.19.121-linuxkit x86_64
+…
+```
+There are several sections that can be pulled individually. For example, if you wanted to just get the `CLIENTS` section you can pass that section as an argument to the `INFO` command.
+
+```bash
+127.0.0.1:6379> INFO CLIENTS
+# Clients
+connected_clients:1
+client_recent_max_input_buffer:2
+client_recent_max_output_buffer:0
+blocked_clients:0
+tracking_clients:0
+clients_in_timeout_table:0
+```
+## Sections
+<strong>Server</strong>: the current Redis server info.
+
+Metrics of note:
+
+
+- `redis_version`
+- `process_id`
+- `config_file`
+- `uptime_in_seconds`
+- `uptime_in_days`
+
+<hr />
+<strong>Clients</strong>: available data on clients connected or failed connections.
+
+Metrics of note:
+- `connected_clients`
+- `blocked_clients`
+
+<hr />
+<strong>Memory</strong>: memory usage and stats
+
+Metrics of note:
+- `used_memory`
+- `mem_fragmentation_ratio`
+
+<hr />
+<strong>Persistence</strong>: RDB or AOF metrics
+
+Metrics of note:
+- `rdb_last_save_time`
+- `rdb_changes_since_last_save`
+- `aof_rewrite_in_progress`
+
+<hr />
+<strong>Stats</strong>: some general statistics
+
+Metrics of note:
+- `keyspace_hits`
+- `keyspace_misses`
+- `expired_keys`
+- `evicted_keys`
+- `instantaneous_ops_per_sec`
+
+<hr />
+<strong>Replication</strong>: replication data including primary/replica identifiers and offsets
+
+Metrics of note:
+- `master_link_down_since`
+- `connected_slaves`
+- `master_last_io_seconds_ago`
+
+<hr />
+<strong>CPU</strong>: compute consumption stats
+
+Metrics of note:
+- `used_cpu_sys`
+- `used_cpu_user`
+
+<hr />
+<strong>Modules</strong>: data from any loaded modules
+
+Metrics of note (per module):
+- `ver`
+- `options`
+
+<hr />
+<strong>Cluster</strong>: whether cluster is enabled
+
+Metric of note:
+- `cluster_enabled`
+
+<hr />
+<strong>Keyspace</strong>: keys and expiration data
+
+Metrics of note (per db):
+- `keys`
+- `expires`
+- `avg_ttl`
+
+The output can be read from the results or piped into a file.
+
+```bash
+127.0.0.1:6379> redis-cli INFO STATS > redis-info-stats
+```
+
+This could be done at intervals and consumed by a local or third party monitoring service.
+
+Some of the data returned by `INFO` are going to be static.  For example the Redis version which won't change until an update is made.  Other data is dynamic, for `keyspace_hits ÷ keyspace_misses`. The latter could be taken to compute a hit ratio and observed as a long term metric. The replication section field `master_link_down_since` could be a metric to connect an alert.
+
+Some examples of possible alerts that could be setup for a given metric:
+
+| Metric                   | Example Alert                                           |
+|--------------------------|---------------------------------------------------------|
+| `uptime_in_seconds`      | &lt; 300 seconds: to ensure the server is staying up    |
+| `connected_clients`      | &lt; minimum number of expected application connections |
+| `master_link_down_since` | > 30 seconds: replication should be operational         |
+| `rdb_last_save_time`     | > maximum acceptable interval without taking a snapshot |
+
+<strong>NOTE: This is not an exhaustive list, but just to give you an idea of how the metrics in INFO could be used.</strong>
+
+## Latency and stats data via redis-cli options
+The redis-cli client has some built-in options that allow you to pull some real-time latency and stats data.
+
+Note: these are not available as commands from Redis but as options in redis-cli.
+
+<strong>Latency options:</strong>
+
+Continuously sample latency:
+
+```bash
+$ redis-cli --latency
+min: 1, max: 17, avg: 4.03 (927 samples)
+```
+The `raw` or `csv` output flag can be added:
+
+```bash
+$ redis-cli --latency --csv
+1,4,1.94,78
+```
+In order to sample for longer than one second you can use `latency-history` which has a default interval of 15 seconds but can be specified using the `-i` param.
+
+```bash
+$ redis-cli --latency-history -i 60 
+min: 1, max: 30, avg: 4.84 (328 samples)
+```
+This can also be combined with the `csv` or `raw` output format flag.
+
+```bash
+$ redis-cli --latency-history -i 60 --csv
+13,13,13.00,1
+5,13,9.00,2
+3,13,7.00,3
+3,13,6.00,4
+3,13,5.60,5
+2,13,5.00,6
+2,13,5.43,7
+2,13,5.62,8
+2,13,5.22,9
+2,13,5.00,10
+1,13,4.64,11
+…
+```
+
+Both of these could be piped to a file as well.
+
+The `latency-dist` option shows latency as a spectrum. The default interval is one second but can be changed using the `-i` param.
+
+<img height="50%" width="50%" src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/5.2/image2.png" alt="Latency Distribution diagram" />
+<strong>Stats option:</strong>
+
+Get rolling stats from the server using the `stat` flag.
+
+```bash
+$ redis-cli --stat 
+------- data ------ --------------------- load -------------------- - child -
+keys       mem      clients blocked requests            connections
+4          9.98M    51      0       8168035 (+0)        4132
+4          9.98M    51      0       8181542 (+13507)    4132
+4          9.98M    51      0       8196100 (+14558)    4132
+4          9.98M    51      0       8209794 (+13694)    4132
+4          9.98M    51      0       8223420 (+13626)    4132
+4          9.98M    51      0       8236624 (+13204)    4132
+4          9.98M    51      0       8251376 (+14752)    4132
+4          9.98M    51      0       8263417 (+12041)    4182
+4          9.98M    51      0       8276781 (+13364)    4182
+4          9.90M    51      0       8289693 (+12912)    4182
+```
+
+## Memory stats
+Redis includes a `MEMORY` command that includes a subcommand to get stats.
+
+```bash                                                                        
+127.0.0.1:6379> memory stats
+ 1) "peak.allocated"
+ 2) (integer) 11912984
+ 3) "total.allocated"
+ 4) (integer) 8379168
+ 5) "startup.allocated"
+ 6) (integer) 5292168
+ 7) "replication.backlog"
+ 8) (integer) 0
+ 9) "clients.slaves"
+10) (integer) 0
+11) "clients.normal"
+12) (integer) 16986
+13) "aof.buffer"
+14) (integer) 0
+```
+These values are available in the `INFO MEMORY` command as well, but here they are returned in a typical Redis `RESP` Array reply.
+
+There is also a `LATENCY DOCTOR` subcommand with an analysis report of the current memory metrics.
+
+## Latency Monitoring
+As we know Redis is fast and as a result is often used in very extreme scenarios where low latency is a must. Redis has a feature called Latency Monitoring which allows you to dig into possible latency issues. Latency monitoring is composed of the following conceptual parts:
+
+- Latency hooks that sample different latency sensitive code paths.
+- Time series recording of latency spikes split by different events.
+- A reporting engine to fetch raw data from the time series.
+- Analysis engine to provide human readable reports and hints according to the measurements.
+
+By default this feature is disabled because most of the time it is not needed. In order to enable it you can update the threshold time in milliseconds that you want to monitor in your Redis configuration. Events that take longer than the threshold will be logged as latency spikes. The threshold configuration should be set accordingly if the requirement is to identify all events blocking the server for a time of 10 milliseconds or more.
+
+```bash
+latency-monitor-threshold 10
+```
+If the debugging session is intended to be temporary the threshold can be set via redis-cli.
+
+```bash
+127.0.0.1:6379> CONFIG SET latency-monitor-threshold 10
+```
+To disable the latency framework the threshold should be set back to 0.
+
+```bash
+127.0.0.1:6379> CONFIG SET latency-monitor-threshold 0
+```
+
+The latency data can be viewed using the `LATENCY` command with it's subcommands:
+
+- `LATENCY LATEST` - latest samples for all events
+- `LATENCY HISTORY` - latest time series for a given event
+- `LATENCY RESET` - resets the time series data
+- `LATENCY GRAPH` - renders an ASCII-art graph
+- `LATENCY DOCTOR` - analysis report
+
+In order to make use of these commands you need to make yourself familiar with the different events that the latency monitoring framework is tracking. (taken from [https://redis.io/topics/latency-monitor](https://redis.io/topics/latency-monitor)" )
+
+| Event                     | Description                                                                                 |
+|---------------------------|---------------------------------------------------------------------------------------------|
+| `command`                 | regular commands                                                                            |
+| `fast-command`            | `O(1)` and `O(log N)` commands                                                              |
+| `fork`                    | the `fork(2)` system call                                                                   |
+| `comrdb-unlink-temp-file` | the `unlink(2)` system call                                                                 |
+| `aof-write`               | writing to the AOF - a catchall event `fsync(2)` system calls                               |
+| `aof-fsync-always`        | the `fsync(2)` system call when invoked by the appendfsync allways policy                   |
+| `aof-write-pending-fsync` | the `fsync(2)` system call when there are pending writes                                    |
+| `aof-write-active-child`  | the `fsync(2)` system call when performed by a child process                                |
+| `aof-write-alone`         | the `fsync(2)` system call when performed by the main process                               |
+| `aof-fstat`               | the `fstat(2)` system call                                                                  |
+| `aof-rename`              | the `rename(2)` system call for renaming the temporary file after completing `BGREWRITEAOF` |
+| `aof-rewrite-diff-write`  | writing the differences accumulated while performing `BGREWRITEAOF`                         |
+| `active-defrag-cycle`     | the active defragmentation cycle                                                            |
+| `expire-cycle`            | the expiration cycle                                                                        |
+| `eviction-cycle`          | the eviction cycle                                                                          |
+| `eviction-del`            | deletes during the eviction cycle                                                           |
+
+
+For example, you can use the `LATENCY LATEST` subcommand and you may see some data like this:
+
+```bash
+127.0.0.1:6379> latency latest
+1) 1) "command"
+   2) (integer) 1616372606
+   3) (integer) 600
+   4) (integer) 600
+2) 1) "fast-command"
+   2) (integer) 1616372434
+   3) (integer) 12
+   4) (integer) 12
+```
+The results of this command provide the timestamp, latency and max latency for this event. Utilizing the events table above I can see we had latency spikes for a regular command with the latest and max latency of 600 MS while a O(1) or O(log N) command had a latency spike of 12 MS.
+
+Some of the latency commands require a specific event be passed.
+
+```bash
+127.0.0.1:6379> latency graph command
+command - high 600 ms, low 100 ms (all time high 600 ms)
+--------------------------------------------------------------------------------
+    _##
+   o|||
+  o||||
+_#|||||
+
+3222184
+05308ss
+sssss
+```
+While the cost of enabling latency monitoring is near zero and memory requirements are very small it will raise your baseline memory usage so if you are getting the required performance out of Redis there is no need to leave this enabled.
+
+## Monitoring Tools
+There are many open source monitoring tools and services to visualize your Redis metrics - some of which also provide alerting capabilities.
+
+One example of this is the [Redis Data Source for Grafana](https://grafana.com/grafana/plugins/redis-datasource/). It is a [Grafana](https://grafana.com/) plug-in that allows users to connect to the Redis database and build dashboards to easily observe Redis data. It provides an out-of-the-box predefined dashboard but also lets you build customized dashboards tuned to your specific needs.
+
+

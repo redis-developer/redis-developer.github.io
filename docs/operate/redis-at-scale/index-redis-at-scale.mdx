@@ -1,0 +1,42 @@
+---
+id: index-redis-at-scale
+title: Introduction to Running Redis at Scale
+sidebar_label: Overview
+slug: /operate/redis-at-scale
+authors: [justin, elena, kurt]
+isEditable: false
+---
+
+import RedisCard from '@site/src/theme/RedisCard';
+
+## Welcome
+<div class="text--center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3H896s0rr8E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+This course is broken up into units covering topics around scaling Redis for production deployment.
+
+Scaling means more than just performance. We have tried to identify key topics that will help you have a performant, stable, and secure deployment of Redis. This course is divided into the following units:
+
+- Talking to Redis: connection management and tuning of Redis.
+- Persistence/Durability: options persisting Redis data to disk.
+- High Availability: how to make sure Redis and your data is always there.
+- Scalability: scaling Redis for both higher throughput and capacity.
+- Observability: Visibility into your Redis deployment (metrics, etc.).
+
+Our goal is to give you all the information you need to run Redis at scale, in whichever way is best for your organization. We hope you enjoy the course, and please don't hesitate to reach out on the course [Discord channel](https://discord.gg/ZnjZbDMDub) if you have any questions along the way.
+
+## Prerequisites
+
+- Access to a Linux-based system and familiarity with it
+- Redis server and redis-cli installed (examples and exercises assume redis-server is in the $PATH)
+docker and docker-compose installed
+- A git client and access to clone repos in Github. Some exercises will come from the following repository: https://github.com/redislabs-training/ru301
+
+<strong>Note: This repo contains sample demonstrations of Redis running in various scaled configurations, and is not directly correlated with all of the exercises in this course. See the specific exercise instructions for usage.</strong>
+
+## Assumptions
+
+- Comfortable with Linux Bash shell exercises
+- Legacy terminology in Redis uses 'master' and 'slave' but in the course we will use 'primary' and 'replica'. You will still see the legacy terms in many commands, configurations, and field names.
+- We will use $ to indicate command line prompt and > to indicate a redis-cli prompt
