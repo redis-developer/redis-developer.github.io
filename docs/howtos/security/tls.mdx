@@ -35,7 +35,23 @@ In this article, we will focus on the Two-Way SSL, and using Redis Enterprise.
 * [Python](/develop/python/), [Node](/develop/node), and [Java](/develop/java) installed if you want to test various languages.
 
 
-### Simple  Test
+## Simple  Test
+
+## Step 1. Run a Redis server
+
+You can either run Redis server in a Docker container or directly on your machine. Use the following commands to setup a Redis server locally on Mac OS:
+
+```
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
+
+:::info INFO
+Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack bundles five Redis modules: RedisJSON, RedisSearch, RedisGraph, RedisTimeSeries, and RedisBloom.
+[Learn more](/create/redis-stack)
+:::
+
+
 
 Let's make sure that the database is available:
 
@@ -46,9 +62,9 @@ redis-cli -p 12000 -a secretdb01 INFO SERVER
 This should print the Server information.
 
 
-## Step 1. Get the Certificate from Redis Cluster
+## Step 2. Get the Certificate from Redis Cluster
 
-Assuming tha you have an access to the Redis Enterprise Cluster, you need to access the nodes to retrieve the certificate (that is a self-generated one by default).
+Assuming that you have an access to the Redis Enterprise Cluster, you need to access the nodes to retrieve the certificate (that is a self-generated one by default).
 
 The cluster certificate is located at: `/etc/opt/redislabs/proxy_cert.pem`.
 
@@ -60,9 +76,9 @@ In this tutorial, we will be using Docker to copy the certificate.
 docker cp redis-node1:/etc/opt/redislabs/proxy_cert.pem ./certificates
 ```
 
-## Step 2. Generate a New Client Certificate
+## Step 3. Generate a New Client Certificate
 
-Using the Two-Way SSL, you need to have a certificate for the client that will be used by Redis database proxy to trust the client.In this tutorial, we will use a self-signed certificate using OpenSSL. We will be creating a certificate for an application named `app_001`. Please note that you can create as many certificates as you want, or reuse this one for all servers/applications.
+Using the Two-Way SSL, you need to have a certificate for the client that will be used by Redis database proxy to trust the client. In this tutorial, we will use a self-signed certificate using OpenSSL. We will be creating a certificate for an application named `app_001`. Please note that you can create as many certificates as you want, or reuse this one for all servers/applications.
 
 Open a terminal and run the following commands:
 
@@ -78,10 +94,10 @@ openssl req \
 
 ```
 
-This command generate a new client key (`client_key_001.pem`) and certificate (`client_cert_001.pem`) with no passphrase.
+This command generates a new client key (`client_key_001.pem`) and certificate (`client_cert_001.pem`) with no passphrase.
 
 
-## Step 3. Configure the Redis Database
+## Step 4. Configure the Redis Database
 
 The next step is to take the certificate and add it to the database you want to protect. 
 
@@ -125,11 +141,11 @@ redis-cli -p 12000 -a secretdb01 INFO SERVER
 (error) ERR unencrypted connection is prohibited
 ```
 
-## Step 4. Connect to the Database using the Certificate
+## Step 5. Connect to the Database using the Certificate
 
 In all these examples, you will be using a "self-signed" certificate, so that you don't need to check the validity of the hostname. You should adapt the connections/TLS information based on your certificate configuration.
 
-### Step  4.1 Using Redis-CLI
+### Step  5.1 Using Redis-CLI
 
 To connect to a SSL protected database using `redis-cli` you have to use [`stunnel`](https://www.stunnel.org/index.html).
 
@@ -159,7 +175,7 @@ redis-cli -p 6380 -a secretdb01 INFO SERVER
 ```
 
 
-### Step 4.2 Using Python
+### Step 5.2 Using Python
 
 Using Python, you have to set the SSL connection parameters:
 
@@ -191,7 +207,7 @@ except Exception as err:
 
 More information in the documentation "[Using Redis with Python](/develop/python/)".
 
-### Step 4.3 Using Node.JS
+### Step 5.3 Using Node.JS
 
 For [Node Redis](http://redis.js.org/), use the [TLS](https://nodejs.org/api/tls.html) library to configure the client connection:
 
@@ -222,7 +238,7 @@ client.info( "SERVER", function (err, reply) {
 
 More information in the documentation "[Using Redis with Node.js](/develop/node)".
 
-### Step 4.4 Using Java
+### Step 5.4 Using Java
 
 In Java, to be able to connect using SSL, you have to install all the certificates in the Java environment using the [keytool](https://docs.oracle.com/en/java/javase/11/tools/keytool.html) utility.
 

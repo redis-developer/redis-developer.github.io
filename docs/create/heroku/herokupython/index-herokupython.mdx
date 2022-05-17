@@ -20,6 +20,8 @@ Some of the notable features offered by Heroku are:
 
 #### Step 1. Create Redis Enterprise Cloud
 
+Redis Enterprise Cloud is a fully managed cloud service by Redis. Built for modern distributed applications, Redis Enterprise Cloud enables you to run any query, simple or complex, at sub-millisecond performance at virtually infinite scale without worrying about operational complexity or service availability. With modern probabilistic data structures and extensible data models, including Search, JSON, Graph, and Time Series, you can rely on Redis as your data-platform for all your real-time needs.
+
 Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free)
 
 :::info TIP
@@ -33,14 +35,20 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 [Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database. Once you create the database, you will be provisioned with a unique database endpoint URL, port and password. Save these for future reference.
 
+You can use the Redis CLI to quickly verify the connection to the Redis instance URL and access the database.
+
 ### Step 2. Create a Heroku account
 
-If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login).
+If you are using the Heroku platform for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login).
+You can refer to [Heroku documentation](https://devcenter.heroku.com/categories/reference)
 
 ![heroku](create_heroku.png)
 
 
 ### Step 3. Install Heroku CLI on your system
+
+Run the following command to install the Heroku CLI on your system.
+
 
    ```macos
     brew install heroku
@@ -133,3 +141,7 @@ Open https://fast-reef-76278.herokuapp.com/ to see your application
 
 - [Connecting to the database using RedisInsight](/explore/redisinsight/)
 - [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
+- [Django Buildpacks](https://elements.heroku.com/buildpacks/django/django)
+- [Deploying Python and Django Apps on Heroku](https://devcenter.heroku.com/articles/deploying-python)
+- [Securing Heroku Redis](https://devcenter.heroku.com/articles/securing-heroku-redis)
+- [Heroku Connect](https://devcenter.heroku.com/articles/heroku-connect)

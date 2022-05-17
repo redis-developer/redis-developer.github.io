@@ -14,16 +14,17 @@ Heroku is a PaaS (platform as a service) for building and running software appli
 Here are few popular terminologies used in Heroku:
 
 - Dynos: The Heroku Platform uses the container model to run and scale all Heroku apps. The containers used at Heroku are called “dynos". Dynos are isolated, virtualized Linux containers that are designed to execute code based on a user-specified command.
-- Buildpack: It is a config script for the build automation process, describing how a container image should be created.
+- Buildpack: This is a config script for the build automation process, describing how a container image should be created.
 - Add-ons: These are tools and services for extending a Heroku application's functionality, such as data storage and processing, monitoring, or analytics.
-- Heroku CLI: It is a tool for building and running Heroku apps from within the terminal. (Docker, too, uses its own CLI for working with the platform.)
-- Git: It is a popular version control system for tracking changes to a software's source code. Heroku makes it easy to manage your app deployments with git, and has built-in integrations with the GitHub hosting platform for git repositories.
+- Heroku CLI: This is a tool for building and running Heroku apps from within the terminal. (Docker, too, uses its own CLI for working with the platform.) Learn about [Heroku Dev Center](https://devcenter.heroku.com/)
+- Git: A popular version control system for tracking changes to a software's source code. Heroku makes it easy to manage your app deployments with git, and has built-in integrations with the GitHub hosting platform for git repositories.
 
 Heroku recognizes an app as being written in Go by the existence of a `go.mod` file in the root directory. Heroku also supports govendor, godep & GB, but this tutorial focuses only on Go modules. Here's a quickstart guide to deploy Go apps on Heroku using Redis. We will be deploying a sample Chat application written in Go.
 
 ### Step 1. Create a Redis Enterprise Cloud Database
 
 Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free).
+Creating a Heroku account is free of charge.
 
 :::info TIP
 For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
@@ -39,18 +40,23 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 ### Step 2. Create a Heroku account
 
-If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login).
+If you are using Heroku for the first time, visit the Heroku website and create your new Heroku account [through this link](https://signup.heroku.com/login).
 
 ![heroku](create_heroku.png)
 
 
 ### Step 3. Install the Heroku CLI on your system
 
+The Heroku Command Line Interface (CLI) lets you create and manage Heroku apps directly from the terminal. It's an essential part of using Heroku. In order to install Heroku CLI, run the following command:
+
    ```macos
     brew install heroku
    ```
 
 ### Step 4. Login to Heroku
+
+Use the following Heroku Command Line commands to login to Heroku dashboard:
+
 
    ```bash
     heroku login
@@ -64,14 +70,16 @@ If you are using Heroku for the first time, create your new Heroku account [thro
 
 For this demonstration, we will be using a [Sample Redis Chat app](https://github.com/redis-developer/basic-redis-chat-demo-go).
 
-#### Clone the repository
+#### Clone the GitHub repository
+
+First you will need to clone the GitHub repository to configure it as a local repository.
 
    ```bash
     git clone https://github.com/redis-developer/basic-redis-chat-demo-go
    ```
 
 
-
+`basic-redis-chat-demo-go` is the name of the project directory.
 Run the commands below to get a functioning Git repository that contains a simple application as well as a `app.json` file.
 
 
@@ -121,7 +129,7 @@ To https://git.heroku.com/stark-island-03510
 ### Step 8. Accessing the application
 
 
-Open `https://stark-island-03510.herokuapp.com/` to access your application on the browser.
+Open `https://stark-island-03510.herokuapp.com/` to access your web application on the browser.
 Please note that the Web URL is unique, hence it will be different in your case.
 
 ![heroku](heroku_chatapp_go.png)

@@ -134,10 +134,11 @@ module.exports = {
       },
       elena: {
         name: 'Elena Kolevska',
-        title: 'Technical Enablement Manager, EMEA',
-        image: 'profile_pic_elena_kolevska.jpeg'
-      }            
-    },
+        link: 'https://twitter.com/elena_kolevska',
+        title: 'Technical Enablement Manager',
+        image: 'profile_pic_elena_kolevska.jpg'
+      }
+    }
   },
   themeConfig: {
     // ...
