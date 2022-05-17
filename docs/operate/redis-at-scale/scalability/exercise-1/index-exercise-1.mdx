@@ -3,6 +3,7 @@ id: index-exercise-1
 title: 4.1 Exercise - Creating a Redis Cluster
 sidebar_label: 4.1 Exercise - Creating a Redis Cluster
 slug: /operate/redis-at-scale/scalability/exercise-1
+isEditable: false
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -24,7 +25,7 @@ appendonly yes
 On the first line we specify the port on which the server should run, then we state that we want the server to run in cluster mode, with the `cluster-enabled yes` directive. `cluster-config-file` defines the name of the file where the configuration for this node is stored, in case of a server restart. Finally, `cluster-node-timeout` is the number of milliseconds a node must be unreachable for it to be considered in failure state.
 
 ## Step 2
-Let’s create a cluster on your localhost with three primary shards and three replicas (remember, in production always use two replicas to protect against a split-brain situation). We’ll need to bring up six Redis processes and create a redis.conf file for each of them, specifying their port and the rest of the configuration directives above.
+Let’s create a cluster on your localhost with three primary shards and three replicas (remember, in production always use two replicas to protect against a split-brain situation). We’ll need to bring up six Redis processes and create a `redis.conf` file for each of them, specifying their port and the rest of the configuration directives above.
 
 First, create six directories:
 
@@ -32,7 +33,7 @@ First, create six directories:
 mkdir -p {7000..7005}
 ```
 ## Step 3
-Then create the minimal configuration redis.conf file from above in each one of them, <strong>making sure you change the port directive to match the directory name</strong>.
+Then create the minimal configuration `redis.conf` file from above in each one of them, <strong>making sure you change the port directive to match the directory name</strong>.
 
 To copy the initial `redis.conf` file to each folder, run the following:
 ```bash
@@ -84,13 +85,13 @@ This means that there is at least a master instance serving each of the 16384 sl
 ## Step 6
 Let’s add a new shard to the cluster, which is something you might do when you need to scale.
 
-First, as before, we need to start two new empty Redis instances (primary and its replica) in cluster mode. We create new directories `7006` and `7007` and in them we copy the same `redis.conf` file we used before, making sure we change the port directive in them to the appropriate port (7006 and 7007).
+First, as before, we need to start two new empty Redis instances (primary and its replica) in cluster mode. We create new directories `7006` and `7007` and in them we copy the same `redis.conf` file we used before, making sure we change the port directive in them to the appropriate port (`7006` and `7007`).
 ```bash
 $ mkdir 7006 7007
 $ cp 7000/redis.conf 7006/redis.conf
 $ cp 7000/redis.conf 7007/redis.conf
 ```
-Update the port numbers in the files `./7006/redis.conf` and `./7007/redis.conf` to 7006 and 7007, respectively.
+Update the port numbers in the files `./7006/redis.conf` and `./7007/redis.conf` to `7006` and `7007`, respectively.
 
 ## Step 7
 Let’s start the Redis instances:
@@ -103,14 +104,14 @@ $ cd 7007
 $ redis-server ./redis.conf
 ```
 ## Step 8
-In the next step we join the new primary shard to the cluster with the add-node command. The first parameter is the address of the new shard, and the second parameter is the address of any of the current shards in the cluster.
+In the next step we join the new primary shard to the cluster with the `add-node` command. The first parameter is the address of the new shard, and the second parameter is the address of any of the current shards in the cluster.
 ```bash
 redis-cli --cluster add-node 127.0.0.1:7006 127.0.0.1:7000
 ```
 <strong>Note: The Redis commands use the term “Nodes” for what we call “Shards” in this training, so a command named “add-node” would mean “add a shard”.</strong>
 
 ## Step 9
-Finally we need to join the new replica shard, with the same add-node command, and a few extra arguments indicating the shard is joining as a replica and what will be its primary shard. If we don’t specify a primary shard Redis will assign one itself.
+Finally we need to join the new replica shard, with the same `add-node` command, and a few extra arguments indicating the shard is joining as a replica and what will be its primary shard. If we don’t specify a primary shard Redis will assign one itself.
 
 We can find the IDs of our shards by running the cluster nodes command on any of the shards:
 ```bash
@@ -123,7 +124,7 @@ a138f48fe038b93ea2e186e7a5962fb1fa6e34fa 127.0.0.1:7002@17002 master - 0 1616754
 f224ecabedf39d1fffb34fb6c1683f8252f3b7dc 127.0.0.1:7000@17000 myself,master - 0 1616754502000 1 connected 0-5460
 04d71d5eb200353713da475c5c4f0a4253295aa4 127.0.0.1:7004@17004 slave f224ecabedf39d1fffb34fb6c1683f8252f3b7dc 0 1616754505896 1 connected
 ```
-The port of the primary shard we added in the last step was 7006, and we can see it on the first line. It’s id is `46a768cfeadb9d2aee91ddd882433a1798f53271`.
+The port of the primary shard we added in the last step was `7006`, and we can see it on the first line. It’s id is `46a768cfeadb9d2aee91ddd882433a1798f53271`.
 
 The resulting command is:
 ```bash

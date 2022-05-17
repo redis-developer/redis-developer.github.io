@@ -3,13 +3,14 @@ id: index-exercise-1
 title: 5.2 Getting Redis Statistics
 sidebar_label: 5.2 Getting Redis Statistics
 slug: /operate/redis-at-scale/observability/exercise-1
+isEditable: false
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Clone this repo if you have not already: [https://github.com/redislabs-training/ru301](https://github.com/redislabs-training/ru301)
 
-Change into the observability-stats directory.
+Change into the `observability-stats` directory.
 
 <strong>Requirements</strong>
 
@@ -25,7 +26,7 @@ $ docker-compose up -d
 
 <strong>Connect to the Environment</strong>
 
-In a terminal run this command to get a shell prompt inside the running docker container:
+In a terminal run this command to get a shell prompt inside the running Docker container:
 
 ```bash
 $ docker-compose exec redis_stats bash
@@ -41,7 +42,7 @@ $ docker-compose exec redis_stats redis-benchmark
 
 <strong>Info</strong>
 
-Since most of the stats data comes from the INFO command you should first run this to view that there.
+Since most of the stats data comes from the `INFO` command you should first run this to view that there.
 
 ```bash
 $ redis-cli INFO
@@ -51,9 +52,9 @@ Try piping this output to a file.
 
 <strong>Memory usage</strong>
 
-Since we generally recommend setting the `maxmemory` size, it is possible to calculate the percentage of memory in use and alert based on results of the `maxmemory` configuration value and the used_memory stat.
+Since we generally recommend setting the `maxmemory` size, it is possible to calculate the percentage of memory in use and alert based on results of the `maxmemory` configuration value and the `used_memory` stat.
 
-First set the maxmemory.
+First set the `maxmemory`.
 
 ```bash
 $ redis-cli config set maxmemory 100000
@@ -68,7 +69,7 @@ $ redis-cli CONFIG GET maxmemory
 
 <strong>Client data</strong>
 
-You can pull the clients section of the INFO command:
+You can pull the `clients` section of the `INFO` command:
 
 ```bash
 $ redis-cli info clients
@@ -92,7 +93,7 @@ $ redis-cli INFO stats | grep keyspace
 
 <strong>Evicted keys</strong>
 
-Eviction occurs when redis has reached its maximum memory and maxmemory-policy in redis.conf is set to something other than volatile-lru.
+Eviction occurs when Redis has reached its maximum memory and `maxmemory-policy` in `redis.conf` is set to something other than `volatile-lru`.
 
 ```bash
 $ redis-cli INFO stats | grep evicted_keys
@@ -100,7 +101,7 @@ $ redis-cli INFO stats | grep evicted_keys
 
 <strong>Expired keys</strong>
 
-It is a good idea to keep an eye on the expirations to make sure redis is performing as expected.
+It is a good idea to keep an eye on the expirations to make sure Redis is performing as expected.
 
 ```bash
 $ redis-cli INFO stats | grep expired_keys

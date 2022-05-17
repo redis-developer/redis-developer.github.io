@@ -3,6 +3,7 @@ id: index-exercise
 title: '2.2 Exercise: Saving a Snapshot'
 sidebar_label: '2.2 Exercise: Saving a Snapshot'
 slug: /operate/redis-at-scale/persistence-and-durability/exercise
+isEditable: false
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -41,7 +42,7 @@ In a separate terminal tab use the `redis-cli` to create three random keys, one 
 127.0.0.1:6379> SET b 2
 127.0.0.1:6379> SET c 3
 ```
-Run the `ls` command in the to list all its contents. What changed?
+Run the `ls` command in the first terminal to list all the files in the 2.2 directory. What changed?
 
 ## Step 3
 Now we’re ready to take our persistence a level higher and set up an `AOF` file. Modify your `redis.conf` file so that the server will log every new write command and force writing it to disk.

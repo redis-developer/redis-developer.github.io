@@ -3,6 +3,7 @@ id: index-data-points-in-redis
 title: 5.1 Data points in Redis
 sidebar_label: 5.1 Data points in Redis
 slug: /operate/redis-at-scale/observability/data-points-in-redis
+isEditable: false
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -23,7 +24,7 @@ redis_mode:standalone
 os:Linux 4.19.121-linuxkit x86_64
 …
 ```
-There are several sections that can be pulled individually. For example, if you wanted to just get the `clients` section you can pass that section as an argument to the info command.
+There are several sections that can be pulled individually. For example, if you wanted to just get the `CLIENTS` section you can pass that section as an argument to the `INFO` command.
 
 ```bash
 127.0.0.1:6379> INFO CLIENTS
@@ -41,79 +42,79 @@ clients_in_timeout_table:0
 Metrics of note:
 
 
-- redis_version
-- process_id
-- config_file
-- uptime_in_seconds
-- uptime_in_days
+- `redis_version`
+- `process_id`
+- `config_file`
+- `uptime_in_seconds`
+- `uptime_in_days`
 
 <hr />
 <strong>Clients</strong>: available data on clients connected or failed connections.
 
 Metrics of note:
-- connected_clients
-- blocked_clients
+- `connected_clients`
+- `blocked_clients`
 
 <hr />
 <strong>Memory</strong>: memory usage and stats
 
 Metrics of note:
-- used_memory
-- mem_fragmentation_ratio
+- `used_memory`
+- `mem_fragmentation_ratio`
 
 <hr />
 <strong>Persistence</strong>: RDB or AOF metrics
 
 Metrics of note:
-- rdb_last_save_time
-- rdb_changes_since_last_save
-- aof_rewrite_in_progress
+- `rdb_last_save_time`
+- `rdb_changes_since_last_save`
+- `aof_rewrite_in_progress`
 
 <hr />
 <strong>Stats</strong>: some general statistics
 
 Metrics of note:
-- keyspace_hits
-- keyspace_misses
-- expired_keys
-- evicted_keys
-- instantaneous_ops_per_sec
+- `keyspace_hits`
+- `keyspace_misses`
+- `expired_keys`
+- `evicted_keys`
+- `instantaneous_ops_per_sec`
 
 <hr />
 <strong>Replication</strong>: replication data including primary/replica identifiers and offsets
 
 Metrics of note:
-- master_link_down_since
-- connected_slaves
-- master_last_io_seconds_ago
+- `master_link_down_since`
+- `connected_slaves`
+- `master_last_io_seconds_ago`
 
 <hr />
 <strong>CPU</strong>: compute consumption stats
 
 Metrics of note:
-- used_cpu_sys
-- used_cpu_user
+- `used_cpu_sys`
+- `used_cpu_user`
 
 <hr />
 <strong>Modules</strong>: data from any loaded modules
 
 Metrics of note (per module):
-- ver
-- options
+- `ver`
+- `options`
 
 <hr />
 <strong>Cluster</strong>: whether cluster is enabled
 
 Metric of note:
-- cluster_enabled
+- `cluster_enabled`
 
 <hr />
 <strong>Keyspace</strong>: keys and expiration data
 
 Metrics of note (per db):
-- keys
-- expires
-- avg_ttl
+- `keys`
+- `expires`
+- `avg_ttl`
 
 The output can be read from the results or piped into a file.
 
@@ -123,16 +124,16 @@ The output can be read from the results or piped into a file.
 
 This could be done at intervals and consumed by a local or third party monitoring service.
 
-Some of the data returned by INFO are going to be static.  For example the Redis version which won't change until an update is made.  Other data is dynamic, for `keyspace_hits ÷ keyspace_misses`. The latter could be taken to compute a hit ratio and observed as a long term metric. The replication section field `master_link_down_since` could be a metric to connect an alert.
+Some of the data returned by `INFO` are going to be static.  For example the Redis version which won't change until an update is made.  Other data is dynamic, for `keyspace_hits ÷ keyspace_misses`. The latter could be taken to compute a hit ratio and observed as a long term metric. The replication section field `master_link_down_since` could be a metric to connect an alert.
 
 Some examples of possible alerts that could be setup for a given metric:
 
-| Metric                 | Example Alert                                           |
-|------------------------|---------------------------------------------------------|
-| uptime_in_seconds      | &lt; 300 seconds: to ensure the server is staying up    |
-| connected_clients      | &lt; minimum number of expected application connections |
-| master_link_down_since | > 30 seconds: replication should be operational         |
-| rdb_last_save_time     | > maximum acceptable interval without taking a snapshot |
+| Metric                   | Example Alert                                           |
+|--------------------------|---------------------------------------------------------|
+| `uptime_in_seconds`      | &lt; 300 seconds: to ensure the server is staying up    |
+| `connected_clients`      | &lt; minimum number of expected application connections |
+| `master_link_down_since` | > 30 seconds: replication should be operational         |
+| `rdb_last_save_time`     | > maximum acceptable interval without taking a snapshot |
 
 <strong>NOTE: This is not an exhaustive list, but just to give you an idea of how the metrics in INFO could be used.</strong>
 
@@ -143,25 +144,25 @@ Note: these are not available as commands from Redis but as options in redis-cli
 
 <strong>Latency options:</strong>
 
-Continuously sample latency
+Continuously sample latency:
 
 ```bash
 $ redis-cli --latency
 min: 1, max: 17, avg: 4.03 (927 samples)
 ```
-The raw or csv output flag can be added
+The `raw` or `csv` output flag can be added:
 
 ```bash
 $ redis-cli --latency --csv
 1,4,1.94,78
 ```
-In order to sample for longer than one second you can use latency-history which has a default interval of 15 seconds but can be specified using the -i param.
+In order to sample for longer than one second you can use `latency-history` which has a default interval of 15 seconds but can be specified using the `-i` param.
 
 ```bash
 $ redis-cli --latency-history -i 60 
 min: 1, max: 30, avg: 4.84 (328 samples)
 ```
-This can also be combined with the csv or raw output format flag.
+This can also be combined with the `csv` or `raw` output format flag.
 
 ```bash
 $ redis-cli --latency-history -i 60 --csv
@@ -181,12 +182,12 @@ $ redis-cli --latency-history -i 60 --csv
 
 Both of these could be piped to a file as well.
 
-The latency-dist option shows latency as a spectrum. The default interval is one second but can be changed using the -i param.
+The `latency-dist` option shows latency as a spectrum. The default interval is one second but can be changed using the `-i` param.
 
 <img height="50%" width="50%" src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/5.2/image2.png" alt="Latency Distribution diagram" />
 <strong>Stats option:</strong>
 
-Get rolling stats from the server using the stat flag.
+Get rolling stats from the server using the `stat` flag.
 
 ```bash
 $ redis-cli --stat 
@@ -262,24 +263,24 @@ The latency data can be viewed using the `LATENCY` command with it's subcommands
 
 In order to make use of these commands you need to make yourself familiar with the different events that the latency monitoring framework is tracking. (taken from [https://redis.io/topics/latency-monitor](https://redis.io/topics/latency-monitor)" )
 
-| Event                   | Description                                                                                 |
-|-------------------------|---------------------------------------------------------------------------------------------|
-| command                 | regular commands                                                                            |
-| fast-command            | `O(1)` and `O(log N)` commands                                                              |
-| fork                    | the `fork(2)` system call                                                                   |
-| comrdb-unlink-temp-file | the `unlink(2)` system call                                                                 |
-| aof-write               | writing to the AOF - a catchall event `fsync(2)` system calls                               |
-| aof-fsync-always        | the `fsync(2)` system call when invoked by the appendfsync allways policy                   |
-| aof-write-pending-fsync | the `fsync(2)` system call when there are pending writes                                    |
-| aof-write-active-child  | the `fsync(2)` system call when performed by a child process                                |
-| aof-write-alone         | the `fsync(2)` system call when performed by the main process                               |
-| aof-fstat               | the `fstat(2)` system call                                                                  |
-| aof-rename              | the `rename(2)` system call for renaming the temporary file after completing `BGREWRITEAOF` |
-| aof-rewrite-diff-write  | writing the differences accumulated while performing `BGREWRITEAOF`                         |
-| active-defrag-cycle     | the active defragmentation cycle                                                            |
-| expire-cycle            | the expiration cycle                                                                        |
-| eviction-cycle          | the eviction cycle                                                                          |
-| eviction-del            | deletes during the eviction cycle                                                           |
+| Event                     | Description                                                                                 |
+|---------------------------|---------------------------------------------------------------------------------------------|
+| `command`                 | regular commands                                                                            |
+| `fast-command`            | `O(1)` and `O(log N)` commands                                                              |
+| `fork`                    | the `fork(2)` system call                                                                   |
+| `comrdb-unlink-temp-file` | the `unlink(2)` system call                                                                 |
+| `aof-write`               | writing to the AOF - a catchall event `fsync(2)` system calls                               |
+| `aof-fsync-always`        | the `fsync(2)` system call when invoked by the appendfsync allways policy                   |
+| `aof-write-pending-fsync` | the `fsync(2)` system call when there are pending writes                                    |
+| `aof-write-active-child`  | the `fsync(2)` system call when performed by a child process                                |
+| `aof-write-alone`         | the `fsync(2)` system call when performed by the main process                               |
+| `aof-fstat`               | the `fstat(2)` system call                                                                  |
+| `aof-rename`              | the `rename(2)` system call for renaming the temporary file after completing `BGREWRITEAOF` |
+| `aof-rewrite-diff-write`  | writing the differences accumulated while performing `BGREWRITEAOF`                         |
+| `active-defrag-cycle`     | the active defragmentation cycle                                                            |
+| `expire-cycle`            | the expiration cycle                                                                        |
+| `eviction-cycle`          | the eviction cycle                                                                          |
+| `eviction-del`            | deletes during the eviction cycle                                                           |
 
 
 For example, you can use the `LATENCY LATEST` subcommand and you may see some data like this:
