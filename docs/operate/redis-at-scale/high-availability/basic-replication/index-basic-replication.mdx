@@ -8,4 +8,26 @@ isEditable: false
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-<iframe width="586" height="330" src="https://www.youtube.com/embed/-osCdf90tRA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div align="center">
+<iframe width="896" height="509" src="https://www.youtube.com/embed/-osCdf90tRA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<br />
+<br />
+<p>Replication in Redis follows a simple primary-replica model where the replication happens in one direction - from the primary to one or multiple replicas. Data is only written to the primary instance and replicas are kept in sync so that they’re exact copies of the primaries.</p>
+
+To create a replica, you instantiate a Redis server instance with the configuration directive replicaof set to the address and port of the primary instance. once the replica instance is up and running, the replica will try to sync with the primary. To transfer all of its data as efficiently as possible, the primary instance will produce a compacted version of the data in a snapshot ( .rdb)  file and send it to the replica. 
+
+The replica will then read the snapshot file and load all of its data into memory, which will bring it to the same state the primary instance had at the moment of creating the rdb file. When the loading stage is done, the primary instance will send the backlog of any write commands run since the snapshot was made. Finally, the primary instance will send the replica a live stream of all subsequent commands.
+
+By default, replication is asynchronous. This means that if you send a write command to Redis  (1) you will receive your acknowledged response first (2),  and only then will the command be replicated to the replica (3). 
+
+If the primary goes down after acknowledging a write but before the write can be replicated, then you might have data loss. To avoid this, the client can  use the WAIT command. This command blocks the current client until all of the previous write commands are successfully transferred and acknowledged by at least some specified number of replicas. 
+
+
+For example, if we send the command WAIT 2 0, the client will block (will not return a response to the client) until all of the previous write commands issued on that connection have been written to at least 2 replicas. The second argument (0) will instruct the server to block indefinitely, but we could set it to a number (in milliseconds) so that it times out after a while and returns the number of replicas that successfully acknowledged the commands.
+
+
+Replicas are read-only. This means that you can configure your clients to read from them, but you cannot write data to them. If you need additional read throughput, you can configure your Redis client to read from replicas as well as from your primary node. However, it's often easier just to scale out your cluster. This lets you scale reads and writes without writing any complex client logic.
+
+Also, you should know about Active-Active, an advanced feature of Redis Enterprise and Redis Cloud. Active-Active replicates entire databases across geographically-distributed clusters. With Active-Active, you can write locally to any replica databases, and those writes will be reflected globally. Something to keep in mind when you're really scaling out!
+

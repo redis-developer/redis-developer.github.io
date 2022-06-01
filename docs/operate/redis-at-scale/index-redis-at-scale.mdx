@@ -11,9 +11,33 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 ## Welcome
 <div class="text--center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3H896s0rr8E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="896" height="504" src="https://www.youtube.com/embed/3H896s0rr8E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
+<br />
+<br />
+<p>The world's data is growing exponentially. That exponential growth means that database systems must scale. This is a course about running Redis, one of the most popular databases, at scale.</p>
+
+So, how do you run Redis at scale? There are two general answers to this question, and it's important that we address them right away. That's because the easiest and most common way to run Redis at scale is to let someone else manage your Redis deployment for you.
+
+The convenience of "database-as-a-service" offerings means that you don't have to know much about how your database scales, and that saves a lot of time and potential false starts.
+
+We at Redis Labs offer Redis Cloud, a highly available cloud-based Redis service that provides a lot of features you can't find anywhere else, like active-active, geo-distribution.
+
+Redis Cloud is also really easy to use and has a free tier so you can get going quickly.
+So, that's the first answer. To run Redis these days, you might just use a fully-managed offering like Redis Cloud.
+But not everyone can or wants to use a cloud-hosted database. 
+
+There are a bunch of reasons for this. For example, maybe you're a large enterprise with your own data centers and dedicated ops teams. Or perhaps you're a mission-critical application whose SLAs are so rigid that you need to be able to dig deeply into any potential performance issue. This often rules out cloud-based deployments, since the cloud hides away the hardware and networks you're operating in. In this case, you're deploying Redis on your own. And for that, you need to know how Redis scales.
+
+Learning this isn't just useful; it's also genuinely interesting. Sharding, replication, high availability, and disaster recovery are all important concepts that anyone can understand with the right explanation. These concepts aren't rocket science. They're no harder to understand than basic high school math, and knowing about them makes you a better developer.
+In this course, we'll look closely at how open source Redis scales. And you'll learn by doing, as we present a lot of the ideas through hands-on labs.
+
+These ideas will apply whether you're deploying open source Redis on your own or managing a Redis Enterprise cluster - which is, ultimately, what  you'll want to reach for if you ever outgrow open source Redis. These are some important topics to consider during your time with this course. But let's first learn how to walk before we run.  
+
+We sincerely hope you enjoy what you learn with us about scaling Redis, and as always, it's my pleasure to help.
+
+## Course Overview
 This course is broken up into units covering topics around scaling Redis for production deployment.
 
 Scaling means more than just performance. We have tried to identify key topics that will help you have a performant, stable, and secure deployment of Redis. This course is divided into the following units:
