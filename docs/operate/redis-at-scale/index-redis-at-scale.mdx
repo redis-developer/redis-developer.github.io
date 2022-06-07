@@ -22,11 +22,9 @@ So, how do you run Redis at scale? There are two general answers to this questio
 
 The convenience of "database-as-a-service" offerings means that you don't have to know much about how your database scales, and that saves a lot of time and potential false starts.
 
-We at Redis Labs offer Redis Cloud, a highly available cloud-based Redis service that provides a lot of features you can't find anywhere else, like active-active, geo-distribution.
+We at Redis offer Redis Cloud, a highly available cloud-based Redis service that provides a lot of features you can't find anywhere else, like active-active, geo-distribution.
 
-Redis Cloud is also really easy to use and has a free tier so you can get going quickly.
-So, that's the first answer. To run Redis these days, you might just use a fully-managed offering like Redis Cloud.
-But not everyone can or wants to use a cloud-hosted database. 
+Redis Cloud is also really easy to use and has a free tier so you can get going quickly. So, that's the first answer. To run Redis these days, you might just use a fully-managed offering like Redis Cloud. But not everyone can or wants to use a cloud-hosted database. 
 
 There are a bunch of reasons for this. For example, maybe you're a large enterprise with your own data centers and dedicated ops teams. Or perhaps you're a mission-critical application whose SLAs are so rigid that you need to be able to dig deeply into any potential performance issue. This often rules out cloud-based deployments, since the cloud hides away the hardware and networks you're operating in. In this case, you're deploying Redis on your own. And for that, you need to know how Redis scales.
 
