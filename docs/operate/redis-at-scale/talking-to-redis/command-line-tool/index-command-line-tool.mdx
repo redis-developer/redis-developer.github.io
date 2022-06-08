@@ -8,4 +8,26 @@ isEditable: false
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-<iframe width="586" height="330" src="https://www.youtube.com/embed/VenGyryG4OE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div align="center">
+<iframe width="896" height="509" src="https://www.youtube.com/embed/VenGyryG4OE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<br />
+<br />
+<p>Redis-cli is a command line tool used to interact with the Redis server. Most package managers include redis-cli as part of the redis package.  It can also be compiled from source, and you'll find the source code in the Redis repository on GitHub.</p>
+
+There are two ways to use redis-cli : 
+- an <b>interactive</b> mode where the user types commands and sees the replies; 
+- a <b>command</b> mode where the command is provided as an argument to redis-cli, executed, and results sent to the standard output.
+
+Let’s use the CLI to connect to a Redis server running at <b>172.22.0.3</b>  and port <b>7000</b>. The arguments -h and -p are used to specify the host and port to connect to. They  can be omitted if your server is running on the default host "localhost" port 6379.
+
+The redis-cli provides some useful productivity features. For example, you can scroll through your command history by pressing the up and down arrow keys. You can also use the TAB key to autocomplete a command, saving even more keystrokes. Just type the first few letters of a command and keep pressing TAB until the command you want appears on screen.
+
+Once you have the command name you want, the CLI will display syntax hints about the arguments so you don’t have to remember all of them, or open up the Redis command documentation. 
+
+These three tips can save you a lot of time and take you a step closer to being a power user.
+
+You can do much more with redis-cli, like sending output to a file, scanning for big keys, get continuous stats, monitor commands and so on. For a much more detailed explanation refer to the [documentation](https://redis.io/docs/manual/cli/).
+
+
+
