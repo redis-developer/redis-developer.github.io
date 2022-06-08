@@ -8,4 +8,21 @@ isEditable: false
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-<iframe width="586" height="330" src="https://www.youtube.com/embed/2LRXM6ELhFw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div align="center">
+    <iframe width="896" height="509" src="https://www.youtube.com/embed/2LRXM6ELhFw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<br />
+<br />
+<p>Redis has a client-server architecture and uses a request-response model. Applications send requests to the Redis server, which processes them and returns responses for each. The role of a Redis client library is to act as an intermediary between your application and the Redis server.</p>
+
+Client libraries perform the following duties:
+- Implement the Redis wire protocol - the format used to send requests to and receive responses from the Redis server
+- Provide an idiomatic API for using Redis commands from a particular programming language
+
+## Managing the connection to Redis
+Redis clients communicate with the Redis server over TCP, using a protocol called [RESP](https://redis.io/docs/reference/protocol-spec/) (REdis Serialization Protocol) designed specifically for Redis. 
+
+The RESP protocol is simple and text-based, so it is easily read by humans, as well as machines. A common request/response would look something like this. Note that we're using netcat here to send raw protocol:
+
+This simple, well documented protocol has resulted in Redis clients for almost every language you can think of. The [redis.io](https://redis.io/docs/clients/) client page lists over 200 client libraries for more than 50 programming languages.
+
