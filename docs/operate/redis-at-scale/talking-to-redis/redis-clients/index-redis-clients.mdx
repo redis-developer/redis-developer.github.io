@@ -18,8 +18,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 Client libraries perform the following duties:
 - Implement the Redis wire protocol - the format used to send requests to and receive responses from the Redis server
 - Provide an idiomatic API for using Redis commands from a particular programming language
-Managing the connection to Redis
 
+## Managing the connection to Redis
 Redis clients communicate with the Redis server over TCP, using a protocol called [RESP](https://redis.io/docs/reference/protocol-spec/) (REdis Serialization Protocol) designed specifically for Redis. 
 
 The RESP protocol is simple and text-based, so it is easily read by humans, as well as machines. A common request/response would look something like this. Note that we're using netcat here to send raw protocol:
