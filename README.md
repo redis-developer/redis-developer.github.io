@@ -23,11 +23,11 @@ Redis Developer Hub is basically a journey carved out for Redis developer commun
 This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator. Follow these steps to contribute to this developer site:
 
 
+**Note:** You should use Node 16.  If using `nvm`, type `nvm use` before installing.
+
 ```console
 yarn install
 ```
-
-**Note:** Node.js 16 isn't supported yet.  If you experience issues with `node-gyp` compiling code, switch to the current LTS version of Node.js and re-run `yarn install`.
 
 ## Local Development
 
