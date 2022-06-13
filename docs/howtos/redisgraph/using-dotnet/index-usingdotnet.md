@@ -17,7 +17,7 @@ We'll use the [NRedisGraph](https://www.nuget.org/packages/NRedisGraph/) package
 The easiest way to get up and running with RedisGraph locally is to use the RedisGraph docker image:
 
 ```bash
-docker run -p 6379:6379 redislabs/redisgraph
+docker run -p 6379:6379 redis/redis-stack-server:latest
 ```
 
 The above command will start an instance of Redis locally with the RedisGraph module loaded, and you will be able to connect to it on **localhost:6379**
