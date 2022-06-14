@@ -16,7 +16,7 @@ Start out by creating a project with the command:
 dotnet new console -n TimeSeriesDemoApp
 ```
 
-Next, inside the `TimeSeriesDemoApp` directory, run the command: 
+Next, inside the `TimeSeriesDemoApp` directory, run the command:
 
 ```bash
 dotnet add package NRedisTimeSeries
@@ -27,7 +27,7 @@ dotnet add package NRedisTimeSeries
 The next step is to get a RedisTimeSeries database up and running. The easiest way to do that for development purposes is to use Docker:
 
 ```
-docker run -p 6379:63379 redislabs/redistimeseries
+docker run -p 6379:63379 redis/redis-stack-server:latest
 ```
 
 If you are well past getting started and want to get something into your production, your best bet is to run it in [Redis Enterprise](/howtos/redistimeseries/getting-started).
@@ -59,7 +59,7 @@ var producerTask = Task.Run(async()=>{
     {
         await db.TimeSeriesAddAsync("sensor", "*", Random.Shared.Next(50));
         await Task.Delay(1000);
-    }    
+    }
 });
 ```
 
@@ -90,7 +90,7 @@ Now what we've done so far is produce a time series of random integer data for o
 
 ### Create Rules to Store Aggregations
 
-Let's run min, max, and average every 5 seconds on our Time Series. Redis will do this passively in the background after we set up some keys to store them in and set up the rules. 
+Let's run min, max, and average every 5 seconds on our Time Series. Redis will do this passively in the background after we set up some keys to store them in and set up the rules.
 
 ```csharp
 var aggregations = new TsAggregation[]{TsAggregation.Avg, TsAggregation.Min, TsAggregation.Max};
@@ -115,8 +115,8 @@ var aggregationConsumerTask = Task.Run(async()=>
         foreach(var result in results)
         {
             Console.WriteLine($"{result.labels.First(x=>x.Key == "type").Value}: {result.value.Val}");
-        }        
-        
+        }
+
     }
 });
 ```
