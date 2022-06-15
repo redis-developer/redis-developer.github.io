@@ -161,10 +161,10 @@ module.exports = {
                       type: 'category',
                       label: 'Fixed Window',
                       items: [
-                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window',
-                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window-reactive',
-                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window-reactive-lua',
-                        'develop/java/spring/rate-limiting/fixed-window/index-fixed-window-reactive-gears'
+                        'develop/java/spring/rate-limiting/fixed-window/index-spring-fixed-window',
+                        'develop/java/spring/rate-limiting/fixed-window/index-spring-fixed-window-reactive',
+                        'develop/java/spring/rate-limiting/fixed-window/index-spring-fixed-window-reactive-lua',
+                        'develop/java/spring/rate-limiting/fixed-window/index-spring-fixed-window-reactive-gears'
                       ]
                     }
                   ]
@@ -226,7 +226,7 @@ module.exports = {
                   type: 'category',
                   label: 'Rate Limiting',
                   items: [
-                    'develop/dotnet/aspnetcore/rate-limiting/fixed-window/index-rate-limiting',
+                    'develop/dotnet/aspnetcore/rate-limiting/fixed-window/index-dotnet-rate-limiting',
                     'develop/dotnet/aspnetcore/rate-limiting/sliding-window/sliding-window-rate-limiting',
                     'develop/dotnet/aspnetcore/rate-limiting/middleware/byo-rate-limiter-middleware'
                   ]
@@ -447,7 +447,7 @@ module.exports = {
             'operate/orchestration/index-orchestration',
             'operate/orchestration/docker/index-docker',
             'operate/orchestration/nodejs-nginx-redis/index-nodejs-nginx-redis',
-            'operate/orchestration/kubernetes/index-kubernetes',
+            'operate/orchestration/kubernetes-gke/index-kubernetes-gke',
             'operate/orchestration/kubernetes-operator/index-kubernetes-operator',
           ]
         },

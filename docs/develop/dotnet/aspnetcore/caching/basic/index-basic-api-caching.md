@@ -2,11 +2,11 @@
 id: index-basic-caching
 title: How to add a basic API Cache to your ASP.NET Core application
 sidebar_label: Basic API Caching using ASP.NET Core
-slug: /develop/dotnet/aspnetcore/rate-limiting/fixed-window
+slug: /develop/dotnet/aspnetcore/caching/basic-api-caching
 authors: [steve]
 ---
 
-Redis is synonymous with caching, and for a good reason, Redis is fast and easy to get up and running with and does an excellent job as a cache. 
+Redis is synonymous with caching, and for a good reason, Redis is fast and easy to get up and running with and does an excellent job as a cache.
 
 There are two big reasons to use a cache over the source of truth.
 
@@ -73,7 +73,7 @@ public class WeatherForecast
 
     [JsonPropertyName("startTime")]
     public DateTime StartTime { get; set; }
-    
+
     [JsonPropertyName("endTime")]
     public DateTime EndTime { get; set; }
 
@@ -85,16 +85,16 @@ public class WeatherForecast
 
     [JsonPropertyName("temperatureUnit")]
     public string? TemperatureUnit { get; set; }
-    
+
     [JsonPropertyName("temperatureTrend")]
     public string? TemperatureTrend { get; set; }
 
     [JsonPropertyName("windSpeed")]
     public string? WindSpeed { get; set; }
-    
+
     [JsonPropertyName("windDirection")]
     public string? WindDirection { get; set; }
-    
+
     [JsonPropertyName("shortForecast")]
     public string? ShortForecast { get; set; }
 
@@ -173,12 +173,12 @@ public async Task<ForecastResult> Get([FromQuery] double latitude, [FromQuery] d
         var expireTask = _redis.KeyExpireAsync(keyName, TimeSpan.FromSeconds(3600));
         await Task.WhenAll(setTask, expireTask);
     }
-    
+
     var forecast =
         JsonSerializer.Deserialize<IEnumerable<WeatherForecast>>(json);
     watch.Stop();
     var result = new ForecastResult(forecast, watch.ElapsedMilliseconds);
-        
+
     return result;
 }
 ```
