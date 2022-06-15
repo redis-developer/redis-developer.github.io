@@ -23,6 +23,10 @@
   }
 }
 
+.announcementBarClose {
+    color: #fff;
+}
+
 /* @media screen and (min-width: 1024px) {
   :root {
     --docusaurus-announcement-bar-height: 30px;

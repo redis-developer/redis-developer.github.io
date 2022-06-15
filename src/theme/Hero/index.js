@@ -3,9 +3,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import Typed from 'react-typed';
 
-import * as Scroll from 'react-scroll';
-import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
-
 import SvgHero from '@site/src/svg/Hero';
 import SvgCreate from '@site/src/svg/Create';
 import SvgCreateBg from '@site/src/svg/CreateBg';
@@ -100,5 +97,5 @@ function Hero() {
     </header>
 	);
 }
- 
+
 export default Hero;

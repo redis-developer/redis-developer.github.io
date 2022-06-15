@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import Layout from '@theme/Layout';
+import Layout from '@docusaurus/theme-classic/lib/theme/Layout';
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
@@ -22,7 +22,7 @@ function NotFound() {
           <div className="row">
             <div className="col col--8 col--offset-2">
 
-              <div class="terminal">
+              <div className="terminal">
                 <div className="terminal-header">
                   <SvgDots color="#FFFFFF" />
                 </div>

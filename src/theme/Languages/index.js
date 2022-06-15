@@ -11,7 +11,6 @@ import SvgGo from '@site/src/svg/Go';
 import SvgApple from '@site/src/svg/Apple';
 import SvgCloudRun from '@site/src/svg/CloudRun';
 import SvgPhp from '@site/src/svg/Php';
-import SvgHeroku from '@site/src/svg/Heroku';
 import SvgAzure from '@site/src/svg/Azure';
 import SvgDocker from '@site/src/svg/Docker';
 import SvgKubernetes from '@site/src/svg/Kubernetes';
@@ -78,7 +77,7 @@ function Languages() {
        </li>
      </ul>
    </div>
-   
+
    <div className="container">
     <ul className="languages-list">
         <li>
@@ -87,7 +86,7 @@ function Languages() {
             <span className="btn">AWS</span>
           </a>
         </li>
-   
+
       <li>
         <a href={useBaseUrl('/create/azure/')}>
             <SvgAzure />
@@ -100,7 +99,7 @@ function Languages() {
             <SvgGCP />
             <span className="btn">GCP</span>
           </a>
-       </li>      
+       </li>
 
        <li>
         <a href={useBaseUrl('/create/docker/')}>
@@ -125,7 +124,7 @@ function Languages() {
        </li>
       </ul>
     </div>
-     
+
       <div className="container">
       <ul className="languages-list">
 
@@ -143,7 +142,7 @@ function Languages() {
           </a>
         </li>
 
- 
+
       <li>
         <a href={useBaseUrl('/create/netlify/getting-started-with-netlify')}>
             <SvgNetlify />
@@ -164,7 +163,7 @@ function Languages() {
             <SvgCloudRun />
             <span className="btn">Cloudrun</span>
           </a>
-       </li> 
+       </li>
 
       <li>
         <a href={useBaseUrl('/create/jenkins/')}>
@@ -177,7 +176,7 @@ function Languages() {
 
        </ul>
     </div>
-  </section>; 
+  </section>;
 }
 
 export default Languages;

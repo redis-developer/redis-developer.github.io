@@ -27,8 +27,6 @@ module.exports = function (context) {
     );
   }
 
-  const isProd = process.env.NODE_ENV === 'production';
-
   return {
     name: 'docusaurus-plugin-gtm',
 
@@ -37,9 +35,6 @@ module.exports = function (context) {
     // },
 
     injectHtmlTags() {
-      if (!isProd) {
-        return {};
-      }
       return {
         headTags: [
           {
