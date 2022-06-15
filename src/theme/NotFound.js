@@ -9,9 +9,8 @@ import Layout from '@docusaurus/theme-classic/lib/theme/Layout';
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-import Typed from 'react-typed';
-
 import SvgDots from '@site/src/svg/Dots';
+import Typed from '@site/src/theme/Typed';
 
 function NotFound() {
   return <Layout title="Page Not Found">
@@ -35,8 +34,7 @@ function NotFound() {
                 <Typed
                   strings={['>_ Page not found']}
                   typeSpeed={75}
-                >
-                </Typed>
+                />
               </h1>
 
               <a href="/" className="link">Back to homepage</a>

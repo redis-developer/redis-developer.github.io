@@ -1,7 +1,7 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-import Typed from 'react-typed';
+import Typed from '@site/src/theme/Typed';
 
 import SvgHero from '@site/src/svg/Hero';
 import SvgCreate from '@site/src/svg/Create';
@@ -28,8 +28,7 @@ function Hero() {
                   <Typed
                     strings={['>_ Made by developers for developers']}
                     typeSpeed={75}
-                  >
-                  </Typed>
+                  />
                 </h2>
               </div>
               <div className="col col--4">
