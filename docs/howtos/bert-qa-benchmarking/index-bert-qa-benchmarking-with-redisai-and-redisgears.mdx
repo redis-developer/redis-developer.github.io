@@ -5,6 +5,8 @@ sidebar_label: Benchmarks for BERT Large Question Answering inference for RedisA
 slug: /community/tutorials/bert-qa-benchmarking-with-redisai-and-redisgears
 marp: true
 authors: [alex, will]
+tags:
+  - community
 ---
 
 <head>
@@ -14,18 +16,25 @@ authors: [alex, will]
   />
 </head>
 
-## Summary of the article
+## Introduction
 
-In this article, we will explore the challenges and opportunities of deployment a large BERT Question Answering Transformer model(bert-large-uncased-whole-word-masking-finetuned-squad) models inside Redis, from Huggingfac, where [RedisGears](/howtos/redisgears) and [RedisAI](/howtos/redisai/getting-started) perform a lot of heavy lifting while leveraging in-memory datastore Redis.
+In this article, we will explore the challenges and opportunities associated with deploying a large BERT Question Answering Transformer model (bert-large-uncased-whole-word-masking-finetuned-squad) models inside Redis, from Hugging Face, where [RedisGears](/howtos/redisgears) and [RedisAI](/howtos/redisai/getting-started) perform a lot of heavy lifting while leveraging the in-memory datastore Redis.
 
 ## Why do we need RedisAI?
 
-- In data science load, you want to load high-performance hardware as close to 100% as possible
-- In user-facing load, you want to be able to distribute the load evenly, so it never reaches 100%, and client-facing servers can perform additional functions
-- In data science, you prefer re-calculate results
-- In a client-facing application, you prefer to cache results of calculation and fetch data from the cache as fast as possible to drive a seamless customer experience
+In data science workloads:
 
-Some numbers for inspiration and why to read this article:
+- You want to load high-performance hardware as close to 100% as possible
+- You prefer to re-calculate results
+
+However, in a client-facing application:
+
+- You want to be able to distribute the load evenly, so it never reaches 100%, and client-facing servers can perform additional functions
+- You prefer to cache results of previous calculations and fetch data from the cache as fast as possible to provide a seamless customer experience
+
+So before we go any further, **why should you read this article?** Here are some numbers for inspiration:
+
+First:
 
 ```
 python3 transformers_plain_bert_qa.py
@@ -33,7 +42,9 @@ airborne transmission of respiratory infections is the lack of established metho
 10.351818372 seconds
 ```
 
-The above script is a slightly modified transformers default pipeline for BERT QA, and running it on the server takes 10 seconds. The server is latest 12th Gen Intel(R) Core(TM) i9-12900K, [full cpuinfo](https://gist.github.com/AlexMikhalev/354ddc3094b0d3b95b11a411ea000a5a).
+The above script uses a slightly modified transformer from the default pipeline for BERT QA, and running it on the server takes 10 seconds. The server uses the latest 12th Gen Intel(R) Core(TM) i9-12900K, [full cpuinfo](https://gist.github.com/AlexMikhalev/354ddc3094b0d3b95b11a411ea000a5a).
+
+However:
 
 ```
 time curl -i -H "Content-Type: application/json" -X POST -d '{"search":"Who performs viral transmission among adults"}' http://localhost:8080/qasearch
@@ -44,14 +55,17 @@ sys	0m0.000s
 
 ```
 
-Runs BERT QA inference on each shard, by default equal by the number of available CPUs, and returns answers under second.
+The scriptscript runs BERT QA inference on **each shard**, which is equal to the number of available CPUs by default, and returns answers under one second.
+
+Incredibly, right? Let's dive in!
 
 # Background
 
-BERT Question Answering inference works where the ML model selects an answer from the given text; in other words, BERT QA works like this: "What is the answer from the text, assuming the answer to the question exists within the paragraph selected."
-So it's important to select a text potentially containing an answer and a typical pattern to use Wikipedia data to build [Open Domain Question Answering](https://lilianweng.github.io/posts/2020-10-29-odqa/).
+BERT Question Answering inference works where the ML model selects an answer from the given text. In other words, BERT QA "thinks" through the following: "What is the answer from the text, assuming the answer to the question exists within the paragraph selected."
 
-Our QA system is a domain-specific - medical domain-specific question/answering pipeline; hence we need a first pipeline that turns data into a knowledge graph. This NLP pipeline is available at Redis LaunchPad, full code is [open source](https://github.com/applied-knowledge-systems/the-pattern) and described in [previous article](/howtos/nlp), 5 minute Redis Hackathon 2021 [video](https://www.youtube.com/watch?v=VgJ8DTX5Mt4) and architectural overview below:
+So it's important to select text potentially containing an answer. A typical pattern is to use Wikipedia data to build [Open Domain Question Answering](https://lilianweng.github.io/posts/2020-10-29-odqa/).
+
+Our QA system is a medical domain-specific question/answering pipeline, hence we need a first pipeline that turns data into a knowledge graph. This NLP pipeline is available at Redis LaunchPad, is fully [open source](https://github.com/applied-knowledge-systems/the-pattern), and is described in [previous article](/howtos/nlp). Here is a 5 minute [video](https://www.youtube.com/watch?v=VgJ8DTX5Mt4) describing it, and below you will find and architectural overview:
 
 ![featured](featured.jpg)
 
@@ -61,8 +75,8 @@ In the BERT QA pipeline (or in any other modern NLP inference task), there are t
 
 1. Tokenize text - turn text into numbers
 2. Run the inference - large matrix multiplication
-   With Redis, we have the opportunity to pre-compute everything and store it in memory, but how do we do it?
-   Unlike with summarization ML learning task, the question is not known in advance, so can't pre-compute all possible answers. But we can pre-tokenize all potential answers - all paragraphs in the dataset using RedisGears:
+
+With Redis, we have the opportunity to pre-compute everything and store it in memory, but how do we do it? Unlike with the summarization ML learning task, the question is not known in advance, so we can't pre-compute all possible answers. However, we can pre-tokenize all potential answers (i.e. all paragraphs in the dataset) using RedisGears:
 
 ```python
 def parse_sentence(record):
@@ -86,9 +100,9 @@ def parse_sentence(record):
 
 ```
 
-See [full code on github](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/tokeniser_gears_redisai.py#L17)
+See the [full code on GitHub](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/tokeniser_gears_redisai.py#L17)
 
-Then for each Redis Cluster shard, we pre-load BERT QA model by downloading, exporting it into torchscript, then loading it to each shard:
+Then for each Redis Cluster shard, we pre-load the BERT QA model by downloading, exporting it into torchscript, then loading it into each shard:
 
 ```python
 def load_bert():
@@ -106,9 +120,9 @@ def load_bert():
         print(cc.infoget('bert-qa{%s}' %hash_tag.decode('utf-8')))
 ```
 
-Full [code in github](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/export_load_bert.py)
+The [full code is available on GitHub](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/export_load_bert.py)
 
-And when question comes from the user we tokenize and append question to potential answer before:
+And when a question comes from the user, we tokenize and append the question to the list of potential answers before running the RedisAI model:
 
 ```python
     token_key = f"tokenized:bert:qa:{sentence_key}"
@@ -123,7 +137,7 @@ And when question comes from the user we tokenize and append question to potenti
     num_seg_a=input_ids_question.shape[1]
     num_seg_b=input_ids_context.shape[0]
     token_type_ids = np.array([0]*num_seg_a + [1]*num_seg_b)
-    # create actual model runnger for RedisAI
+    # create actual model runner for RedisAI
     modelRunner = redisAI.createModelRunner(f'bert-qa{hash_tag}')
     # make sure all types are correct
     input_idss_ts=redisAI.createTensorFromBlob('INT64', input_idss.shape, input_idss.tobytes())
@@ -143,22 +157,21 @@ And when question comes from the user we tokenize and append question to potenti
     answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(input_ids[answer_start:answer_end],skip_special_tokens = True))
     log("Answer "+str(answer))
     return answer
-
 ```
 
-Full [code in github](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/qa_redisai_keymiss_no_cache_np.py#L34)
+Checkout the [full code, available on GitHub](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/qa_redisai_keymiss_no_cache_np.py#L34)
 
-Overall call for BERT QA API looks like this:
+The process for making a BERT QA API call looks like this:
 
 ![Architecture Diagram for BERT QA RedisGears and RedisAI](diagrams_02.png)
 
-Where I use two RedisGears cool features: capture event on key miss and async/await with the ability to run RedisAI on each shard and in non-locking for primary thread way - so Redis Cluster can continue to serve other customers. For benchmarks, caching RedisAI response is [disabled](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/qa_redisai_keymiss_no_cache_np.py#L29) and if you are getting response time in nanoseconds on the second call rather then milliseconds you have deployed production version of RedisGears.
+Here I use two cool features of RedisGears: capturing events on key miss and using async/await to run RedisAI on each shard without locking the primary thread - so that Redis Cluster can continue to serve other customers. For benchmarks, caching responses from RedisAI is [disabled](https://github.com/applied-knowledge-systems/the-pattern-api/blob/156633b9934f1243775671ce6c18ff2bf471c0ce/qasearch/qa_redisai_keymiss_no_cache_np.py#L29). If you are getting response times in nanoseconds on the second call rather then milliseconds, check to make sure the line linked above is commented out.
 
-# Running Benchmarks
+# Running the Benchmark
 
-pre-requisite for running the benchmark:
+Pre-requisites for running the benchmark:
 
-Assuming you are running Debian or ubuntu, have docker and docker-compose (or can create a virtual environment via conda):
+Assuming you are running Debian or Ubuntu and have Docker and docker-compose installed (or can create a virtual environment via conda), run the following commands:
 
 ```
 git clone --recurse-submodules https://github.com/applied-knowledge-systems/the-pattern.git
@@ -166,15 +179,15 @@ cd the-pattern
 ./bootstrap_benchmark.sh
 ```
 
-It should end with a curl call to qasearch API, Redis caching is disabled for the benchmark.
+The above commands should end with a curl call to the qasearch API, since Redis caching is disabled for the benchmark.
 
-Curl call shall look like this:
+Next, invoke curl like this:
 
 ```
 time curl -i -H "Content-Type: application/json" -X POST -d '{"search":"Who performs viral transmission among adults"}' http://localhost:8080/qasearch
 ```
 
-with output:
+Expect the following output, or something similar based on your runtime environment:
 
 ```
 HTTP/1.1 200 OK
@@ -187,19 +200,19 @@ Connection: keep-alive
 {"links":[{"created_at":"2002","rank":13,"source":"C0001486","target":"C0152083"}],"results":[{"answer":"adenovirus","sentence":"The medium of 40 T150 flasks of adenovirus transducer dec CAR CHO cells yielded 0 5 1 my of purified msCEACAM1a 1 4 protein","sentencekey":"sentence:PMC125375.xml:{mG}:202","title":"Crystal structure of murine sCEACAM1a[1,4]: a coronavirus receptor in the CEA family"}] OUTPUT_REDUCTED}
 ```
 
-I modified the output of API for the benchmark to return results from all shards - even if the answer is empty, in the run above five shards return answers, overall API call response under second with all additional hops to search in RedisGraph.
+I modified the output of the API for the benchmark to return results from all shards - even if the answer is empty. In the run above five shards return answers. The overall API call response takes less than one second with all additional hops to search in RedisGraph!
 
 ![Architecture Diagram for BERT QA API call](diagrams_01.png)
 
-# Deep Dive into Benchmark
+# Deep Dive into the Benchmark
 
 Let's dig deeper into what's happening under the hood:
 
-There is a sentence key with shard id or grab "Cache key" from `docker logs -f rgcluster`, in my setup cache key "bertqa{6fd}\_PMC169038.xml:{6fd}:33_Who performs viral transmission among adults". If you think it looks like a function call - it's a function call, which is triggered if key isn't present in Redis Cluster, which is for benchmark will be every time, since we disabled saving output for cache in a previous paragraph.
+You should have a sentence key with shard id, which you get by looking at the "Cache key" from `docker logs -f rgcluster`. In my setup the cache key is, "bertqa{6fd}\_PMC169038.xml:{6fd}:33_Who performs viral transmission among adults". If you think it looks like a function call it's because it is a function call. It is triggered if the key isn't present in the Redis Cluster, which for the benchmark will be every time since if you remember we disabled caching the output.
 
-One more thing is to figure out from logs the port of the shard corresponding to hashtag (also known as shard id, stuff in curly brackets – like this {6fd}, same will be in the output for export_load script, in my case Cache key was in "30012.log" so my port 30012
+One more thing to figure out from the logs is the port of the shard corresponding to the hashtag, also known as the `shard id`. It is the text found in betweeen the curly brackets – looks like `{6fd}` above. The same will be in the output for the `export_load` script. In my case the cache key was found in "30012.log", so my port is 30012.
 
-Check that the call works:
+Next I run the following command:
 
 ```
 redis-cli -c -p 300012 -h 127.0.0.1 get "bertqa{6fd}_PMC169038.xml:{6fd}:33_Who performs viral transmission among adults"
@@ -220,17 +233,15 @@ redis-benchmark -p 30012 -h 127.0.0.1 -n 10 get "bertqa{6fd}_PMC169038.xml:{6fd}
 238.10 requests per second
 ```
 
--n = number of times.
+If you are wondering, `-n` = number of times. In this case we run the benchmark 10 times. You can also add:
 
-add
+– `csv` if you want to output in CSV format
 
-– csv if you want to output in CSV format
+– `precision 3` if you want more decimals in the ms
 
-– precision 3 – if you want more decimals in ms
+More information about the benchmarking tool can be found on the [redis.io Benchmarks page](https://redis.io/topics/benchmarks)
 
-More information about benchmarking tool https://redis.io/topics/benchmarks?utm_campaign=write_for_redis
-
-if you don't have redis-utils installed locally, you can run the same via
+if you don't have redis-utils installed locally, you can use Docker as follows:
 
 ```bash
 docker exec -it rgcluster /bin/bash
@@ -272,11 +283,11 @@ Summary:
      1067.296   243.584   987.135  1744.895  1744.895  1744.895
 ```
 
-The platform only has 20 articles, 8 Redis nodes = 4 masters + 4 slaves, so relevance would be wrong and doesn't need a lot of memory.
+The platform only has 20 articles and 8 Redis nodes (4 masters + 4 slaves), so relevance would be wrong and it doesn't need a lot of memory.
 
 ## AI.INFO
 
-Now let's check how long our RedisAI model runs on this ({6fd}) shard:
+Now let's check how long our RedisAI model runs on the `{6fd}` shard:
 
 ```
 127.0.0.1:30012> AI.INFO bert-qa{6fd}
@@ -301,8 +312,11 @@ Now let's check how long our RedisAI model runs on this ({6fd}) shard:
 
 ```
 
-Where `bert-qa{6fd}` is the key of the actual model saved (and its large model). AI.INFO gives us a cumulative duration 8928136 in microseconds and a number of calls 58, which is approximately 153 milliseconds per call.
-Let's make sure about it, reset stats and re-run the benchmark:
+`bert-qa{6fd}` is the key of the actual (very large) model saved. The `AI.INFO` command gives us a cumulative duration of 8928136 microseconds and 58 calls, which is approximately 153 milliseconds per call.
+
+Let's double-check to make sure that's right by resetting the stats and then re-runnning the benchmark.
+
+First, reset the stats:
 
 ```
 127.0.0.1:30012> AI.INFO bert-qa{6fd} RESETSTAT
@@ -328,7 +342,7 @@ OK
 18) (integer) 0
 ```
 
-And re-run the benchmark again:
+Then, re-run the benchmark:
 
 ```
 redis-benchmark -p 30012 -h 127.0.0.1 -n 10 get "bertqa{6fd}_PMC169038.xml:{6fd}:33_Who performs viral transmission among adults"
@@ -369,7 +383,7 @@ Summary:
      1080.454   188.800   995.839  1779.711  1779.711  1779.711
 ```
 
-Now checking stats again:
+Now check the stats again:
 
 ```
 AI.INFO bert-qa{6fd}
@@ -393,14 +407,14 @@ AI.INFO bert-qa{6fd}
 18) (integer) 0
 ```
 
-We are at 88387.45 microseconds per call, which is pretty fast; also, considering we have started with 10 seconds per call, I think the benefits of using RedisAI in combination with RedisGears are pretty obvious; the trade-off is memory usage.
+Now we get 88387.45 microseconds per call, which is pretty fast! Also, considering we started with 10 seconds per call, I think the benefits of using RedisAI in combination with RedisGears are pretty obvious. However, the trade-off is high memory usage.
 
-There are many ways to optimize this deployment; for example, add FP16 quantization and ONNX runtime, and if you want to contribute it [script](https://github.com/applied-knowledge-systems/the-pattern-api/blob/7bcf021e537dc8d453036730f0a993dd52e1781f/qasearch/export_load_bert.py) will be a good starting point.
+There are many ways to optimize this deployment. For example, you can add a FP16 quantization and ONNX runtime. If you would like to try that, [this script](https://github.com/applied-knowledge-systems/the-pattern-api/blob/7bcf021e537dc8d453036730f0a993dd52e1781f/qasearch/export_load_bert.py) will be a good starting point.
 
-# Using Graphana to monitor RedisGears throughput, CPU, and Memory usage
+# Using Grafana to monitor RedisGears throughput, CPU, and Memory usage
 
-And thanks to the contribution of [Mikhail Volkov](https://volkovlabs.com/from-a-basic-redistimeseries-data-source-to-2-million-downloads-in-grafana-marketplace-9921ed9ac5a), we can now observe RedisGears and RedisGraph throughtput and memory consumption using Graphana, when you cloned repository it started graphana docker, which have pre-build templates to monitor RedisCluster - which include RedisGears and RedisAI, and Graph - which is Redis with RedisGraph, "The Pattern" dashboard provides an overall overview.
+Thanks to the contribution of [Mikhail Volkov](https://volkovlabs.com/from-a-basic-redistimeseries-data-source-to-2-million-downloads-in-grafana-marketplace-9921ed9ac5a), we can now observe RedisGears and RedisGraph throughput and memory consumption using Grafana. When you cloned repository it started Graphana Docker, which has pre-build templates to monitor RedisCluster, including RedisGears and RedisAI, and Graph - which is Redis with RedisGraph. "The Pattern" dashboard provides an overview, with all the key benchmark metrics you care about:
 
-![Graphana for RedisGraph](graphana_redis_graph.png)
+![Grafana for RedisGraph](graphana_redis_graph.png)
 
-![Graphana for RedisCluster](graphana_cluster_overview.png)
+![Grafana for RedisCluster](graphana_cluster_overview.png)
