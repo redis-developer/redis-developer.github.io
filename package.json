@@ -2,6 +2,10 @@
   "name": "redis-developer-hub",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=16.14",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
