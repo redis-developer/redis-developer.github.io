@@ -37,7 +37,7 @@ function DocItemWrapper(props: Props): JSX.Element {
                                         'Profile picture for ' +
                                         authorLookup[author].name
                                     }
-                                />{' '}
+                                />
                                 <div>
                                     <div className={styles.authorLabel}>
                                         Author:
