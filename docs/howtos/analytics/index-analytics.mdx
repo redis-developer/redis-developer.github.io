@@ -1,20 +1,25 @@
 ---
 id: index-analytics
-title: Building an Analytics dashboard app using Redis 
+title: Building an Analytics dashboard app using Redis
 sidebar_label: Building an Analytics dashboard app using Redis
 slug: /howtos/analytics
 authors: [ajeet]
 ---
 
-Interactive analytics dashboards serve several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic  dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands.
-
+Interactive analytics dashboards serve several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands.
 
 Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
 This tutorial shows a basic analytics dashboard app writen in NodeJS (JavaScript) that uses the Redis Bitmap data type.
 
-
 <div class="text--center">
-<iframe width="760" height="415" src="https://www.youtube.com/embed/Ugym4yUeIhA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/Ugym4yUeIhA"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ### Step 1. Prepare the environment
@@ -23,77 +28,72 @@ This tutorial shows a basic analytics dashboard app writen in NodeJS (JavaScript
 - Install NPM - v6.14.8
 - Install Docker - v19.03.13 (optional)
 
-
-
 ### Step 2. Clone the repository
 
-  ```bash
-   git clone https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs
-  ```
-
+```bash
+ git clone https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs
+```
 
 ### Step 3. Setting up backend
-
 
 First we will be setting up some environment variables.
 
 Go to /server folder (cd ./server) and then execute the following command:
 
-  ```bash
-   cp .env.example .env
-  ```
-
+```bash
+ cp .env.example .env
+```
 
 ### Step 4. Install dependencies
 
-  ```bash
-   npm install
-  ```
+```bash
+ npm install
+```
 
 ### Step 5. Run Docker Compose to install Redis
 
-  ```bash
-   docker network create global
-   docker-compose up -d --build
-  ```
+```bash
+ docker network create global
+ docker-compose up -d --build
+```
 
 You may need to preface the docker command with `sudo`. If you don't want to use sudo, create a Unix group called docker and add users to it. When the Docker daemon starts, it creates a Unix socket accessible by members of the docker group.
 Once the Redis database is up and running, you can connect to it using the `redis-cli` command.
 
-
 :::info TIP
-- By default, Redis runs on port 6379 but you can change it by specifying an alternative host port in the docker compose file. 
-- You can use a Redis configuration file and mount it as volumes in the docker compose YAML file. 
-- You can connect to the Redis instance by using `redis-cli -h hostname -p port` command. 
-- You can run the Redis `INFO` command to get statistics, metrics and health information from the Redis instance like cache, memory stats, Redis metrics and modules enabled. 
-- Use the Redis `MONITOR` command to get a real time view of commands that clients send to Redis. 
-:::
+
+- By default, Redis runs on port 6379 but you can change it by specifying an alternative host port in the docker compose file.
+- You can use a Redis configuration file and mount it as volumes in the docker compose YAML file.
+- You can connect to the Redis instance by using `redis-cli -h hostname -p port` command.
+- You can run the Redis `INFO` command to get statistics, metrics and health information from the Redis instance like cache, memory stats, Redis metrics and modules enabled.
+- Use the Redis `MONITOR` command to get a real time view of commands that clients send to Redis.
+  :::
 
 ### Step 6. Run the backend
 
-  ```bash
-   npm run dev
-  ```
+```bash
+ npm run dev
+```
 
 ### Step 7. Setting up the frontend
 
 Go to /client folder (cd ./client) and then:
 
-  ```bash
-   cp .env.example .env
-  ```
+```bash
+ cp .env.example .env
+```
 
-### Step 8.  Install dependencies
+### Step 8. Install dependencies
 
-  ```bash
-   npm install
-  ```
+```bash
+ npm install
+```
 
 ### Step 9. Run the frontend
 
-  ```bash
-   npm run serve
-  ```
+```bash
+ npm run serve
+```
 
 ![analytics](analytics_traffic.png)
 
@@ -126,33 +126,35 @@ and for each of data types (types):
 - bitmap
 - set
 
-Is generated key like: 
+Is generated key like:
 
-
-  ```bash
-   rab:{type}[:custom:{customName}][:user:{userId}][:source:{source}][:action:{action}][:page:{page}]:timeSpan:{timeSpan}
-  ```
+```bash
+ rab:{type}[:custom:{customName}][:user:{userId}][:source:{source}][:action:{action}][:page:{page}]:timeSpan:{timeSpan}
+```
 
 where values in [] are optional.
 
-- For each generated key like rab:count:*, data is stored like: INCR {key}
-Example:
+- For each generated key like rab:count:\*, data is stored like: INCR {key}
+  Example:
 
   ```bash
    INCR rab:count:action:addToCart:timeSpan:2015-12/3
   ```
-- For each generated key like: rab:set:*, data is stored like: SADD {key} {userId}
-Example:
+
+- For each generated key like: rab:set:\*, data is stored like: SADD {key} {userId}
+  Example:
 
   ```bash
    SADD rab:set:action:addToCart:timeSpan:2015-12/3 8
   ```
-- For each generated key like rab:bitmap:*, data is stored like: SETBIT {key} {userId} 1.
-Example:
+
+- For each generated key like rab:bitmap:\*, data is stored like: SETBIT {key} {userId} 1.
+  Example:
 
   ```bash
    SETBIT rab:bitmap:action:addToCart:timeSpan:2015-12/3 8 1
   ```
+
 ### Cohort data
 
 - We store users who register and then bought some products (action order matters).
@@ -160,7 +162,7 @@ Example:
 - If so, we set user bit to 1 like: SETBIT rab:bitmap:custom:cohort-buy:timeSpan:{timeSpan} {userId} 1
 
 - E.g User Id 2 bought 2 products on 2015-12-17. It won't be stored.
-- E.g User Id 10 bought 1 product on 2015-12-17 and registered on 2015-12-16. 
+- E.g User Id 10 bought 1 product on 2015-12-17 and registered on 2015-12-16.
   It will be stored like: SETBIT rab:bitmap:custom:cohort-buy:timeSpan:2015-12 10 1.
 - We assume that user cannot buy without register.
 
@@ -176,13 +178,13 @@ Example:
 
 - Total Traffic:
 
-December: ```BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12```
-X week of December: ```BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/{X}```
+December: `BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12`
+X week of December: `BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/{X}`
 Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/3
-  ```
+```bash
+ BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/3
+```
 
 - Traffic per Page ({page} is one of: homepage, product1, product2, product3):
 
@@ -192,11 +194,11 @@ December: BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12
 
 Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:action:visit:page:homepage:timeSpan:2015-12
-  ```
+```bash
+ BITCOUNT rab:bitmap:action:visit:page:homepage:timeSpan:2015-12
+```
 
-- X week of December: 
+- X week of December:
 
 ```
 BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12/{X}
@@ -204,13 +206,13 @@ BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12/{X}
 
 Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:action:visit:page:product1:timeSpan:2015-12/2
-  ```
+```bash
+ BITCOUNT rab:bitmap:action:visit:page:product1:timeSpan:2015-12/2
+```
 
 - Traffic per Source ({source} is one of: google, Facebook, email, direct, referral, none):
 
-December: 
+December:
 
 ```
 BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
@@ -218,21 +220,21 @@ BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
 
 Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:source:referral:timeSpan:2015-12
-  ```
+```bash
+ BITCOUNT rab:bitmap:source:referral:timeSpan:2015-12
+```
 
-- X week of December: ```BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}```
+- X week of December: `BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}`
 
 Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:source:google:timeSpan:2015-12/1
-  ```
+```bash
+ BITCOUNT rab:bitmap:source:google:timeSpan:2015-12/1
+```
 
 - Trend traffic ({page} is one of: homepage, product1, product2, product3):
 
-- December: from ```BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-01``` to ```BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-31```
+- December: from `BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-01` to `BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-31`
 - 1 Week of December: Similar as above, but from 2015-12-01 to 2015-12-07
 - 2 Week of December: Similar as above, but from 2015-12-08 to 2015-12-14
 - 3 Week of December: Similar as above, but from 2015-12-15 to 2015-12-21
@@ -240,15 +242,15 @@ Example:
 - 5 Week of December: Similar as above, but from 2015-12-29 to 2015-12-31
 - Example:
 
-   ```bash
-    BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-29 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-30 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-31
-   ```
+  ```bash
+   BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-29 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-30 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-31
+  ```
 
 - Total products bought:
 
-- December: ```GET rab:count:action:buy:timeSpan:2015-12```
-- X week of December: ```GET rab:count:action:buy:timeSpan:2015-12/{X}```
-Example:
+- December: `GET rab:count:action:buy:timeSpan:2015-12`
+- X week of December: `GET rab:count:action:buy:timeSpan:2015-12/{X}`
+  Example:
 
   ```bash
    GET rab:count:action:buy:timeSpan:2015-12/1
@@ -256,25 +258,25 @@ Example:
 
 - Total products added to cart:
 
-December: ```GET rab:count:action:addToCart:timeSpan:2015-12```
-X week of December: ```GET rab:count:action:addToCart:timeSpan:2015-12/{X}```
+December: `GET rab:count:action:addToCart:timeSpan:2015-12`
+X week of December: `GET rab:count:action:addToCart:timeSpan:2015-12/{X}`
 Example:
 
-  ```bash
-   GET rab:count:action:addToCart:timeSpan:2015-12/1
-  ```
+```bash
+ GET rab:count:action:addToCart:timeSpan:2015-12/1
+```
 
 - Shares of products bought ({productPage} is on of product1, product2, product3):
 
-December: ```GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12```
+December: `GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12`
 Example:
 
-  ```bash
-   GET rab:count:action:buy:page:product3:timeSpan:2015-12
-  ```
+```bash
+ GET rab:count:action:buy:page:product3:timeSpan:2015-12
+```
 
-- X week of December: ```GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}```
-Example:
+- X week of December: `GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}`
+  Example:
 
   ```bash
    GET rab:count:action:buy:page:product1:timeSpan:2015-12/2
@@ -284,8 +286,8 @@ Example:
 
 - People who registered: BITCOUNT rab:bitmap:action:register:timeSpan:2015-12
 - People who register then bought (order matters): BITCOUNT rab:bitmap:custom:cohort-buy:timeSpan:2015-12
-- Dropoff: (People who register then bought / People who register) * 100 [%]
-- Customers who bought only specified product ({productPage} is one of: product1, product2, product3): 
+- Dropoff: (People who register then bought / People who register) \* 100 [%]
+- Customers who bought only specified product ({productPage} is one of: product1, product2, product3):
 
 ```
 SMEMBERS rab:set:action:buy:page:{productPage}:timeSpan:2015-12
@@ -293,11 +295,11 @@ SMEMBERS rab:set:action:buy:page:{productPage}:timeSpan:2015-12
 
 Example:
 
-  ```bash
-   SMEMBERS rab:set:action:buy:page:product2:timeSpan:2015-12
-  ```
+```bash
+ SMEMBERS rab:set:action:buy:page:product2:timeSpan:2015-12
+```
 
-- Customers who bought Product1 and Product2: 
+- Customers who bought Product1 and Product2:
 
 ```
 SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page:product2:timeSpan:anytime
@@ -305,10 +307,7 @@ SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page
 
 - Customer Retention (customers who bought on the different dates): SMEMBERS rab:set:custom:retention-buy:timeSpan:anytime
 
-
 ### References
 
 - [Complete Source Code](https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs)
 - [Use cases of Bitmaps](https://redis.io/topics/data-types-intro)
-
-

@@ -17,7 +17,6 @@ Find tutorials, examples and technical articles that will help you to develop wi
 
 The Python community has built many client libraries that you can find here . For your first steps with Python and Redis, this article will show how to use the recommended library: [redis-py](https://github.com/redis/redis-py)
 
-
 <Tabs
   defaultValue="redis-py"
   values={[
@@ -25,14 +24,12 @@ The Python community has built many client libraries that you can find here . Fo
   ]}>
   <TabItem value="redis-py">
 
-
 #### Step 1. Run a Redis server
 
 Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Unlike relational databases, Redis database delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
 
 Redis (also called remote dictionary server) is a multi-model database, and provides several built-in data structures/data type such as Lists, Hashes, Geospatial indexes, Strings, Sets etc.
 You can either run Redis server in a Docker container or directly on your machine. Follow the below command line to setup a Redis server on Mac OS:
-
 
 ```
  brew tap redis-stack/redis-stack
@@ -46,7 +43,6 @@ Redis Stack unifies and simplifies the developer experience of the leading Redis
 
 Ensure that you are able to use the following Redis command to connect to the Redis instance.
 
-
 ```bash
  redis-cli
  127.0.0.1:6379>
@@ -58,37 +54,33 @@ Now, you should be able to get Redis data by using Redis commands.
 
 The following Python code allows you to connect to the default Redis server instance .
 
-
-   ```bash
-    pip3 install redis
-   ```
-
+```bash
+ pip3 install redis
+```
 
 ### Step 2. Write your application code
 
-   ```python
-    import redis
+```python
+ import redis
 
-    redis = redis.Redis(
-        host= 'localhost',
-        port= '6379')
+ redis = redis.Redis(
+     host= 'localhost',
+     port= '6379')
 
-    redis.set('mykey', 'Hello from Python!')
-    value = redis.get('mykey') 
-    print(value)
+ redis.set('mykey', 'Hello from Python!')
+ value = redis.get('mykey')
+ print(value)
 
-    redis.zadd('vehicles', {'car' : 0})
-    redis.zadd('vehicles', {'bike' : 0})
-    vehicles = redis.zrange('vehicles', 0, -1)
-    print(vehicles)
-   ```
+ redis.zadd('vehicles', {'car' : 0})
+ redis.zadd('vehicles', {'bike' : 0})
+ vehicles = redis.zrange('vehicles', 0, -1)
+ print(vehicles)
+```
 
 Find more information about Redis database instances & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/python/redispy)".
 
  </TabItem>
 </Tabs>
-  
-
 
 ### More developer resources
 
@@ -98,10 +90,8 @@ Find more information about Redis database instances & Redis connections in the 
 
 #### Sample Code
 
-**[Flask Simple Rate limiting Example   ](https://github.com/redis-developer/basic-caching-demo-nodejs)**
+**[Flask Simple Rate limiting Example ](https://github.com/redis-developer/basic-caching-demo-nodejs)**
 Application that shows how to do rate limiting using various Redis datastructure.
-
-
 
 </div>
 
@@ -111,13 +101,12 @@ Application that shows how to do rate limiting using various Redis datastructure
 
 **[Beyond the Cache with Python](https://redis.com/blog/beyond-the-cache-with-python/)**
 
-
 </div>
 </div>
 
-  ---
+---
 
-###  Redis Launchpad
+### Redis Launchpad
 
 Redis Launchpad is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
 Check out a few of these apps below, or [click here to access the complete list](https://launchpad.redis.com).
@@ -129,10 +118,10 @@ Check out a few of these apps below, or [click here to access the complete list]
 
 #### Rate-Limiting app in Python & Django
 
-
 ![launchpad](images/ratelimitingdjango.png)
 
 [Rate Limiting app](https://launchpad.redis.com/?id=project%3Abasic-rate-limiting-demo-python) built in Python & Django
+
 </div>
 </div>
 
@@ -144,6 +133,7 @@ Check out a few of these apps below, or [click here to access the complete list]
 ![launchpad](images/leaderboarddjango.png)
 
 [How to implement leaderboard app](https://launchpad.redis.com/?id=project%3Abasic-redis-leaderboard-demo-python) in Python & Django
+
 </div>
 </div>
 </div>
@@ -154,9 +144,14 @@ Check out a few of these apps below, or [click here to access the complete list]
 
 A complete introduction to Redis for Python developers.
 
-
 <div class="text--center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BxRJRNt7Qwc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/BxRJRNt7Qwc"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ### References
@@ -169,5 +164,17 @@ A complete introduction to Redis for Python developers.
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

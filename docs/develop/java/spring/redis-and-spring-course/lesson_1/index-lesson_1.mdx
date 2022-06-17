@@ -1,6 +1,6 @@
 ---
 id: index-lesson_1
-title: "Spring and Redis: Up and Running"
+title: 'Spring and Redis: Up and Running'
 sidebar_label: Up and Running
 slug: /develop/java/redis-and-spring-course/lesson_1
 authors: [bsb]
@@ -15,14 +15,15 @@ Create the skeleton for the course’s Spring Boot application, configuring all 
 ### Agenda
 
 In this lesson, you will learn:
-* How to create and configure your Spring Boot application to use Redis
-* How to add a docker-compose file as a Git submodule to your application to configure and run Redis
-* How to add a Git submodule with the application’s sample raw data
-* How to launch a Redis instance suitable for the course
+
+- How to create and configure your Spring Boot application to use Redis
+- How to add a docker-compose file as a Git submodule to your application to configure and run Redis
+- How to add a Git submodule with the application’s sample raw data
+- How to launch a Redis instance suitable for the course
 
 If you get stuck:
 
-* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-1
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-1
 
 ### Creating a skeleton spring boot application from scratch!
 
@@ -31,23 +32,24 @@ skip to the section “Quick Start For Those In a Hurry.”
 
 1. In your browser, launch the [Spring Initilizr](https://start.spring.io)
 2. Fill out the form using the following settings:
-  * Project: Maven Project
-  * Language: Java
-  * Spring Boot: 2.4.4
-  * Project Metadata:
-    * Group: `com.redislabs.edu`
-    * Artifact: `redi2read`
-    * Name: `redi2read`
-    * Description: Bookstore Web Services Powered by Redis
-    * Package Name: `com.redislabs.edu.redi2read`
-    * Packaging: JAR
-    * Java: 11
-  * Dependencies:
-    * Spring Web
-    * String Data Redis (Access + Driver)
-    * Spring Security
-    * Lombok
-    * Spring Boot DevTools
+
+- Project: Maven Project
+- Language: Java
+- Spring Boot: 2.4.4
+- Project Metadata:
+  - Group: `com.redislabs.edu`
+  - Artifact: `redi2read`
+  - Name: `redi2read`
+  - Description: Bookstore Web Services Powered by Redis
+  - Package Name: `com.redislabs.edu.redi2read`
+  - Packaging: JAR
+  - Java: 11
+- Dependencies:
+  - Spring Web
+  - String Data Redis (Access + Driver)
+  - Spring Security
+  - Lombok
+  - Spring Boot DevTools
 
 Alternatively, you can use the following URL: http://bit.ly/spring-initlz-redi2read to launch the Spring Initilizr fully configured for the project.
 Click on GENERATE and Initializr will generate the zip file for the project and prompt you to download it to your local machine.
@@ -90,13 +92,13 @@ and [RedisGraph](https://redisgraph.io) modules while building this application.
 
 Modules included in the container:
 
-* **RediSearch**: a full-featured search engine
-* **RedisGraph**: a graph database
-* **RedisTimeSeries**: a time-series database
-* **RedisAI**: a tensor and deep learning model server
-* **RedisJSON**: a native JSON data type
-* **RedisBloom**: native Bloom and Cuckoo Filter data types
-* **RedisGears**: a dynamic execution framework
+- **RediSearch**: a full-featured search engine
+- **RedisGraph**: a graph database
+- **RedisTimeSeries**: a time-series database
+- **RedisAI**: a tensor and deep learning model server
+- **RedisJSON**: a native JSON data type
+- **RedisBloom**: native Bloom and Cuckoo Filter data types
+- **RedisGears**: a dynamic execution framework
 
 To add the submodule, we use the git submodule command at the root of the project:
 
@@ -272,7 +274,7 @@ Since we have a customized Redis instance which includes several Redis modules, 
 
 ### Getting familiar with Redis Commands
 
-Keys are unique identifiers, whose value can be any one of the data types that Redis supports.  These data types range from simple Strings, to Lists, Sets, and even Streams.  Each data type has its own set of behaviors and commands associated with it.
+Keys are unique identifiers, whose value can be any one of the data types that Redis supports. These data types range from simple Strings, to Lists, Sets, and even Streams. Each data type has its own set of behaviors and commands associated with it.
 
 ```bash
 127.0.0.1:6379> SET myname "Brian"
@@ -295,7 +297,7 @@ This makes Redis an excellent choice for applications that require real time dat
 
 Here's some resources that we think will be useful to you as you discover Redis:
 
-* [redis.io](https://redis.io/) - the official website of open source Redis.
-* [Redis Enterprise Cloud](https://redis.com/redis-enterprise-cloud/overview/) - a fully managed cloud service from Redis with a free plan for getting started.
-* The official [Redis Docker image](https://hub.docker.com/_/redis/).
-* For a comprehensive introduction to Redis, we recommend taking a look at the [RU101: Introduction to Redis Data Structures](https://university.redis.com/courses/ru101/) course at Redis University. In this free online course, you’ll learn about the data structures in Redis, and you’ll see how to practically apply them in the real world.
+- [redis.io](https://redis.io/) - the official website of open source Redis.
+- [Redis Enterprise Cloud](https://redis.com/redis-enterprise-cloud/overview/) - a fully managed cloud service from Redis with a free plan for getting started.
+- The official [Redis Docker image](https://hub.docker.com/_/redis/).
+- For a comprehensive introduction to Redis, we recommend taking a look at the [RU101: Introduction to Redis Data Structures](https://university.redis.com/courses/ru101/) course at Redis University. In this free online course, you’ll learn about the data structures in Redis, and you’ll see how to practically apply them in the real world.

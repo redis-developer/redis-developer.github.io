@@ -8,7 +8,7 @@ authors: [ajeet]
 
 import RedisCard from '@site/src/theme/RedisCard';
 
-Netlify is a popular static site hosting serverless platform. It is a popular way to build, deploy, and scale modern web applications in a much more scalable and secure way.  
+Netlify is a popular static site hosting serverless platform. It is a popular way to build, deploy, and scale modern web applications in a much more scalable and secure way.
 
 Netlify helps developers to launch websites and campaigns in minutes with no fuss. Netlify is built primarily for JAMstack sites, which unify JavaScript and APIs to allow applications that are well suited for both developers and content editors.
 
@@ -30,11 +30,10 @@ Netlify helps developers to launch websites and campaigns in minutes with no fus
 2. When a new change is merged into the main branch of the repository, a webhook notifies Netlify to deploy a new site.
 3. Netlify pulls the latest version of the app from the repository and runs a build command to generate the static site files
 4. Netlify then uses Plugins and internal code to make adjustments to your site, pre-render all of your pages in static HTML and improves it further
-/
+   /
 5. Once the build process gets completed, Netlify takes the static assets and pushes them to its global CDN for fast delivery.
 
 In this tutorial, you will see how to deploy a simple Redis caching app built with Next.js and TailwindCSS to Netlify in 5 minutes.
-
 
 ### Table of Contents
 
@@ -45,7 +44,7 @@ In this tutorial, you will see how to deploy a simple Redis caching app built wi
 - Step 5. Configure Continuous Deployment
 - Step 6. Pushing the changes to GitHub
 - Step 7. Open the Netlify Admin URL
-- Step 8. Add Environment Variable 
+- Step 8. Add Environment Variable
 - Step 9. Trigger the deployment
 - Step 10. Accessing the app
 
@@ -60,13 +59,11 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 :::
 
-
 ![rediscloud](details_database.png)
 
 ### Step 2. Install Netlify CLI
 
 Netlify’s command line interface (CLI) lets you configure continuous deployment directly from the command line. Run the below command to install Netlify CLI on your local laptop:
-
 
 ```bash
 
@@ -86,16 +83,14 @@ Verify if Netlify is installed or not by running the below command:
  git clone https://github.com/redis-developer/nextjs-redis-netlify
 ```
 
-
 ### Step 4. Login to Netlify via CLI
 
 To authenticate and obtain an access token using the command line, run the following command to login to your Netlify account:
 
+```bash
+ netlify login
+```
 
-
- ```bash
-  netlify login
- ```
 This will open a browser window, asking you to log in with Netlify and grant access to Netlify CLI.
 Once you authenticate, it will ask you to close the window and display the below results:
 
@@ -108,25 +103,22 @@ Once you authenticate, it will ask you to close the window and display the below
 
   To see all available commands run: netlify help
 ```
+
 </details>
 
+### Step 5. Configure continuous deployent
 
-
-### Step 5. Configure continuous deployent 
-
-The ```netlify init``` command allows you to configure continuous deployment for a new or existing site. 
+The `netlify init` command allows you to configure continuous deployment for a new or existing site.
 It will also allow you to create netlify.toml file if it doesn't exists.
 
 ```
-netlify init  
+netlify init
 ```
-
-
 
 <details><summary markdown="span"><strong>Result</strong></summary>
 
 ```
-netlify init  
+netlify init
 ? What would you like to do? +  Create & configure a new site
 ? Team: Redis
 Choose a unique site name (e.g. super-cool-site-by-redisdeveloper.netlify.app) or leave it blank for a random name. You can update the site name later.
@@ -157,9 +149,10 @@ Next steps:
   git push       Push to your git repository to trigger new site builds
   netlify open   Open the Netlify admin URL of your site
 ```
+
 </details>
 
-The above step creates a ```netlify.toml``` file with the following content
+The above step creates a `netlify.toml` file with the following content
 
 ```javacript title="netlify.toml"
  [build]
@@ -170,7 +163,6 @@ The above step creates a ```netlify.toml``` file with the following content
   package = "@netlify/plugin-nextjs"
 
 ```
-
 
 ### Step 6. Pushing the changes to GitHub
 
@@ -192,19 +184,15 @@ git push
 
 ![Environment Variable](environ_2.png)
 
-
-
 ### Step 9. Trigger the deployment
 
 Click "Trigger deploy" to deploy the site
 
 ![MyImage1](redisdeveloper_3.png)
 
-
 ## Step 10. Accessing the app
 
 Click on the deploy URL and you should be able to access the app as shown:
-
 
 ![MyImage](runningapp.png)
 
@@ -218,4 +206,3 @@ Click on the deploy URL and you should be able to access the app as shown:
 - [Introduction to Netlify](https://www.netlify.com/)
 - [Netlify Functions](https://www.netlify.com/products/functions/)
 - [Overview of JAMstack](https://www.netlify.com/jamstack/)
-

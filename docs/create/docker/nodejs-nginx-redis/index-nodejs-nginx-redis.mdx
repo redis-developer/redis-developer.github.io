@@ -12,21 +12,19 @@ Thanks to [Node.js](https://nodejs.dev/) - Millions of frontend developers that 
 
 In this quickstart guide, you will see how to build a Node.js application (visitor counter) using Nginx, Redis and Docker.
 
-
 ### What do you need?
 
 - **Node.js**: An open-source, cross-platform, back-end JavaScript runtime environment that runs on the V8 engine and executes JavaScript code outside a web browser.
 - **Nginx**: An open source software for web serving, reverse proxying, caching, load balancing, media streaming, and more.
 - **Docker**: a containerization platform for developing, shipping, and running applications.
-- **Docker Compose**: A tool for defining and running multi-container Docker applications. 
- 
+- **Docker Compose**: A tool for defining and running multi-container Docker applications.
 
 ### Project structure
 
 ```
 .
 ├── docker-compose.yml
-├── redis 
+├── redis
 ├── nginx
 │   ├── Dockerfile
 │   └── nginx.conf
@@ -41,7 +39,6 @@ In this quickstart guide, you will see how to build a Node.js application (visit
 
 ```
 
-
 ### Prerequisite:
 
 – Install Docker Desktop
@@ -49,15 +46,12 @@ In this quickstart guide, you will see how to build a Node.js application (visit
 Visit https://docs.docker.com/desktop/mac/install/ to setup Docker Desktop for Mac or Windows on your local system.
 
 ![Image1](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kgrkqga3c78h693vy33p.png)
- 
 
 :::info
 
 Docker Desktop comes with Docker compose installed by default, hence you don't need to install it separately.
 
 :::
-
-
 
 ### Step 1. Create a Docker compose file
 
@@ -92,8 +86,7 @@ services:
 The compose file defines an application with four services `redis`, `web1`, `web2` and `nginx`.
 When deploying the application, docker-compose maps port 80 of the web service container to port 80 of the host as specified in the file.
 
-
-:::info  
+:::info
 
 By default, Redis runs on port 6379. Make sure you don't run another instance of Redis on your system or port 6379 on the host is not being used by another container, otherwise the port should be changed.
 :::
@@ -255,7 +248,6 @@ app.listen(5000, function() {
 }
 ```
 
-
 ### Step 5. Deploy the application
 
 Let us deploy the full-fledged app using docker-compose
@@ -263,6 +255,7 @@ Let us deploy the full-fledged app using docker-compose
 ```
 $ docker-compose up -d
 ```
+
 ```
 Creating nginx-nodejs-redis_redis_1 ... done
 Creating nginx-nodejs-redis_web1_1  ... done
@@ -270,24 +263,22 @@ Creating nginx-nodejs-redis_web2_1  ... done
 Creating nginx-nodejs-redis_nginx_1 ... done
 ```
 
-
 #### Expected result
 
 Listing containers must show three containers running and the port mapping as below:
 
-
 ```
 docker-compose ps
-           Name                        Command              State           Ports         
+           Name                        Command              State           Ports
 ------------------------------------------------------------------------------------------
-nginx-nodejs-redis_nginx_1   /docker-entrypoint.sh ngin     Up      0.0.0.0:80->80/tcp    
-                             ...                                                          
+nginx-nodejs-redis_nginx_1   /docker-entrypoint.sh ngin     Up      0.0.0.0:80->80/tcp
+                             ...
 nginx-nodejs-redis_redis_1   docker-entrypoint.sh redis     Up      0.0.0.0:6379->6379/tcp
-                             ...                                                          
-nginx-nodejs-redis_web1_1    docker-entrypoint.sh npm       Up      0.0.0.0:81->5000/tcp  
-                             start                                                        
-nginx-nodejs-redis_web2_1    docker-entrypoint.sh npm       Up      0.0.0.0:82->5000/tcp  
-                             start   
+                             ...
+nginx-nodejs-redis_web1_1    docker-entrypoint.sh npm       Up      0.0.0.0:81->5000/tcp
+                             start
+nginx-nodejs-redis_web2_1    docker-entrypoint.sh npm       Up      0.0.0.0:82->5000/tcp
+                             start
 ```
 
 ### Step 6. Testing the app
@@ -304,6 +295,7 @@ web1: Total number of visits is: 1
 curl localhost:80
 web1: Total number of visits is: 2
 ```
+
 ```
 $ curl localhost:80
 web2: Total number of visits is: 3
@@ -312,13 +304,11 @@ web2: Total number of visits is: 3
 ```
 $ curl localhost:80
 web2: Total number of visits is: 4
-``` 
+```
 
+### Step 7. Monitoring Redis keys
 
-
-### Step 7. Monitoring Redis keys 
-
-If you want to monitor the Redis keys, you can use monitor command. Install redis-client in your Mac system using ```brew install redis``` and then directly connect to Redis container by issuing the below command:
+If you want to monitor the Redis keys, you can use monitor command. Install redis-client in your Mac system using `brew install redis` and then directly connect to Redis container by issuing the below command:
 
 ```
 % redis-cli

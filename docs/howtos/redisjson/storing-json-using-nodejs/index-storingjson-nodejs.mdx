@@ -1,26 +1,22 @@
 ---
 id: index-storingjson-nodejs
-title: How to store and retrieve JSON documents using Node.js 
+title: How to store and retrieve JSON documents using Node.js
 sidebar_label: Storing and retrieving JSON documents using Node.js
 slug: /howtos/redisjson/storing-json-using-nodejs
 authors: [ajeet, simon]
 ---
 
-
-
 Imagine that you're building a social network application where users can "check in" at different locations and give them a star rating, say from 0 for an awful experience through 5 to report that they had the best time ever there! When designing your application, you determined that there's a need to manage data about three main entities:
 
+- Users
+- Locations
+- Checkins
 
-
-* Users
-* Locations
-* Checkins
-
-Let's look at what we're storing about each of these entities.  As we're using Redis as our only data store, we'll also consider how they map to Redis data types...
+Let's look at what we're storing about each of these entities. As we're using Redis as our only data store, we'll also consider how they map to Redis data types...
 
 ## Users
 
-We'll represent each user as a flat map of name/value pairs with no nested objects.  As we'll see later on, this maps nicely to a Redis Hash.  Here's a JSON representation of the schema we'll use to represent each user:
+We'll represent each user as a flat map of name/value pairs with no nested objects. As we'll see later on, this maps nicely to a Redis Hash. Here's a JSON representation of the schema we'll use to represent each user:
 
 ```json
 {
@@ -35,13 +31,13 @@ We'll represent each user as a flat map of name/value pairs with no nested objec
 }
 ```
 
-We've given each user an ID and we're storing basic information about them.  Also, we’ll encrypt their password using bcrypt when we load the sample data into Redis.
+We've given each user an ID and we're storing basic information about them. Also, we’ll encrypt their password using bcrypt when we load the sample data into Redis.
 
 For each user, we'll keep track of the total number of checkins that they've submitted to the system, and the timestamp and location ID of their most recent checkin so that we know where and when they last used the system.
 
 ## Locations
 
-For each location that users can check in at, we're going to maintain two types of data.  The first of these is also a flat map of name/value pairs, containing summary information about the location:
+For each location that users can check in at, we're going to maintain two types of data. The first of these is also a flat map of name/value pairs, containing summary information about the location:
 
 ```json
 {
@@ -55,11 +51,11 @@ For each location that users can check in at, we're going to maintain two types 
 }
 ```
 
-We've given each location an ID and a category—we'll use the category to search for locations by type later on.  The "location" field stores the coordinates in longitude, latitude format… this is the opposite from the usual latitude, longitude format. We'll see how to use this to perform geospatial searches later when we look at the RediSearch module.
+We've given each location an ID and a category—we'll use the category to search for locations by type later on. The "location" field stores the coordinates in longitude, latitude format… this is the opposite from the usual latitude, longitude format. We'll see how to use this to perform geospatial searches later when we look at the RediSearch module.
 
 For each location, we're also storing the total number of checkins that have been recorded there by all of our users, the total number of stars that those checkins gave the location, and an average star rating per checkin for the location.
 
-The second type of data that we want to maintain for each location is what we'll call "location details".  These take the form of more structured JSON documents with nested objects and arrays.  Here's an example for location 138, Stacey's Country Bakehouse:
+The second type of data that we want to maintain for each location is what we'll call "location details". These take the form of more structured JSON documents with nested objects and arrays. Here's an example for location 138, Stacey's Country Bakehouse:
 
 ```json
 {
@@ -74,7 +70,8 @@ The second type of data that we want to maintain for each location is what we'll
     { "day": "Sunday", "hours": "7-7" }
   ],
   "socials": [
-    { "instagram": "staceyscountrybakehouse",
+    {
+      "instagram": "staceyscountrybakehouse",
       "facebook": "staceyscountrybakehouse",
       "twitter": "staceyscountrybakehouse"
     }
@@ -85,7 +82,7 @@ The second type of data that we want to maintain for each location is what we'll
 }
 ```
 
-We want to build an API that allows us to retrieve all or some of these extra details, and keep the overall structure of the document intact.  For that, we'll need the RedisJSON module as we'll see later.
+We want to build an API that allows us to retrieve all or some of these extra details, and keep the overall structure of the document intact. For that, we'll need the RedisJSON module as we'll see later.
 
 ## Checkins
 
@@ -103,18 +100,18 @@ Each checkin can be thought of as a flat map of name/value pairs, for example:
 
 Here, we see that user 789 visited location 171 ("Hair by Parvinder") and was really impressed with the service.
 
-We need a way to store checkins for long enough to process them, but not forever.  We also need to associate a timestamp with each one, as we'll need that when we process the data.  
+We need a way to store checkins for long enough to process them, but not forever. We also need to associate a timestamp with each one, as we'll need that when we process the data.
 
-Redis provides a Stream data type that's perfect for this - with Redis Streams, we can store maps of name/value pairs and have the Redis server timestamp them for us.  Streams are also perfect for the sort of asynchronous processing we want to do with this data.  When a user posts a new checkin to our API we want to store that data and respond to the user that we've received it as quickly as possible.  Later we can have one or more other parts of the system do further processing with it.  Such processing might include updating the total number of checkins and last seen at fields for a user, or calculating a new average star rating for a location.
+Redis provides a Stream data type that's perfect for this - with Redis Streams, we can store maps of name/value pairs and have the Redis server timestamp them for us. Streams are also perfect for the sort of asynchronous processing we want to do with this data. When a user posts a new checkin to our API we want to store that data and respond to the user that we've received it as quickly as possible. Later we can have one or more other parts of the system do further processing with it. Such processing might include updating the total number of checkins and last seen at fields for a user, or calculating a new average star rating for a location.
 
 ## Application Architecture
 
-We decided to use Node.js with the Express framework and ioredis client to build the application.  Rather than have a monolithic codebase, the application has been split out into four components or services. These are:
+We decided to use Node.js with the Express framework and ioredis client to build the application. Rather than have a monolithic codebase, the application has been split out into four components or services. These are:
 
-* **Authentication Service**: Listens on an HTTP port and handles user authentication using Redis as a shared session store that other services can access.
-* **Checkin Receiver**: Listens on an HTTP port and receives checkins as HTTP POST requests from our users.  Each checkin is placed in a Redis Stream for later processing.
-* **Checkin Processor**: Monitors the checkin Stream in Redis, updating user and location information as it processes each checkin.
-* **API Server**: Implements the bulk of the application's API endpoints, including those to retrieve information about users and locations from Redis.
+- **Authentication Service**: Listens on an HTTP port and handles user authentication using Redis as a shared session store that other services can access.
+- **Checkin Receiver**: Listens on an HTTP port and receives checkins as HTTP POST requests from our users. Each checkin is placed in a Redis Stream for later processing.
+- **Checkin Processor**: Monitors the checkin Stream in Redis, updating user and location information as it processes each checkin.
+- **API Server**: Implements the bulk of the application's API endpoints, including those to retrieve information about users and locations from Redis.
 
 These components fit together like so:
 
@@ -141,7 +138,7 @@ From the node-js-crash-course directory, start Redis using `docker-compose`:
  $ docker ps
 ```
 
-The output from the docker ps command should show one container running, using the "redislabs/redismod" image.  This container runs Redis 6 with the RediSearch, RedisJSON and RedisBloom modules.
+The output from the docker ps command should show one container running, using the "redislabs/redismod" image. This container runs Redis 6 with the RediSearch, RedisJSON and RedisBloom modules.
 
 ### Step 3. Load the Sample Data into Redis
 
@@ -209,26 +206,31 @@ $ docker exec -it rediscrashcourse redis-cli
 
 ### Step 4. Start and Configure RedisInsight
 
-If you're using RedisInsight, start it up and it should open in your browser automatically.  If not, point your browser at http://localhost:8001.  
+If you're using RedisInsight, start it up and it should open in your browser automatically. If not, point your browser at http://localhost:8001.
 
 If this is your first time using RedisInsight click "I already have a database".
 
 If you already have other Redis databases configured in RedisInsight, click "Add Redis Database".
 
-Now, click "Connect to a Redis Database Using hostname and port".  Configure the database details as shown below, then click "Add Redis Database".
+Now, click "Connect to a Redis Database Using hostname and port". Configure the database details as shown below, then click "Add Redis Database".
 
 ![Configuring RedisInsight](images/configure_insight.png)
 
-
-You should now be able to browse your Redis instance.  If you need more guidance on how to connect to Redis from RedisInsight, check out Justin's video below but be sure to use 127.0.0.1 as the host, 6379 as the port and leave the username and password fields blank when configuring your database.
+You should now be able to browse your Redis instance. If you need more guidance on how to connect to Redis from RedisInsight, check out Justin's video below but be sure to use 127.0.0.1 as the host, 6379 as the port and leave the username and password fields blank when configuring your database.
 
 <div class="text--center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LSiLuNPeq9Y?start=359" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/LSiLuNPeq9Y?start=359"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
-### Step 5.  Start the Application
+### Step 5. Start the Application
 
-Now it's time to start the API Server component of the application and make sure it connects to Redis.  This component listens on port 8081.
+Now it's time to start the API Server component of the application and make sure it connects to Redis. This component listens on port 8081.
 
 If port 8081 is in use on your system, edit this section of the `config.json` file and pick another available port:
 
@@ -254,7 +256,7 @@ Warning: Environment variable WEATHER_API_KEY is not set!
 info: Application listening on port 8081.
 ```
 
-This starts the application using nodemon, which monitors for changes in the source code and will restart the server when a change is detected.  This will be useful in the next module where you'll be making some code changes. 
+This starts the application using nodemon, which monitors for changes in the source code and will restart the server when a change is detected. This will be useful in the next module where you'll be making some code changes.
 
 Ignore the warning about `WEATHER_API_KEY` — we'll address this in a later exercise when we look at using Redis as a cache.
 
@@ -278,11 +280,11 @@ You should see the summary information for location 200, Katia's Kitchen:
 }
 ```
 
-Great! Now you're up and running.  Let's move on to the next module and see how we're using Redis Hashes in the application.  You'll also get to write some code!
+Great! Now you're up and running. Let's move on to the next module and see how we're using Redis Hashes in the application. You'll also get to write some code!
 
 ### Step 6. Stopping redis-cli, the Redis Container and the Application
 
-**Don't do this now, as we’ve only just started!**  However, when you do want to shut everything down, here's how to do it...
+**Don't do this now, as we’ve only just started!** However, when you do want to shut everything down, here's how to do it...
 
 To stop running redis-cli, simply enter the quit command at the redis-cli prompt:
 
@@ -300,13 +302,13 @@ Removing rediscrashcourse ... done
 Removing network node-js-crash-course_default
 ```
 
-Redis persists data to the "redisdata" folder.  If you want to remove this, just delete it:
+Redis persists data to the "redisdata" folder. If you want to remove this, just delete it:
 
 ```bash
 $ rm -rf redisdata
 ```
 
-To stop each of the application's components, press Ctrl+C in the terminal window that the component is running in.  For example, to stop the API server:
+To stop each of the application's components, press Ctrl+C in the terminal window that the component is running in. For example, to stop the API server:
 
 ```bash
 $ npm run dev
@@ -323,7 +325,7 @@ info: Application listening on port 8081.
 node-js-crash-course $
 ```
 
-We used Redis' built-in Hash data type to represent our user and location entities.  Hashes are great for this, but they are limited in that they can only contain flat name/value pairs.  For our locations, we want to store extra details in a more structured way.
+We used Redis' built-in Hash data type to represent our user and location entities. Hashes are great for this, but they are limited in that they can only contain flat name/value pairs. For our locations, we want to store extra details in a more structured way.
 
 Here's an example of the additional data we want to store about a location:
 
@@ -352,13 +354,13 @@ Here's an example of the additional data we want to store about a location:
 }
 ```
 
-We could store this data as serialized JSON in a Redis String, but then our application would have to retrieve and parse the entire document every time it wanted to read some of the data.  And we'd have to do the same to update it too.  Furthermore, with this approach, update operations aren't atomic and a second client could update the JSON stored at a given key while we're making changes to it in our application code.  Then, when we serialize our version of the JSON back into the Redis String, the other client's changes would be lost.
+We could store this data as serialized JSON in a Redis String, but then our application would have to retrieve and parse the entire document every time it wanted to read some of the data. And we'd have to do the same to update it too. Furthermore, with this approach, update operations aren't atomic and a second client could update the JSON stored at a given key while we're making changes to it in our application code. Then, when we serialize our version of the JSON back into the Redis String, the other client's changes would be lost.
 
-RedisJSON adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server.  This makes our application code simpler, more efficient, and much more reliable.
+RedisJSON adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server. This makes our application code simpler, more efficient, and much more reliable.
 
 ### Step 7. Final exercise
 
-In this exercise, you'll complete the code for an API route that gets just the object representing a location's opening hours for a given day.  Open the file `src/routes/location_routes.js`, and find the route for `/location/:locationId/hours/:day`.  The starter code looks like this:
+In this exercise, you'll complete the code for an API route that gets just the object representing a location's opening hours for a given day. Open the file `src/routes/location_routes.js`, and find the route for `/location/:locationId/hours/:day`. The starter code looks like this:
 
 ```javascript
 // EXERCISE: Get opening hours for a given day.
@@ -384,7 +386,9 @@ router.get(
     const jsonPath = 'TODO';
 
     /* eslint-enable no-unused-vars */
-    const hoursForDay = JSON.parse(await redisClient.call('JSON.GET', locationDetailsKey, jsonPath));
+    const hoursForDay = JSON.parse(
+      await redisClient.call('JSON.GET', locationDetailsKey, jsonPath),
+    );
     /* eslint-disable */
 
     // If null response, return empty object.
@@ -407,7 +411,7 @@ If you're using redis-cli, you can look at the structure of the JSON document wi
 json.get ncc:locationdetails:121 .
 ```
 
-Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis.  Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
+Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis. Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
 
 To test your code, start the server with:
 
@@ -426,7 +430,6 @@ If you have the correct JSON path in your code, visiting `http://localhost:80801
 }
 ```
 
-
 ## External Resources
 
 - [Sample Social Network GitHub Repository](https://github.com/redislabs-training/node-js-crash-course)
@@ -435,5 +438,3 @@ If you have the correct JSON path in your code, visiting `http://localhost:80801
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
 - Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
-
-

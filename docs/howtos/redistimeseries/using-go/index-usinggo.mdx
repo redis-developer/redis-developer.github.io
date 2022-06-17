@@ -8,9 +8,7 @@ authors: [ajeet]
 
 ![My Image](images/redistimeseries-go.png)
 
-
 RedisTimeSeries is a Redis module that allows Redis to be used as a fast in-memory time series database designed to collect, manage, and deliver time series data at scale. The RedisTimeSeries module shares the performance and simplicity aspects of Redis. Under the hood, it uses efficient data structures such as Radix tree to index data by timestamp, which makes it extremely fast and efficient to run time-aggregate queries.
-
 
 ## RedisTimeSeries Go Client
 
@@ -18,103 +16,59 @@ redistimeseries-go is a package that gives developers easy access to the RedisTi
 
 Follow the steps below to get started with RedisTimeSeries with Go:
 
-
 ### Step 1. Create free Redis Enterprise Cloud account
 
 Create your free [Redis Enterprise Cloud account](https://redis.com/try-free/). Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
 
-
-
 ![alt_text](images/image2.png)
 
-
-
 ![alt_text](images/image3.png)
-
-
 
 ### Step 2. Create Your subscription
 
 Next, you will have to create a Redis Enterprise Cloud subscription. In the Redis Enterprise Cloud menu, click "Create your Subscription".
 
-
-
-
 ![alt_text](images/image4.png)
-
-
 
 ### Step 3. Select the right Subscription Plan
 
-
 #### Select "Fixed Plan" for low throughout application as for now.
 
-
-
 ![alt_text](images/image5.png)
-
-
 
 ### Step 4. Select cloud vendor
 
 For the cloud provider, select your preferred cloud (for demo purpose)
 
-
-
-
-
 ![alt_text](images/image6.png)
-
-
 
 ### Step 5. Click "Create Subscription"
 
 Finally, click on the "Create Subscription" button.
 
-
-
-
-
 ![alt_text](images/image7.png)
-
 
 You can now verify the subscription as shown below:
 
-
-
-
-
 ![alt_text](images/image8.png)
-
-
 
 ### Step 6. Create database
 
 Click "Create Database". Enter database name and your preferred module.
 
-
-
-
-
 ![alt_text](images/image9.png)
 
-
-
 ### Step 7.Installing RedisTimeSeries Go client
-
 
 ```
 $ go get github.com/RedisTimeSeries/redistimeseries-go
 ```
 
-
-
 ### Step 8. Writing the Go program
 
-
 ```
- 
-package main 
+
+package main
 
 import (
         "fmt"
@@ -132,7 +86,7 @@ func main() {
                         client.CreateRule(keyname, redistimeseries.AvgAggregation, 60, keyname+"_avg")
         }
                 // Add sample with timestamp from server time and value 100
-        // TS.ADD mytest * 100 
+        // TS.ADD mytest * 100
         _, err := client.AddAutoTs(keyname, 100)
         if err != nil {
                 fmt.Println("Error:", err)
@@ -166,4 +120,3 @@ OK
 - [Build Your Financial Application on RedisTimeSeries](https://redis.com/blog/build-your-financial-application-on-redistimeseries/)
 - [How to Manage Real-Time IoT Sensor Data in Redis](https://redis.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
 - [Introduction to RedisTimeSeries - Video](https://www.youtube.com/watch?v=rXynFOrrd-Q)
-

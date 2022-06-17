@@ -1,10 +1,11 @@
 ---
-id: index-fixed-window
+id: index-spring-fixed-window
 title: How to Implement Fixed Window Rate Limiting using Redis
 sidebar_label: Overview
 slug: /develop/java/spring/rate-limiting/fixed-window
 authors: [bsb]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -41,16 +42,17 @@ the [Redis Blog](https://redis.com/redis-best-practices/basic-rate-limiting/). I
 into out Spring Reactive implementation:
 
 1. `GET [user-api-key]:[current minute number]` such as `GET "u123:45"`
-2.	If the result from line 1 is less than 20 (or the key is not found) go to step 4 otherwise continue to step 3
-3.	Reject the request.
-4.	In an atomic way (using `MULTI` and `EXEC`) increment the key and set the expiry to 59 seconds into the future.
-  ```
-  MULTI
-  INCR [user-api-key]:[current minute number]
-  EXPIRE [user-api-key]:[current minute number] 59
-  EXEC
-  ```
+2. If the result from line 1 is less than 20 (or the key is not found) go to step 4 otherwise continue to step 3
+3. Reject the request.
+4. In an atomic way (using `MULTI` and `EXEC`) increment the key and set the expiry to 59 seconds into the future.
+
+```
+MULTI
+INCR [user-api-key]:[current minute number]
+EXPIRE [user-api-key]:[current minute number] 59
+EXEC
+```
+
 5. Otherwise, fulfill the request.
 
 Ok, now that we know the basic recipe, let's implement it in [Spring](/develop/java/spring/rate-limiting/fixed-window/reactive)
-

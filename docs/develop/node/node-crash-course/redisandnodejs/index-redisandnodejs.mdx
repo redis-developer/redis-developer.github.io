@@ -9,16 +9,22 @@ authors: [simon]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/vXkYOSpKFHc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/vXkYOSpKFHc"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
-To connect to Redis from an application, we need a Redis client library for the language that we're coding in.  Redis clients perform the following functions:
+To connect to Redis from an application, we need a Redis client library for the language that we're coding in. Redis clients perform the following functions:
 
-* Manage the connections between our application and the Redis server.
-* Handle network communications to the Redis server using Redis' wire protocol.
-* Provide a language specific API that we use in our application.
+- Manage the connections between our application and the Redis server.
+- Handle network communications to the Redis server using Redis' wire protocol.
+- Provide a language specific API that we use in our application.
 
-For Node.js, there are two popular Redis clients: ioredis and node_redis.  Both clients expose similar programming APIs, wrapping each Redis command as a function that we can call in a Node.js script.  For this course, we'll use ioredis which has built in support for modern JavaScript features such as Promises.
+For Node.js, there are two popular Redis clients: ioredis and node_redis. Both clients expose similar programming APIs, wrapping each Redis command as a function that we can call in a Node.js script. For this course, we'll use ioredis which has built in support for modern JavaScript features such as Promises.
 
 Here's a complete Node.js script that uses ioredis to perform the SET and GET commands that we previously tried in redis-cli:
 
@@ -46,7 +52,7 @@ const redisDemo = async () => {
 redisDemo();
 ```
 
-ioredis wraps each Redis command in a function that can either accept a callback or return a Promise.  Here, I'm using async/await to wait for each command to be executed on the Redis server before moving on to the next.
+ioredis wraps each Redis command in a function that can either accept a callback or return a Promise. Here, I'm using async/await to wait for each command to be executed on the Redis server before moving on to the next.
 
 Running this code displays the value that's now stored in Redis:
 
@@ -59,13 +65,19 @@ Simon Prickett
 
 The following additional resources can help you understand how to access Redis from a Node.js application:
 
-* [ioredis](https://github.com/luin/ioredis): Home page for the ioredis client.
-* [node_redis](https://redis.js.org/): Home page for the node_redis client.
-* [RU102JS, Redis for JavaScript Developers](https://university.redis.com/courses/ru102js/): A free online course at Redis University that provides a deep dive into Redis for Node.js applications. You can expect to learn how to make connections to Redis, store and retrieve data, and leverage essential Redis features such as sorted sets and streams.
-* [Redis clients by programming language](https://redis.io/clients): A large list of Redis clients at redis.io.
+- [ioredis](https://github.com/luin/ioredis): Home page for the ioredis client.
+- [node_redis](https://redis.js.org/): Home page for the node_redis client.
+- [RU102JS, Redis for JavaScript Developers](https://university.redis.com/courses/ru102js/): A free online course at Redis University that provides a deep dive into Redis for Node.js applications. You can expect to learn how to make connections to Redis, store and retrieve data, and leverage essential Redis features such as sorted sets and streams.
+- [Redis clients by programming language](https://redis.io/clients): A large list of Redis clients at redis.io.
 
 In this video, I take a look at how to get up and running with the ioredis client:
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/H6rikGCYPUk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/H6rikGCYPUk"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>

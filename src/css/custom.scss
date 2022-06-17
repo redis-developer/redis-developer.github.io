@@ -5,8 +5,8 @@
 * work well for content-centric websites.
 */
 
-@import '../slick/slick';
-@import '../slick/slick-theme';
+@import '@site/src/slick/slick';
+@import '@site/src/slick/slick-theme';
 
 @import './config';
 @import './typography';

@@ -1,17 +1,16 @@
 ---
 id: index-herokuruby
 title: Deploy a Ruby app on Heroku using Redis
-sidebar_label: How to deploy a Ruby based application on Heroku using Redis 
+sidebar_label: How to deploy a Ruby based application on Heroku using Redis
 slug: /create/heroku/herokuruby
 authors: [ajeet]
 ---
 
 import RedisCard from '@site/src/theme/RedisCard';
 
-Heroku is a popular PaaS offering that allows software developers to easily deploy their code without worrying about the underlying infrastructure. By using a simple 'git push heroku' command, developers are able to deploy their application flawlessly. This platform offers support for a wide range of programming languages such as Java, Ruby, PHP, Node.js, Python, Scala, and Clojure. 
+Heroku is a popular PaaS offering that allows software developers to easily deploy their code without worrying about the underlying infrastructure. By using a simple 'git push heroku' command, developers are able to deploy their application flawlessly. This platform offers support for a wide range of programming languages such as Java, Ruby, PHP, Node.js, Python, Scala, and Clojure.
 
 Here's a quickstart guide to deploy Ruby apps on Heroku using Redis. We will be deploying a sample Leaderboard app and will be using company valuation and stock tickers as its domain.
-
 
 ### Step 1. Create a Redis Enterprise Cloud Database
 
@@ -32,22 +31,21 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login).
 
-
 ### Step 3. Install the Heroku CLI on your system
 
-   ```macos
-    brew install heroku
-   ```
+```macos
+ brew install heroku
+```
 
 ### Step 4. Login to Heroku
 
-   ```bash
-    heroku login
-    heroku: Press any key to open up the browser to login or q to exit:
-    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
-    Logging in... done
-    Logged in as your_email_address
-   ```
+```bash
+ heroku login
+ heroku: Press any key to open up the browser to login or q to exit:
+ Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+ Logging in... done
+ Logged in as your_email_address
+```
 
 ### Step 5. Connect your application to Redis Enterprise Cloud
 
@@ -55,22 +53,17 @@ For this demonstration, we will be using a [Sample Redis Leaderboard app](https:
 
 #### Clone the repository
 
-   ```bash
-    git clone https://github.com/redis-developer/basic-redis-leaderboard-demo-ruby
-   ```
-
-
+```bash
+ git clone https://github.com/redis-developer/basic-redis-leaderboard-demo-ruby
+```
 
 Run the commands below to get a functioning Git repository that contains a simple application as well as a `app.json` file.
-
 
 ```
 heroku create
 Creating app... done, ⬢ thawing-shore-07338
 https://thawing-shore-07338.herokuapp.com/ | https://git.heroku.com/thawing-shore-07338.git
 ```
-
-
 
 ### Step 6. Setting up Environment Variables
 
@@ -79,15 +72,9 @@ Refer to Step 1 for the correct values to use.
 
 ![heroku](heroku_app1_env.png)
 
-
-
 You now have a functioning Git repository that contains a simple application as well as a `app.json` file, which is used by Node’s dependency manager.
 
-
-
-
 ### Step 7. Deploy your code
-
 
 ```
 $ git push heroku
@@ -99,20 +86,19 @@ Wait for few seconds and you will see the messages below:
 remote: -----> Discovering process types
 remote:        Procfile declares types     -> (none)
 remote:        Default types for buildpack -> console, rake, web
-remote: 
+remote:
 remote: -----> Compressing...
 remote:        Done: 125.9M
 remote: -----> Launching...
 remote:        Released v10
 remote:        https://thawing-shore-07338.herokuapp.com/ deployed to Heroku
-remote: 
+remote:
 remote: Verifying deploy... done.
 To https://git.heroku.com/thawing-shore-07338.git
  * [new branch]      master -> master
 ```
 
 ### Step 8. Accessing the application
-
 
 Open https://thawing-shore-07338.herokuapp.com/ to access your application on the browser.
 Please note that the Web URL is unique, hence it will be different in your case.
@@ -121,21 +107,21 @@ Please note that the Web URL is unique, hence it will be different in your case.
 
 ### How does it work?
 
-
-####  How the data is stored:
+#### How the data is stored:
 
 - The AAPL's details - market cap of 2.6 triillions and USA origin - are stored in a Redis hash like this:
+
   ```bash
    HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
   ```
 
 - The market capitalization for each company is also stored in a ZSET (Redis Sorted Set).
 
-   ```bash
-    ZADD  companyLeaderboard 2600000000000 company:AAPL
-   ```
+  ```bash
+   ZADD  companyLeaderboard 2600000000000 company:AAPL
+  ```
 
-####  How the data is accessed:
+#### How the data is accessed:
 
 - Top 10 companies:
 
@@ -187,10 +173,9 @@ Please note that the Web URL is unique, hence it will be different in your case.
 
 - How many companies have a market cap over a Trillion?:
 
-   ```bash
-    ZCOUNT companyLeaderBoard 1000000000000 +inf
-   ```
-
+  ```bash
+   ZCOUNT companyLeaderBoard 1000000000000 +inf
+  ```
 
 ### Next Steps
 

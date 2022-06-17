@@ -18,7 +18,7 @@ public class Employee
 {
     [Indexed(Aggregatable = true)]
     public string Name { get; set; }
-    
+
     [Indexed]
     public GeoLoc? HomeLoc { get; set; }
 
@@ -27,23 +27,23 @@ public class Employee
 
     [Indexed(Aggregatable = true)]
     public double Sales { get; set; }
-    
+
     [Indexed(Aggregatable = true)]
     public double SalesAdjustment { get; set; }
 
     [Searchable(Aggregatable = true)]
     public string Department { get; set; }
 
-    [Indexed(Aggregatable = true)] 
+    [Indexed(Aggregatable = true)]
     public long LastOnline { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 }
 ```
 
 ## Anatomy of an Apply Function
 
-`Apply` is a method on the `RedisAggregationSet<T>` class which takes two arguments, each of which is a component of the apply function. 
+`Apply` is a method on the `RedisAggregationSet<T>` class which takes two arguments, each of which is a component of the apply function.
 
-First it takes the expression that you want Redis to execute on every record in the pipeline, this expression takes a single parameter, an `AggregationResult<T>`, where `T` is the generic type of your `RedisAggregationSet`. This AggregationResult has two things we should think about, first it contains a `RecordShell` which is a placeholder for the generic type, and secondly it has an `Aggregations` property - which is a dictionary containing the results from your pipeline. Both of these can be used in apply functions. 
+First it takes the expression that you want Redis to execute on every record in the pipeline, this expression takes a single parameter, an `AggregationResult<T>`, where `T` is the generic type of your `RedisAggregationSet`. This AggregationResult has two things we should think about, first it contains a `RecordShell` which is a placeholder for the generic type, and secondly it has an `Aggregations` property - which is a dictionary containing the results from your pipeline. Both of these can be used in apply functions.
 
 The second component is the alias, that's the name the result of the function is stored in when the pipeline executes.
 
@@ -66,15 +66,15 @@ Functions that use arithmetic and math can use the mathematical operators `+` fo
 
 ### Available Math Functions
 
-|Function|Type|Description|Example|
-|--------|----|-----------|-------|
-|Log10|Math|yields the 10 base log for the number|`Math.Log10(x["AdjustedSales"])`|
-|Abs|Math|yields the absolute value of the provided number|`Math.Abs(x["AdjustedSales"])`|
-|Ceil|Math|yields the smallest integer not less than the provided number|`Math.Ceil(x["AdjustedSales"])`|
-|Floor|Math|yields the smallest integer not greater than the provided number|`Math.Floor(x["AdjustedSales"])`|
-|Log|Math|yields the Log base 2 for the provided number|`Math.Log(x["AdjustedSales"])`|
-|Exp|Math|yields the natural exponent for the provided number (e^y)|`Math.Exp(x["AdjustedSales"])`|
-|Sqrt|Math|yields the Square root for the provided number|`Math.Sqrt(x["AdjustedSales"])`|
+| Function | Type | Description                                                      | Example                          |
+| -------- | ---- | ---------------------------------------------------------------- | -------------------------------- |
+| Log10    | Math | yields the 10 base log for the number                            | `Math.Log10(x["AdjustedSales"])` |
+| Abs      | Math | yields the absolute value of the provided number                 | `Math.Abs(x["AdjustedSales"])`   |
+| Ceil     | Math | yields the smallest integer not less than the provided number    | `Math.Ceil(x["AdjustedSales"])`  |
+| Floor    | Math | yields the smallest integer not greater than the provided number | `Math.Floor(x["AdjustedSales"])` |
+| Log      | Math | yields the Log base 2 for the provided number                    | `Math.Log(x["AdjustedSales"])`   |
+| Exp      | Math | yields the natural exponent for the provided number (e^y)        | `Math.Exp(x["AdjustedSales"])`   |
+| Sqrt     | Math | yields the Square root for the provided number                   | `Math.Sqrt(x["AdjustedSales"])`  |
 
 ## String Functions
 
@@ -91,15 +91,15 @@ await foreach (var message in birthdayMessages)
 
 ### List of String Functions:
 
-|Function|Type|Description|Example|
-|--------|----|-----------|-------|
-|ToUpper|String|yields the provided string to upper case|`x.RecordShell.Name.ToUpper()`|
-|ToLower|String|yields the provided string to lower case|`x.RecordShell.Name.ToLower()`|
-|StartsWith|String|Boolean expression - yields 1 if the string starts with the argument|`x.RecordShell.Name.StartsWith("bob")`|
-|Contains|String|Boolean expression - yields 1 if the string contains the argument |`x.RecordShell.Name.Contains("bob")`|
-|Substring|String|yields the substring starting at the given 0 based index, the length of the second argument, if the second argument is not provided, it will simply return the balance of the string|`x.RecordShell.Name.Substring(4, 10)`|
-|Format|string|Formats the string based off the provided pattern|`string.Format("Hello {0} You are {1} years old", x.RecordShell.Name, x.RecordShell.Age)`|
-|Split|string|Split's the string with the provided string - unfortunately if you are only passing in a single splitter, because of how expressions work, you'll need to provide string split options so that no optional parameters exist when building the expression, just pass `StringSplitOptions.None`|`x.RecordShell.Name.Split(",", StringSplitOptions.None)`|
+| Function   | Type   | Description                                                                                                                                                                                                                                                                                   | Example                                                                                   |
+| ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| ToUpper    | String | yields the provided string to upper case                                                                                                                                                                                                                                                      | `x.RecordShell.Name.ToUpper()`                                                            |
+| ToLower    | String | yields the provided string to lower case                                                                                                                                                                                                                                                      | `x.RecordShell.Name.ToLower()`                                                            |
+| StartsWith | String | Boolean expression - yields 1 if the string starts with the argument                                                                                                                                                                                                                          | `x.RecordShell.Name.StartsWith("bob")`                                                    |
+| Contains   | String | Boolean expression - yields 1 if the string contains the argument                                                                                                                                                                                                                             | `x.RecordShell.Name.Contains("bob")`                                                      |
+| Substring  | String | yields the substring starting at the given 0 based index, the length of the second argument, if the second argument is not provided, it will simply return the balance of the string                                                                                                          | `x.RecordShell.Name.Substring(4, 10)`                                                     |
+| Format     | string | Formats the string based off the provided pattern                                                                                                                                                                                                                                             | `string.Format("Hello {0} You are {1} years old", x.RecordShell.Name, x.RecordShell.Age)` |
+| Split      | string | Split's the string with the provided string - unfortunately if you are only passing in a single splitter, because of how expressions work, you'll need to provide string split options so that no optional parameters exist when building the expression, just pass `StringSplitOptions.None` | `x.RecordShell.Name.Split(",", StringSplitOptions.None)`                                  |
 
 ## Time Functions
 
@@ -117,19 +117,19 @@ foreach (var employee in lastOnline)
 
 ### Time Functions Available
 
-|Function|Type|Description|Example|
-|--------|----|-----------|-------|
-|ApplyFunctions.FormatTimestamp|time|transforms a unix timestamp to a formatted time string based off [strftime](http://strftime.org/) conventions|`ApplyFunctions.FormatTimestamp(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.ParseTime|time|Parsers the provided formatted timestamp to a unix timestamp|`ApplyFunctions.ParseTime(x.RecordShell.TimeString, "%FT%ZT")`|
-|ApplyFunctions.Day|time|Rounds a unix timestamp to the beginning of the day|`ApplyFunctions.Day(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.Hour|time|Rounds a unix timestamp to the beginning of current hour|`ApplyFunctions.Hour(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.Minute|time|Round a unix timestamp to the beginning of the current minute|`ApplyFunctions.Minute(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.Month|time|Rounds a unix timestamp to the beginning of the current month|`ApplyFunctions.Month(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.DayOfWeek|time|Converts the unix timestamp to the day number with Sunday being 0|`ApplyFunctions.DayOfWeek(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.DayOfMonth|time|Converts the unix timestamp to the current day of the month (1..31)|`ApplyFunctions.DayOfMonth(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.DayOfYear|time|Converts the unix timestamp to the current day of the year (1..31)|`ApplyFunctions.DayOfYear(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.Year|time|Converts the unix timestamp to the current year|`ApplyFunctions.Year(x.RecordShell.LastTimeOnline)`|
-|ApplyFunctions.MonthOfYear|time|Converts the unix timestamp to the current month (0..11)|`ApplyFunctions.MonthOfYear(x.RecordShell.LastTimeOnline)`|
+| Function                       | Type | Description                                                                                                   | Example                                                        |
+| ------------------------------ | ---- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| ApplyFunctions.FormatTimestamp | time | transforms a unix timestamp to a formatted time string based off [strftime](http://strftime.org/) conventions | `ApplyFunctions.FormatTimestamp(x.RecordShell.LastTimeOnline)` |
+| ApplyFunctions.ParseTime       | time | Parsers the provided formatted timestamp to a unix timestamp                                                  | `ApplyFunctions.ParseTime(x.RecordShell.TimeString, "%FT%ZT")` |
+| ApplyFunctions.Day             | time | Rounds a unix timestamp to the beginning of the day                                                           | `ApplyFunctions.Day(x.RecordShell.LastTimeOnline)`             |
+| ApplyFunctions.Hour            | time | Rounds a unix timestamp to the beginning of current hour                                                      | `ApplyFunctions.Hour(x.RecordShell.LastTimeOnline)`            |
+| ApplyFunctions.Minute          | time | Round a unix timestamp to the beginning of the current minute                                                 | `ApplyFunctions.Minute(x.RecordShell.LastTimeOnline)`          |
+| ApplyFunctions.Month           | time | Rounds a unix timestamp to the beginning of the current month                                                 | `ApplyFunctions.Month(x.RecordShell.LastTimeOnline)`           |
+| ApplyFunctions.DayOfWeek       | time | Converts the unix timestamp to the day number with Sunday being 0                                             | `ApplyFunctions.DayOfWeek(x.RecordShell.LastTimeOnline)`       |
+| ApplyFunctions.DayOfMonth      | time | Converts the unix timestamp to the current day of the month (1..31)                                           | `ApplyFunctions.DayOfMonth(x.RecordShell.LastTimeOnline)`      |
+| ApplyFunctions.DayOfYear       | time | Converts the unix timestamp to the current day of the year (1..31)                                            | `ApplyFunctions.DayOfYear(x.RecordShell.LastTimeOnline)`       |
+| ApplyFunctions.Year            | time | Converts the unix timestamp to the current year                                                               | `ApplyFunctions.Year(x.RecordShell.LastTimeOnline)`            |
+| ApplyFunctions.MonthOfYear     | time | Converts the unix timestamp to the current month (0..11)                                                      | `ApplyFunctions.MonthOfYear(x.RecordShell.LastTimeOnline)`     |
 
 ## Geo Distance
 

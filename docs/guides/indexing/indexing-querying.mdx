@@ -3,20 +3,19 @@ id: indexing-querying
 title: Indexing and Querying
 sidebar_label: Indexing and Querying
 slug: /guides/indexing/
-
 ---
 
 ### Introduction
 
-Conceptually, Redis is based on the key-value database paradigm. Every piece of data is associated with a key, either directly or indirectly. 
+Conceptually, Redis is based on the key-value database paradigm. Every piece of data is associated with a key, either directly or indirectly.
 If you want to retrieve data based on anything besides the key, you’ll need to implement an index that leverages one of the many data types available in Redis.
 
 You have various ways to create index using Redis core datastructures, for example:
 
-* Sorted sets to create secondary indexes by ID or other numerical fields.
-* Sorted sets with lexicographical ranges for creating more advanced secondary indexes, composite indexes and graph traversal indexes.
-* Sets for creating random indexes.
-* Lists for creating simple iterable indexes and last N items indexes.
+- Sorted sets to create secondary indexes by ID or other numerical fields.
+- Sorted sets with lexicographical ranges for creating more advanced secondary indexes, composite indexes and graph traversal indexes.
+- Sets for creating random indexes.
+- Lists for creating simple iterable indexes and last N items indexes.
 
 When using these datastructures you must create your own API to keep the index up-to-date. To simplify and automate this task, Redis community has created the RediSearch module that allows indexing and querying.
 
@@ -30,8 +29,7 @@ You can follow the [RediSearch Tutorial](https://github.com/RediSearch/redisearc
 <iframe width="672" height="378" src="https://www.youtube.com/embed/B10nHEdW3NA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Querying, Indexing, and Full-text Search in Redis
+
 </div>
 
 If you have questions about RediSearch and other module ask them in the [Redis Community Forum](https://forum.redis.com/c/modules/redisearch/58).
-
-

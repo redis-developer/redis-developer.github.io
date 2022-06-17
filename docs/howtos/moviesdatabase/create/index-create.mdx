@@ -13,16 +13,15 @@ In this project you will use a simple dataset describing movies, for now, all re
 
 A movie is represented by the following attributes:
 
-* **`movie_id`** : The unique ID of the movie, internal to this database
-* **`title`** : The title of the movie.
-* **`plot`** : A summary of the movie.
-* **`genre`** : The genre of the movie, for now a movie will only have a single genre.
-* **`release_year`** : The year the movie was released as a numerical value.
-* **`rating`** : A numeric value representing the public's rating for this movie.
-* **`votes`** : Number of votes.
-* **`poster`** : Link to the movie poster.
-* **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
-
+- **`movie_id`** : The unique ID of the movie, internal to this database
+- **`title`** : The title of the movie.
+- **`plot`** : A summary of the movie.
+- **`genre`** : The genre of the movie, for now a movie will only have a single genre.
+- **`release_year`** : The year the movie was released as a numerical value.
+- **`rating`** : A numeric value representing the public's rating for this movie.
+- **`votes`** : Number of votes.
+- **`poster`** : Link to the movie poster.
+- **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
 
 ### Key and Data structure
 
@@ -30,19 +29,18 @@ As a Redis developer, one of the first things to look when building your applica
 
 A common way of defining the keys in Redis is to use specific patterns in them. For example in this application where the database will probably deal with various business objects: movies, actors, theaters, users, ... we can use the following pattern:
 
-* `business_object:key`
+- `business_object:key`
 
 For example:
-* `movie:001` for the movie with the id 001
-* `user:001` the user with the id 001
 
+- `movie:001` for the movie with the id 001
+- `user:001` the user with the id 001
 
-and for the movies information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes). 
+and for the movies information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes).
 
 A Redis Hash allows the application to structure all the movie attributes in individual fields; also RediSearch will index the fields based on the index definition.
 
 ## Insert Movies
-
 
 It is time now to add some data into your database, let's insert a few movies, using `redis-cli` or [RedisInsight](https://redis.com/redis-enterprise/redis-insight/).
 
@@ -56,7 +54,7 @@ Once you are connected to your Redis instance run the following commands:
 
 > HSET movie:11004 title "Heat" plot "A group of professional bank robbers start to feel the heat from police when they unknowingly leave a clue at their latest heist." release_year 1995 genre "Thriller" rating 8.2 votes 559490 imdb_id tt0113277
 
-> HSET "movie:11005" title "Star Wars: Episode VI - Return of the Jedi" genre "Action" votes 906260 rating 8.3 release_year 1983  plot "The Rebels dispatch to Endor to destroy the second Empire's Death Star." ibmdb_id "tt0086190" 
+> HSET "movie:11005" title "Star Wars: Episode VI - Return of the Jedi" genre "Action" votes 906260 rating 8.3 release_year 1983  plot "The Rebels dispatch to Endor to destroy the second Empire's Death Star." ibmdb_id "tt0086190"
 
 ```
 
@@ -84,9 +82,7 @@ Nevertheless this is where Redis developers often create custom secondary indexe
 
 This is where the RediSearch module can help, and why it was created.
 
-
 ## RediSearch & Indexing
-
 
 RediSearch greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
 
@@ -94,17 +90,17 @@ RediSearch greatly simplifies this by offering a simple and automatic way to cre
 
 Using RediSearch if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
 
-* Title
-* Release Year
-* Rating
-* Genre
+- Title
+- Release Year
+- Rating
+- Genre
 
 When creating a index you define:
 
-* which data you want to index: all *hashes* with a key starting with `movies` 
-* which fields in the hashes you want to index using a Schema definition.
+- which data you want to index: all _hashes_ with a key starting with `movies`
+- which fields in the hashes you want to index using a Schema definition.
 
-> ***Warning: Do not index all fields***
+> **_Warning: Do not index all fields_**
 >
 > Indexes take space in memory, and must be updated when the primary data is updated. So create the index carefully and keep the definition up to date with your needs.
 
@@ -118,18 +114,16 @@ Create the index with the following command:
 
 Before running some queries let's look at the command in detail:
 
-* [`FT.CREATE`](https://oss.redis.com/redisearch/master/Commands/#ftcreate) : creates an index with the given spec. The index name will be used in all the key names so keep it short.
-* `idx:movie` : the name of the index
-* `ON hash` : the type of structure to be indexed. *Note that in RediSearch 2.0 only hash structures are supported, this parameter will accept other Redis data types in future as RediSearch is updated to index them* 
-* `PREFIX 1 "movie:"` : the prefix of the keys that should be indexed. This is a list, so since we want to only index movie:* keys the number is 1. Suppose you want to index movies and tv_show that have the same fields, you can use: `PREFIX 2 "movie:" "tv_show:"` 
-* `SCHEMA ...`: defines the schema, the fields and their type, to index, as you can see in the command, we are using [TEXT](https://oss.redis.com/redisearch/Query_Syntax/#a_few_query_examples), [NUMERIC](https://oss.redis.com/redisearch/Query_Syntax/#numeric_filters_in_query) and [TAG](https://oss.redis.com/redisearch/Query_Syntax/#tag_filters), and [SORTABLE](https://oss.redis.com/redisearch/Sorting/) parameters.
+- [`FT.CREATE`](https://oss.redis.com/redisearch/master/Commands/#ftcreate) : creates an index with the given spec. The index name will be used in all the key names so keep it short.
+- `idx:movie` : the name of the index
+- `ON hash` : the type of structure to be indexed. _Note that in RediSearch 2.0 only hash structures are supported, this parameter will accept other Redis data types in future as RediSearch is updated to index them_
+- `PREFIX 1 "movie:"` : the prefix of the keys that should be indexed. This is a list, so since we want to only index movie:\* keys the number is 1. Suppose you want to index movies and tv_show that have the same fields, you can use: `PREFIX 2 "movie:" "tv_show:"`
+- `SCHEMA ...`: defines the schema, the fields and their type, to index, as you can see in the command, we are using [TEXT](https://oss.redis.com/redisearch/Query_Syntax/#a_few_query_examples), [NUMERIC](https://oss.redis.com/redisearch/Query_Syntax/#numeric_filters_in_query) and [TAG](https://oss.redis.com/redisearch/Query_Syntax/#tag_filters), and [SORTABLE](https://oss.redis.com/redisearch/Sorting/) parameters.
 
 You can find information about the [FT.CREATE](https://oss.redis.com/redisearch/Commands/#ftcreate) command in the [documentation](https://oss.redis.com/redisearch/Commands/#ftcreate).
-
 
 You can look at the index information with the following command:
 
 ```
 > FT.INFO idx:movie
 ```
-

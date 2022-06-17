@@ -1,20 +1,13 @@
 import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
+import Layout from '@docusaurus/theme-classic/lib/theme/Layout';
 
-import Hero from '@theme/Hero';
-import Languages from '@theme/Languages';
-import Launchpad from '@theme/Launchpad';
-import Demos from '@theme/Demos';
-import Resources from '@theme/Resources';
+import Hero from '@site/src/theme/Hero';
+import Languages from '@site/src/theme/Languages';
+import Launchpad from '@site/src/theme/Launchpad';
+import Demos from '@site/src/theme/Demos';
+import Resources from '@site/src/theme/Resources';
 
 function Home() {
-  const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
   return (
     <Layout
       title={`The Home of Redis Developers`}

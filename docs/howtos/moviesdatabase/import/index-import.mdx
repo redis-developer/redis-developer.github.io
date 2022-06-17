@@ -9,9 +9,9 @@ slug: /howtos/moviesdatabase/import
 
 In the previous steps you used only a few movies, let's now import:
 
-* More movies *to discover more queries*.
-* Theaters *to discover the geospatial capabilities*.
-* Users *to do some aggregations*.
+- More movies _to discover more queries_.
+- Theaters _to discover the geospatial capabilities_.
+- Users _to do some aggregations_.
 
 ## Dataset Description
 
@@ -21,18 +21,18 @@ The file `sample-app/redisearch-docker/dataset/import_movies.redis` is a script 
 
 The movie hashes contain the following fields.
 
-* **`movie:id`** : The unique ID of the movie, internal to this database (used as the key of the hash)
-* **`title`** : The title of the movie.
-* **`plot`** : A summary of the movie.
-* **`genre`** : The genre of the movie, for now a movie will only have a single genre.
-* **`release_year`** : The year the movie was released as a numerical value.
-* **`rating`** : A numeric value representing the public's rating for this movie.
-* **`votes`** : Number of votes.
-* **`poster`** : Link to the movie poster.
-* **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
+- **`movie:id`** : The unique ID of the movie, internal to this database (used as the key of the hash)
+- **`title`** : The title of the movie.
+- **`plot`** : A summary of the movie.
+- **`genre`** : The genre of the movie, for now a movie will only have a single genre.
+- **`release_year`** : The year the movie was released as a numerical value.
+- **`rating`** : A numeric value representing the public's rating for this movie.
+- **`votes`** : Number of votes.
+- **`poster`** : Link to the movie poster.
+- **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
 
 ```
-<details> 
+<details>
   <summary>Sample Data: <b>movie:343</b></summary>
   <table>
       <thead>
@@ -101,22 +101,21 @@ The movie hashes contain the following fields.
 
 ### Theaters
 
-The file `sample-app/redisearch-docker/dataset/import_theaters.redis` is a script that creates 117 Hashes (used for Geospatial queries). *This dataset is a list of New York Theaters, and not movie theaters, but it is not that critical for this project ;).*
+The file `sample-app/redisearch-docker/dataset/import_theaters.redis` is a script that creates 117 Hashes (used for Geospatial queries). _This dataset is a list of New York Theaters, and not movie theaters, but it is not that critical for this project ;)._
 
 The theater hashes contain the following fields.
 
-* **`theater:id`** : The unique ID of the theater, internal to this database (used as the key of the hash)
-* **`name`** : The name of the theater
-* **`address`** : The street address
-* **`city`** : The city, in this sample dataset all the theaters are in New York
-* **`zip`** : The zip code
-* **`phone`** : The phone number
-* **`url`** : The URL of the theater
-* **`location`** : Contains the `longitude,latitude` used to create the Geo-indexed field
-
+- **`theater:id`** : The unique ID of the theater, internal to this database (used as the key of the hash)
+- **`name`** : The name of the theater
+- **`address`** : The street address
+- **`city`** : The city, in this sample dataset all the theaters are in New York
+- **`zip`** : The zip code
+- **`phone`** : The phone number
+- **`url`** : The URL of the theater
+- **`location`** : Contains the `longitude,latitude` used to create the Geo-indexed field
 
 ```
-<details> 
+<details>
  <summary>Sample Data: <b>theater:20</b></summary>
   <table>
       <thead>
@@ -173,28 +172,27 @@ The theater hashes contain the following fields.
 </details>
 ```
 
-
 ### Users
 
 The file `sample-app/redisearch-docker/dataset/import_users.redis` is a script that creates 5996 Hashes.
 
 The user hashes contain the following fields.
 
-* **`user:id`** : The unique ID of the user.
-* **`first_name`** : The first name of the user.
-* **`last_name`** : The last name of the user.
-* **`email`** : The email of the user.
-* **`gender`** : The gender of the user (`female`/`male`).
-* **`country`** : The country name of the user.
-* **`country_code`** : The country code of the user.
-* **`city`** : The city of the user.
-* **`longitude`** : The longitude of the user.
-* **`latitude`** : The latitude of the user.
-* **`last_login`** : The last login time for the user, as EPOC time.
-* **`ip_address`** : The IP address of the user.
+- **`user:id`** : The unique ID of the user.
+- **`first_name`** : The first name of the user.
+- **`last_name`** : The last name of the user.
+- **`email`** : The email of the user.
+- **`gender`** : The gender of the user (`female`/`male`).
+- **`country`** : The country name of the user.
+- **`country_code`** : The country code of the user.
+- **`city`** : The city of the user.
+- **`longitude`** : The longitude of the user.
+- **`latitude`** : The latitude of the user.
+- **`last_login`** : The last login time for the user, as EPOC time.
+- **`ip_address`** : The IP address of the user.
 
 ```
-<details> 
+<details>
  <summary>Sample Data: <b>user:3233</b></summary>
   <table>
       <thead>
@@ -275,7 +273,6 @@ The user hashes contain the following fields.
 </details>
 ```
 
-
 ---
 
 ## Importing the Movies, Theaters and Users
@@ -285,7 +282,6 @@ Before importing the data, flush the database:
 ```
 > FLUSHALL
 ```
-
 
 The easiest way to import the file is to use the `redis-cli`, using the following terminal command:
 
@@ -298,7 +294,6 @@ $ redis-cli -h localhost -p 6379 < ./sample-app/redisearch-docker/dataset/import
 $ redis-cli -h localhost -p 6379 < ./sample-app/redisearch-docker/dataset/import_users.redis
 
 ```
-
 
 Using Redis Insight or the `redis-cli` you can look at the dataset:
 
@@ -329,7 +324,6 @@ You can also use the `DBSIZE` command to see how many keys you have in your data
 
 ## Create Indexes
 
-
 **Create the `idx:movie` index:**
 
 ```
@@ -346,9 +340,9 @@ This index will mostly be used to show the geospatial capabilties of RediSearch.
 
 In the previous examples we have created indexes with 3 types:
 
-* `Text`
-* `Numeric`
-* `Tag`
+- `Text`
+- `Numeric`
+- `Tag`
 
 You will now discover a new type of field: `Geo`.
 
@@ -362,9 +356,7 @@ The `theater` hashes contains a field `location` with the longitude and latitude
 
 The theaters have been indexed, you can run the `FT.INFO "idx:theater"` command and look at the `num_docs` returned value. (should be 117).
 
-
 **Create the `idx:user` index:**
-
 
 ```
 > FT.CREATE idx:user ON hash PREFIX 1 "user:" SCHEMA gender TAG country TAG SORTABLE last_login NUMERIC SORTABLE location GEO

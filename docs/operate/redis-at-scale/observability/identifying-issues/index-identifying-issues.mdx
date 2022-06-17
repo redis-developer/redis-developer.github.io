@@ -3,7 +3,7 @@ id: index-identifying-issues
 title: 5.3 Identifying Issues
 sidebar_label: 5.3 Identifying Issues
 slug: /operate/redis-at-scale/observability/identifying-issues
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -11,6 +11,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 Besides the metrics from the data points from info, memory and the latency framework in the sections above, you may need to pull data from other sources when troubleshooting.
 
 ## Availability
+
 The Redis server will respond to the `PING` command when running properly:
 
 ```bash
@@ -19,26 +20,24 @@ PONG
 ```
 
 ## Slow Log
-Redis Slow Log is a system to log queries that exceed a specific execution time which does not include I/O operations like client communication.  It is enabled by default with two configuration parameters.
+
+Redis Slow Log is a system to log queries that exceed a specific execution time which does not include I/O operations like client communication. It is enabled by default with two configuration parameters.
 
 ```bash
 slowlog-log-slower-than 1000000
 ```
 
-This indicates if there is an execution time longer than the time in microseconds, in this case one second, it will be logged. The slow log can be disabled using a value of -1.  It can also be set to log every command with a value of 0.
+This indicates if there is an execution time longer than the time in microseconds, in this case one second, it will be logged. The slow log can be disabled using a value of -1. It can also be set to log every command with a value of 0.
 
 ```bash
 slowlog-max-len 128
 ```
 
-This sets the length of the slow log.  When a new command is logged the oldest one is removed from the queue.
-
+This sets the length of the slow log. When a new command is logged the oldest one is removed from the queue.
 
 These values can also be changed at runtime using the `CONFIG SET` command.
 
-
 You can view the current length of the slow log using the `LEN` subcommand:
-
 
 ```bash
 redis.cloud:6379> slowlog len
@@ -46,7 +45,6 @@ redis.cloud:6379> slowlog len
 ```
 
 Entries can be pulled off of the slow log using the `GET` subcommand.
-
 
 ```bash
 redis.cloud:6379> slowlog get 2
@@ -70,7 +68,6 @@ redis.cloud:6379> slowlog get 2
 
 The slow log can be reset using the `RESET` subcommand.
 
-
 ```bash
 redis.cloud:6379> slowlog reset
 OK
@@ -79,14 +76,15 @@ redis.cloud:6379> slowlog len
 ```
 
 ## Scanning keys
-There are a few options that can be passed to redis-cli that will trigger a keyspace analysis.  They use the `SCAN` command so they should be safe to run without impacting operations.  You can see in the output of all of them there is a throttling option if needed.
 
-***
+There are a few options that can be passed to redis-cli that will trigger a keyspace analysis. They use the `SCAN` command so they should be safe to run without impacting operations. You can see in the output of all of them there is a throttling option if needed.
+
+---
+
 **Big Keys:** This option will scan the dataset for big keys and provide information about them.
 
-
 ```bash
-$ redis-cli --bigkeys 
+$ redis-cli --bigkeys
 
 # Scanning the entire keyspace to find biggest keys as well as
 # average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec
@@ -113,9 +111,9 @@ Biggest string found '"counter:__rand_int__"' has 6 bytes
 0 zsets with 0 members (00.00% of keys, avg size 0.00)
 ```
 
-***
-**Mem Keys:** Similarly to big keys, mem keys will look for the biggest keys but also report on the average sizes.
+---
 
+**Mem Keys:** Similarly to big keys, mem keys will look for the biggest keys but also report on the average sizes.
 
 ```bash
 $ redis-cli --memkeys
@@ -146,7 +144,7 @@ Biggest string found '"key:__rand_int__"' has 63 bytes
 0 zsets with 0 bytes (00.00% of keys, avg size 0.00)
 ```
 
-***
+---
 
 **Hot Keys:** The hot keys scan is only available when the `maxmemory-policy` is set to `volatile-lfu` or `allkeys-lfu`. If you need to identity hot keys you can add this argument to redis-cli.
 
@@ -164,9 +162,10 @@ $ redis-cli --hotkeys
 Sampled 5 keys in the keyspace!
 hot key found with counter: 37  keyname: "key:__rand_int__"
 ```
-***
-**Monitor:** The `MONITOR` command allows you to see a stream of every command running against your Redis instance.
 
+---
+
+**Monitor:** The `MONITOR` command allows you to see a stream of every command running against your Redis instance.
 
 ```bash
 127.0.0.1:6379 > monitor
@@ -178,14 +177,12 @@ OK
 **Note: because `MONITOR` streams back all commands, its use comes at a cost. It has been known to reduce performance by up to 50% so use with caution!**
 
 ## Setting up and using the Redis Log File
+
 The Redis log file is the other important log you need to be aware of. It contains useful information for troubleshooting configuration and deployment errors. If you don't configure Redis logging, troubleshooting will be significantly harder.
 
-
-Redis has four logging levels, which you can configure directly in `redis.conf` file. 
-
+Redis has four logging levels, which you can configure directly in `redis.conf` file.
 
 Log Levels:
-
 
 - `WARNING`
 - `NOTICE`
@@ -194,17 +191,15 @@ Log Levels:
 
 Redis also supports sending the log files to a remote logging server through the use of syslog.
 
-
 Remote logging is important to many security professionals. These remote logging servers are frequently used to monitor security events and manage incidents. These centralized log servers perform three common functions: ensure the integrity of your log files, ensure that logs are retained for a specific period of time, and to correlate logs against other system logs to discover potential attacks on your infrastructure.
-
 
 Let's set up logging on our Redis deployment. First we'll open our `redis.conf` file:
 
 ```bash
 $ sudo vi /etc/redis/redis.conf
 ```
-The `redis.conf` file has an entire section dedicated to logging.
 
+The `redis.conf` file has an entire section dedicated to logging.
 
 First, find the logfile directive in the `redis.conf` file. This will allow you to define the logging directory. For this example lets use `/var/log/redis/redis.log`.
 
@@ -212,16 +207,13 @@ If you'd like to use a remote logging server, then you'll need to uncomment the 
 
 Next, we'll restart the Redis server.
 
-
 You should see the log events indicating that Redis is starting.
-
 
 ```bash
 $ sudo tail -f /var/log/redis/redis.log
 ```
 
 And next let's check that we are properly writing to syslog. You should see these same logs.
-
 
 ```bash
 $ less /var/log/syslog | grep redis

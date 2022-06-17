@@ -1,15 +1,14 @@
 ---
 id: index-herokugo
 title: Deploy a Go app on Heroku using Redis
-sidebar_label: How to deploy a Go based application on Heroku using Redis 
+sidebar_label: How to deploy a Go based application on Heroku using Redis
 slug: /create/heroku/herokugo
 authors: [ajeet]
 ---
 
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-Heroku is a PaaS (platform as a service) for building and running software applications in the cloud. Heroku today supports programming languages such as Java, Python, Ruby, Node.js and Go. Heroku manages your app portfolio in a straightforward Dashboard or with a CLI. Heroku's horizontally scalable, share-nothing architecture is designed for building services in today's world of containerized applications. 
+Heroku is a PaaS (platform as a service) for building and running software applications in the cloud. Heroku today supports programming languages such as Java, Python, Ruby, Node.js and Go. Heroku manages your app portfolio in a straightforward Dashboard or with a CLI. Heroku's horizontally scalable, share-nothing architecture is designed for building services in today's world of containerized applications.
 
 Here are few popular terminologies used in Heroku:
 
@@ -37,34 +36,31 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 [Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database. Once you create the database, you will be provisioned with a unique database endpoint URL, port and password. Save these for future reference.
 
-
 ### Step 2. Create a Heroku account
 
 If you are using Heroku for the first time, visit the Heroku website and create your new Heroku account [through this link](https://signup.heroku.com/login).
 
 ![heroku](create_heroku.png)
 
-
 ### Step 3. Install the Heroku CLI on your system
 
 The Heroku Command Line Interface (CLI) lets you create and manage Heroku apps directly from the terminal. It's an essential part of using Heroku. In order to install Heroku CLI, run the following command:
 
-   ```macos
-    brew install heroku
-   ```
+```macos
+ brew install heroku
+```
 
 ### Step 4. Login to Heroku
 
 Use the following Heroku Command Line commands to login to Heroku dashboard:
 
-
-   ```bash
-    heroku login
-    heroku: Press any key to open up the browser to login or q to exit:
-    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
-    Logging in... done
-    Logged in as your_email_address
-   ```
+```bash
+ heroku login
+ heroku: Press any key to open up the browser to login or q to exit:
+ Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+ Logging in... done
+ Logged in as your_email_address
+```
 
 ### Step 5. Connect your application to Redis Enterprise Cloud
 
@@ -74,22 +70,18 @@ For this demonstration, we will be using a [Sample Redis Chat app](https://githu
 
 First you will need to clone the GitHub repository to configure it as a local repository.
 
-   ```bash
-    git clone https://github.com/redis-developer/basic-redis-chat-demo-go
-   ```
-
+```bash
+ git clone https://github.com/redis-developer/basic-redis-chat-demo-go
+```
 
 `basic-redis-chat-demo-go` is the name of the project directory.
 Run the commands below to get a functioning Git repository that contains a simple application as well as a `app.json` file.
-
 
 ```
 heroku create
 Creating app... done, ⬢ stark-island-03510
 https://stark-island-03510.herokuapp.com/ | https://git.heroku.com/stark-island-03510.git
 ```
-
-
 
 ### Step 6. Setting up Environment Variables
 
@@ -100,18 +92,11 @@ Go to the Heroku dashboard, click "Settings" and set the following parameters un
 - REDIS_HOST=
 - REDIS_PASSWORD=
 
-
-
 ![heroku](heroku_environment.png)
-
-
 
 You now have a functioning Git repository that contains a simple application as well as a `app.json` file.
 
-
-
 ### Step 7. Deploy your code
-
 
 ```
 $ git push heroku
@@ -120,7 +105,7 @@ $ git push heroku
 Wait for few seconds and you will see the messages below:
 
 ```
-remote: 
+remote:
 remote: Verifying deploy... done.
 To https://git.heroku.com/stark-island-03510
  * [new branch]      master -> master
@@ -128,15 +113,12 @@ To https://git.heroku.com/stark-island-03510
 
 ### Step 8. Accessing the application
 
-
 Open `https://stark-island-03510.herokuapp.com/` to access your web application on the browser.
 Please note that the Web URL is unique, hence it will be different in your case.
 
 ![heroku](heroku_chatapp_go.png)
 
 ### How does it work?
-
-
 
 The chat server works as a basic REST API which involves managing sessions and handling the user state in the chat rooms (besides the WebSocket/real-time part).
 When the server starts, the initialization step occurs. At first, a new Redis connection is established and the code checks whether or not to load the demo data.
@@ -148,40 +130,41 @@ The demo data initialization is handled in multiple steps:
 
 #### Creating demo users
 
-We create a new user id: `INCR total_users`. Then we set a user ID lookup key by user name: e.g. 
+We create a new user id: `INCR total_users`. Then we set a user ID lookup key by user name: e.g.
 
 ```
 SET username:nick user:1
 ```
 
-And finally, the rest of the data is written to a Redis hash: 
+And finally, the rest of the data is written to a Redis hash:
 
 Example:
 
- ```bash
-   HSET user:1 username "nick" password "bcrypt_hashed_password".
- ```
+```bash
+  HSET user:1 username "nick" password "bcrypt_hashed_password".
+```
 
-Additionally, each user is added to the default "General" room. 
-For handling rooms for each user, we have a set that holds the room ids. Here's an example command of how to add the room: 
+Additionally, each user is added to the default "General" room.
+For handling rooms for each user, we have a set that holds the room ids. Here's an example command of how to add the room:
 
- ```bash
-  SADD user:1:rooms "0"
- ```
+```bash
+ SADD user:1:rooms "0"
+```
 
 Next, we need to populate private messages between users. At first, private rooms are created: if a private room needs to be established, for each user a room id: `room:1:2` is generated, where numbers correspond to the user ids in ascending order.
 
-E.g. Create a private room between 2 users: 
- 
- ```bash
-  SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
- ```
+E.g. Create a private room between 2 users:
 
-Then we add messages to this room by writing to a sorted set: 
+```bash
+ SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
+```
 
- ```bash
-  ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
- ```
+Then we add messages to this room by writing to a sorted set:
+
+```bash
+ ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
+```
+
 We use a stringified JSON object for keeping the message structure and simplify the implementation details for this demo-app.
 
 Populate the "General" room with messages. Messages are added to the sorted set with id of the "General" room: `room:0`.
@@ -202,9 +185,9 @@ A WebSocket/real-time server is instantiated, which then listens for the next ev
 
 A global set with online_users key is used for keeping the online state for each user. So on a new connection, a user ID is written to that set:
 
- ```bash
-  SADD online_users 1
- ```
+```bash
+ SADD online_users 1
+```
 
 Here we have added a user with id 1 to the set `online_users`
 
@@ -214,9 +197,9 @@ After that, a message is broadcast to the clients to notify them that a new user
 
 - Message. A user sends a message, and it needs to be broadcast to the other clients. The pub/sub also allows us to broadcast this message to all server instances which are connected to this Redis server:
 
- ```
-  PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
- ```
+```
+ PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
+```
 
 Note we send additional data related to the type of the message and the server id. Server id is used to discard the messages by the server instance which sends them since it is connected to the same MESSAGES channel.
 
@@ -232,6 +215,7 @@ The real-time functionality is handled by Socket.IO for server-client messaging.
 
 The chat data is stored in various keys and various data types.
 User data is stored in a hash where each user entry contains the next values:
+
 - username: unique user name;
 - password: hashed password
 
@@ -249,34 +233,33 @@ User data is stored in a hash where each user entry contains the next values:
 
 ### How is the data accessed?
 
-Get User `HGETALL user:{id}`. 
+Get User `HGETALL user:{id}`.
 
- ```bash
-  HGETALL user:2
- ```
+```bash
+ HGETALL user:2
+```
 
 which gets data for the user with id: 2.
 
 - Online users: `SMEMBERS online_users`. This will return ids of users who are online
 
-- Get the ids of rooms that a user is in: `SMEMBERS user:{id}:rooms`. 
-Example: 
+- Get the ids of rooms that a user is in: `SMEMBERS user:{id}:rooms`.
+  Example:
 
- ```
-  SMEMBERS user:2:rooms
- ```
+```
+ SMEMBERS user:2:rooms
+```
 
 This will return IDs of rooms for the user whose ID is 2
 
-- Get a list of messages: `ZREVRANGE room:{roomId} {offset_start} {offset_end}`. 
-Example: 
+- Get a list of messages: `ZREVRANGE room:{roomId} {offset_start} {offset_end}`.
+  Example:
 
- ```
-  ZREVRANGE room:1:2 0 50
- ```
+```
+ ZREVRANGE room:1:2 0 50
+```
+
 This returns 50 messages with 0 offsets for the private room between users with IDs 1 and 2.
-
-
 
 ### Next Steps
 

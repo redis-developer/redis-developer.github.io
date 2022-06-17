@@ -18,114 +18,111 @@ Follow the steps below to get started with RedisGraph with Python:
 
 ### Step 1. Run RedisMod Docker container
 
- ```bash
-  docker run -p 6379:6379 --name redislabs/redismodCopy
- ```
+```bash
+ docker run -p 6379:6379 --name redislabs/redismodCopy
+```
 
 ### Step 2. Verify if RedisGraph module is loaded
 
- ```bash
-  info modules
-  # Modules
-  module:name=graph,ver=20405,api=1,filters=0,usedby=[],using=[],options=[]
- ```
+```bash
+ info modules
+ # Modules
+ module:name=graph,ver=20405,api=1,filters=0,usedby=[],using=[],options=[]
+```
 
 ### Step 3. Loading the Python Module
 
- ```bash
-  pip install redisgraph
- ```
+```bash
+ pip install redisgraph
+```
 
-### Step 4. Write a python code 
+### Step 4. Write a python code
 
- ```python
-  import redis
-  from redisgraph import Node, Edge, Graph, Path
- 
-  r = redis.Redis(host='localhost', port=6379)
- 
-  redis_graph = Graph('social', r)
- 
-  john = Node(label='person', properties={'name': 'John Doe', 'age': 33, 'gender': 'male', 'status': 'single'})
-  redis_graph.add_node(john)
- 
-  japan = Node(label='country', properties={'name': 'Japan'})
-  redis_graph.add_node(japan)
- 
-  edge = Edge(john, 'visited', japan, properties={'purpose': 'pleasure'})
-  redis_graph.add_edge(edge)
- 
-  redis_graph.commit()
- 
-  query = """MATCH (p:person)-[v:visited {purpose:"pleasure"}]->(c:country)
+```python
+ import redis
+ from redisgraph import Node, Edge, Graph, Path
+
+ r = redis.Redis(host='localhost', port=6379)
+
+ redis_graph = Graph('social', r)
+
+ john = Node(label='person', properties={'name': 'John Doe', 'age': 33, 'gender': 'male', 'status': 'single'})
+ redis_graph.add_node(john)
+
+ japan = Node(label='country', properties={'name': 'Japan'})
+ redis_graph.add_node(japan)
+
+ edge = Edge(john, 'visited', japan, properties={'purpose': 'pleasure'})
+ redis_graph.add_edge(edge)
+
+ redis_graph.commit()
+
+ query = """MATCH (p:person)-[v:visited {purpose:"pleasure"}]->(c:country)
 		   RETURN p.name, p.age, v.purpose, c.name"""
- 
-  result = redis_graph.query(query)
- 
-  # Print resultset
-  result.pretty_print()
- 
-  # Use parameters
-  params = {'purpose':"pleasure"}
-  query = """MATCH (p:person)-[v:visited {purpose:$purpose}]->(c:country)
+
+ result = redis_graph.query(query)
+
+ # Print resultset
+ result.pretty_print()
+
+ # Use parameters
+ params = {'purpose':"pleasure"}
+ query = """MATCH (p:person)-[v:visited {purpose:$purpose}]->(c:country)
 		   RETURN p.name, p.age, v.purpose, c.name"""
- 
-  result = redis_graph.query(query, params)
- 
-  # Print resultset
-  result.pretty_print()
- 
-  # Use query timeout to raise an exception if the query takes over 10 milliseconds
-  result = redis_graph.query(query, params, timeout=10)
- 
-  # Iterate through resultset
-  for record in result.result_set:
+
+ result = redis_graph.query(query, params)
+
+ # Print resultset
+ result.pretty_print()
+
+ # Use query timeout to raise an exception if the query takes over 10 milliseconds
+ result = redis_graph.query(query, params, timeout=10)
+
+ # Iterate through resultset
+ for record in result.result_set:
 	person_name = record[0]
 	person_age = record[1]
 	visit_purpose = record[2]
 	country_name = record[3]
- 
-  query = """MATCH p = (:person)-[:visited {purpose:"pleasure"}]->(:country) RETURN p"""
- 
-  result = redis_graph.query(query)
- 
-  # Iterate through resultset
-  for record in result.result_set:
-    path = record[0]
-    print(path)
- 
- 
-  # All done, remove graph.
-  redis_graph.delete()
+
+ query = """MATCH p = (:person)-[:visited {purpose:"pleasure"}]->(:country) RETURN p"""
+
+ result = redis_graph.query(query)
+
+ # Iterate through resultset
+ for record in result.result_set:
+   path = record[0]
+   print(path)
+
+
+ # All done, remove graph.
+ redis_graph.delete()
 ```
 
 ### Step 5. Execute the Python Script
 
- ```python
-   python3 test.py 
-  +-----------+----------+--------------+-----------+
-  | b'p.name' | b'p.age' | b'v.purpose' | b'c.name' |
-  +-----------+----------+--------------+-----------+
-  |  John Doe |    33    |   pleasure   |   Japan   |
-  +-----------+----------+--------------+-----------+
- 
-  Cached execution 0.0
-  internal execution time 3.3023
-  +-----------+----------+--------------+-----------+
-  | b'p.name' | b'p.age' | b'v.purpose' | b'c.name' |
-  +-----------+----------+--------------+-----------+
-  |    John Doe |    33    |   pleasure   |   Japan   |
-  +-----------+----------+--------------+-----------+
- 
-  Cached execution 0.0
-  internal execution time 0.2475
-  <(0)-[0]->(1)>
+```python
+  python3 test.py
+ +-----------+----------+--------------+-----------+
+ | b'p.name' | b'p.age' | b'v.purpose' | b'c.name' |
+ +-----------+----------+--------------+-----------+
+ |  John Doe |    33    |   pleasure   |   Japan   |
+ +-----------+----------+--------------+-----------+
+
+ Cached execution 0.0
+ internal execution time 3.3023
+ +-----------+----------+--------------+-----------+
+ | b'p.name' | b'p.age' | b'v.purpose' | b'c.name' |
+ +-----------+----------+--------------+-----------+
+ |    John Doe |    33    |   pleasure   |   Japan   |
+ +-----------+----------+--------------+-----------+
+
+ Cached execution 0.0
+ internal execution time 0.2475
+ <(0)-[0]->(1)>
 ```
 
-
-
 ### Step 6. Monitor the Graph query
-
 
 ```bash
  127.0.0.1:6379> monitor
@@ -141,31 +138,27 @@ Follow the steps below to get started with RedisGraph with Python:
  1632661901.035625 [0 172.17.0.1:61908] "GRAPH.DELETE" "social"
 ```
 
-
 Let us comment out the last line. Try to query Graph data over over RedisInsight.
 
 ### Step 7. Install RedisInsight
 
 Run the RedisInsight container. The easiest way is to run the following command:
 
- ```bash
-  docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
- ```
+```bash
+ docker run -d -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
+```
 
 ### Step 8. Accessing RedisInsight
 
 Next, point your browser to http://localhost:8001.
 
-
 ### Step 9. Run the Graph Query
 
 You can use the limit clause to limit the number of records returned by a query:
 
-
-MATCH (n) RETURN n  LIMIT 1
+MATCH (n) RETURN n LIMIT 1
 
 ![My Image](redisgraph_redisinsight_1.png)
-
 
 ### Step 10. Run the Graph Query with no LIMIT
 
@@ -173,9 +166,7 @@ MATCH (n) RETURN n
 
 ![My Image](redisgraph_redisinsight_2.png)
 
-
 ### References
-
 
 - [Building Movies database app using RedisGraph and NodeJS](/howtos/redisgraphmovies/)
 - Learn more about RedisGraph in the [Quickstart](https://oss.redis.com/redisgraph/) tutorial.
@@ -184,6 +175,17 @@ MATCH (n) RETURN n
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>
-

@@ -2,28 +2,51 @@
   "name": "redis-developer-hub",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=16.14",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
+    "format:mdx": "prettier --loglevel warn --write \"docs/**/*.{md,mdx}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json --fix",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json",
+    "clear": "docusaurus clear",
     "serve": "docusaurus serve",
-    "clear": "docusaurus clear"
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
     "@abrookins-redis/redis-sitesearch-frontend": "^1.0.2",
-    "@docusaurus/core": "2.0.0-alpha.70",
-    "@docusaurus/preset-classic": "2.0.0-alpha.70",
-    "@docusaurus/theme-search-algolia": "^2.0.0-alpha.70",
-    "@mdx-js/react": "^1.6.21",
+    "@docusaurus/core": "2.0.0-beta.21",
+    "@docusaurus/preset-classic": "2.0.0-beta.21",
+    "@docusaurus/theme-search-algolia": "^2.0.0-beta.21",
+    "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
-    "docusaurus-plugin-sass": "^0.1.11",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "docusaurus-plugin-sass": "^0.2.2",
+    "prism-react-renderer": "^1.3.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-scroll": "^1.8.1",
     "react-slick": "^0.28.0",
-    "react-typed": "^1.2.0"
+    "sass": "^1.52.3",
+    "typed.js": "^2.0.12"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "2.0.0-beta.21",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.7.1",
+    "prettier-linter-helpers": "^1.0.0"
   },
   "browserslist": {
     "production": [

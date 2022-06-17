@@ -7,7 +7,6 @@ slug: /modules/redistimeseries
 
 RedisTimeseries is a Redis module that enhances your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
-
 ### Step 1. Register and subscribe
 
 Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
@@ -18,13 +17,9 @@ Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis 
 
 ![Redistimeseries](redistimeseries1.png)
 
-
 ### Step 3. Connect to a database
 
-
 Follow [this](explore/redisinsight) link to know how to connect to a database
-
-
 
 ### Step 4. Getting Started with RedisTimeSeries
 
@@ -35,10 +30,9 @@ Using a basic air-quality dataset, we will show you how to:
 - Add a new sample to the list of series
 - Query a range across one or multiple time series
 
-
 ![RedisTimeSeries](redistimeseriesflow.png)
 
-####  Create a new time series
+#### Create a new time series
 
 Let’s create a time series representing air quality dataset measurements. To interact with RedisTimeSeries you will most often use the TS.RANGE command, but here you will create a time series per measurement using the TS.CREATE command. Once created, all the measurements will be sent using TS.ADD.
 
@@ -65,7 +59,7 @@ Let’s start to add samples into the keys that will be automatically created us
 ```
 >> TS.ADD ts:carbon_monoxide 1112599800 2.1
 >> TS.ADD ts:relative_humidity 1112599800 13.5
->> TS.ADD ts:temperature 1112603400 28.5 
+>> TS.ADD ts:temperature 1112603400 28.5
 ```
 
 ```
@@ -131,7 +125,7 @@ TS.RANGE is used to query a range in forward directions while TS.REVRANGE is use
 
 #### Aggregation
 
-You can use various aggregation types such as  avg, sum, min, max, range, count, first, last etc. The example below example shows how to use “avg” aggregation type to answer such questions as:
+You can use various aggregation types such as avg, sum, min, max, range, count, first, last etc. The example below example shows how to use “avg” aggregation type to answer such questions as:
 
 #### “How do I get the sample for a time range on some aggregation rule?”
 
@@ -145,6 +139,6 @@ You can use various aggregation types such as  avg, sum, min, max, range, count,
    2) "2.2"
 ```
 
-### Next Steps 
+### Next Steps
 
 - Learn more about RedisTimeSeries in the [Quickstart](https://oss.redis.com/redistimeseries/) tutorial.

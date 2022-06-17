@@ -11,11 +11,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-
 ![redis stack](images/redis-stack.png)
 
 Redis Stack is an extension of Redis that adds modern data models and processing engines to provide a complete developer experience. Redis Stack provides a simple and seamless way to access different data models such as full-text search, document store, graph, time series, and probabilistic data structures enabling developers to build any real-time data application.
-
 
 ### Redis OSS vs. Redis Stack
 
@@ -27,14 +25,12 @@ In addition to all of the features of OSS Redis, Redis Stack supports:
 - Graph data models with the Cypher query language
 - Probabilistic data structures
 
-
 ### Redis Stack License
 
 Redis Stack is made up of several components, licensed as follows:
 
 - Redis Stack Server combines open source Redis with RediSearch, RedisJSON RedisGraph, RedisTimeSeries and RedisBloom is licensed under the [Redis Source Available License](https://github.com/RediSearch/RediSearch/blob/master/LICENSE) (RSAL).
 - RedisInsight is licensed under the [Server Side Public License](https://en.wikipedia.org/wiki/Server_Side_Public_License) (SSPL).
-
 
 ### Which client libraries support Redis Stack?
 
@@ -51,7 +47,6 @@ The Redis OM client libraries let you use the document modeling, indexing, and q
 - [Redis OM Python](https://github.com/redis/redis-om-python)
 - [Redis OM Spring](https://github.com/redis/redis-om-spring)
 
-
 ### Getting Started
 
 <Tabs
@@ -63,8 +58,7 @@ The Redis OM client libraries let you use the document modeling, indexing, and q
   ]}>
   <TabItem value="Redis Enterprise Cloud">
 
-
-####  Using Redis Enterprise Cloud
+#### Using Redis Enterprise Cloud
 
 ### Step 1. Create free cloud account
 
@@ -89,16 +83,11 @@ click "Create a custom database".
 
 ![create database ](images/select_cloud_vendor.png)
 
-
-### Step 3.  Listing the database details
+### Step 3. Listing the database details
 
 Once fully activated, you will see the database endpoints as shown below:
 
-
-
 ![verify database](images/details_database.png)
-
-
 
 ### Step 4. Connecting to the database via RedisInsight
 
@@ -106,24 +95,20 @@ RedisInsight is a visual tool that lets you do both GUI- and CLI-based interacti
 
 You can install Redis Stack on your local system to get RedisInsight GUI tool up and running. Ensure that you have the `brew` package installed in your Mac system.
 
+```bash
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
 
- ```bash
-  brew tap redis-stack/redis-stack
-  brew install --cask redis-stack
- ```
-
- ```
-  ==> Installing Cask redis-stack-redisinsight
-  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
-  🍺  redis-stack-redisinsight was successfully installed!
-  ==> Installing Cask redis-stack
-  🍺  redis-stack was successfully installed!
- ```
+```
+ ==> Installing Cask redis-stack-redisinsight
+ ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+ 🍺  redis-stack-redisinsight was successfully installed!
+ ==> Installing Cask redis-stack
+ 🍺  redis-stack was successfully installed!
+```
 
 You can easily find the Applications folder on your Mac with Finder. Search "RedisInsight-v2" and click the icon to bring up the Redis Desktop GUI tool.
-
-
-
 
 ### Step 5. Add Redis database
 
@@ -133,13 +118,9 @@ You can easily find the Applications folder on your Mac with Finder. Search "Red
 
 Add the Redis Enterprise cloud database endpoint, port and password.
 
-
 ![access redisinsight](images/database_creds.png)
 
-
 ### Step 7. Verify the database under RedisInsight dashboard
-
-
 
 ![database details](images/database_details.png)
 
@@ -165,40 +146,36 @@ Click "Get specific fields" to access parts of a stored JSON document as shown i
 
 ![access json keys](images/stack3.png)
 
-
-
 </TabItem>
 
 <TabItem value="Mac">
 
 Use homebrew to install Redis Stack on macOS, by following these instructions:
 
-
 ### Step 1. Install Homebrew
 
- ```bash
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
- ```
+```bash
+ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 ### Step 2. Install Redis Stack using Homebrew
 
 First, tap the Redis Stack Homebrew tap and then run `brew install` as shown below:
 
- ```bash
-  brew tap redis-stack/redis-stack
-  brew install --cask redis-stack
- ```
+```bash
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
 
 This will install all Redis and Redis Stack binaries. How you run these binaries depends on whether you already have Redis installed on your system.
 
-
- ```
-  ==> Installing Cask redis-stack-redisinsight
-  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
-  🍺  redis-stack-redisinsight was successfully installed!
-  ==> Installing Cask redis-stack
-  🍺  redis-stack was successfully installed!
- ```
+```
+ ==> Installing Cask redis-stack-redisinsight
+ ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+ 🍺  redis-stack-redisinsight was successfully installed!
+ ==> Installing Cask redis-stack
+ 🍺  redis-stack was successfully installed!
+```
 
 :::info TIP
 
@@ -206,10 +183,9 @@ If this is the first time you’ve installed Redis on your system, then all Redi
 
 To check this, run:
 
- ```bash
-  echo $PATH
- ```
-
+```bash
+ echo $PATH
+```
 
 Then, confirm that the output contains `/opt/homebrew/bin` (M1 Mac) or `/usr/local/bin` (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
 :::
@@ -218,10 +194,9 @@ Then, confirm that the output contains `/opt/homebrew/bin` (M1 Mac) or `/usr/loc
 
 You can now start Redis Stack Server as follows:
 
- ```bash
-  redis-stack-server
- ```
-
+```bash
+ redis-stack-server
+```
 
 ### Existing Redis installation
 
@@ -229,16 +204,11 @@ If you have an existing Redis installation on your system, then you’ll need to
 
 Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the following line.
 
-
- ```bash
-   export PATH=/usr/local/Caskroom/redis-stack-server/<VERSION>/bin:$PATH
- ```
-
+```bash
+  export PATH=/usr/local/Caskroom/redis-stack-server/<VERSION>/bin:$PATH
+```
 
 Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
-
-
-
 
 ### Step 3. Add Redis database
 
@@ -248,33 +218,28 @@ Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI
 
 Add the local Redis database endpoint and port.
 
-
 ![access redisinsight](images/testredis1.png)
 
-
 ### Step 5. Redis for time series
-
 
 Redis Stack provides you with a native time series data structure. Let's see how a time series might be useful in our bike shop.
 
 As we have multiple physical shops too, alongside our online shop, it could be helpful to have an overview of the sales volume. We will create one time series per shop tracking the total amount of all sales. In addition, we will mark the time series with the appropriate region label, east or west. This kind of representation will allow us to easily query bike sales performance per certain time periods, per shop, per region or across all shops.
 
-
 Click the "Guides" icon (just below the key) in the left sidebar and choose "Redis for time series" for this demonstration.
-
 
 ![redis for timeseries](images/testredis2.png)
 
 ### Step 6. Create time series per shop
 
+```bash
+ TS.CREATE bike_sales_1 DUPLICATE_POLICY SUM LABELS region east compacted no
+ TS.CREATE bike_sales_2 DUPLICATE_POLICY SUM LABELS region east compacted no
+ TS.CREATE bike_sales_3 DUPLICATE_POLICY SUM LABELS region west compacted no
+ TS.CREATE bike_sales_4 DUPLICATE_POLICY SUM LABELS region west compacted no
+ TS.CREATE bike_sales_5 DUPLICATE_POLICY SUM LABELS region west compacted no
+```
 
- ```bash
-  TS.CREATE bike_sales_1 DUPLICATE_POLICY SUM LABELS region east compacted no
-  TS.CREATE bike_sales_2 DUPLICATE_POLICY SUM LABELS region east compacted no
-  TS.CREATE bike_sales_3 DUPLICATE_POLICY SUM LABELS region west compacted no
-  TS.CREATE bike_sales_4 DUPLICATE_POLICY SUM LABELS region west compacted no
-  TS.CREATE bike_sales_5 DUPLICATE_POLICY SUM LABELS region west compacted no
- ```
 As shown in the following query, we make the shop id (1,2,3,4,5) a part of the time series name. You might also notice the `DUPLICATE_POLICY SUM` argument; this describes what should be done when two events in the same time series share the same timestamp: In this case, it would mean that two sales happened at exactly the same time, so the resulting value should be a sum of the two sales amounts.
 
 Since the metrics are collected with a millisecond timestamp, we can compact our time series into sales per hour:
@@ -291,16 +256,13 @@ RedisTimeSeries supports downsampling with the following aggregations: avg, sum,
 
 #### Example:
 
-
- ```
-  TS.CREATERULE bike_sales_5 bike_sales_5_per_day AGGREGATION sum 86400000
- ```
+```
+ TS.CREATERULE bike_sales_5 bike_sales_5_per_day AGGREGATION sum 86400000
+```
 
 ![time series compaction](images/testredis6.png)
 
-
 </TabItem>
-
 
 <TabItem value="Docker">
 
@@ -314,39 +276,38 @@ You can run Redis Stack using a Docker container. There are two types of Docker 
 
 To start Redis Stack server using the redis-stack image, run the following command in your terminal:
 
- ```bash
-  docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
- ````
+```bash
+ docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+```
 
 You can use `redis-cli` to connect to the server, just as you connect to any Redis instance.
 If you don’t have redis-cli installed locally, you can run it from the Docker container:
 
- ```bash
-  docker exec -it redis-stack redis-cli
- ```
+```bash
+ docker exec -it redis-stack redis-cli
+```
 
 :::info TIP
 The `docker run` command above also exposes RedisInsight on port 8001. You can use RedisInsight by pointing your browser to http://localhost:8001.
 :::
 
-
 To persist your Redis data to a local path, specify -v to configure a local volume. This command stores all data in the local directory `local-data`:
 
- ```bash
-  docker run -v /local-data/:/data redis/redis-stack:latest
- ```
+```bash
+ docker run -v /local-data/:/data redis/redis-stack:latest
+```
 
 If you want to expose Redis Stack server or RedisInsight on a different port, update the left hand of portion of the `-p` argument. This command exposes Redis Stack server on port 10001 and RedisInsight on port 13333:
 
- ```bash
-  docker run -p 10001:6379 -p 13333:8001 redis/redis-stack:latest
- ```
+```bash
+ docker run -p 10001:6379 -p 13333:8001 redis/redis-stack:latest
+```
 
 By default, the Redis Stack Docker containers use internal configuration files for Redis. To start Redis with a local configuration file, you can use the `-v` volume options:
 
- ```bash
-  docker run -v `pwd`/local-redis-stack.conf:/redis-stack.conf -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
- ```
+```bash
+ docker run -v `pwd`/local-redis-stack.conf:/redis-stack.conf -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+```
 
 To pass in arbitrary configuration changes, you can set any of these environment variables:
 
@@ -359,45 +320,37 @@ To pass in arbitrary configuration changes, you can set any of these environment
 
 For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
 
- ```
-  docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest
- ```
+```
+ docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest
+```
 
 Here’s how to set a retention policy for RedisTimeSeries:
 
- ```
-  docker run -e REDISTIMESERIES_ARGS="RETENTION_POLICY=20" redis/redis-stack:latest
- ```
+```
+ docker run -e REDISTIMESERIES_ARGS="RETENTION_POLICY=20" redis/redis-stack:latest
+```
 
 </TabItem>
 </Tabs>
 
 ### Next Steps
 
+<div className="row text--center">
 
-
-<div class="row text--center">
-
-<div class="col ">
+<div className="col ">
 <div className="ri-container">
 
 #### Storing and querying JSON documents
 
-
 [Follow this tutorial](/howtos/redisjson/getting-started) to learn how to store and query JSON documents using Redis Stack.
 
-
 </div>
 </div>
 
-<div class="col">
+<div className="col">
 <div className="ri-container">
 
 #### Full-text search
-
-
-
-
 
 Learn how to [perform full-text search](/howtos/redisearch/) using Redis Stack.
 
@@ -405,29 +358,22 @@ Learn how to [perform full-text search](/howtos/redisearch/) using Redis Stack.
 </div>
 </div>
 
+<div className="row text--center">
 
-<div class="row text--center">
-
-<div class="col ">
+<div className="col ">
 <div className="ri-container">
 
 #### Probabilistic data structures
 
-
 Follow this tutorial to learn [how to implement low latency and compact Probabilistic data structures](/howtos/redisbloom) using Redis Stack.
 
-
 </div>
 </div>
 
-<div class="col">
+<div className="col">
 <div className="ri-container">
 
 #### Storing and querying time series data
-
-
-
-
 
 [Learn how to store and query time series data](/howtos/redistimeseries/getting-started) using Redis Stack.
 

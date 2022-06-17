@@ -5,8 +5,6 @@ sidebar_label: 5. Manage Index
 slug: /howtos/moviesdatabase/manage
 ---
 
-
-
 ### Listing and inspecting the indexes
 
 The `FT._LIST` command provides a list of all RediSearch indexes in your database:
@@ -19,8 +17,8 @@ The `FT._LIST` command provides a list of all RediSearch indexes in your databas
 `FT.INFO` provides information about a specific index:
 
 ```
-> FT.INFO "idx:movie" 
- 
+> FT.INFO "idx:movie"
+
  1) "index_name"
  2) "idx:movie"
  ...
@@ -29,11 +27,10 @@ The `FT._LIST` command provides a list of all RediSearch indexes in your databas
  7) "fields"
  ...
 9) "num_docs"
-10) "4" 
+10) "4"
 ...
 
 ```
-
 
 ### Updating your Indexing
 
@@ -53,9 +50,7 @@ Let's do a query with the new indexed field:
 
 ```
 
-
 ### Dropping the Index
-
 
 You can drop an index using the `FT.DROPINDEX` command.
 
@@ -77,6 +72,4 @@ Dropping an index does not impact the indexed hashes, this means that the movies
    4) "movie:11005"
 ```
 
-
-*Note: You can delete the indexed document/hashes by adding the `DD` parameter.*
-
+_Note: You can delete the indexed document/hashes by adding the `DD` parameter._

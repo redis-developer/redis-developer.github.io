@@ -1,13 +1,12 @@
 ---
 id: index-herokunodejs
 title: How to build a NodeJS based application on Heroku using Redis
-sidebar_label: How to build a NodeJS based application on Heroku using Redis 
+sidebar_label: How to build a NodeJS based application on Heroku using Redis
 slug: /howtos/herokunodejs
 authors: [ajeet]
 ---
 
 import RedisCard from '@site/src/theme/RedisCard';
-
 
 ### Step 1. Create Redis Enterprise Cloud
 
@@ -17,29 +16,27 @@ Create your free Redis Enterprise Cloud account. [Follow this link to create Red
 
 Save the database endpoint URL and password for future reference.
 
-
 ### Step 2. Create a Heroku account
 
 If you are using Heroku for the first time, create your new Heroku account [through this link](https://signup.heroku.com/login)
 
 ![heroku](create_heroku.png)
 
-
 ### Step 3. Install Heroku CLI on your system
 
-   ```macos
-    brew install heroku
-   ```
+```macos
+ brew install heroku
+```
 
 ### Step 4. Login to Heroku
 
-   ```bash
-    heroku login
-    heroku: Press any key to open up the browser to login or q to exit:
-    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
-    Logging in... done
-    Logged in as your_email_address
-   ```
+```bash
+ heroku login
+ heroku: Press any key to open up the browser to login or q to exit:
+ Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+ Logging in... done
+ Logged in as your_email_address
+```
 
 ### Step 5. Connect your application to Redis Enterprise Cloud
 
@@ -47,22 +44,17 @@ For this demonstration, we will be using a [Sample Rate Limiting application](ht
 
 #### Clone the repository
 
-   ```bash
-    git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs
-   ```
-
-
+```bash
+ git clone https://github.com/redis-developer/basic-redis-rate-limiting-demo-nodejs
+```
 
 Run the below CLI to have a functioning Git repository that contains a simple application as well as a package.json file.
-
 
 ```
 heroku create
 Creating app... done, ⬢ rocky-lowlands-06306
 https://rocky-lowlands-06306.herokuapp.com/ | https://git.heroku.com/rocky-lowlands-06306.git
 ```
-
-
 
 ### Step 6. Setting up environment variables
 
@@ -71,15 +63,9 @@ Refer to Step 1 for the reference.
 
 ![heroku](heroku_app1_env.png)
 
-
-
 You now have a functioning Git repository that contains a simple application as well as a package.json file, which is used by Node’s dependency manager.
 
-
-
-
 ### Step 7. Deploy your code
-
 
 ```
 $ git push heroku
@@ -91,7 +77,7 @@ Wait for few seconds and you will see the below messages being displayed:
 remote: -----> Launching...
 remote:        Released v3
 remote:        https://rocky-lowlands-06306.herokuapp.com/ deployed to Heroku
-remote: 
+remote:
 remote: Verifying deploy... done.
 To https://git.heroku.com/rocky-lowlands-06306.git
  * [new branch]      main -> main
@@ -100,8 +86,7 @@ To https://git.heroku.com/rocky-lowlands-06306.git
 
 ### Step 8. Accessing the application
 
-
-Open https://rocky-lowlands-06306.herokuapp.com/   to see your application
+Open https://rocky-lowlands-06306.herokuapp.com/ to see your application
 
 ![heroku](heroku_ratelimiter.png)
 

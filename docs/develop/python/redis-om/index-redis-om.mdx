@@ -1,7 +1,7 @@
 ---
 id: index-redis-om
 title: Getting Started With Redis OM for Python
-sidebar_label: "Redis OM for Python"
+sidebar_label: 'Redis OM for Python'
 slug: /develop/python/redis-om
 authors: [andrew]
 ---
@@ -115,7 +115,7 @@ Otherwise, you can start the server manually:
 The command to start Redis with Docker depends on the image you've chosen to
 use.
 
-**TIP:** The `-d` option in these examples runs Redis in the background, while 
+**TIP:** The `-d` option in these examples runs Redis in the background, while
 `-p 6379:6379` makes Redis reachable at port 6379 on your localhost.
 
 #### Docker with the `redis-stack` image (recommended)
@@ -146,7 +146,6 @@ Finally, you can install Redis OM with `pip` by running the following command:
 directly with `pip`, we recommend that you install Redis OM in a virtual
 environment (AKA, a virtualenv). If you aren't familiar with this concept, see
 [Dan Bader's video and transcript](https://realpython.com/lessons/creating-virtual-environment/).
-
 
 ## Setting the Redis URL Environment Variable
 
@@ -203,8 +202,8 @@ class Customer(HashModel):
 There are a few details to note:
 
 1. Our `Customer` model extends the `HashModel` class. This means that it will
-be saved to Redis as a hash. The other model class that Redis OM provides is
-`JsonModel`, which we'll discuss later.
+   be saved to Redis as a hash. The other model class that Redis OM provides is
+   `JsonModel`, which we'll discuss later.
 2. We've specified the model's fields using Python type annotations.
 
 Let's dig into the `HashModel` class and type annotations a bit more.
@@ -212,7 +211,7 @@ Let's dig into the `HashModel` class and type annotations a bit more.
 ### The HashModel Class
 
 When you subclass `HashModel`, your subclass is both a Redis OM model, with
-methods for saving data to Redis, *and* a Pydantic model.
+methods for saving data to Redis, _and_ a Pydantic model.
 
 This means that you can use Pydantic field validations with your Redis OM
 models, which we'll cover later, when we talk about validation. But this also
@@ -223,9 +222,9 @@ in your FastAPI applications. 🤯
 
 The type annotations you add to your model fields are used for a few purposes:
 
-* Validating data with Pydantic validators
-* Serializing data Redis
-* Deserializing data from Redis
+- Validating data with Pydantic validators
+- Serializing data Redis
+- Deserializing data from Redis
 
 We'll see examples of these throughout the course of this tutorial.
 
@@ -410,7 +409,7 @@ print(andrew.pk)
 # > '01FJM6PH661HCNNRC884H6K30C'
 ```
 
-The ID is available *before* you save the model.
+The ID is available _before_ you save the model.
 
 The default ID generation function creates
 [ULIDs](https://github.com/ulid/spec), though you can change the function that

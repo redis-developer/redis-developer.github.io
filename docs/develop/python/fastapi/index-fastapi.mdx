@@ -25,12 +25,11 @@ Of course, the best way to **make your FastAPI service even faster** is to use
 Redis. Unlike most databases, Redis excels at low-latency access because it's an in-memory database.
 
 In this tutorial, we'll walk through the steps necessary to use Redis with
-FastAPI. We're going to build *IsBitcoinLit*, an API that stores Bitcoin
+FastAPI. We're going to build _IsBitcoinLit_, an API that stores Bitcoin
 sentiment and price averages in [RedisTimeSeries](https://oss.redis.com/redistimeseries/), then rolls these averages up for
 the last three hours.
 
 Next, let's look at the learning objectives of this tutorial.
-
 
 ## Learning Objectives
 
@@ -43,15 +42,21 @@ The learning objectives of this tutorial are:
 
 Let's get started!
 
-
 ## Pre-Tutorial Quiz
 
 Want to check gaps in your knowledge of Redis and FastAPI before you continue? Take our short pre-tutorial quiz!
 
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfFmBWLtm8oLouaiT3wXpbgZm8Df-FV_xFvnuXEWfbCoh3clw/viewform?embedded=true" width="640" height="524" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+<iframe
+  src="https://docs.google.com/forms/d/e/1FAIpQLSfFmBWLtm8oLouaiT3wXpbgZm8Df-FV_xFvnuXEWfbCoh3clw/viewform?embedded=true"
+  width="640"
+  height="524"
+  frameborder="0"
+  marginheight="0"
+  marginwidth="0">
+  Loading…
+</iframe>
 
 You can also [visit the quiz directly](https://forms.gle/eXiiVcgXqG9UNarG6).
-
 
 ## Set Up the IsBitcoinLit Project
 
@@ -68,7 +73,6 @@ GitHub](https://github.com/redis-developer/fastapi-redis-tutorial).
 [Follow the README](https://github.com/redis-developer/fastapi-redis-tutorial/blob/master/README.md)
 to the project running.
 
-
 ## About RedisTimeSeries
 
 RedisTimeSeries is a source available Redis Module that adds a timeseries data type to Redis. Timeseries is a great way to model any data that you want to query over time, like in this case, the ever-changing price of Bitcoin.
@@ -79,7 +83,7 @@ However, note that this tutorial's example project configures RedisTimeSeries au
 
 ## An Asyncio Primer
 
-The *IsBitcoinLit* project is completely async. That means we use an
+The _IsBitcoinLit_ project is completely async. That means we use an
 asyncio-compatible Redis client called
 [aioredis-py](https://github.com/aio-libs/aioredis-py) and FastAPI's async
 features.
@@ -87,28 +91,33 @@ features.
 If you **aren't familiar with asyncio**, take a few minutes to watch this
 primer on asyncio before continuing:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Xbl7XjFYsN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/Xbl7XjFYsN4"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen></iframe>
 
 ## Installing the Redis Client
 
 We're going to start this tutorial assuming that you have a FastAPI project to
-work with. We'll use the *IsBitcoinLit* project for our examples.
+work with. We'll use the _IsBitcoinLit_ project for our examples.
 
 [Poetry](https://python-poetry.org/) is the best way to manage Python dependencies today, so we'll use it in this tutorial.
 
 IsBitcoinLit includes a `pyproject.toml` file that Poetry uses to manage the project's directories, but if you had not already created one, you could do so like this:
 
-		$ poetry init	
+    	$ poetry init
 
 Once you have a `pyproject.toml` file, and assuming you already added FastAPI and any other necessary dependencies, you could add aioredis-py to your project like this:
 
-		$ poetry add aioredis-py@2.0.0b1
+    	$ poetry add aioredis-py@2.0.0b1
 
 **NOTE**: This tutorial uses a beta version of aioredis-py 2.0. The 2.0 version of aioredis-py features an API that matches the most popular synchronous Redis client for Python, [redis-py](https://github.com/andymccurdy/redis-py).
 
 The aioredis-py client is now installed. Time to write some code!
-
 
 ## Integrate aioredis-py with FastAPI
 
@@ -119,7 +128,6 @@ We're going to use Redis for a few things in this FastAPI app:
 3. Caching the three-hour snapshot
 
 Let's look at each of these integration points in more detail.
-
 
 ### Creating the Timeseries
 
@@ -165,7 +173,6 @@ async def make_timeseries(key):
 
 **TIP**: An interesting point to note from this code is that when we create a timeseries, we can use the `DUPLICATE_POLICY` option to specify how to handle duplicate pairs of timestamp and values.
 
-
 ### Storing Sentiment and Price Data in RedisTimeSeries
 
 A `/refresh` endpoint exists in the app to allow a client to trigger a refresh of the 30-second averages. This is the entire function:
@@ -187,17 +194,17 @@ The first thing we do is get the latest sentiment and price data from SentiCrypt
 
 ```json
 [
-	{
-		"count": 7259,
-		"timestamp": 1625592626.3452034,
-		"rate": 0.0,
-		"last": 0.33,
-		"sum": 1425.82,
-		"mean": 0.2,
-		"median": 0.23,
-		"btc_price": "33885.23"
-	}, 
-	//... Many more entries
+  {
+    "count": 7259,
+    "timestamp": 1625592626.3452034,
+    "rate": 0.0,
+    "last": 0.33,
+    "sum": 1425.82,
+    "mean": 0.2,
+    "median": 0.23,
+    "btc_price": "33885.23"
+  }
+  //... Many more entries
 ]
 ```
 
@@ -246,7 +253,6 @@ We're using the `TS.MADD` RedisTimeSeries command to add many samples to a times
 
 This results in a single large `TS.MADD` call that adds price data to the price timeseries and sentiment data to the sentiment timeseries. Conveniently, `TS.MADD` can add samples to multiple timeseries in a single call.
 
-
 ## Calculating Three-Hour Averages with RedisTimeSeries
 
 Clients use IsBitcoinLit to get the average price and sentiment for each of the last three hours. But so far, we've only stored 30-second averages in Redis. How do we calculate the average of these averages for the last three hours?
@@ -275,7 +281,7 @@ async def calculate_three_hours_of_data(keys: Keys) -> Dict[str, str]:
     }
 ```
 
-There is more going on here than we need to know for this tutorial. As a summary, most of this code exists to support calls to `get_hourly_average()`. 
+There is more going on here than we need to know for this tutorial. As a summary, most of this code exists to support calls to `get_hourly_average()`.
 
 That function is where the core logic exists to calculate averages for the last three hours, so let's see what it contains:
 
@@ -293,7 +299,6 @@ Here, we use the `TS.RANGE` command to get the samples in the timeseries from th
 
 So where does this leave us? With **averages of the averages**, one for each of the last three hours.
 
-
 ## Caching Data with Redis
 
 Let's review. We have code that achieves the following:
@@ -305,7 +310,6 @@ Let's review. We have code that achieves the following:
 The snapshot of averages for the last three hours is the data we want to serve clients when they hit the `/is-bitcoin-lit` endpoint. We could run this calculation every time a client requests data, but that would be inefficient. Let's cache it in Redis!
 
 First, we'll look at **writing to the cache**. Then we'll see how FastAPI **reads from** the cache.
-
 
 ### Writing Cache Data to Redis
 
@@ -338,7 +342,6 @@ First, we serialize the three-hour summary data to JSON and save it to Redis. We
 **TIP**: You need to provide a default serializer for the `json.dumps()` function so that `dumps()` knows how to serialize datetime objects.
 
 This means that after every refresh, we've primed the cache. The cache isn't primed for long -- only two minutes -- but it's something!
-
 
 ### Reading Cache Data to Redis
 
@@ -384,14 +387,11 @@ Remember that when we serialized the summary data to JSON, we needed to provide 
 
 Other than parsing dates, this code is relatively straightforward. We get the current hour's cache key, and then we try to get the cached data from Redis. If we can't, we return `None`.
 
-
 ## Summary
 
 Putting all the pieces together, we now have a FastAPI app that can retrieve Bitcoin price and sentiment averages, store the averages in Redis, cache three-hour summary data in Redis, and serve the data to clients. Not too shabby!
 
 Here are a few **notes to consider**:
 
-
 1. We manually controlled caching in this tutorial, but you can also use a library like [aiocache](https://github.com/aio-libs/aiocache) to cache data in Redis.
 2. We ran RedisTimeSeries commands like `TS.MADD` using the `execute_command()` method in aioredis-py. If you are instead using redis-py in a synchronous project, you can use the [redistimeseries-py](https://github.com/RedisTimeSeries/redistimeseries-py) library to run RedisTimeSeries commands.
-

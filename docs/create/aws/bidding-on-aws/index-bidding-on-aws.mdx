@@ -46,31 +46,31 @@ NodeJS connects to the Redis Enterprise Cloud database.
 
 The frontend then communicates with the NodeJS backend through API calls.
 
-```GET : /api/auctions``` fetches all the keys from Auctions Hash.
+`GET : /api/auctions` fetches all the keys from Auctions Hash.
 
 NodeJS uses the Redis module to work with Redis Enterprise Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
 #### Each auction
 
-```GET : /api/auctions/{auctionId}``` fetches each auction item by id.
+`GET : /api/auctions/{auctionId}` fetches each auction item by id.
 
 NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
 All bidding data of an auction item
 
-```GET : /api/bidding/{auctionId}```
+`GET : /api/bidding/{auctionId}`
 
 NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
 #### Profile settings
 
-```GET : /api/settings```
+`GET : /api/settings`
 
 NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
 #### User info
 
-```GET : /api/users/{email}```
+`GET : /api/users/{email}`
 
 NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
@@ -91,7 +91,6 @@ Choose AWS as a Cloud vendor while creating your new subscription. At the end of
 
 ![image](sign4.png)
 
-
 ### Step 2: Clone the backend GitHub repository
 
 ```
@@ -107,8 +106,6 @@ npm install
 ```
 
 ### Step 4. Setting up environment variables
-
-
 
 ```
 export REDIS_END_POINT=XXXX
@@ -158,7 +155,6 @@ npm start
 
 ![sign](images/image_4.png)
 
-
 ### Step 13. Accessing the dashboard
 
 ![access](images/image_5.png)
@@ -167,11 +163,9 @@ npm start
 
 ![Listing](images/image_6.png)
 
-
 ### Step 15. Accessing the bidding page
 
 ![accessing](images/image_7.png)
-
 
 ### How data is stored
 
@@ -183,19 +177,19 @@ The Redis Enterprise Cloud Database with RedisJSON module is what you’ll use t
 - Used for storing auctions data.
 - UUID generated from the backend (NodeJS) serves as the key
 - JSON data which represents the Auction object and includes the following keys
-    - auctionId
-    - auctionItemName
-    - description
-    - lotNo
-    - quantity
-    - buyersPremium
-    - itemUnit
-    - minBidAmount
-    - bidIncrement
-    - startDateTime
-    - endDateTime
-    - images
-    - currentBid
+  - auctionId
+  - auctionItemName
+  - description
+  - lotNo
+  - quantity
+  - buyersPremium
+  - itemUnit
+  - minBidAmount
+  - bidIncrement
+  - startDateTime
+  - endDateTime
+  - images
+  - currentBid
 - NodeJS connects to the Redis Cloud database. The Frontend communicates with the NodeJS backend through API calls.
 - POST : /api/auctions.
 - The request body has JSON data to be inserted into the database.
@@ -206,15 +200,15 @@ The Redis Enterprise Cloud Database with RedisJSON module is what you’ll use t
 - Type - Redis Hash
 - Used for storing the bids placed on each auction item
 - NodeJS connects to the Redis Cloud database. The Frontend communicates with the NodeJS backend through API calls.
-- POST : ```/api/bidding```
+- POST : `/api/bidding`
 - The request body has JSON data to be inserted into the database.
 - AuctionId from request body serves as the key
 - JSON data which includes keys:
 
-     - currentBid
-     - currentBidTime
-     - currentBidEndTime, and 
-     - biddings array (id, auctionId, userId, username, bidAmount, bidTime)
+  - currentBid
+  - currentBidTime
+  - currentBidEndTime, and
+  - biddings array (id, auctionId, userId, username, bidAmount, bidTime)
 
 - The bidding array has all of the bids placed for a particular auction item.
 - Based on the current BidEndTime and BidTime, the auction end date is extended based on the Dynamic closing concept.
@@ -224,10 +218,10 @@ The Redis Enterprise Cloud Database with RedisJSON module is what you’ll use t
 
 ### Profile Settings
 
-- Type -  string
+- Type - string
 - JSON data which includes keys - serves as a value
 - NodeJS connects to the Redis Cloud database. The frontend communicates with the NodeJS backend through API calls.
-- POST : ```/api/settings```
+- POST : `/api/settings`
 - The request body has JSON data to be inserted into the database.
 - NodeJS uses the Redis module to work with Redis Cloud. The Redis client is created using the Redis credentials and hmset(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
@@ -236,7 +230,7 @@ The Redis Enterprise Cloud Database with RedisJSON module is what you’ll use t
 - Type - Redis Hash
 - Used for storing user details
 - NodeJS connects to the Redis Cloud database. The Frontend communicates with the NodeJS backend through API calls.
-- POST : ```/api/users```
+- POST : `/api/users`
 - The request body has JSON data to be inserted into the database
 - The email id serves as the key
 - The JSON data which includes keys - serves as a value
@@ -292,10 +286,20 @@ But thanks to Redis, the components that made up the architecture system became 
 
 So what can you build with Redis? For more inspiration, you can head over to the Redis Launchpad to access an exciting range of applications.
 
-Don't miss out on your $200 credit. Plus, your opportunity win a Tesla! 
-
+Don't miss out on your $200 credit. Plus, your opportunity win a Tesla!
 
 <div>
-<a href="https://redis.com/try-free/?utm_medium=email&utm_source=marketo-followup&utm_campaign=2021-11-reinvent+try_free&mkt_tok=OTE1LU5GRC0xMjgAAAGCSARj9AY9-xGRHmR6vxemuDqU8NkDSMDTf1r8o4E7zjy58kDTzL2av6d4xogYhOqud8a4WEw6wu4rht5OHKW8M7vbp-u_cVNGYnhlQzkFr6mF" target="_blank" rel="noopener" className="link"> <img src="/img/matrix200.png"  className="thumb" loading="lazy" alt="Redis Try Free" /></a>
+  <a
+    href="https://redis.com/try-free/?utm_medium=email&utm_source=marketo-followup&utm_campaign=2021-11-reinvent+try_free&mkt_tok=OTE1LU5GRC0xMjgAAAGCSARj9AY9-xGRHmR6vxemuDqU8NkDSMDTf1r8o4E7zjy58kDTzL2av6d4xogYhOqud8a4WEw6wu4rht5OHKW8M7vbp-u_cVNGYnhlQzkFr6mF"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/matrix200.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Try Free"
+    />
+  </a>
 </div>
-

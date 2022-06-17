@@ -1,16 +1,22 @@
 ---
 id: index-gettingstarted
-title: Storing and Querying Time Series data using Redis Stack 
-sidebar_label: Storing and Querying Time Series data  
+title: Storing and Querying Time Series data using Redis Stack
+sidebar_label: Storing and Querying Time Series data
 slug: /howtos/redistimeseries/getting-started
 authors: [ajeet]
 ---
 
-
 [RedisTimeseries](https://redis.com/modules/redis-timeseries/) is a Redis module developed by Redis Inc. to enhance your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
 <div class="text--center">
-<iframe width="760" height="415" src="https://www.youtube.com/embed/nkUZqxjs2rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/nkUZqxjs2rk"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ### Step 1. Create a free Cloud account
@@ -35,27 +41,22 @@ click "Create a custom database" option shown in the image.
 
 ![create database ](images/select_cloud_vendor.png)
 
-
-### Step 3.  Verify the database details
+### Step 3. Verify the database details
 
 You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
-
-
 
 ![verify database](images/details_database.png)
 
 ### Step 4. Install RedisInsight
 
-
 RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
 You can install Redis Stack on your local system to get RedisInsight GUI tool up and running. Ensure that you have the `brew` package installed in your Mac system.
 
-
- ```bash
-  brew tap redis-stack/redis-stack
-  brew install --cask redis-stack
- ```
+```bash
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
 
 ```
   ==> Installing Cask redis-stack-redisinsight
@@ -63,7 +64,7 @@ You can install Redis Stack on your local system to get RedisInsight GUI tool up
   🍺  redis-stack-redisinsight was successfully installed!
   ==> Installing Cask redis-stack
   🍺  redis-stack was successfully installed!
- ```
+```
 
 Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
 
@@ -75,15 +76,11 @@ Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI
 
 Add the Redis Enterprise cloud database endpoint, port and password.
 
-
 ![access redisinsight](images/database_creds.png)
-
 
 ### Step 7. Verify the database under RedisInsight dashboard
 
-
 ![database details](images/database_details.png)
-
 
 ### Step 8. Getting Started with RedisTimeSeries
 
@@ -94,10 +91,9 @@ Using a basic air-quality dataset, we will show you how to:
 - Add a new sample to the list of series
 - Query a range across one or multiple time series
 
-
 ![RedisTimeSeries](redistimeseriesflow.png)
 
-####  Create a new time series
+#### Create a new time series
 
 Let’s create a time series representing air quality dataset measurements. To interact with RedisTimeSeries you will most often use the TS.RANGE command, but here you will create a time series per measurement using the TS.CREATE command. Once created, all the measurements will be sent using TS.ADD.
 
@@ -124,7 +120,7 @@ Let’s start to add samples into the keys that will be automatically created us
 ```
 >> TS.ADD ts:carbon_monoxide 1112599800 2.1
 >> TS.ADD ts:relative_humidity 1112599800 13.5
->> TS.ADD ts:temperature 1112603400 28.5 
+>> TS.ADD ts:temperature 1112603400 28.5
 ```
 
 ```
@@ -190,7 +186,7 @@ TS.RANGE is used to query a range in forward directions while TS.REVRANGE is use
 
 #### Aggregation
 
-You can use various aggregation types such as  avg, sum, min, max, range, count, first, last etc. The example below example shows how to use “avg” aggregation type to answer such questions as:
+You can use various aggregation types such as avg, sum, min, max, range, count, first, last etc. The example below example shows how to use “avg” aggregation type to answer such questions as:
 
 #### “How do I get the sample for a time range on some aggregation rule?”
 
@@ -204,7 +200,7 @@ You can use various aggregation types such as  avg, sum, min, max, range, count,
    2) "2.2"
 ```
 
-### Next Steps 
+### Next Steps
 
 - Learn more about RedisTimeSeries in the [Quickstart](https://oss.redis.com/redistimeseries/) tutorial.
 - [Build Your Financial Application on RedisTimeSeries](https://redis.com/blog/build-your-financial-application-on-redistimeseries/)
@@ -214,5 +210,17 @@ You can use various aggregation types such as  avg, sum, min, max, range, count,
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

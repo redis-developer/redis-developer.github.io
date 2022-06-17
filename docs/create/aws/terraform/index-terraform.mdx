@@ -3,18 +3,17 @@ id: index-terraform
 title: How to Deploy and Manage Redis Database on AWS Using Terraform
 sidebar_label: Deploy and Manage Redis Database on AWS using Terraform
 slug: /create/aws/terraform
-authors: [ajeet,rahul]
+authors: [ajeet, rahul]
 ---
 
 ![terraform](terraform_arch.png)
 
-
-Development teams today are embracing more and more DevOps principles, such as continuous integration and continuous delivery (CI/CD). Therefore, the need to manage infrastructure-as-code (IaC) has become an essential capability for any cloud service.  IaC tools allow you to manage infrastructure with configuration files rather than through a graphical user interface. IaC allows you to build, change, and manage your infrastructure in a safe, consistent, and repeatable way by defining resource configurations that you can version, reuse, and share. 
+Development teams today are embracing more and more DevOps principles, such as continuous integration and continuous delivery (CI/CD). Therefore, the need to manage infrastructure-as-code (IaC) has become an essential capability for any cloud service. IaC tools allow you to manage infrastructure with configuration files rather than through a graphical user interface. IaC allows you to build, change, and manage your infrastructure in a safe, consistent, and repeatable way by defining resource configurations that you can version, reuse, and share.
 A leading tool in the IaC is HashiCorp Terraform, which supports the major cloud providers and services with its providers and modules cloud infrastructure automation ecosystem for provisioning, compliance, and management of any cloud, infrastructure, and service.
 
 ### What is Terraform?
 
-Terraform is an open source IaC software tool that provides a consistent CLI workflow to manage hundreds of cloud services. Terraform codifies cloud APIs into declarative configuration files, which can then be shared amongst team members, treated as code, edited, reviewed, and versioned. It enables you to safely and predictably create, change, and improve infrastructure. 
+Terraform is an open source IaC software tool that provides a consistent CLI workflow to manage hundreds of cloud services. Terraform codifies cloud APIs into declarative configuration files, which can then be shared amongst team members, treated as code, edited, reviewed, and versioned. It enables you to safely and predictably create, change, and improve infrastructure.
 
 ### Capabilities of Terraform
 
@@ -42,10 +41,9 @@ Before we jump into the implementation, let us take a moment to better understan
 - Data sources
 - Resources
 
-
 ### Providers
 
-A provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves. 
+A provider is the first resource that will need to be defined in any project under the Terraform configuration file. The provider gives you access to the API you will be interacting with to create resources. Once the provider has been configured and authenticated, a vast amount of resources are now available to be created. Terraform has more than 100+ cloud providers it serves.
 A provider defines resources and data for a particular infrastructure, such as AWS. As shown below, the terraform block {} contains terraform settings, including the required providers Terraform will use to provision your infrastructure (for example, rediscloud provider).
 
 ```
@@ -59,14 +57,11 @@ A provider defines resources and data for a particular infrastructure, such as A
  }
 ```
 
-
-
-
 The provider {} block configures the specific provider. In the below example, it is AWS.
 
 ```
  cloud_provider {
- 
+
    provider = "AWS"
    cloud_account_id = 1
    region {
@@ -77,14 +72,11 @@ The provider {} block configures the specific provider. In the below example, it
  }
 ```
 
-
-
 ### Resources
 
 Resources are the most important element in the Terraform language. This is where you describe the piece of infrastructure to be created, and this can range from a compute instance to defining specific permissions and much more.
 
 As shown below, the resource {} block is used to define components of your infrastructure. A resource might be a physical or virtual component, such as EC2, or it could be a logical component, such as a Heroku application.
-
 
 ```
  resource "random_password" "passwords" {
@@ -96,13 +88,11 @@ As shown below, the resource {} block is used to define components of your infra
 }
 ```
 
-
 The resource {} block has two strings before the block: resource types and resource names. The prefix of the type maps to the name of the provider. For example, the resource type “random_password” and the resource name “passwords” form a unique identifier of the resource. Terraform uses this ID to identify the resource.
 
 ### Data sources
 
 Data sources allow Terraform to use information defined outside of Terraform, defined by another separate Terraform configuration, or modified by functions. Each provider may offer data sources alongside its set of resource types. A data source is accessed via a special kind of resource known as a data resource, declared using a data block.
-
 
 ```
  data "rediscloud_payment_method" "card" {
@@ -111,11 +101,8 @@ Data sources allow Terraform to use information defined outside of Terraform, de
  }
 ```
 
-
-
 A data block requests that Terraform read from a given data source ("rediscloud_payment_method") and export the result under the given local name ("card"). The name is used to refer to this resource from elsewhere in the same Terraform module, but has no significance outside of the scope of a module.
 Within the block body (between { and }) are query constraints defined by the data source. Most arguments in this section depend on the data source, and indeed in this example card_type and last_four_numbers are all arguments defined specifically for the rediscloud_payment_method data source.
-
 
 ### Configure Redis Enterprise Cloud programmatic access
 
@@ -124,10 +111,9 @@ In order to set up authentication with the Redis Enterprise Cloud provider, a pr
 Please note that Flexible and Annual Redis Enterprise Cloud subscriptions can leverage a RESTful API that permits operations against a variety of resources, including servers, services, and related infrastructure. The REST API is not supported for Fixed or Free subscriptions.
 
 ```
- provider "rediscloud" { } # Example resource configuration 
+ provider "rediscloud" { } # Example resource configuration
  resource "rediscloud_subscription" "example" { # ... }
 ```
-
 
 ### Prerequisites:
 
@@ -135,7 +121,6 @@ Please note that Flexible and Annual Redis Enterprise Cloud subscriptions can le
 - Create a free Redis Enterprise Cloud account.
 - Create your first subscription.
 - Enable API
-
 
 ### Step 1: Install Terraform on MacOS
 
@@ -147,7 +132,7 @@ Use Homebrew to install Terraform on MacOS as shown below:
 
 ### Step 2: Sign up for a free Redis Enterprise Cloud account
 
-[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for free Redis Enterprise Cloud account. 
+[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for free Redis Enterprise Cloud account.
 
 ![Redis Cloud](tryfree.png)
 
@@ -171,10 +156,9 @@ To authenticate REST API calls, you need to combine the API account key with an 
 
 ![Terraform](accessmanagement1.png)
 
-### Step 4: Create a main.tf file 
+### Step 4: Create a main.tf file
 
 It’s time to create an empty “main.tf” file and start adding the provider, resource and data sources as shown below:
-
 
 ```
  terraform {
@@ -204,7 +188,7 @@ name = "rahul-test-terraform"
 payment_method_id = data.rediscloud_payment_method.card.id
 memory_storage = "ram"
 cloud_provider {
- 
+
   provider = "AWS"
   cloud_account_id = 1
   region {
@@ -229,12 +213,9 @@ database {
 }
 ```
 
-
-
 ### Step 5: Create an execution plan
 
 The Terraform plan command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan, it reads the current state of any already existing remote objects to make sure that Terraform state is up to date. It then compares the current configuration to the prior state and then proposes a set of change actions that should make the remote object match the configuration.
-
 
 ```
  % terraform plan
@@ -311,12 +292,9 @@ Plan: 3 to add, 0 to change, 0 to destroy.
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
-
-
 ### Step 6: Execute the action
 
 The Terraform apply command executes the actions proposed in a Terraform plan.
-
 
 ```
  terraform apply
@@ -406,20 +384,11 @@ rediscloud_subscription.rahul-test-terraform: Creation complete after 8m32s [id=
 Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
 ```
 
-
-
-
-
 ### Step 7: Verify the database
 
 You can now verify the new database created under Subscription named “db-json.”
 
-
-
-
-
 Deploy a Redis Database with RedisJSON modules on AWS using Terraform:
-
 
 ```
 terraform {
@@ -449,7 +418,7 @@ name = "rahul-test-terraform"
 payment_method_id = data.rediscloud_payment_method.card.id
 memory_storage = "ram"
 cloud_provider {
- 
+
   provider = "AWS"
   cloud_account_id = 1
   region {
@@ -474,8 +443,7 @@ database {
 }
 ```
 
-
-### Step 8: Cleanup 
+### Step 8: Cleanup
 
 The Terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration. While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use terraform destroy’ to conveniently clean up all of those temporary objects once you are finished with your work.
 
@@ -574,8 +542,8 @@ random_password.passwords[1]: Destruction complete after 0s
 Destroy complete! Resources: 3 destroyed.
 ```
 
-
 ### Further References:
+
 - [Provision and Manage Redis Enterprise Cloud Anywhere with HashiCorp Terraform](https://redis.com/blog/provision-manage-redis-enterprise-cloud-hashicorp-terraform/)
 - [The HashiCorp Terraform Redis Enterprise Cloud provider](https://registry.terraform.io/providers/RedisLabs/rediscloud/latest)
 - [Azure Cache for Redis Enterprise using Terraform](https://developer.redis.com/create/azure/terraform-simple)

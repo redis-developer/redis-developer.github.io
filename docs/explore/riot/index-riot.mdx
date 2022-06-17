@@ -1,7 +1,7 @@
 ---
 id: index-riot
 title: RIOT
-sidebar_label: RIOT 
+sidebar_label: RIOT
 slug: /explore/riot
 authors: [ajeet]
 ---
@@ -11,12 +11,10 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 Redis Input/Output Tools (RIOT) is a set of import/export command line utilities for Redis:
 
 - RIOT Redis: live replication from any Redis database (including AWS Elasticache) to another Redis database.
 - RIOT DB: migrate from an RDBMS to Redis, RediSearch, RedisJSON, ...
-
 
 <Tabs
   defaultValue="RIOT Redis"
@@ -36,7 +34,6 @@ RIOT Redis is a migration tool that allows for seamless live replication between
 
 ### Step 1. Getting Started
 
-
 Download the [latest release](https://github.com/redis-developer/riot/releases/latest) and unzip the archive.
 
 Launch the `bin/riot-redis` script and follow the usage information provided.
@@ -49,13 +46,13 @@ cd riot/riot-redis
 ./riot-redis
 ```
 
-### Step 3. Install via Homebrew (macOS) 
+### Step 3. Install via Homebrew (macOS)
 
 ```
 brew install jruaux/tap/riot-redis`
 ```
 
-###  Usage
+### Usage
 
 ```
 ❯ riot-redis
@@ -93,6 +90,7 @@ Redis connection options are the same as redis-cli:
   -l, --latency             Show latency metrics
   -m, --pool=<int>          Max pool connections (default: 8)
 ```
+
 Redis URI syntax is described here.
 
 ### Step 4. Example
@@ -115,12 +113,11 @@ OK:1000 V:0 >:0 <:0 T:0
 
 - V: # mismatched values
 
-- >: # keys only present in source database
+- > : # keys only present in source database
 
 - <: # keys only present in target database
 
 - T: # keys with TTL difference greater than tolerance
-
 
 ### Step 6. Architecture
 
@@ -137,8 +134,6 @@ RIOT Redis implements client-side replication using a producer/consumer approach
 Note: Live replication makes use of keyspace notifications. Make sure the source Redis database has keyspace notifications enabled using notify-keyspace-events = KA in redis.conf or via CONFIG SET.
 
 Note: The live replication mechanism does not guarantee data consistency. Redis sends keyspace notifications over pub/sub which does not provide guaranteed delivery. It is possible that RIOT Redis can miss some notifications in case of network failures for example.
-
-
 
 </TabItem>
 
@@ -179,6 +174,7 @@ Usage: riot-db [OPTIONS] [COMMAND]
   -d, --debug               Log in debug mode (includes normal stacktrace)
   -i, --info                Set log level to info
 ```
+
 You can use --help on any subcommand:
 
 ```
@@ -204,6 +200,7 @@ Redis connection options are the same as redis-cli:
   -m, --pool=<int>          Max pool connections (default: 8)
 
 ```
+
 ### Step 5. Drivers
 
 RIOT DB includes drivers for the most common RDBMSs:
@@ -294,6 +291,7 @@ You can specify one or many Redis commands as targets of the import:
 ```
 ❯ riot-db -h localhost -p 6379 import "SELECT * FROM orders" --url jdbc:postgresql://host:port/database --username appuser --password passwd set --keyspace order --keys order_id
 ```
+
 This will produce Redis strings that look like this:
 
 ```
@@ -313,9 +311,6 @@ This will produce Redis strings that look like this:
         "ship_country": "France"
 }
 ```
-
-
-
 
 </TabItem>
 </Tabs>

@@ -11,20 +11,18 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 If you’re a Redis user who prefers to use a Graphical User Interface(GUI) for graph queries, then RedisInsight is a right tool for you. It’s 100% free pure desktop Redis GUI that provides easy-to-use browser tools to query, visualize and interactively manipulate graphs. You can add new graphs, run queries and explore the results over the GUI tool.
 
 RedisInsight supports [RedisGraph](https://oss.redis.com/redisgraph/) and allows you to:
 
-
-*   Build and execute queries
-*   Navigate your graphs
-*   Browse, analyze, and export results
-*   Keyboard shortcuts to zoom
-*   Button to reset view; center entire graph
-*   Zoom capability via mouse wheel(Double right-click to zoom out, Double right-click to zoom out.)
-*   Ability to copy commands with a button click
-*   Ability to persist nodes display choices between queries
+- Build and execute queries
+- Navigate your graphs
+- Browse, analyze, and export results
+- Keyboard shortcuts to zoom
+- Button to reset view; center entire graph
+- Zoom capability via mouse wheel(Double right-click to zoom out, Double right-click to zoom out.)
+- Ability to copy commands with a button click
+- Ability to persist nodes display choices between queries
 
 As a benefit, you get faster turnarounds when building your application using Redis and RedisGraph.
 
@@ -34,14 +32,9 @@ Follow the below steps to see how your data is connected via the RedisInsight Br
 
 [Follow this link to create a Redis database](https://developer.redis.com/howtos/redisgraph) using Redis Enterprise Cloud with RedisGraph module enabled
 
-
-
-
 ![alt_text](images/image1.png)
 
-
 ## Step 2: Download RedisInsight
-
 
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
 
@@ -49,47 +42,32 @@ To install RedisInsight on your local system, you need to first download the sof
 
 ![My Image](images/redisinsightinstall.png)
 
-
 Run the installer. After the web server starts, open http://YOUR_HOST_IP:8001 and add a Redis database connection.
 
 Select "Connect to a Redis database"
 ![My Image](images/redisinsight4.png)
 
-Enter the requested details, including Name, Host (endpoint), Port, and Password.  Then click “ADD REDIS DATABASE”.
+Enter the requested details, including Name, Host (endpoint), Port, and Password. Then click “ADD REDIS DATABASE”.
 
 ## Step 3: Click “RedisGraph” and then “Add Graph”
 
 Select RedisGraph from the menu.
 
-
-
-
 ![alt_text](images/image2.png)
-
 
 ## Step 4. Create a new Graph called “Friends”
 
-
-
-
 ![alt_text](images/image3.png)
-
 
 ## Step 5. Add new nodes(individuals) and links
 
 Let us add individuals to the graph. CREATE is used to introduce new nodes and relationships.Run the below cypher query on RedisInsight GUI to add a label called person and property called “name”.
 
-
 ```
 CREATE (:Person{name:"Tom" }),  (:Person{name:"Alex" }), (:Person{name:"Susan" }), (:Person{name:"Bill" }), (:Person{name:"Jane" })
 ```
 
-
-
-
-
 ![alt_text](images/image4.png)
-
 
 As we see that “1” label is added and that refers to a person label. It’s the same for every node and hence created once. Overall there are 5 nodes created. The five “name” properties refer to 5 name properties that have been added.
 
@@ -97,145 +75,95 @@ As we see that “1” label is added and that refers to a person label. It’s 
 
 Match describes the relationship between queried entities, using ascii art to represent pattern(s) to match against. Nodes are represented by parentheses () , and Relationships are represented by brackets [] .
 
-
-
 As shown below, we have added lowercase “p” in front of our label and is a variable we can make a reference to. It returns all the nodes with a label called “Person”.
-
 
 ```
 MATCH (p:Person) RETURN p
 ```
 
-
-
-
-
 ![alt_text](images/image5.png)
-
-
 
 You can select "Graph View" on the right menu to display the graphical representation as shown below:
 
-
 ![alt_text](images/image6.png)
 
-
 ## Step 7. Viewing just one individual(node)
-
 
 ```
 MATCH (p:Person {name:"Tom"}) RETURN p
 ```
 
-
-
-
 ![alt_text](images/image7.png)
-
 
 ## Step 8: Visualize the relationship between the individuals
 
 Run the below query to build a relationship between two nodes and how the relationship flows from one node(“Tom”) to the another node(“Alex”).
 
-
 ```
 MATCH (p1:Person {name: "Tom" }), (p2:Person {name: "Alex" }) CREATE (p1)-[:Knows]->(p2)
 ```
 
-
 The symbol “>” (greater than) shows which way the relationship flows.
-
-
-
 
 ![alt_text](images/image8.png)
 
-
 You can view the relationship in the form of graph as shown below:
-
 
 ![alt_text](images/image9.png)
 
+## Step 9. Create and visualize the multiple relationships
 
-## Step 9. Create and visualize the multiple relationships 
-
-Run the below query to create and visualize relationsship between the multiple individuals 
-
+Run the below query to create and visualize relationsship between the multiple individuals
 
 ```
 MATCH (p1:Person {name: "Tom" }), (p2:Person {name: "Susan" }), (p3:Person {name: "Bill" }) CREATE (p1)-[:Knows]->(p2), (p1)-[:Knows]->(p3)
 ```
 
-
-
-
 ![alt_text](images/image10.png)
-
 
 ## Step 10. Create and visualize the relationship between two individuals (Susan and Bill)
 
 Let us look at how to generate graph showcasing the relationship between two individuals - Susan and Bill
 
-
 ```
 MATCH (p1:Person {name: "Susan"}), (p2:Person {name: "Bill"}) CREATE (p1)-[:Knows]->(p2)
 ```
 
-
 ![alt_text](images/image11.png)
 
-
 ## Step 11. Create and visualize the relationship between two indiviual (Bill and Jane)
-
 
 ```
 MATCH (p1:Person {name: "Bill"}), (p2:Person {name: "Jane"}) CREATE (p1)-[:Knows]->(p2)
 ```
 
-
 ![alt_text](images/image12.png)
 
-
 ![alt_text](images/image13.png)
-
 
 ## Step 12. Building a social networking
 
 This can be achieved by “friend of friends” kind of relationship. Say, If Tom wanted to social network with Jane. He has two contacts that know Jane - one is Susan and the other person is Bill.
 
-
-
 ![alt_text](images/image14.png)
-
-
 
 ```
 MATCH p = (p1:Person {name: "Tom" })-[:Knows*1..3]-(p2:Person {name: "Jane"}) RETURN p
 ```
 
-
 In this query, we assign a variable “p” to a node graph path. We search for “Tom” as p1 and “Jane” as “p2”. We say interested in knows link with 1..3 degree of separation.
-
-
 
 ![alt_text](images/image15.png)
 
-
 ## Step 13. Cleaning up the Graph
 
-
-
 ![alt_text](images/image16.png)
-
-
-
 
 ## Importing the Bulk Graph data
 
 Let us try to insert bulk data using Python and then extrapolate it in the form of nodes and relationships.
 
-## Step 14. Cloning the repository**
-
+## Step 14. Cloning the repository\*\*
 
 ```
 $ git clone https://github.com/redis-developer/redis-datasets
@@ -260,19 +188,13 @@ Construction of graph 'GOT_DEMO' complete: 2577 nodes created, 2222 relations cr
 
 ```
 
-
 ## Step 16. Run the cypher query
-
 
 ```
 GRAPH.QUERY GOT_DEMO "MATCH (w:writer)-[wrote]->(b:book) return w,b"
 ```
 
-
-
 ![alt_text](images/image18.png)
-
-
 
 ## Additional Resources
 
@@ -285,6 +207,17 @@ GRAPH.QUERY GOT_DEMO "MATCH (w:writer)-[wrote]->(b:book) return w,b"
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>
-

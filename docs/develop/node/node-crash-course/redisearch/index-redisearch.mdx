@@ -9,10 +9,16 @@ authors: [simon]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/HPvP_OJ7h2Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/HPvP_OJ7h2Q"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
-We chose to store our user and location data in Redis Hashes.  Hashes are a great fit for storing domain objects.  Recall that we've chosen to store each user in a Hash whose key contains the user ID.  For example, here's user 852 as seen in RedisInsight:
+We chose to store our user and location data in Redis Hashes. Hashes are a great fit for storing domain objects. Recall that we've chosen to store each user in a Hash whose key contains the user ID. For example, here's user 852 as seen in RedisInsight:
 
 ![User 852 viewed with RedisInsight](images/insight_user_852.png)
 
@@ -38,16 +44,16 @@ If you're using redis-cli, you can look at user 852 with the `HGETALL` command:
 16) "124"
 ```
 
-Storing data in Hashes means that we can easily and efficiently retrieve the contents of the Hash, provided that we know the key.  So it's trivial to look up user 852, but how can we perform any of the following operations?
+Storing data in Hashes means that we can easily and efficiently retrieve the contents of the Hash, provided that we know the key. So it's trivial to look up user 852, but how can we perform any of the following operations?
 
-* Get the user whose email address is `dominik.schiffmann@example.com`.
-* Find all users that were last seen at location 124.
-* Find all the users who have between 1000 and 3000 checkins.
-* Find all locations within a 10 mile radius of a given latitude / longitude coordinate and which have at least a 3 star rating.
+- Get the user whose email address is `dominik.schiffmann@example.com`.
+- Find all users that were last seen at location 124.
+- Find all the users who have between 1000 and 3000 checkins.
+- Find all locations within a 10 mile radius of a given latitude / longitude coordinate and which have at least a 3 star rating.
 
-Redis is a key/value database.  This means that its data model is optimized for retrieval by key.  The queries above can't be resolved by knowing just the Hash key - we need some other mechanism to index our data.  
+Redis is a key/value database. This means that its data model is optimized for retrieval by key. The queries above can't be resolved by knowing just the Hash key - we need some other mechanism to index our data.
 
-Traditionally in a key/value database, this has meant adding code to create and manually update indexes.  For example to resolve the query "which user has the email address `dominik.schiffmann@example.com`", we might create a new String key containing that email address, with the value being the user's ID:
+Traditionally in a key/value database, this has meant adding code to create and manually update indexes. For example to resolve the query "which user has the email address `dominik.schiffmann@example.com`", we might create a new String key containing that email address, with the value being the user's ID:
 
 ```bash
 127.0.0.1:6379> set ncc:users:byemail:dominik.schiffmann@example.com 852
@@ -81,11 +87,11 @@ Now, if we want to get Dominik's user details given only his email address, we h
 16) "124"
 ```
 
-We'd also need to keep this information up to date and in sync with changes to the Hash at `ncc:users:852` ourselves in our application code. 
+We'd also need to keep this information up to date and in sync with changes to the Hash at `ncc:users:852` ourselves in our application code.
 
-Other sorts of secondary indexes can be created using other Redis data types.  For example, we might [use a Redis Sorted Set as a secondary index](https://redis.io/topics/indexes), allowing us to perform range queries such as "Find all the users who have between 1000 and 3000 checkins".  Again, we'd have to populate and maintain this extra data structure ourselves in the application code.
+Other sorts of secondary indexes can be created using other Redis data types. For example, we might [use a Redis Sorted Set as a secondary index](https://redis.io/topics/indexes), allowing us to perform range queries such as "Find all the users who have between 1000 and 3000 checkins". Again, we'd have to populate and maintain this extra data structure ourselves in the application code.
 
-The RediSearch module solves all of these problems for us and more.  It is an indexing, querying and full-text search engine for Redis that automatically keeps track of changes to data in indexed Hashes.  RediSearch provides a flexible query language to answer questions such as "Find me all the gyms with at least a 3 star rating and more than 200 checkins within 10 miles of Oakland, California" without adding code to build or maintain secondary data structures in our application.
+The RediSearch module solves all of these problems for us and more. It is an indexing, querying and full-text search engine for Redis that automatically keeps track of changes to data in indexed Hashes. RediSearch provides a flexible query language to answer questions such as "Find me all the gyms with at least a 3 star rating and more than 200 checkins within 10 miles of Oakland, California" without adding code to build or maintain secondary data structures in our application.
 
 Watch the video to see how RediSearch is used in our example Node.js application.
 
@@ -95,7 +101,7 @@ In this exercise, you'll finish implementing a route that uses RediSearch to ret
 
 Open the `node-js-crash-course` folder with your IDE, and find the file `src/routes/user_routes.js`.
 
-In this file, you'll see a partly implemented route `/users/at/:locationId`.  To complete this exercise, you'll need to replace this line:
+In this file, you'll see a partly implemented route `/users/at/:locationId`. To complete this exercise, you'll need to replace this line:
 
 ```javascript
 const searchResults = await redis.performSearch(
@@ -104,7 +110,7 @@ const searchResults = await redis.performSearch(
 );
 ```
 
-with one containing the correct RediSearch query to return users whose "lastSeenAt" field is set to the value of locationId.  You'll need to use the "numeric range" syntax for this, as the "lastSeenAt" field was indexed as a number.  Be sure to check out the [Query Syntax documentation](https://oss.redis.com/redisearch/Query_Syntax/) for RediSearch to get help with this.
+with one containing the correct RediSearch query to return users whose "lastSeenAt" field is set to the value of locationId. You'll need to use the "numeric range" syntax for this, as the "lastSeenAt" field was indexed as a number. Be sure to check out the [Query Syntax documentation](https://oss.redis.com/redisearch/Query_Syntax/) for RediSearch to get help with this.
 
 To try your code, ensure that the API Server component is running:
 
@@ -114,7 +120,7 @@ $ npm run dev
 
 (remember, this will use nodemon to restart the server any time you save a code change).
 
-Then, point your browser at `http://localhost:8081/api/users/at/33`.  If your query is correct, you should see output similar to the following (actual users may differ, just ensure that the value of `lastSeenAt` for each matches the location ID you provided - 33 in this case):
+Then, point your browser at `http://localhost:8081/api/users/at/33`. If your query is correct, you should see output similar to the following (actual users may differ, just ensure that the value of `lastSeenAt` for each matches the location ID you provided - 33 in this case):
 
 ```json
 [
@@ -138,7 +144,7 @@ Then, point your browser at `http://localhost:8081/api/users/at/33`.  If your qu
 ]
 ```
 
-To help you develop your query, use the RediSearch view in RedisInsight, or the FT.SEARCH command in redis-cli.  Here's an example of how to enter a query with RedisInsight (I'm looking for users with the first name "Laura"):
+To help you develop your query, use the RediSearch view in RedisInsight, or the FT.SEARCH command in redis-cli. Here's an example of how to enter a query with RedisInsight (I'm looking for users with the first name "Laura"):
 
 ![RediSearch Query Example](images/redisearch_redis_insight.png)
 
@@ -149,17 +155,29 @@ Remember to select the `ncc:usersidx` index, as you're working with users data h
 Querying, Index, and Full-Text Search in Redis:
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/B10nHEdW3NA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/B10nHEdW3NA"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 Finding Bigfoot RESTfuly with Express + RediSearch:
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/eJFwsNfi_MI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/eJFwsNfi_MI"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 Other resources:
 
-* [RU203, Querying, Indexing, and Full-Text Search](https://university.redis.com/courses/ru203/) at Redis University 
-* [RediSearch](https://redisearch.io/), official home page
-* [RediSearch Getting Started Tutorial](https://github.com/RediSearch/redisearch-getting-started)
+- [RU203, Querying, Indexing, and Full-Text Search](https://university.redis.com/courses/ru203/) at Redis University
+- [RediSearch](https://redisearch.io/), official home page
+- [RediSearch Getting Started Tutorial](https://github.com/RediSearch/redisearch-getting-started)

@@ -1,10 +1,11 @@
 ---
-id: index-fixed-window-reactive
+id: index-spring-fixed-window-reactive
 title: Reactive Implementation
 sidebar_label: Reactive Implementation
 slug: /develop/java/spring/rate-limiting/fixed-window/reactive
 authors: [bsb]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -16,21 +17,22 @@ Let's start by creating a simple Spring Boot application using the Spring Initia
 
 1. In your browser, launch the [Spring Initilizr](https://start.spring.io)
 2. Fill out the form using the following settings:
-  * Project: Maven Project
-  * Language: Java
-  * Spring Boot: 2.5.4
-  * Project Metadata:
-    * Group: `com.redis.rl`
-    * Artifact: `fixed-window-rate-limiter`
-    * Name: `fixed-window-rate-limiter`
-    * Description: Redis Fixed Window Rate Limiter
-    * Package Name: `com.redis.rl`
-    * Packaging: JAR
-    * Java: 11
-  * Dependencies:
-    * Spring Reactive Web
-    * String Data Reactive
-    * Spring Boot DevTools
+
+- Project: Maven Project
+- Language: Java
+- Spring Boot: 2.5.4
+- Project Metadata:
+  - Group: `com.redis.rl`
+  - Artifact: `fixed-window-rate-limiter`
+  - Name: `fixed-window-rate-limiter`
+  - Description: Redis Fixed Window Rate Limiter
+  - Package Name: `com.redis.rl`
+  - Packaging: JAR
+  - Java: 11
+- Dependencies:
+  - Spring Reactive Web
+  - String Data Reactive
+  - Spring Boot DevTools
 
 ![Spring Initializr](./images/start-spring-io-01.png)
 
@@ -378,4 +380,3 @@ request, and the same plus calls to `INCR` and `EXPIRE` for an allowed request:
 ```
 
 You can find this example on the main branch at [https://github.com/redis-developer/fixed-window-rate-limiter](https://github.com/redis-developer/fixed-window-rate-limiter)
-

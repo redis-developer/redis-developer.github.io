@@ -1,10 +1,11 @@
 ---
-id: index-rate-limiting
+id: index-java-rate-limiting
 title: How to implement Rate Limiting in Spring Applications using Redis
 sidebar_label: How to implement Rate Limiting in Spring Applications using Redis
-slug: /develop/java/spring/rate-limiting
+slug: /develop/java/spring/rate-limiting/getting-started
 authors: [bsb]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -14,7 +15,6 @@ In this series of mini-tutorials we'll explore several approaches to implement r
 
 ![my image](ratelimiting_speed.png)
 
-
 ## What is Rate Limiting?
 
 Rate Limiting entails techniques to regulate the number of requests a particular client can make against a networked service. It caps the total number and/or the frequency of requests.
@@ -23,9 +23,9 @@ Rate Limiting entails techniques to regulate the number of requests a particular
 
 There are many reasons why you would want to add a rate limiter to your APIs, whether it is to prevent intentional or accidental API abuse, a rate limiter can stop the invaders at the gate. Let’s think of some scenarios where a rate limiter could save your bacon:
 
-* If you ever worked at an API-based startup, you know that to get anywhere you need a “free” tier. A free tier will get potential customers to try your service and spread the word. But without limiting the free tier users you could risk losing the few paid customers your startup has.
-* Programmatic integrations with your API could have bugs. Sometimes resource starvation is not caused by a malicious attack. These FFDoS (Friendly-Fire Denial of Service) attacks happen more often than you can imagine.
-* Finally, there are malicious players recruiting bots on a daily basis to make API providers’ lives miserable. Being able to detect and curtail those attacks before they impact your users could mean the life of our business.
+- If you ever worked at an API-based startup, you know that to get anywhere you need a “free” tier. A free tier will get potential customers to try your service and spread the word. But without limiting the free tier users you could risk losing the few paid customers your startup has.
+- Programmatic integrations with your API could have bugs. Sometimes resource starvation is not caused by a malicious attack. These FFDoS (Friendly-Fire Denial of Service) attacks happen more often than you can imagine.
+- Finally, there are malicious players recruiting bots on a daily basis to make API providers’ lives miserable. Being able to detect and curtail those attacks before they impact your users could mean the life of our business.
 
 Rate limiting is typically implemented on the server-side but if you have control of the clients you can also preempt certain types of access at that point. It relies on three particular pieces of information:
 
@@ -37,9 +37,9 @@ Rate limiting is typically implemented on the server-side but if you have contro
 
 Redis is especially positioned as a platform to implement rate limiting for several reasons:
 
-* **Speed**: The checks and calculations required by a rate limiting implementation will add the total request-response times of your API, you want those operations to happen as fast as possible.
-* **Centralization and distribution**: Redis can seamlessly scale your single server/instance setup to hundreds of nodes without sacrificing performance or reliability.
-* **The Right Abstractions**: Redis provides optimized data structures to support several of the most common rate limiter implementations and with i’s built-in TTL (time-to-live controls) it allows for efficient management of memory. Counting things is a built-in feature in Redis and one of the many areas where Redis shines above the competition.
+- **Speed**: The checks and calculations required by a rate limiting implementation will add the total request-response times of your API, you want those operations to happen as fast as possible.
+- **Centralization and distribution**: Redis can seamlessly scale your single server/instance setup to hundreds of nodes without sacrificing performance or reliability.
+- **The Right Abstractions**: Redis provides optimized data structures to support several of the most common rate limiter implementations and with i’s built-in TTL (time-to-live controls) it allows for efficient management of memory. Counting things is a built-in feature in Redis and one of the many areas where Redis shines above the competition.
 
 Now, let’s get started with our first implementation; the simple [“Fixed Window” implementation](/develop/java/spring/rate-limiting/fixed-window).
 

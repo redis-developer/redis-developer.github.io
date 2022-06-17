@@ -16,8 +16,7 @@ Find tutorials, examples and technical articles that will help you to develop wi
 ## Getting Started
 
 Golang community has built many client libraries that you can find [here](https://redis.io/clients#go).
- For your first steps with Golang and Redis, this article will show how to use the recommended library: [redigo](https://github.com/gomodule/redigo).
-
+For your first steps with Golang and Redis, this article will show how to use the recommended library: [redigo](https://github.com/gomodule/redigo).
 
  <Tabs
   defaultValue="go-redis"
@@ -27,113 +26,110 @@ Golang community has built many client libraries that you can find [here](https:
   ]}>
   <TabItem value="redigo">
 
-
-
 The `redigo` library is located in the `https://github.com/gomodule/redigo` that you must import in your application.
-
 
 #### Step 1. Import the `redigo` module
 
-  ```bash
-   go get github.com/gomodule/redigo/redis
-  ```
+```bash
+ go get github.com/gomodule/redigo/redis
+```
 
-  ```go
-   import (
-      "fmt"
-      "context"
-      "github.com/gomodule/redigo/redis"
-   )
-  ```
+```go
+ import (
+    "fmt"
+    "context"
+    "github.com/gomodule/redigo/redis"
+ )
+```
 
 #### Step 2. Create a connection pool
 
-  ```go
-   func newPool() *redis.Pool {
-       return &redis.Pool{
-          MaxIdle: 80,
-          MaxActive: 12000,
-          Dial: func() (redis.Conn, error) {
-                c, err := redis.Dial("tcp", ":6379")
-                if err != nil {
-                    panic(err.Error())
-                }
-                return c, err
-            },
-        }
-    }
-   ```    
+```go
+ func newPool() *redis.Pool {
+     return &redis.Pool{
+        MaxIdle: 80,
+        MaxActive: 12000,
+        Dial: func() (redis.Conn, error) {
+              c, err := redis.Dial("tcp", ":6379")
+              if err != nil {
+                  panic(err.Error())
+              }
+              return c, err
+          },
+      }
+  }
+```
 
 #### Step 3. Write your application code
 
-   ```go
-    package main
+```go
+ package main
 
-    import (
-        "fmt"
+ import (
+     "fmt"
 
-        "github.com/gomodule/redigo/redis"
-    )
+     "github.com/gomodule/redigo/redis"
+ )
 
-    var pool = newPool()
+ var pool = newPool()
 
-    func main() {
+ func main() {
 
-        client := pool.Get()
-        defer client.Close()
+     client := pool.Get()
+     defer client.Close()
 
-        _, err := client.Do("SET", "mykey", "Hello from redigo!")
-        if err != nil {
-            panic(err)
-        }
+     _, err := client.Do("SET", "mykey", "Hello from redigo!")
+     if err != nil {
+         panic(err)
+     }
 
-        value, err := client.Do("GET", "mykey")
-        if err != nil {
-            panic(err)
-        }
+     value, err := client.Do("GET", "mykey")
+     if err != nil {
+         panic(err)
+     }
 
-        fmt.Printf("%s \n", value)
+     fmt.Printf("%s \n", value)
 
-        _, err = client.Do("ZADD", "vehicles", 4, "car")
-        if err != nil {
-            panic(err)
-        }
-        _, err = client.Do("ZADD", "vehicles", 2, "bike")
-        if err != nil {
-            panic(err)
-        }
+     _, err = client.Do("ZADD", "vehicles", 4, "car")
+     if err != nil {
+         panic(err)
+     }
+     _, err = client.Do("ZADD", "vehicles", 2, "bike")
+     if err != nil {
+         panic(err)
+     }
 
-        vehicles, err := client.Do("ZRANGE", "vehicles", 0, -1, "WITHSCORES")
-        if err != nil {
-            panic(err)
-        }	
-        fmt.Printf("%s \n", vehicles)
+     vehicles, err := client.Do("ZRANGE", "vehicles", 0, -1, "WITHSCORES")
+     if err != nil {
+         panic(err)
+     }
+     fmt.Printf("%s \n", vehicles)
 
-        
-    }
 
-    func newPool() *redis.Pool {
-        return &redis.Pool{
-            MaxIdle: 80,
-            MaxActive: 12000,
-            Dial: func() (redis.Conn, error) {
-                c, err := redis.Dial("tcp", ":6379")
-                if err != nil {
-                    panic(err.Error())
-                }
-                return c, err
-            },
-        }
-    }    
-   ```
+ }
+
+ func newPool() *redis.Pool {
+     return &redis.Pool{
+         MaxIdle: 80,
+         MaxActive: 12000,
+         Dial: func() (redis.Conn, error) {
+             c, err := redis.Dial("tcp", ":6379")
+             if err != nil {
+                 panic(err.Error())
+             }
+             return c, err
+         },
+     }
+ }
+```
 
 Find more information about Golang & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/golang/redigo)".
-
 
   </TabItem>
 <TabItem value="go-redis">
 
 Go-redis is a type-safe, Redis client library for Go with support for features like Pub/Sub, sentinel, and pipelining.It is a Redis client able to support a Redis cluster and is designed to store and update slot info automatically with a cluster change. Below are the attractive features of Go-redis:
+
 - Go-redis has pooling capabilities.(Pools allow you to safely handle go-routines, auto reconnect if any error occurs)
 - It supports both standard, OSS cluster AIP, and Sentinel
 - Comes with Auto reconnects / Auto-rediscovers cluster slots on error/migration
@@ -160,7 +156,6 @@ You can connect to Redis server using the `redis-cli` command like this:
 
 The above command will make a connection to the Redis server. It will then present a prompt that allows you to run Redis commands.
 
-
 #### Step 2. Initialise the Go Module
 
 In order to connect to the Redis instance and return some data value, first you need to initialize the Go module as shown:
@@ -169,17 +164,15 @@ In order to connect to the Redis instance and return some data value, first you 
  go mod init github.com/my/repo
 ```
 
-#### Step 3. Install redis/v8 
+#### Step 3. Install redis/v8
 
 ```bash
  go get github.com/go-redis/redis/v8
 ```
 
-#### Step 4. Create a main.go file 
+#### Step 4. Create a main.go file
 
 Let us create a `main.go` file and write the following code to check for your Redis instance connection
-
-
 
 ```bash
  package main
@@ -206,20 +199,17 @@ func main() {
 
 #### Step 5. Begin the compilation
 
-
 ```
  go run main.go
 ```
 
 By now, the Go application should successfully connect to the Redis instance and return data value (a successful "PONG" response).
 
-
  </TabItem>
-
 
 </Tabs>
 
-###  Redis Launchpad
+### Redis Launchpad
 
 Redis Launchpad is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
 Check out a few of these apps below, or [click here to access the complete list](https://launchpad.redis.com).
@@ -231,10 +221,10 @@ Check out a few of these apps below, or [click here to access the complete list]
 
 #### Rate-Limiting app in Go
 
-
 ![launchpad](images/ratelimitinggo.png)
 
 [Rate Limiting app](http://launchpad.redis.com/?id=project%3Abasic-redis-rate-limiting-demo-go-lang) built in Go
+
 </div>
 </div>
 
@@ -246,15 +236,13 @@ Check out a few of these apps below, or [click here to access the complete list]
 ![launchpad](images/leaderboardgo.png)
 
 [How to implement leaderboard app](https://launchpad.redis.com/?id=project%3Abasic-redis-leaderboard-demo-python) in Go
-</div>
-</div>
-</div>
 
+</div>
+</div>
+</div>
 
 ### Technical Articles & Whitepapers
 
 **[Redis and Golang: Designed to Improve Performance](https://redis.com/blog/redis-go-designed-improve-performance/)**
 **[Redisqueue - A producer and consumer of a queue that uses Redis streams](https://pkg.go.dev/github.com/robinjoseph08/redisqueue#section-readme)
-**[A High Performance Recommendation Engine with Redis and Go](https://redis.com/docs/ultra-fast-recommendations-engine-using-redis-go/)**
-
-
+**[A High Performance Recommendation Engine with Redis and Go](https://redis.com/docs/ultra-fast-recommendations-engine-using-redis-go/)\*\*

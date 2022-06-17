@@ -5,11 +5,9 @@ sidebar_label: RediSearch
 slug: /modules/redisearch
 ---
 
-RediSearch is a powerful text search and secondary indexing engine, built on top of Redis as a Redis module. Written in C, RediSearch is extremely fast compared to other open-source search engines. It implements multiple data types and commands that fundamentally change what you can do with Redis. RediSearch supports capabilities for search and filtering such as geo-spatial queries, retrieving only IDs (instead of whole documents), and custom document scoring. Aggregations can combine map, filter, and reduce/group-by operations in custom pipelines that run across millions of elements in an instant. 
+RediSearch is a powerful text search and secondary indexing engine, built on top of Redis as a Redis module. Written in C, RediSearch is extremely fast compared to other open-source search engines. It implements multiple data types and commands that fundamentally change what you can do with Redis. RediSearch supports capabilities for search and filtering such as geo-spatial queries, retrieving only IDs (instead of whole documents), and custom document scoring. Aggregations can combine map, filter, and reduce/group-by operations in custom pipelines that run across millions of elements in an instant.
 
 RediSearch also supports auto-completion with fuzzy prefix matching, and atomic real-time insertion of new documents to a search index.With the latest RediSearch 2.0 release, it’s now easier than ever to create a secondary index on top of your existing data. You can just add RediSearch to your existing Redis database, create an index, and start querying it, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new RediSearch users and lets you create indexes on your existing Redis databases—without even having to restart them.
-
-
 
 ### Step 1. Register and subscribe
 
@@ -21,16 +19,11 @@ Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis 
 
 ![Redisearch](redisearch11.png)
 
-
 ### Step 3. Connect to a database
-
 
 Follow [this](explore/redisinsight) link to know how to connect to a database
 
-
-
 ### Step 4. Getting Started with Redisearch
-
 
 To begin, let’s create a basic dataset based on movies information, which we will use to show how to:
 
@@ -40,8 +33,6 @@ To begin, let’s create a basic dataset based on movies information, which we w
 
 ![Redisearch](redisearch12.png)
 
-
-
 #### Insert data into RediSearch
 
 We are now ready to insert some data. This example uses movies data stored as Redis Hashes, so let’s insert a couple of movies:
@@ -49,9 +40,9 @@ We are now ready to insert some data. This example uses movies data stored as Re
 ```
 HSET movies:11002 title "Star Wars: Episode V - The Empire Strikes Back" plot "Luke Skywalker begins Jedi training with Yoda." release_year 1980 genre "Action" rating 8.7 votes 1127635
 
-(integer) 6 
+(integer) 6
 
-> HSET movies:11003 title "The Godfather" plot "The aging patriarch of an organized crime dynasty transfers control of his empire to his son." release_year 1972 genre "Drama" rating 9.2 votes 1563839 
+> HSET movies:11003 title "The Godfather" plot "The aging patriarch of an organized crime dynasty transfers control of his empire to his son." release_year 1972 genre "Drama" rating 9.2 votes 1563839
 
 (integer) 6
 ```
@@ -81,16 +72,16 @@ In the command above, we:
 
 - Create an index named idx:movies
 - Used a schema made up of four fields:
-title
-release_year
-rating
-genre
+  title
+  release_year
+  rating
+  genre
 
 Before running queries on our new index, though, let’s take a closer look at the elements of the FT.CREATE command:
 
 - idx:movies: the name of the index, which you will use when doing queries
 - ON hash: the type of structure to be indexed. (Note that RediSearch 2.0 supports only the Hash structure, but this parameter will allow RediSearch to index other structures in the future.)
-- PREFIX 1 “movies:”: the prefix of the keys that should be indexed. This is a list, so since we want to index only movies:* keys the number is 1. If you want to index movies and TV shows with the same fields, you could use: PREFIX 2 “movies:” “tv_show:”
+- PREFIX 1 “movies:”: the prefix of the keys that should be indexed. This is a list, so since we want to index only movies:\* keys the number is 1. If you want to index movies and TV shows with the same fields, you could use: PREFIX 2 “movies:” “tv_show:”
 - SCHEMA …: defines the schema, the fields, and their type to index. As you can see in the command, we are using TEXT, NUMERIC, and TAG, as well as SORTABLE parameters.
 
 The RediSearch 2.0 engine will scan the database using the PREFIX values, and update the index based on the schema definition. This makes it easy to add an index to an existing application that uses Hashes, there’s no need to change your code.
@@ -114,7 +105,6 @@ You can now use the FT.SEARCH to search your database, for example, to search al
    4) "Star Wars: Episode V - The Empire Strikes Back"
 ```
 
-
 You can also search “action” movies that contain “star” in the index (in our sample index, the term “star” will occur only in the title):
 
 ```
@@ -129,10 +119,7 @@ You can also search “action” movies that contain “star” in the index (in
 
 The FT.SEARCH command is the base command to search your database, it has many options and is associated with a powerful and rich query syntax that you can find in the documentation. (Note: You can also use the index to do data aggregation using the FT.AGGREGATE command.)
 
-
 ### Next Steps
 
-- Learn more about RediSearch in the [Getting Started with RediSearch 2.0](https://github.com/RediSearch/redisearch-getting-started/)  tutorial on GitHub.
+- Learn more about RediSearch in the [Getting Started with RediSearch 2.0](https://github.com/RediSearch/redisearch-getting-started/) tutorial on GitHub.
 - [How to list and search Movie database using Redisearch](/howtos/moviesdatabase/getting-started)
-
-

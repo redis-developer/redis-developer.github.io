@@ -10,7 +10,7 @@ Using RedisBloom allows you to efficiently keep track of presence, heavy hitters
 
 ## Bloom Filters
 
-Bloom Filters are a powerful data structure that can tell if an item is in a set, think a username on a sign-up form. They're incredibly compact, requiring only 10-20 bits per item you want to add, and extremely quick to add items to, and equally fast to determine if an item is in a set or not. 
+Bloom Filters are a powerful data structure that can tell if an item is in a set, think a username on a sign-up form. They're incredibly compact, requiring only 10-20 bits per item you want to add, and extremely quick to add items to, and equally fast to determine if an item is in a set or not.
 
 ### Create a Filter
 
@@ -37,7 +37,7 @@ The preceding code will add the username `Kermit` to the `bf:username` filter.
 To check if an item has been added to a Bloom Filter yet, you will use the `BF.EXISTS` command:
 
 ```csharp
-var exists = await db.ExecuteAsync("BF.EXISTS", "bf:username", "Kermit") == 1; 
+var exists = await db.ExecuteAsync("BF.EXISTS", "bf:username", "Kermit") == 1;
 ```
 
 After running that command, if the Bloom Filter reports that it contains the item, `exists` will be true; otherwise, `exists` will be false.
@@ -53,6 +53,7 @@ There are two ways to create a Count-Min Sketch, by probability and by dimension
 ```csharp
 await db.ExecuteAsync("CMS.INITBYPROB", "cms:views", .1, .01);
 ```
+
 This code will initialize a Count-Min Sketch. The sketch will have an acceptable overcount of 10% and a probability of overcounting of 1%.
 
 ### Adding Items to a Count-Min Sketch
@@ -172,4 +173,4 @@ The above code will check if Baby Shark is in the Top 5 for video views from our
 
 ## Resources
 
-* The Code for this Demo can be found in [GitHub](https://github.com/redis-developer/redis-bloom-dotnet-demo)
+- The Code for this Demo can be found in [GitHub](https://github.com/redis-developer/redis-bloom-dotnet-demo)

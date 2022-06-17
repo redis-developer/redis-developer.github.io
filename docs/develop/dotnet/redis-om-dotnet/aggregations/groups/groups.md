@@ -12,7 +12,7 @@ Grouping and reducing operations using aggregations can be extremely powerful.
 
 A group is simply a group of like records in Redis.
 
-e.g. 
+e.g.
 
 ```json
 {
@@ -67,20 +67,20 @@ foreach(var department in departments)
 }
 ```
 
-|Command Name|Command Postfix|Description|
-|------------|----------------|-----------|
-|Count|COUNT|number of records meeting the query, or in the group|
-|CountDistinct|COUNT_DISTINCT|Counts the distinct occurrences of a given property in a group|
-|CountDistinctish|COUNT_DISTINCTISH|Provides an approximate count of distinct occurrences of a given property in each group - less expensive computationally but does have a small 3% error rate |
-|Sum|SUM|The sum of all occurrences of the provided field in each group|b
-|Min|MIN|Minimum occurrence for the provided field in each group|
-|Max|MAX|Maximum occurrence for the provided field in each group|
-|Average|Avg|Arithmetic mean of all the occurrences for the provided field in a group|
-|StandardDeviation|STDDEV|Standard deviation from the arithmetic mean of all the occurrences for the provided field in each group|
-|Quantile|QUANTLE|The value of a record at the provided quantile for a field in each group, e.g., the Median of the field would be sitting at quantile .5|
-|Distinct|TOLIST|Enumerates all the distinct values of a given field in each group|
-|FirstValue|FIRST_VALUE|Retrieves the first occurrence of a given field in each group|
-|RandomSample|RANDOM_SAMPLE_{NumRecords}|Random sample of the given field in each group|
+| Command Name      | Command Postfix            | Description                                                                                                                                                  |
+| ----------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
+| Count             | COUNT                      | number of records meeting the query, or in the group                                                                                                         |
+| CountDistinct     | COUNT_DISTINCT             | Counts the distinct occurrences of a given property in a group                                                                                               |
+| CountDistinctish  | COUNT_DISTINCTISH          | Provides an approximate count of distinct occurrences of a given property in each group - less expensive computationally but does have a small 3% error rate |
+| Sum               | SUM                        | The sum of all occurrences of the provided field in each group                                                                                               | b   |
+| Min               | MIN                        | Minimum occurrence for the provided field in each group                                                                                                      |
+| Max               | MAX                        | Maximum occurrence for the provided field in each group                                                                                                      |
+| Average           | Avg                        | Arithmetic mean of all the occurrences for the provided field in a group                                                                                     |
+| StandardDeviation | STDDEV                     | Standard deviation from the arithmetic mean of all the occurrences for the provided field in each group                                                      |
+| Quantile          | QUANTLE                    | The value of a record at the provided quantile for a field in each group, e.g., the Median of the field would be sitting at quantile .5                      |
+| Distinct          | TOLIST                     | Enumerates all the distinct values of a given field in each group                                                                                            |
+| FirstValue        | FIRST_VALUE                | Retrieves the first occurrence of a given field in each group                                                                                                |
+| RandomSample      | RANDOM*SAMPLE*{NumRecords} | Random sample of the given field in each group                                                                                                               |
 
 ## Closing Groups
 

@@ -14,36 +14,29 @@ Vercel is the preferred platform to host [Next.js-based web applications](https:
 
 Vercel integrates well with popular tools, such as [GitHub](https://vercel.com/docs/concepts/git/vercel-for-github), [GitLab](https://vercel.com/docs/concepts/git/vercel-for-gitlab), [Lighthouse](https://vercel.com/integrations/lighthouse), [Doppler](https://vercel.com/integrations/doppler), and [Divjoy](https://divjoy.com/). NodeJS, Go, Python, and Ruby are the leading [official runtimes supported by Vercel](https://vercel.com/docs/runtimes).
 
-
 ![vercel](images/vercel_redis.png)
-
 
 ### Features of Vercel
 
-
-
-* Vercel is focused on the build and deployment aspects of the [JAMstack approach](https://jamstack.org/what-is-jamstack/).
-* [The Vercel API](https://vercel.com/docs/rest-api) provides full control over the Vercel platform, exposed as simple HTTP service endpoints over SSL. 
-* All endpoints live under the URL [https://api.vercel.com](https://api.vercel.com) and follow the REST architecture.
-* Vercel provides custom domains to deploy your code on the live server (vercel.app as the suffix in the domain). 
-* Vercel provides you with an option to choose any framework of the repository you wish to deploy either Node.js, React, Gatsby, or [Next.js](https://nextjs.org/) (a full-stack React serverless framework that integrates seamlessly with Vercel).
-* Vercel integrates with a GitHub repository for automatic deployments upon commits. 
+- Vercel is focused on the build and deployment aspects of the [JAMstack approach](https://jamstack.org/what-is-jamstack/).
+- [The Vercel API](https://vercel.com/docs/rest-api) provides full control over the Vercel platform, exposed as simple HTTP service endpoints over SSL.
+- All endpoints live under the URL [https://api.vercel.com](https://api.vercel.com) and follow the REST architecture.
+- Vercel provides custom domains to deploy your code on the live server (vercel.app as the suffix in the domain).
+- Vercel provides you with an option to choose any framework of the repository you wish to deploy either Node.js, React, Gatsby, or [Next.js](https://nextjs.org/) (a full-stack React serverless framework that integrates seamlessly with Vercel).
+- Vercel integrates with a GitHub repository for automatic deployments upon commits.
 
 In this tutorial, you will learn how to deploy a Node.js based Redis chat application using Vercel in just 5 minutes.
 
-
 ### Table of Contents
 
-
-
-* Step 1. Set up a free Redis Enterprise Cloud account
-* Step 2. Install Vercel CLI
-* Step 3. Log in to your Vercel Account
-* Step 4. Clone your GitHub repository
-* Step 5. Create a vercel.json file
-* Step 6. Set up environment variables
-* Step 7. Deploy the Node.js app
-* Step 8. Access your app
+- Step 1. Set up a free Redis Enterprise Cloud account
+- Step 2. Install Vercel CLI
+- Step 3. Log in to your Vercel Account
+- Step 4. Clone your GitHub repository
+- Step 5. Create a vercel.json file
+- Step 6. Set up environment variables
+- Step 7. Deploy the Node.js app
+- Step 8. Access your app
 
 ### Step 1. Set up a free Redis Enterprise Cloud account
 
@@ -56,18 +49,14 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 :::
 
-
-
 ![alt_text](images/details_database.png)
 
-
-### Step 2. Install Vercel CLI 
-
+### Step 2. Install Vercel CLI
 
 ```
 npm i -g vercel
 
-vercel -v     
+vercel -v
 Vercel CLI 23.1.2
 23.1.2
 
@@ -75,8 +64,7 @@ Vercel CLI 23.1.2
 
 ### Step 3. Log in to your Vercel account
 
-The ```vercel login``` command allows you to log in to your Vercel account through Vercel CLI.
-
+The `vercel login` command allows you to log in to your Vercel account through Vercel CLI.
 
 ```
 vercel login
@@ -86,7 +74,6 @@ Vercel CLI 23.1.2
 Congratulations! You are now logged in. In order to deploy something, run `vercel`.
 💡  Connect your Git Repositories to deploy every branch push automatically (https://vercel.link/git).
 ```
-
 
 Once Vercel gets connected to your GitHub account, it displays your public repositories. Let us clone [https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs) to the local repository.
 
@@ -98,11 +85,9 @@ The complete source code of the Redis Chat application is hosted [here](https://
 git clone https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs
 ```
 
-
 ### Step 5. Create a vercel.json for Node.js app
 
-If you run the ```vercel init``` command, it will list various frameworks but you won’t be able to find Node.js, hence you will need to create a ```vercel.json``` file as shown below:
-
+If you run the `vercel init` command, it will list various frameworks but you won’t be able to find Node.js, hence you will need to create a `vercel.json` file as shown below:
 
 ```
 {
@@ -123,13 +108,11 @@ If you run the ```vercel init``` command, it will list various frameworks but yo
 
 ```
 
-
 ### Step 6. Set up environment variables
 
-The ```vercel env``` command is used to manage [environment variables](https://vercel.com/docs/concepts/projects/environment-variables) under a Project, providing functionality to list, add, remove, and pull.
+The `vercel env` command is used to manage [environment variables](https://vercel.com/docs/concepts/projects/environment-variables) under a Project, providing functionality to list, add, remove, and pull.
 
 Let us first set up environment variables.
-
 
 ```
  vercel env add
@@ -139,9 +122,7 @@ Vercel CLI 23.1.2
 
 ```
 
-
 Listing the environment variables:
-
 
 ```
 vercel env ls
@@ -154,14 +135,12 @@ Vercel CLI 23.1.2
 
 ```
 
-
 ### Step 7. Deploy the Node.js app
 
 When you run a vercel command in a directory for the first time, [Vercel CLI](https://vercel.com/cli) needs to know which [scope](https://vercel.com/docs/cli#options/global-options/scope) and [Project](https://vercel.com/docs/concepts/projects/overview) you want to deploy your directory to. You can choose to either link an existing project or create a new one.
 
-
 ```
-vercel  
+vercel
 Vercel CLI 23.1.2
 ? Set up and deploy "~/projects/10feb/basic-redis-chat-app-demo-nodejs"? [Y/n] y
 ? Which scope do you want to deploy to? redis-developer
@@ -174,8 +153,7 @@ Vercel CLI 23.1.2
 
 ```
 
-
-Once the deployment process has completed, a new `.vercel` directory will be added to your directory. The `.vercel` directory contains both the organization and project ID of your project. 
+Once the deployment process has completed, a new `.vercel` directory will be added to your directory. The `.vercel` directory contains both the organization and project ID of your project.
 
 The "project.json" file contains:
 
@@ -183,16 +161,14 @@ The "project.json" file contains:
 
 - The ID of the user or team your Vercel project is owned by ("orgId")
 
-
-
-
 :::note
 Vercel CLI automatically detects the framework you are using and offers default project settings accordingly.
 :::
 
-### Step 8. Accessing the app 
+### Step 8. Accessing the app
 
 Run the following command to deploy the Redis chat app to the Prod environment.
+
 ```
 vercel --prod
 Vercel CLI 23.1.2
@@ -214,9 +190,7 @@ If you want to know how the chat app works internally, [refer to this detailed b
 
 ### References
 
-
-
-* [Getting Started with Vercel](https://vercel.com/docs/get-started)
-* [Serverless Functions under Vercel](https://vercel.com/docs/concepts/functions/serverless-functions)
-* [A Look at Vercel Supported Languages](https://vercel.com/docs/concepts/functions/supported-languages) 
-* [Next.js on Vercel](https://vercel.com/docs/concepts/next.js/overview)
+- [Getting Started with Vercel](https://vercel.com/docs/get-started)
+- [Serverless Functions under Vercel](https://vercel.com/docs/concepts/functions/serverless-functions)
+- [A Look at Vercel Supported Languages](https://vercel.com/docs/concepts/functions/supported-languages)
+- [Next.js on Vercel](https://vercel.com/docs/concepts/next.js/overview)

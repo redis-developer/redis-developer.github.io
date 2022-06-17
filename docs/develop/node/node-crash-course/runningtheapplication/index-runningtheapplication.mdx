@@ -11,20 +11,26 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 Let's get hands on, clone the application repository from GitHub, start up Redis in a Docker container, and load the sample data!
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/5XymCb7b7XE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/5XymCb7b7XE"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ## Reminder - Software Prerequisites
 
-To get the most from this course, you'll need a machine that can run the application and the Redis server.  The application runs directly on your machine and the Redis server runs in a Docker container.
+To get the most from this course, you'll need a machine that can run the application and the Redis server. The application runs directly on your machine and the Redis server runs in a Docker container.
 
 You'll need the following installed on your machine:
 
-* [Docker](https://www.docker.com/) (you'll need the docker-compose command)
-* [Node.js](https://nodejs.org/) (use the current Long Term Stable - LTS - version)
-* [git command line tools](https://git-scm.com/downloads)
-* Your favorite IDE (we like [VSCode](https://code.visualstudio.com/), but anything you're comfortable with works)
-* [Postman](https://www.postman.com/) - we're going to make some API calls and Postman makes that easy.
+- [Docker](https://www.docker.com/) (you'll need the docker-compose command)
+- [Node.js](https://nodejs.org/) (use the current Long Term Stable - LTS - version)
+- [git command line tools](https://git-scm.com/downloads)
+- Your favorite IDE (we like [VSCode](https://code.visualstudio.com/), but anything you're comfortable with works)
+- [Postman](https://www.postman.com/) - we're going to make some API calls and Postman makes that easy.
 
 ## Setup / Installation Process
 
@@ -49,7 +55,7 @@ Creating rediscrashcourse ... done
 $ docker ps
 ```
 
-The output from the docker ps command should show one container running, using the "redislabs/redismod" image.  This container runs Redis 6 with the RediSearch, RedisJSON and RedisBloom modules.
+The output from the docker ps command should show one container running, using the "redislabs/redismod" image. This container runs Redis 6 with the RediSearch, RedisJSON and RedisBloom modules.
 
 ### Load the Sample Data into Redis
 
@@ -117,26 +123,31 @@ $ docker exec -it rediscrashcourse redis-cli
 
 ## Start and Configure RedisInsight
 
-If you're using RedisInsight, start it up and it should open in your browser automatically.  If not, point your browser at http://localhost:8001.  
+If you're using RedisInsight, start it up and it should open in your browser automatically. If not, point your browser at http://localhost:8001.
 
 If this is your first time using RedisInsight click "I already have a database".
 
 If you already have other Redis databases configured in RedisInsight, click "Add Redis Database".
 
-Now, click "Connect to a Redis Database Using hostname and port".  Configure the database details as shown below, then click "Add Redis Database".
+Now, click "Connect to a Redis Database Using hostname and port". Configure the database details as shown below, then click "Add Redis Database".
 
 ![Configuring RedisInsight](images/configure_insight.png)
 
-
-You should now be able to browse your Redis instance.  If you need more guidance on how to connect to Redis from RedisInsight, check out Justin's video below but be sure to use 127.0.0.1 as the host, 6379 as the port and leave the username and password fields blank when configuring your database.
+You should now be able to browse your Redis instance. If you need more guidance on how to connect to Redis from RedisInsight, check out Justin's video below but be sure to use 127.0.0.1 as the host, 6379 as the port and leave the username and password fields blank when configuring your database.
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/LSiLuNPeq9Y?start=359" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/LSiLuNPeq9Y?start=359"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ## Start the Application
 
-Now it's time to start the API Server component of the application and make sure it connects to Redis.  This component listens on port 8081.
+Now it's time to start the API Server component of the application and make sure it connects to Redis. This component listens on port 8081.
 
 If port 8081 is in use on your system, edit this section of the `config.json` file and pick another available port:
 
@@ -162,7 +173,7 @@ Warning: Environment variable WEATHER_API_KEY is not set!
 info: Application listening on port 8081.
 ```
 
-This starts the application using nodemon, which monitors for changes in the source code and will restart the server when a change is detected.  This will be useful in the next module where you'll be making some code changes. 
+This starts the application using nodemon, which monitors for changes in the source code and will restart the server when a change is detected. This will be useful in the next module where you'll be making some code changes.
 
 Ignore the warning about `WEATHER_API_KEY` — we'll address this in a later exercise when we look at using Redis as a cache.
 
@@ -186,11 +197,11 @@ You should see the summary information for location 200, Katia's Kitchen:
 }
 ```
 
-Great! Now you're up and running.  Let's move on to the next module and see how we're using Redis Hashes in the application.  You'll also get to write some code!
+Great! Now you're up and running. Let's move on to the next module and see how we're using Redis Hashes in the application. You'll also get to write some code!
 
 ## Stopping redis-cli, the Redis Container and the Application
 
-**Don't do this now, as we’ve only just started!**  However, when you do want to shut everything down, here's how to do it...
+**Don't do this now, as we’ve only just started!** However, when you do want to shut everything down, here's how to do it...
 
 To stop running redis-cli, simply enter the quit command at the redis-cli prompt:
 
@@ -208,13 +219,13 @@ Removing rediscrashcourse ... done
 Removing network node-js-crash-course_default
 ```
 
-Redis persists data to the "redisdata" folder.  If you want to remove this, just delete it:
+Redis persists data to the "redisdata" folder. If you want to remove this, just delete it:
 
 ```bash
 $ rm -rf redisdata
 ```
 
-To stop each of the application's components, press Ctrl+C in the terminal window that the component is running in.  For example, to stop the API server:
+To stop each of the application's components, press Ctrl+C in the terminal window that the component is running in. For example, to stop the API server:
 
 ```bash
 $ npm run dev

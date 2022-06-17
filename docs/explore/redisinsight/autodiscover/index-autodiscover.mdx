@@ -11,17 +11,14 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-RedisInsight is a 100% free Redis GUI that allows you to visualise, monitor, and optimize while developing your applications with Redis. It provides an intuitive and efficient GUI for Redis allowing developers like you to interact with your databases and manage your data.  RedisInsight comes with the compatibility to connect to your database through the Sentinel instance too. Please note that RedisInsight v2.0 is an open source visual tool built by Redis that lets you do both GUI- and CLI-based interactions with your Redis database.
+RedisInsight is a 100% free Redis GUI that allows you to visualise, monitor, and optimize while developing your applications with Redis. It provides an intuitive and efficient GUI for Redis allowing developers like you to interact with your databases and manage your data. RedisInsight comes with the compatibility to connect to your database through the Sentinel instance too. Please note that RedisInsight v2.0 is an open source visual tool built by Redis that lets you do both GUI- and CLI-based interactions with your Redis database.
 
 RedisInsight lets you automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. RedisInsight also allows you to automatically discover Elasticache Redis caches.
-
 
 :::important
 
 ElastiCache Redis caches cannot be accessed from outside the VPC, as they don’t have public IP addresses assigned to them.If you want to work with ElastiCache Redis caches with RedisInsight, you can either setup an SSH tunnel between RedisInsight and your Elasticache instance, in case you're not using Redis Cluster.
 :::
-
 
 This tutorial shows how to:
 
@@ -38,7 +35,7 @@ This tutorial shows how to:
 
 ### Step 1. Setup and configure Amazon Elasticache
 
-Login to [AWS Management Console]( https://aws.amazon.com) and click "Get Started now"
+Login to [AWS Management Console](https://aws.amazon.com) and click "Get Started now"
 
 ![elasticache](images/image1.png)
 
@@ -50,21 +47,15 @@ Configure Redis settings:
 
 ![elasticache](images/image3.png)
 
-
-
-
 Copy and save the Elasticache primary endpoint URL:
 
 ![elasticache](images/image5.png)
 
-
-
-### Step 2. Configure the VPC 
+### Step 2. Configure the VPC
 
 Configure and chose VPC that has your ElastiCache instances
 
 ![elasticache](images/image6.png)
-
 
 ### Step 3. Configure the Security Groups
 
@@ -74,11 +65,9 @@ Configure inbound and outbound rules to allow RedisInsight and Redis ports:
 
 ![elasticache](images/image12.png)
 
-### Step 4. Configure and setup Amazon EC2 
-
+### Step 4. Configure and setup Amazon EC2
 
 ![elasticache](images/image8.png)
-
 
 ### Step 5. Create and configure IAM role
 
@@ -105,55 +94,50 @@ Assign the below permissions:
 
 Use the `redis-cli` command to connect to the remote Amazon Elasticache for Redis server endpoint URL.
 
-
- ```bash
-  ubuntu@ip-10-0-0-254:~$ redis-cli -h redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com -p 6379
-  redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com:6379>
- ```
-
+```bash
+ ubuntu@ip-10-0-0-254:~$ redis-cli -h redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com -p 6379
+ redisinsightdemo.8cfnjo.ng.0001.use1.cache.amazonaws.com:6379>
+```
 
 ### Step 8. Setup RedisInsight
 
 In order to access the RedisInsight GUI, run the following Docker command:
 
- ```bash
-  ubuntu@ip-10-0-0-254:~$ sudo docker run -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
-  Unable to find image 'redislabs/redisinsight:latest' locally
-  latest: Pulling from redislabs/redisinsight
- ```
+```bash
+ ubuntu@ip-10-0-0-254:~$ sudo docker run -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
+ Unable to find image 'redislabs/redisinsight:latest' locally
+ latest: Pulling from redislabs/redisinsight
+```
 
- ```bash
-  sudo docker ps
-  CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                                       NAMES
-  caf3d674fb81   redislabs/redisinsight:latest   "bash ./docker-entry…"   4 seconds ago   Up 3 seconds   0.0.0.0:8001->8001/tcp, :::8001->8001/tcp   cool_pascal
- ```
+```bash
+ sudo docker ps
+ CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+ caf3d674fb81   redislabs/redisinsight:latest   "bash ./docker-entry…"   4 seconds ago   Up 3 seconds   0.0.0.0:8001->8001/tcp, :::8001->8001/tcp   cool_pascal
+```
 
 ### Step 9. Access RedisInsight
 
 To access the RedisInsight GUI, open your preferred browser and access https://localhost:8001
 
-
 ![elasticache](images/image13.png)
 ![elasticache](images/image14.png)
-
 
 ### Step 10. Autodiscover Elasticache Instance
 
 :::important
 In case you encounter the below error message:
 
-This EC2 instance does not have permissions to discover your ElastiCache instances. To grant permission, create an IAM role  with the DescribeCacheClusters permission and attach the role  to this EC2 instance.
+This EC2 instance does not have permissions to discover your ElastiCache instances. To grant permission, create an IAM role with the DescribeCacheClusters permission and attach the role to this EC2 instance.
 
 You might have to attach IAM role to the instance as shown below:
 
 ![elasticache](images/image15.png)
 
-::: 
+:::
 
 Now you can should be able to autodiscover Elasticache
 
 ![elasticache](images/image16.png)
-
 
 ![elasticache](images/image18.png)
 
@@ -164,7 +148,6 @@ Add the selected instance:
 Add the discovered instance:
 
 ![elasticache](images/image20.png)
-
 
 ### References
 
@@ -179,5 +162,17 @@ Add the discovered instance:
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

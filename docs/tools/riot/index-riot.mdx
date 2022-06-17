@@ -1,7 +1,7 @@
 ---
 id: index-riot
 title: RIOT
-sidebar_label: RIOT 
+sidebar_label: RIOT
 slug: /tools/riot
 ---
 
@@ -10,15 +10,10 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 Redis Input/Output Tools (RIOT) is a set of import/export command line utilities for Redis:
 
 - RIOT Redis: live replication from any Redis database (including AWS Elasticache) to another Redis database.
 - RIOT DB: migrate from an RDBMS to Redis, RediSearch, RedisJSON, ...
-
-
-
-
 
 <Tabs
   defaultValue="RIOT Redis"
@@ -28,7 +23,6 @@ Redis Input/Output Tools (RIOT) is a set of import/export command line utilities
   ]}>
   <TabItem value="RIOT Redis">
 
-
 Most database migration tools available today are offline in nature. Migrating data from AWS ElastiCache to Redis Enterprise Cloud for example means backing up your Elasticache data to an AWS S3 bucket and importing it into Redis Enterprise Cloud using its UI.This implies some downtime and might result in data loss.
 Other available techniques include creating point-in-time snapshots of the source Redis server & applying the changes to the destination servers to keep both servers in sync.
 It might sound like a good approach but can be challenging when you have to maintain dozens of scripts to implement the migration strategy.
@@ -36,7 +30,6 @@ It might sound like a good approach but can be challenging when you have to main
 RIOT Redis is a migration tool that allows for seamless live replication between two Redis databases.
 
 ### 1. Getting Started
-
 
 Download the [latest release](https://github.com/redis-developer/riot/releases/latest) and unzip the archive.
 
@@ -50,13 +43,13 @@ cd riot/riot-redis
 ./riot-redis
 ```
 
-### 3. Install via Homebrew (macOS) 
+### 3. Install via Homebrew (macOS)
 
 ```
 brew install jruaux/tap/riot-redis`
 ```
 
-###  Usage
+### Usage
 
 ```
 ❯ riot-redis
@@ -94,6 +87,7 @@ Redis connection options are the same as redis-cli:
   -l, --latency             Show latency metrics
   -m, --pool=<int>          Max pool connections (default: 8)
 ```
+
 Redis URI syntax is described here.
 
 ### 4. Example
@@ -116,12 +110,11 @@ OK:1000 V:0 >:0 <:0 T:0
 
 - V: # mismatched values
 
-- >: # keys only present in source database
+- > : # keys only present in source database
 
 - <: # keys only present in target database
 
 - T: # keys with TTL difference greater than tolerance
-
 
 ### 6. Architecture
 
@@ -139,12 +132,9 @@ Note: Live replication makes use of keyspace notifications. Make sure the source
 
 Note: The live replication mechanism does not guarantee data consistency. Redis sends keyspace notifications over pub/sub which does not provide guaranteed delivery. It is possible that RIOT Redis can miss some notifications in case of network failures for example.
 
-
-
 </TabItem>
 
 <TabItem value="RIOT DB">
-
 
 RIOT DB lets you import/export data from relational databases.
 
@@ -179,6 +169,7 @@ Usage: riot-db [OPTIONS] [COMMAND]
   -d, --debug               Log in debug mode (includes normal stacktrace)
   -i, --info                Set log level to info
 ```
+
 You can use --help on any subcommand:
 
 ```
@@ -204,6 +195,7 @@ Redis connection options are the same as redis-cli:
   -m, --pool=<int>          Max pool connections (default: 8)
 
 ```
+
 ### 5. Drivers
 
 RIOT DB includes drivers for the most common RDBMSs:
@@ -294,6 +286,7 @@ You can specify one or many Redis commands as targets of the import:
 ```
 ❯ riot-db -h localhost -p 6379 import "SELECT * FROM orders" --url jdbc:postgresql://host:port/database --username appuser --password passwd set --keyspace order --keys order_id
 ```
+
 This will produce Redis strings that look like this:
 
 ```
@@ -314,10 +307,5 @@ This will produce Redis strings that look like this:
 }
 ```
 
-
-
-
 </TabItem>
 </Tabs>
-
-

@@ -30,17 +30,17 @@ You will build an application that stores `Company` POJOs (Plain Old Java Object
 
 ## What You need
 
-* About 15 minutes
-* A favorite text editor or IDE
-* [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
-* [Gradle 4+](http://www.gradle.org/downloads) or [Maven 3.2+](http://maven.apache.org/download.cgi)
-* [Docker](https://www.docker.com) / [Docker Compose](https://docs.docker.com/compose/)
+- About 15 minutes
+- A favorite text editor or IDE
+- [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
+- [Gradle 4+](http://www.gradle.org/downloads) or [Maven 3.2+](http://maven.apache.org/download.cgi)
+- [Docker](https://www.docker.com) / [Docker Compose](https://docs.docker.com/compose/)
 
 ## Starting with Spring Initializr
 
 We'll start by creating a base SpringBoot application using the [Spring Initializr](https://start.spring.io). You can use this
- [pre-initialized project](https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.6.0&packaging=jar&jvmVersion=11&groupId=com.redis.om&artifactId=roms-documents&name=roms-documents&description=Redis%20OM%20Spring%20Document%20Demo&packageName=com.redis.om&dependencies=web,lombok,devtools)
- and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
+[pre-initialized project](https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.6.0&packaging=jar&jvmVersion=11&groupId=com.redis.om&artifactId=roms-documents&name=roms-documents&description=Redis%20OM%20Spring%20Document%20Demo&packageName=com.redis.om&dependencies=web,lombok,devtools)
+and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
 
 ![Spring Initializr](images/redis-om-spring-tut-001.png)
 
@@ -48,19 +48,19 @@ To configure the project:
 
 - Navigate to https://start.spring.io. This service pulls in all the dependencies you need for an application and does most of the setup for you.
 - Choose either Gradle or Maven and the language you want to use. This guide assumes that you chose Java.
-- Click *Dependencies* and select *Spring Web*, *Lombok* and *Spring Boot DevTools*.
-- Click *Generate*.
+- Click _Dependencies_ and select _Spring Web_, _Lombok_ and _Spring Boot DevTools_.
+- Click _Generate_.
 - Download the resulting ZIP file (`roms-documents.zip`), which is an archive of a web application that is configured with your choices.
 
 The dependencies included are:
 
-- *Spring Web*: Build web/RESTful applications using Spring MVC. It will allow us to expose our app as a web service.
-- *Lombok*: Java annotation library which helps to reduce boilerplate code.
-- *Spring Boot DevTools*: Provides fast application restarts, LiveReload, and configurations for enhanced development experience.
+- _Spring Web_: Build web/RESTful applications using Spring MVC. It will allow us to expose our app as a web service.
+- _Lombok_: Java annotation library which helps to reduce boilerplate code.
+- _Spring Boot DevTools_: Provides fast application restarts, LiveReload, and configurations for enhanced development experience.
 
-*NOTE:* If your IDE has the Spring Initializr integration, you can complete this process from your IDE.
+_NOTE:_ If your IDE has the Spring Initializr integration, you can complete this process from your IDE.
 
-*NOTE:* You can also fork the project from Github and open it in your IDE or other editor.
+_NOTE:_ You can also fork the project from Github and open it in your IDE or other editor.
 
 ## Adding Redis OM Spring
 
@@ -134,12 +134,12 @@ The docker compose YAML file below can get started quickly. You can place at the
 `docker-compose.yml`:
 
 ```yaml
-version: "3.9"
+version: '3.9'
 services:
   redis:
-    image: "redislabs/redismod:edge"
+    image: 'redislabs/redismod:edge'
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - ./data:/data
     entrypoint: >
@@ -423,7 +423,7 @@ Knowing that it is a Redis SET, let inspect it's contents using the `SMEMBERS` c
 2) "01FNRW9V98CYQMV2YAB7M4KFGQ"
 ```
 
-The set contains all the Ids of our Companies. Now, let's investigate the  `com.redis.om.documents.domain.Company:01FNRW9V98CYQMV2YAB7M4KFGQ` key:
+The set contains all the Ids of our Companies. Now, let's investigate the `com.redis.om.documents.domain.Company:01FNRW9V98CYQMV2YAB7M4KFGQ` key:
 
 ```bash
 127.0.0.1:6379> TYPE "com.redis.om.documents.domain.Company:01FNRW9V98CYQMV2YAB7M4KFGQ"
@@ -516,11 +516,7 @@ Let's format the resulting JSON:
 {
   "id": "01FNRW9V98CYQMV2YAB7M4KFGQ",
   "name": "Redis",
-  "tags": [
-    "reliable",
-    "fast",
-    "scalable"
-  ],
+  "tags": ["reliable", "fast", "scalable"],
   "url": "https://redis.com",
   "location": {
     "x": -122.06654,
@@ -545,8 +541,8 @@ characters to prevent potentially millions of results being returned.
 ### Storing and Querying Geospatial Data
 
 ROMS supports GeoJSON types to store geospatial data. By using the `near` keyword in our queries,
-we tell ROMS to expect a `Point`  (`org.springframework.data.geo.Point`) and a
-`Distance`  (`org.springframework.data.geo.Distance`) types as parameters.
+we tell ROMS to expect a `Point` (`org.springframework.data.geo.Point`) and a
+`Distance` (`org.springframework.data.geo.Distance`) types as parameters.
 
 ```java
 // geospatial query
@@ -582,11 +578,7 @@ Formatting the JSON result we get a JSON array containing one entry: `Redis`.
   {
     "id": "01FNRW9V98CYQMV2YAB7M4KFGQ",
     "name": "Redis",
-    "tags": [
-      "reliable",
-      "fast",
-      "scalable"
-    ],
+    "tags": ["reliable", "fast", "scalable"],
     "url": "https://redis.com",
     "location": {
       "x": -122.06654,
@@ -633,11 +625,7 @@ Formatting the JSON we can see that the results include companies with the tag `
   {
     "id": "01FNTF7QKAGCQYMWWBV3044DHW",
     "name": "Redis",
-    "tags": [
-      "reliable",
-      "fast",
-      "scalable"
-    ],
+    "tags": ["reliable", "fast", "scalable"],
     "url": "https://redis.com",
     "location": {
       "x": -122.06654,
@@ -650,10 +638,7 @@ Formatting the JSON we can see that the results include companies with the tag `
   {
     "id": "01FNTF7QKXJ1CNZERHADN91YBR",
     "name": "Microsoft",
-    "tags": [
-      "reliable",
-      "innovative"
-    ],
+    "tags": ["reliable", "innovative"],
     "url": "https://microsoft.com",
     "location": {
       "x": -122.1245,

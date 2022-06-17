@@ -1,4 +1,4 @@
-.ri-container {
+.riContainer {
     border: 1px solid var(--ifm-color-emphasis-300);
     border-radius: var(--ifm-global-radius);
     display: block;
@@ -6,33 +6,33 @@
     margin-bottom: 1rem;
 }
 
-.ri-description-short {
+.riDescriptionShort {
     display: flex;
 
 }
 
-.ri-detail {
+.riDetail {
     display: block;
 }
 
-.ri-icon {
+.riIcon {
     color: var(--ifm-color-primary);
     font-size: 2rem;
     line-height: 2rem;
     margin: 0.25rem 0.75rem auto 0;
 }
 
-.ri-title {
+.riTitle {
     font-weight: 600;
     font-size: 0.9rem;
 }
 
-.ri-description {
-    font-size: 0.8rem;    
+.riDescription {
+    font-size: 0.8rem;
     color: var(--ifm-font-color-secondary);
 }
 
-.ri-description-long {
+.riDescriptionLong {
     margin-top: 1em;
     padding: 0.75em 1em;
     font-size: 0.8rem;
@@ -41,11 +41,11 @@
     border-radius: var(--ifm-global-radius);
 }
 
-.ri-description-long p:last-child {
+.riDescriptionLong p:last-child {
     margin-bottom: 0;
 }
 
-.ri-more {
+.riMore {
     font-size: 1em;
     margin-left: 0.5rem;
     padding: 0.2rem 0.5rem;
@@ -53,14 +53,11 @@
     background-color: var(--ifm-color-secondary-light);
 }
 
-.ri-more:hover {
+.riMore:hover {
     background-color: var(--ifm-color-secondary-dark);
 }
 
-.ri-more:active {
+.riMore:active {
     background-color: var(--ifm-color-primary);
     color: #fff;
 }
-
-
-  

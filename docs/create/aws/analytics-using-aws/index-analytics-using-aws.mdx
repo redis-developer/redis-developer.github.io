@@ -1,15 +1,14 @@
 ---
 id: index-analytics-using-aws
-title: How to Build and Deploy Your Own Analytics Dashboard using NodeJS and Redis on the AWS Platform 
+title: How to Build and Deploy Your Own Analytics Dashboard using NodeJS and Redis on the AWS Platform
 sidebar_label: Building an Analytics Dashboard using NodeJS, Redis and AWS
 slug: /create/aws/analytics-using-aws
 authors: [ajeet]
 ---
 
-An interactive analytics dashboard serves several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands. 
+An interactive analytics dashboard serves several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a traditional relational database might require a complex set of queries. By using a NoSQL database like Redis, you can build a powerful interactive and dynamic dashboard with a small number of Redis commands.
 
-Let’s take a look at how this was achieved. 
-
+Let’s take a look at how this was achieved.
 
 - What will you build?
 - What will you need?
@@ -18,13 +17,11 @@ Let’s take a look at how this was achieved.
 - How data is stored
 - Navigating the application
 
-
 ### What will you build?
 
 You’ll build an analytics dashboard app that uses Redis Bitmap written in NodeJS (JavaScript) and then deploy it to AWS.
 
 Ready to get started? Ok, let’s dive straight in.
-
 
 ### What will you need?
 
@@ -39,7 +36,6 @@ Ready to get started? Ok, let’s dive straight in.
 - Install Node - v12.19.0
 - Install NPM - v6.14.8
 
-
 ### Step 1. Sign up for a Free Redis Enterprise Cloud Account
 
 [Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for a free Redis Enterprise Cloud account.
@@ -50,26 +46,21 @@ Choose AWS as a Cloud vendor while creating your new subscription. At the end of
 
 ![image](analytics4.png)
 
-
-
-
 ### Step 2. Clone the repository
 
-  ```bash
-   git clone https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs
-  ```
-
+```bash
+ git clone https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs
+```
 
 ### Step 3. Set up a backend environment
-
 
 First we will be setting up environment variables
 
 Go to /server folder (cd ./server) and then execute the below command:
 
-  ```bash
-   cp .env.example .env
-  ```
+```bash
+ cp .env.example .env
+```
 
 Open .env file and add Redis Enterprise Cloud Database Endpoint URL, port and password as shown below:
 
@@ -92,27 +83,25 @@ REDIS_PASSWORD=reXXX
 COMPOSE_PROJECT_NAME=redis-analytics-bitmaps
 ```
 
-
 ### Step 4. Install dependencies
 
-  ```bash
-   npm install
-  ```
-
+```bash
+ npm install
+```
 
 ### Step 5. Run the backend
 
-  ```bash
-   npm run dev
-  ```
+```bash
+ npm run dev
+```
 
 ### Step 6. Set up the frontend environment
 
 Go to the `client` folder (`cd ./client`) and then:
 
-  ```bash
-   cp .env.example .env
-  ```
+```bash
+ cp .env.example .env
+```
 
 Add the exact URL path and port number of your choice for VUE_APP_API_URL parameter as shown below:
 
@@ -120,18 +109,17 @@ Add the exact URL path and port number of your choice for VUE_APP_API_URL parame
 VUE_APP_API_URL=http://localhost:3000
 ```
 
+### Step 7. Install dependencies
 
-### Step 7.  Install dependencies
-
-  ```bash
-   npm install
-  ```
+```bash
+ npm install
+```
 
 ### Step 8. Run the frontend
 
-  ```bash
-   npm run serve
-  ```
+```bash
+ npm run serve
+```
 
 ![analytics](analytics_traffic.png)
 
@@ -164,36 +152,35 @@ The event data is stored in various keys and data types which is discussed below
 - bitmap
 - set
 
-It generates keys with the following naming convention: 
+It generates keys with the following naming convention:
 
-
-  ```bash
-   rab:{type}[:custom:{customName}][:user:{userId}][:source:{source}][:action:{action}][:page:{page}]:timeSpan:{timeSpan}
-  ```
+```bash
+ rab:{type}[:custom:{customName}][:user:{userId}][:source:{source}][:action:{action}][:page:{page}]:timeSpan:{timeSpan}
+```
 
 where values in [] are optional.
 
-For each generated key like ```rab:count:*```, data is stored like: ```INCR {key}```
+For each generated key like `rab:count:*`, data is stored like: `INCR {key}`
 
 ##### Example:
 
-  ```bash
-   INCR rab:count:action:addToCart:timeSpan:2015-12/3
-  ```
+```bash
+ INCR rab:count:action:addToCart:timeSpan:2015-12/3
+```
 
-For each generated key like: ```rab:set:*```, data is stored like: 
+For each generated key like: `rab:set:*`, data is stored like:
 
-
-  ```bash
-   SADD {key} {userId}
-  ```
+```bash
+ SADD {key} {userId}
+```
 
 ##### Example:
 
-  ```bash
-   SADD rab:set:action:addToCart:timeSpan:2015-12/3 8
-  ```
-- For each generated key like ```rab:bitmap:*```, data is stored like: 
+```bash
+ SADD rab:set:action:addToCart:timeSpan:2015-12/3 8
+```
+
+- For each generated key like `rab:bitmap:*`, data is stored like:
 
   ```bash
    SETBIT {key} {userId} 1
@@ -201,28 +188,29 @@ For each generated key like: ```rab:set:*```, data is stored like:
 
 ##### Example:
 
-  ```bash
-   SETBIT rab:bitmap:action:addToCart:timeSpan:2015-12/3 8 1
-  ```
+```bash
+ SETBIT rab:bitmap:action:addToCart:timeSpan:2015-12/3 8 1
+```
 
 ### Cohort data
 
 - We store users who register and then bought some products (action order matters).
-- For each buy action in December we first check if the user performed register action  (register counter must be greater than zero).
+- For each buy action in December we first check if the user performed register action (register counter must be greater than zero).
 - If so, we set user bit to 1
 
-##### Example 
+##### Example
 
- ```
-   SETBIT rab:bitmap:custom:cohort-buy:timeSpan:{timeSpan} {userId} 1
- ```
+```
+  SETBIT rab:bitmap:custom:cohort-buy:timeSpan:{timeSpan} {userId} 1
+```
+
 - Example - User Id 2 bought 2 products on 2015-12-17. It won't be stored.
-- Example -  User Id 10 bought 1 product on 2015-12-17 and registered on 2015-12-16. 
-So, it will be stored like: 
+- Example - User Id 10 bought 1 product on 2015-12-17 and registered on 2015-12-16.
+  So, it will be stored like:
 
- ```bash
-  SETBIT rab:bitmap:custom:cohort-buy:timeSpan:2015-12 10 1
- ````
+```bash
+ SETBIT rab:bitmap:custom:cohort-buy:timeSpan:2015-12 10 1
+```
 
 - We assume that user cannot buy without registering first.
 
@@ -230,106 +218,108 @@ So, it will be stored like:
 
 - Retention means users who bought on two different dates
 - For each buy action we check if user bought more products anytime than bought on particular day (current purchase not included).
-- If so, we add user id to set like: 
+- If so, we add user id to set like:
 
-   ```bash
-    SADD rab:set:custom:retention-buy:timeSpan:{timeSpan} {userId}
-   ```
+  ```bash
+   SADD rab:set:custom:retention-buy:timeSpan:{timeSpan} {userId}
+  ```
 
-- Example -  User Id 5 bought 3 products on 2015-12-15. His retention won't be stored (products bought on particular day: 2, products bought anytime: 0).
-- Example - User Id 3 bought 1 product on 2015-12-15 and before - 1 product on 2015-12-13. His retention will be stored (products bought on particular day: 0, products bought anytime: 1) like: 
+- Example - User Id 5 bought 3 products on 2015-12-15. His retention won't be stored (products bought on particular day: 2, products bought anytime: 0).
+- Example - User Id 3 bought 1 product on 2015-12-15 and before - 1 product on 2015-12-13. His retention will be stored (products bought on particular day: 0, products bought anytime: 1) like:
 
- ```bash
-  SADD rab:set:custom:retention-buy:timeSpan:2015-12
- ```
+```bash
+ SADD rab:set:custom:retention-buy:timeSpan:2015-12
+```
+
 ### How the data is accessed:
 
 #### Total Traffic:
 
-##### December: 
+##### December:
 
-  ```bash
-    BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12```
-  ```
+````bash
+  BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12```
+````
 
-##### X week of December: 
+##### X week of December:
 
-   ```bash
-     BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/{X}
-   ```
+```bash
+  BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/{X}
+```
+
 ##### Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/3
-  ````
+```bash
+ BITCOUNT rab:bitmap:custom:global:timeSpan:2015-12/3
+```
 
 #### Traffic per Page ({page} is one of: homepage, product1, product2, product3):
 
-  
-##### December: 
+##### December:
 
-  ```bash
-   BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12
-  ```
-
-##### Example:
-
-  ```bash
-   BITCOUNT rab:bitmap:action:visit:page:homepage:timeSpan:2015-12
-  ```
-
-#####   X week of December: 
-
-   ```bash
-    BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12/{X}
-   ```
+```bash
+ BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12
+```
 
 ##### Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:action:visit:page:product1:timeSpan:2015-12/2
-  ```
+```bash
+ BITCOUNT rab:bitmap:action:visit:page:homepage:timeSpan:2015-12
+```
+
+##### X week of December:
+
+```bash
+ BITCOUNT rab:bitmap:action:visit:page:{page}:timeSpan:2015-12/{X}
+```
+
+##### Example:
+
+```bash
+ BITCOUNT rab:bitmap:action:visit:page:product1:timeSpan:2015-12/2
+```
 
 #### Traffic per Source ({source} is one of: Google, Facebook, email, direct, referral, none):
 
-##### December: 
+##### December:
 
-  ```bash
-   BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
-  ```
+```bash
+ BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12
+```
 
 ##### Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:source:referral:timeSpan:2015-12
-  ```
+```bash
+ BITCOUNT rab:bitmap:source:referral:timeSpan:2015-12
+```
 
-#####  X week of December: 
+##### X week of December:
 
-  ```bash
-   BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}
-  ```
+```bash
+ BITCOUNT rab:bitmap:source:{source}:timeSpan:2015-12/{X}
+```
+
 ##### Example:
 
-  ```bash
-   BITCOUNT rab:bitmap:source:google:timeSpan:2015-12/1
-  ```
+```bash
+ BITCOUNT rab:bitmap:source:google:timeSpan:2015-12/1
+```
 
 ##### Trend traffic ({page} is one of: homepage, product1, product2, product3):
 
-#####  December: 
+##### December:
 
-From 
+From
 
-   ```bash
-    BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-01
-   ``` 
+```bash
+ BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-01
+```
 
-to 
+to
 
-   ```bash
-    BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-31
-   ``` 
+```bash
+ BITCOUNT rab:bitmap:action:visit:{page}:timeSpan:2015-12-31
+```
 
 - 1st Week of December: Similar as above, but from 2015-12-01 to 2015-12-07
 - 2nd Week of December: Similar as above, but from 2015-12-08 to 2015-12-14
@@ -339,79 +329,82 @@ to
 
 ##### Example:
 
-   ```bash
-    BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-29 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-30 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-31
-   ```
+```bash
+ BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-29 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-30 => BITCOUNT rab:bitmap:action:visit:homepage:timeSpan:2015-12-31
+```
 
-####  Total products bought:
+#### Total products bought:
 
-##### December: 
+##### December:
 
-   ```bash
-    GET rab:count:action:buy:timeSpan:2015-12
-   ```
-#####  X week of December: 
-
-   ```bash
-    GET rab:count:action:buy:timeSpan:2015-12/{X}
-   ```
-##### Example:
-
-  ```bash
-   GET rab:count:action:buy:timeSpan:2015-12/1
-  ```
-####  Total products added to cart:
-
-##### December: 
-
-  ```bash
-   GET rab:count:action:addToCart:timeSpan:2015-12
-  ````
+```bash
+ GET rab:count:action:buy:timeSpan:2015-12
+```
 
 ##### X week of December:
-    
-   ```bash
-    GET rab:count:action:addToCart:timeSpan:2015-12/{X}
-   ```
+
+```bash
+ GET rab:count:action:buy:timeSpan:2015-12/{X}
+```
 
 ##### Example:
 
-  ```bash
-   GET rab:count:action:addToCart:timeSpan:2015-12/1
-  ```
+```bash
+ GET rab:count:action:buy:timeSpan:2015-12/1
+```
+
+#### Total products added to cart:
+
+##### December:
+
+```bash
+ GET rab:count:action:addToCart:timeSpan:2015-12
+```
+
+##### X week of December:
+
+```bash
+ GET rab:count:action:addToCart:timeSpan:2015-12/{X}
+```
+
+##### Example:
+
+```bash
+ GET rab:count:action:addToCart:timeSpan:2015-12/1
+```
 
 ##### Shares of products bought ({productPage} for product1, product2, product3):
 
-#### December: 
+#### December:
 
-  ```bash
-   GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12
-  ```
-##### Example:
-
-  ```bash
-   GET rab:count:action:buy:page:product3:timeSpan:2015-12
-  ```
-
-##### X week of December: 
-
-
-  ```bash
-   GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}
-  ```
+```bash
+ GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12
+```
 
 ##### Example:
 
-  ```bash
-   GET rab:count:action:buy:page:product1:timeSpan:2015-12/2
-  ```
+```bash
+ GET rab:count:action:buy:page:product3:timeSpan:2015-12
+```
+
+##### X week of December:
+
+```bash
+ GET rab:count:action:buy:page:{productPage}:timeSpan:2015-12/{X}
+```
+
+##### Example:
+
+```bash
+ GET rab:count:action:buy:page:product1:timeSpan:2015-12/2
+```
 
 #### Customer and Cohort Analysis
 
 - People who registered: BITCOUNT rab:bitmap:action:register:timeSpan:2015-12
 - People who register then bought (order matters): BITCOUNT rab:bitmap:custom:cohort-buy:timeSpan:2015-12
-- Dropoff: (People who register then bought / People who register) * 100 [%]
-- Customers who bought only specified product ({productPage} is one of: product1, product2, product3): 
+- Dropoff: (People who register then bought / People who register) \* 100 [%]
+- Customers who bought only specified product ({productPage} is one of: product1, product2, product3):
 
   ```bash
    SMEMBERS rab:set:action:buy:page:{productPage}:timeSpan:2015-12
@@ -419,21 +412,21 @@ to
 
 ##### Example:
 
-  ```bash
-   SMEMBERS rab:set:action:buy:page:product2:timeSpan:2015-12
-  ```
+```bash
+ SMEMBERS rab:set:action:buy:page:product2:timeSpan:2015-12
+```
 
-####  Customers who bought Product1 and Product2: 
+#### Customers who bought Product1 and Product2:
 
-   ```
-    SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page:product2:timeSpan:anytime
-   ```
+```
+ SINTER rab:set:action:buy:page:product1:timeSpan:anytime rab:set:action:buy:page:product2:timeSpan:anytime
+```
 
-#### Customer Retention (customers who bought on the different dates): 
+#### Customer Retention (customers who bought on the different dates):
 
-   ```bash
-    SMEMBERS rab:set:custom:retention-buy:timeSpan:anytime
-   ```
+```bash
+ SMEMBERS rab:set:custom:retention-buy:timeSpan:anytime
+```
 
 ### References
 

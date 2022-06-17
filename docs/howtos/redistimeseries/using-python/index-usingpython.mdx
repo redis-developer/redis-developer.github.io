@@ -12,7 +12,6 @@ Time series data is a series of data stored in the time order (Example: Stock pe
 
 RedisTimeSeries is a Redis module that allows Redis to be used as a fast in-memory time series database designed to collect, manage, and deliver time series data at scale. The RedisTimeSeries module shares the performance and simplicity aspects of Redis. Under the hood, it uses efficient data structures such as Radix tree to index data by timestamp, which makes it extremely fast and efficient to run time-aggregate queries.
 
-
 ## Python Client for RedisTimeSeries
 
 :::note TIP
@@ -20,8 +19,6 @@ As of redis-py 4.0.0, the redistimeseries-py library is deprecated. It's feature
 :::
 
 Follow the steps below to get started with RedisTimeSeries with Python:
-
-
 
 ### Step 1. Create a free Cloud account
 
@@ -45,38 +42,29 @@ click "Create a custom database" option shown in the image.
 
 ![create database ](images/select_cloud_vendor.png)
 
-
-### Step 3.  Verify the database details
+### Step 3. Verify the database details
 
 You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
 
-
-
 ![verify database](images/details_database.png)
 
-
 ### Step 4.Installation
-
 
 ```
 $ pip install redis
 ```
 
-
-
 ### Step 5. Create a script file
 
- ```python
-  import redis
-  r = redis.Redis(host='redis-18386.c110.qa.us-east-1-1.ec2.qa-cloud.redislabs.com', port=<add port>, password=<add password>)
-  r.ts().create(2, retension_msecs=5) 
- ```
+```python
+ import redis
+ r = redis.Redis(host='redis-18386.c110.qa.us-east-1-1.ec2.qa-cloud.redislabs.com', port=<add port>, password=<add password>)
+ r.ts().create(2, retension_msecs=5)
+```
 
-Save the above file with a name "ts.py".  
+Save the above file with a name "ts.py".
 
 ### Step 6. Executing the python script
-
-
 
 ```bash
  python3 ts.py
@@ -84,11 +72,9 @@ Save the above file with a name "ts.py".
 
 ### Step 7. Monitor the Redis database
 
-
 ```
   1648389303.557366 [0 20.127.62.215:59768] "TS.CREATE" "2"
 ```
-
 
 ## References
 
@@ -101,5 +87,17 @@ Save the above file with a name "ts.py".
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

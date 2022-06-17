@@ -11,23 +11,21 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redis.com/redisearch/) is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules. With RedisInsight, the following functionalities are possible:
 
 ![MyImage](images/redisearch.png)
 
-*   Multi-line for building queries
-*   Ability to submit query with ‘ctrl + enter’ in single line mode
-*   Better handling of long index names in index selector dropdown
-*   Supports Aggregation
-*   Supports Fuzzy logic
-*   Supports simple and complex conditions
-*   Sorting
-*   Pagination
-*   Counting
+- Multi-line for building queries
+- Ability to submit query with ‘ctrl + enter’ in single line mode
+- Better handling of long index names in index selector dropdown
+- Supports Aggregation
+- Supports Fuzzy logic
+- Supports simple and complex conditions
+- Sorting
+- Pagination
+- Counting
 
 RediSearch allows you to quickly create indexes on datasets (stored as Redis Hashes or, with RedisJSON, as JSON documents), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
-
 
 ### Step 1. Create a Redis Database
 
@@ -35,26 +33,22 @@ RediSearch allows you to quickly create indexes on datasets (stored as Redis Has
 
 ### Step 2: Download RedisInsight
 
-
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
 
 [Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
 
 ![My Image](images/redisinsight-register.png)
 
-
-Run the installer. 
-Once the installation  completes, you should be able to connect to a Redis database.
+Run the installer.
+Once the installation completes, you should be able to connect to a Redis database.
 
 Select "Connect to a Redis database".
 
 ![My Image](images/database-connection.png)
 
-Enter the requested details, including Name, Host (endpoint), Port, and Password.  Then click “ADD REDIS DATABASE”.
-
+Enter the requested details, including Name, Host (endpoint), Port, and Password. Then click “ADD REDIS DATABASE”.
 
 ![alt_text](images/database.png)
-
 
 ### Step 3. Movie Sample Database
 
@@ -62,16 +56,15 @@ In this section, you will use a simple dataset describing movies, for now, all r
 
 A movie is represented by the following attributes:
 
-* **`movie_id`** : The unique ID of the movie, internal to this database
-* **`title`** : The title of the movie.
-* **`plot`** : A summary of the movie.
-* **`genre`** : The genre of the movie, for now a movie will only have a single genre.
-* **`release_year`** : The year the movie was released as a numerical value.
-* **`rating`** : A numeric value representing the public's rating for this movie.
-* **`votes`** : Number of votes.
-* **`poster`** : Link to the movie poster.
-* **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
-
+- **`movie_id`** : The unique ID of the movie, internal to this database
+- **`title`** : The title of the movie.
+- **`plot`** : A summary of the movie.
+- **`genre`** : The genre of the movie, for now a movie will only have a single genre.
+- **`release_year`** : The year the movie was released as a numerical value.
+- **`rating`** : A numeric value representing the public's rating for this movie.
+- **`votes`** : Number of votes.
+- **`poster`** : Link to the movie poster.
+- **`imdb_id`** : id of the movie in the [IMDB](https://imdb.com) database.
 
 #### Key and Data Structure
 
@@ -79,19 +72,18 @@ As a Redis developer, one of the first things to look at when building your appl
 
 A common strategy for Redis is to use specific patterns when naming keys. For example in this application where the database will probably deal with various business objects: movies, actors, theaters, users, ... we can use the following pattern:
 
-* `business_object:key`
+- `business_object:key`
 
 For example:
-* `movie:001` for the movie with the id 001
-* `user:001` the user with the id 001
 
+- `movie:001` for the movie with the id 001
+- `user:001` the user with the id 001
 
-and for the movie's information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes). 
+and for the movie's information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes).
 
 A Redis Hash allows the application to structure all the movie attributes in individual fields; also RediSearch will index the fields based on the index definition.
 
 ### Step 4. Insert Movies
-
 
 It is time now to add some data into your database, let's insert a few movies, using `redis-cli` or [RedisInsight](https://redis.com/redis-enterprise/redis-insight/).
 
@@ -113,7 +105,6 @@ HSET movie:11004 title "Heat" plot "A group of professional bank robbers start t
 HSET "movie:11005" title "Star Wars: Episode VI - Return of the Jedi" genre "Action" votes 906260 rating 8.3 release_year 1983  plot "The Rebels dispatch to Endor to destroy the second Empire's Death Star." ibmdb_id "tt0086190"
 ```
 
-
 Now it is possible to get information from the hash using the movie ID. For example if you want to get the title, and rating execute the following command:
 
 ```
@@ -122,25 +113,20 @@ Now it is possible to get information from the hash using the movie ID. For exam
 
 #### Result:
 
-
 ```
 1) "Star Wars: Episode V - The Empire Strikes Back"
 2) "8.7"
 ```
 
-
-
 #### Increment the Movie Rating
 
 You can increment the rating of this movie using:
-
 
 ```
 HINCRBYFLOAT movie:11002 rating 0.1
 ```
 
 Here's a quick screenshot of the results shown in RedisInsight:
-
 
 ![MyImage](images/rating.png)
 
@@ -150,9 +136,7 @@ One option, would be to read all the movies, check all fields and then return on
 
 This is where the RediSearch module can help, and why it was created.
 
-
 ### Step 5. RediSearch & Indexing
-
 
 RediSearch greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
 
@@ -160,34 +144,29 @@ RediSearch greatly simplifies this by offering a simple and automatic way to cre
 
 Using RediSearch if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
 
-* Title
-* Release Year
-* Rating
-* Genre
+- Title
+- Release Year
+- Rating
+- Genre
 
 When creating an index you define:
 
-* which data you want to index: all *hashes* with a key starting with `movies` 
-* which fields in the hashes you want to index using a Schema definition.
+- which data you want to index: all _hashes_ with a key starting with `movies`
+- which fields in the hashes you want to index using a Schema definition.
 
-> ***Warning: Do not index all fields***
+> **_Warning: Do not index all fields_**
 >
 > Indexes take space in memory, and must be updated when the primary data is updated. So create the index carefully and keep the definition up to date with your needs.
 
 ### Step 6. Create the Index
 
-
 ```
  FT.CREATE idx:movie ON hash PREFIX 1 "movie:" SCHEMA title TEXT SORTABLE release_year NUMERIC SORTABLE rating NUMERIC SORTABLE genre TAG SORTABLE
 ```
 
-
-
-
 The database contains a few movies, and an index, it is now possible to execute some queries.
 
 #### Query: All the movies that contains the string "`war`"
-
 
 ```
 FT.SEARCH idx:movie "war"
@@ -230,9 +209,7 @@ FT.SEARCH idx:movie "war"
 >
 ```
 
-
 #### Query: Limit the list of fields returned by the query using the RETURN parameter
-
 
 The `FT.SEARCH` commands returns a list of results starting with the number of results, then the list of elements (keys & fields).
 
@@ -254,9 +231,10 @@ FT.SEARCH idx:movie "war" RETURN 2 title release_year
    2) "Star Wars: Episode V - The Empire Strikes Back"
    3) "release_year"
    4) "1980"
-> 
+>
 ```
-As you can see the movie *Star Wars: Episode V - The Empire Strikes Back* is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redis.com/redisearch/Escaping/) and [stemmed](https://oss.redis.com/redisearch/Stemming/).
+
+As you can see the movie _Star Wars: Episode V - The Empire Strikes Back_ is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redis.com/redisearch/Escaping/) and [stemmed](https://oss.redis.com/redisearch/Stemming/).
 
 Later when looking at the query syntax in more detail you will learn more about the search capabilities.
 
@@ -265,7 +243,6 @@ It is also possible to limit the list of fields returned by the query using the 
 #### Query: All the movies that contains the string "war" but NOT the "jedi" one
 
 Adding the string `-Jedi` (minus) will ask the query engine not to return values that contain `jedi`.
-
 
 ```
 FT.SEARCH idx:movie "war -Jedi" RETURN 2 title release_year
@@ -282,13 +259,9 @@ FT.SEARCH idx:movie "war -Jedi" RETURN 2 title release_year
    4) "1980"
 ```
 
-
-
-
 ### Step 7. Fuzzy Search
 
 All the movies that contains the string "gdfather using fuzzy search"
-
 
 ```
 FT.SEARCH "idx:movie" " %gdfather% " RETURN 2 title release_year
@@ -305,11 +278,7 @@ FT.SEARCH "idx:movie" " %gdfather% " RETURN 2 title release_year
    4) "1972"
 ```
 
-
-
-
 #### Query: All Thriller movies
-
 
 ```
 FT.SEARCH "idx:movie" "@genre:{Thriller}" RETURN 2 title release_year
@@ -325,7 +294,6 @@ FT.SEARCH "idx:movie" "@genre:{Thriller}" RETURN 2 title release_year
    3) "release_year"
    4) "1995"
 ```
-
 
 #### Query: All Thriller or Action movies
 
@@ -354,14 +322,11 @@ FT.SEARCH "idx:movie" "@genre:{Thriller|Action}" RETURN 2 title release_year
    4) "1980"
 ```
 
-
 #### Query : All the movies released between 1970 and 1980 (included)
 
 The `FT.SEARCH` syntax has two ways to query numeric fields:
 
-
-
-*   using the `FILTER` parameter
+- using the `FILTER` parameter
 
 ```
 FT.SEARCH "idx:movie" "@genre:{Thriller|Action}" FILTER release_year 1970  1980 RETURN 2 title release_year
@@ -378,11 +343,9 @@ FT.SEARCH "idx:movie" "@genre:{Thriller|Action}" FILTER release_year 1970  1980 
    4) "1980"
 ```
 
-
 ### Step 8. Aggregation
 
 #### Query: Number of movies by year
-
 
 ```
 FT.AGGREGATE "idx:movie" "*" GROUPBY 1 @release_year REDUCE COUNT 0 AS nb_of_movies
@@ -410,11 +373,7 @@ FT.AGGREGATE "idx:movie" "*" GROUPBY 1 @release_year REDUCE COUNT 0 AS nb_of_mov
    4) "1"
 ```
 
-
-
-
 #### Query: Number of movies by year from the most recent to the oldest
-
 
 ```
 FT.AGGREGATE "idx:movie" "*" GROUPBY 1 @release_year REDUCE COUNT 0 AS nb_of_movies SORTBY 2 @release_year DESC
@@ -443,9 +402,6 @@ FT.AGGREGATE "idx:movie" "*" GROUPBY 1 @release_year REDUCE COUNT 0 AS nb_of_mov
 
 ```
 
-
-
-
 ### Additional Links
 
 - [RediSearch Project](https://oss.redis.com/redisearch/)
@@ -457,5 +413,17 @@ FT.AGGREGATE "idx:movie" "*" GROUPBY 1 @release_year REDUCE COUNT 0 AS nb_of_mov
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

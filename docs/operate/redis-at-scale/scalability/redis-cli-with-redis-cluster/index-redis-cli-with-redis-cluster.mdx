@@ -3,7 +3,7 @@ id: index-redis-cli-with-redis-cluster
 title: 4.2 Using Redis-CLI with a Redis Cluster
 sidebar_label: 4.2 Using Redis-CLI with a Redis Cluster
 slug: /operate/redis-at-scale/scalability/redis-cli-with-redis-cluster
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -15,6 +15,7 @@ There is a trick you can use with `redis-cli` so you don’t have to open connec
 ```bash
 $ redis-cli -p 7000 -c
 ```
+
 When in cluster mode, if the client gets an `(error) MOVED 15495 127.0.0.1:7002` error response from the shard it’s connected to, it will simply reconnect to the address returned in the error response, in this case 127.0.0.1:7002.
 
 Now it’s your turn: use `redis-cli` cluster mode to connect to your cluster and try accessing keys in different shards. Observe the response messages.

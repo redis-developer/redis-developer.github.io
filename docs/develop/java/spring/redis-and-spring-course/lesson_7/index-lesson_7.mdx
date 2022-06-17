@@ -1,6 +1,6 @@
 ---
 id: index-lesson_7
-title: "Search with RediSearch"
+title: 'Search with RediSearch'
 sidebar_label: Search w/ RediSearch
 slug: /develop/java/redis-and-spring-course/lesson_7
 authors: [bsb]
@@ -15,11 +15,12 @@ Learn how the RediSearch module can bridge the querying gap between SQL and NoSQ
 ### Agenda
 
 In this lesson, you'll learn:
-* How to create search indexes with RediSeach using spring-redisearch and lettuce-search.
-* How to use RediSearch in a Spring Boot application to implement faceted search.
-* How to use the RediSearch suggestions feature to implement auto-complete.
-If you get stuck:
-* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-7
+
+- How to create search indexes with RediSeach using spring-redisearch and lettuce-search.
+- How to use RediSearch in a Spring Boot application to implement faceted search.
+- How to use the RediSearch suggestions feature to implement auto-complete.
+  If you get stuck:
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-7
 
 ### RediSearch
 
@@ -47,9 +48,10 @@ In your Maven `pom.xml`, add the following dependency:
 
 To create an index, you must define a schema to list the fields and their types to be indexed.
 For the `Book` model, you will be indexing four fields:
-* Title
-* Subtitle
-* Description
+
+- Title
+- Subtitle
+- Description
 
 #### Authors
 
@@ -57,6 +59,7 @@ Creating the index is done using the FT.CREATE command. The RediSearch engine wi
 This active index maintenance makes it easy to add an index to an existing application.
 To create our index, we’ll use the now-familiar `CommandLineRunner` recipe.
 We will keep the name of the soon to be created index in the application's property field as shown:
+
 ```
 app.booksSearchIndexName=books-idx
 ```
@@ -133,9 +136,10 @@ From the `StatefulRediSearchConnection` we get an instance of RediSearchCommands
 We only create the index if it doesn’t exist, which will be signalled by the FT.INFO command command throwing an exception.
 To create the index, we build a `CreateOptions` object passing the Book class prefix.
 For each one the fields to be indexed, we create a Field object:
-* Title is created as a sortable text field
-* Subtitle is created as a text field
-* Description is created as a text field
+
+- Title is created as a sortable text field
+- Subtitle is created as a text field
+- Description is created as a text field
 
 Authors are stored in a Set, so they are serialized as prefixed indexed fields (`authors.[0], authors.[1]`, ...). We indexed up to 6 authors.
 To create the index, we invoke the create method passing the index name, the CreateOptions, and the fields.
@@ -167,6 +171,7 @@ You can see the index information with the following command in the Redis CLI:
 This snippet from the FT.INFO command output for the `“books-idx”` index shows that there are 2,403 documents indexed (the number of books in the system). From our indexed documents, there are 32,863 terms and close to half a million records.
 
 ### Full-text Search Queries
+
 RediSearch is a full-text search engine, allowing the application to run powerful queries. For example, to search all books that contain “networking”-related information, you would run the following command:
 
 ```bash
@@ -316,10 +321,10 @@ RediSearch provides a completion suggester that is typically used for auto-compl
 This is a navigational feature to guide users to relevant results as they are typing, improving search precision.
 RediSearch provides completion suggestions with four commands:
 
-* FT.SUGADD: Adds a suggestion string to an auto-complete dictionary.
-* FT.SUGGET: Get a list of suggestions for a string.
-* FT.SUGDEL: Deletes a suggestion string from an auto-complete dictionary.
-* FT.SUGLEN: Returns the size of an auto-completion dictionary
+- FT.SUGADD: Adds a suggestion string to an auto-complete dictionary.
+- FT.SUGGET: Get a list of suggestions for a string.
+- FT.SUGDEL: Deletes a suggestion string from an auto-complete dictionary.
+- FT.SUGLEN: Returns the size of an auto-completion dictionary
 
 #### Implement an auto-complete endpoint for author names
 
@@ -388,9 +393,9 @@ public class CreateAuthorNameSuggestions  implements CommandLineRunner {
 
 Let’s break down the logic of the `CreateAuthorNameSuggestions` `CommandLineRunner`:
 
-* First, we guarantee a single execution by checking for the existence of the key for the auto-complete dictionary.
-* Then, using the `BookRepository` we loop over all books
-* For each author in a book we add a suggestion to the dictionary
+- First, we guarantee a single execution by checking for the existence of the key for the auto-complete dictionary.
+- Then, using the `BookRepository` we loop over all books
+- For each author in a book we add a suggestion to the dictionary
 
 To use the auto-suggestion feature in the controller, we can add a new method:
 
@@ -424,16 +429,16 @@ This results in a response with 2 JSON objects:
 
 ```json
 [
-    {
-        "string": "Brian Steele",
-        "score": null,
-        "payload": null
-    },
-    {
-        "string": "Brian Sam-Bodden",
-        "score": null,
-        "payload": null
-    }
+  {
+    "string": "Brian Steele",
+    "score": null,
+    "payload": null
+  },
+  {
+    "string": "Brian Sam-Bodden",
+    "score": null,
+    "payload": null
+  }
 ]
 ```
 
@@ -447,12 +452,10 @@ We get the expected narrowing of the suggestion set:
 
 ```json
 [
-    {
-        "string": "Brian Sam-Bodden",
-        "score": null,
-        "payload": null
-    }
+  {
+    "string": "Brian Sam-Bodden",
+    "score": null,
+    "payload": null
+  }
 ]
 ```
-
-

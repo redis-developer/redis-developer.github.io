@@ -21,10 +21,10 @@ public class Employee
 
     [Indexed(Aggregatable = true)]
     public int Age { get; set; }
-    
+
     [Indexed(Aggregatable = true)]
-    public double Sales { get; set; }    
-    
+    public double Sales { get; set; }
+
     [Searchable(Aggregatable = true)]
     public string Department { get; set; }
 }

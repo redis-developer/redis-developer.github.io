@@ -1,6 +1,6 @@
 ---
 id: index-usingpython
-title: How to store JSON documents in Redis with Python 
+title: How to store JSON documents in Redis with Python
 sidebar_label: RedisJSON and Python
 slug: /howtos/redisjson/using-python
 ---
@@ -29,23 +29,18 @@ click "Create a custom database" option shown in the image.
 
 ![create database ](images/select_cloud_vendor.png)
 
-
-### Step 3.  Verify the database details
+### Step 3. Verify the database details
 
 You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
-
-
 
 ![verify database](images/details_database.png)
 
 ### Step 4. Using RedisInsight
 
-
 RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
 [Follow this link](/explore/redisinsightv2/getting-started) to install RedisInsight v2 on your local system.
 Assuming that you already have RedisInsight v2 installed on your MacOS, you can browse through the Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
-
 
 ### Step 5. Add Redis database
 
@@ -55,12 +50,9 @@ Assuming that you already have RedisInsight v2 installed on your MacOS, you can 
 
 Add the Redis Enterprise cloud database endpoint, port and password.
 
-
 ![access redisinsight](images/database_creds.png)
 
-
 ### Step 7. Verify the database under RedisInsight dashboard
-
 
 ![database details](images/database_details.png)
 
@@ -94,7 +86,6 @@ Installing collected packages: async-timeout, typing-extensions, wrapt, deprecat
     Successfully installed async-timeout-4.0.2 deprecated-1.2.13 redis-4.2.0 typing-extensions-4.1.1 wrapt-1.14.0
 ```
 
-
 Here's the Python code to store this document in Redis using RedisJSON:
 
 ```python
@@ -104,8 +95,8 @@ from redis.commands.json.path import Path
 client = redis.Redis(host='localhost', port=6379, db=0)
 
 jane = {
-     'name': "Jane", 
-     'Age': 33, 
+     'name': "Jane",
+     'Age': 33,
      'Location': "Chawton"
    }
 
@@ -148,6 +139,7 @@ You can use RedisJSON to fetch specific fields from a document by specifying a p
 name = client.json().get('person:1', Path('.name'))
 print(name)
 ```
+
 This code will print the string "Jane".
 
 You can execute the same query from the command line:
@@ -162,5 +154,3 @@ localhost:6379> json.get person:1 '.name'
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
 - Learn more about [RedisJSON](https://redisjson.io) in the Quickstart tutorial
-
-

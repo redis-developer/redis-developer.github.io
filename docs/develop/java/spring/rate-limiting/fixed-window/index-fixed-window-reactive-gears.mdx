@@ -1,9 +1,10 @@
 ---
-id: index-fixed-window-reactive-gears
+id: index-spring-fixed-window-reactive-gears
 title: Atomicity with Gears
 sidebar_label: Atomicity with Gears
 slug: /develop/java/spring/rate-limiting/fixed-window/reactive-gears
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -41,12 +42,12 @@ The functions are "registered" (deployed) to the Gears engine, and have an assoc
 During registration we pick a specific reader for our function which defines how the function
 gets its initial data:
 
-* `KeysReader`: Redis keys and values.
-* `KeysOnlyReader`: Redis keys.
-* `StreamReader`: Redis Stream messages.
-* `PythonReader`: Arbitrary Python generator.
-* `ShardsIDReader`: Shard ID.
-* `CommandReader`: Command arguments from application client.
+- `KeysReader`: Redis keys and values.
+- `KeysOnlyReader`: Redis keys.
+- `StreamReader`: Redis Stream messages.
+- `PythonReader`: Arbitrary Python generator.
+- `ShardsIDReader`: Shard ID.
+- `CommandReader`: Command arguments from application client.
 
 ### A Rate-Limiting RedisGears Function
 
@@ -54,9 +55,9 @@ Depending on the reader type, Gear Functions can either be run immediately, on d
 
 The Python function `rate_limit` takes 3 parameters:
 
-* `key`: The Redis key backing the counter for a given user.
-* `max_request`: The request quota for the user.
-* `expiry`: The number of seconds in the future to set the counter TTL.
+- `key`: The Redis key backing the counter for a given user.
+- `max_request`: The request quota for the user.
+- `expiry`: The number of seconds in the future to set the counter TTL.
 
 ```py
 def rate_limit(key, max_requests, expiry):
@@ -89,18 +90,18 @@ Similarly to what we did in the previous implementation, we:
 2. Cast the result to an `int` and if not found, default to `-1`
 3. Cast `max_requests` and `expiry` to `int`
 4. If the quota hasn't been exceeded, perform the `INCR`/`EXPIRE` commands in a transactions (`with atomic():`)
-and return `False` (no rate limiting - request is allowed)
+   and return `False` (no rate limiting - request is allowed)
 5. Otherwise, return `True` (deny the request)
 
 #### Function Registration
 
 1. At the bottom of the script, in the `# Function registration` section, we instantiate the
-[`GearsBuilder`(`GB`)](https://oss.redis.com/redisgears/runtime.html#gearsbuilder) using the `CommandReader`
-reader. The `GearsBuilder` "builds" the context of the function, in parameters, transformations, triggers, etc.
+   [`GearsBuilder`(`GB`)](https://oss.redis.com/redisgears/runtime.html#gearsbuilder) using the `CommandReader`
+   reader. The `GearsBuilder` "builds" the context of the function, in parameters, transformations, triggers, etc.
 2. We use the `map` method to performs a one-to-one mapping of records to the params of the `rate_limit`
-function via a mapper function callback.
+   function via a mapper function callback.
 3. We can now invoke the `register` action to register the function as an event handler. The event in our case is the
-trigger `'RateLimiter'`.
+   trigger `'RateLimiter'`.
 
 ## RedisGears in SpringBoot
 
@@ -114,10 +115,10 @@ In order to use our RedisGear function from our SpringBoot application we need t
 [LettuceMod](https://github.com/redis-developer/lettucemod) is a Java client for Redis Modules based on Lettuce created by [Julien Ruaux ](https://github.com/jruaux).
 It supports the following modules in standalone or cluster configurations:
 
-* RedisGears
-* RedisJSON
-* RediSearch
-* RedisTimeSeries
+- RedisGears
+- RedisJSON
+- RediSearch
+- RedisTimeSeries
 
 To use LettuceMod we'll add the dependency to the Maven POM as shown:
 

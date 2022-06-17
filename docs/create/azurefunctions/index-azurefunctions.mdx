@@ -6,10 +6,9 @@ slug: /create/azurefunctions
 authors: [ajeet]
 ---
 
-
 ![alt_text](images/preview_azurefunction.png)
 
-[Azure Functions](https://azure.microsoft.com/en-in/services/functions/) is an event-based, serverless compute platform offered by [Microsoft](https://azure.microsoft.com/en-in/blog/microsoft-named-a-leader-in-forrester-wave-functionasaservice-platforms/) to accelerate and simplify serverless application development. It allows developers to write less code, build and debug locally without additional setup, and deploy and operate at scale in the cloud. 
+[Azure Functions](https://azure.microsoft.com/en-in/services/functions/) is an event-based, serverless compute platform offered by [Microsoft](https://azure.microsoft.com/en-in/blog/microsoft-named-a-leader-in-forrester-wave-functionasaservice-platforms/) to accelerate and simplify serverless application development. It allows developers to write less code, build and debug locally without additional setup, and deploy and operate at scale in the cloud.
 
 ### How it works
 
@@ -19,8 +18,6 @@ Azure Functions [provides as many or as few compute resources as needed](https:/
 
 ### Benefits of Microsoft Azure Functions
 
-
-
 - Azure Functions provides automated and flexible scaling.
 - It allows you to build, debug, deploy, and monitor with integrated tools and built-in DevOps capabilities.
 - It [supports a variety of programming languages](https://docs.microsoft.com/en-in/azure/azure-functions/supported-languages#languages-in-runtime-1x-and-2x) such as C#, Java, JavaScript, Python, and PowerShell.
@@ -28,13 +25,13 @@ Azure Functions [provides as many or as few compute resources as needed](https:/
 - With Azure Functions you can set up CI/CD with Azure Pipelines.
 - It’s a great solution for processing bulk data, integrating systems, working with IoT, and building simple APIs and microservices.
 - It’s used to break monolithic architectures into loosely coupled functions.
-- It allows you to [deploy Functions to Kubernetes](https://docs.microsoft.com/en-us/azure/azure-functions/functions-kubernetes-keda). 
+- It allows you to [deploy Functions to Kubernetes](https://docs.microsoft.com/en-us/azure/azure-functions/functions-kubernetes-keda).
 
-In this tutorial, you will learn how to get started with Azure Functions and Redis. 
+In this tutorial, you will learn how to get started with Azure Functions and Redis.
 
 ### Getting started
 
-- Step 1. Log in to Microsoft Azure Portal 
+- Step 1. Log in to Microsoft Azure Portal
 - Step 2. Set up Azure Cache for Redis
 - Step 3. Configure Keys for Redis Cache
 - Step 4. Verify if Redis database is reachable remotely
@@ -53,55 +50,38 @@ In this tutorial, you will learn how to get started with Azure Functions and Red
 
 Create an Azure account with an active subscription by clicking this link: [Create an account for free](https://azure.microsoft.com/free/).
 
-
-
-
 ![Acount Dashboard](images/image2.png)
 
+### Step 2. Set up “Azure Cache for Redis”
 
-### Step 2.  Set up “Azure Cache for Redis”
-
-Type "Azure Cache for Redis" in the search section and select the service: 
-
-
+Type "Azure Cache for Redis" in the search section and select the service:
 
 ![Azure Cache for Redis Service](images/image3.png)
 
 Under "New Redis Cache" window, create a new resource group, select your preferred location and cache type:
 
-
 ![Creating a new Redis Instance](images/image4.png)
 
 Once you are done with the entries, click "Review + Create" button.
 
-
 ![alt_text](images/image5.png)
-
 
 Wait for few seconds to let deployment process to complete.
 
 ![Deploying your Redis Instance](images/image6.png)
 
-
 Once the deployment is complete, you will be provided with the deployment name, subscription details and resource group.
 
-
 ![Redis Instance up and running](images/image7.png)
-
 
 ### Step 3. Configure Keys for Redis Cache
 
 You will need keys to log in to the Redis database.
 Click "Overview" option in the left sidebar to see the Primary key and save it for future reference.
 
-
-
-
 ![Managing keys](images/keys.png)
 
-
 ### Step 4. Verify if Redis database is accessible
-
 
 ```
 redis-cli -h demorediss.redis.cache.windows.net -p 6379
@@ -114,7 +94,6 @@ demorediss.redis.cache.windows.net:6379> get a1
 
 ```
 
-
 ### Step 5. Install Homebrew on Mac
 
 Install the Homebrew package manager by running this script:
@@ -123,20 +102,13 @@ Install the Homebrew package manager by running this script:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-
 ### Step 6. Install Visual Studio Code
 
 Visual Studio Code is a lightweight but powerful source code editor that runs on your desktop and is available for Windows, macOS, and Linux. It comes with built-in support for JavaScript, TypeScript, and Node.js, and has a rich ecosystem of extensions for other languages (such as C++, C#, Java, Python, PHP, Go) and runtimes (such as .NET and Unity). Begin your journey with VS Code with these [introductory videos](https://code.visualstudio.com/docs/introvideos/overview).
 
-
-
 ![Visual Studio Code download](images/image8.png)
 
-
-
-
 ### Step 7. Install the Azure Functions Core Tools
-
 
 ```
 brew tap azure/functions
@@ -145,30 +117,19 @@ brew install azure-functions-core-tools@4
 brew link --overwrite azure-functions-core-tools@4
 ```
 
-
 ### Step 8. Install the Azure Functions extension for Visual Studio Code
 
 Use the Azure Functions extension to quickly create, debug, manage, and deploy serverless apps directly from VS Code.
 
-
-
 ![The Azure Functions extension for Visual Studio Code](images/image10.png)
-
-
-
-
 
 ### Step 9. Connect Azure Function to Azure account
 
-
-
-
 ![Configuring Azure in Visual Studio Code](images/image13.png)
-
 
 ### Step 10. Clone the project repository
 
-For this tutorial, we will be using a baby names counter app built using C#. 
+For this tutorial, we will be using a baby names counter app built using C#.
 To get started, we will first clone the repository:
 
 ```
@@ -177,9 +138,7 @@ git clone https://github.com/redis-developer/Baby-Names-Func
 
 ```
 
-
 Add “Azure Cache for Redis” endpoint URL details in the `local-settings.json` file as shown below:
-
 
 ```
 {
@@ -193,44 +152,28 @@ Add “Azure Cache for Redis” endpoint URL details in the `local-settings.json
 }
 ```
 
-
 Open the project with Visual Studio Code by running the following command:
-
 
 ```
 cd Baby-Names-Func
 code .
 ```
 
-
 This will open VS Code. The function will automatically load into the plugin.
 
-
-
-
 ![Project loaded into Visual Studio Code](images/image14.png)
-
 
 ### Step 11. Trigger the function
 
 Press F5 to automatically execute the function.
 
-
-
-
 ![Executing the function](images/image15.png)
-
 
 If you want to manually select the repository, choose .NET framework, etc., and then click “Create new project.”
 
-
-
-
 ![Creating a new project](images/image16.png)
 
-
 You will find the following output under VS Code screen:
-
 
 ```
      1>Done Building Project "/Users/ajeetraina/projects/Baby-Names-Func/RedisFunctions.csproj" (Clean target(s)).
@@ -268,27 +211,19 @@ For detailed output, run func with --verbose flag.
 
 ```
 
-
 ### Step 12. Verify the Azure functions app is working properly
 
-
-
-
 ![Output in the browser from running the application locally](images/image17.png)
-
 
 ### Step 13. Seed the Redis database
 
 Now, let us seed BabyNames data into the Redis database.
 
-
 ```
 git clone https://github.com/slorello89/Seed-Baby-Names
 ```
 
-
 If you connect to the Redis database and run the `MONITOR` command, you should see the data being inserted into the database as shown below:
-
 
 ```
 1646061655.966050 [0 122.171.48.244:60531] "CMS.INCRBY" "baby-names" "Rowen" "1"
@@ -319,16 +254,11 @@ If you connect to the Redis database and run the `MONITOR` command, you should s
 
 ```
 
-
 ### Step 14. Run query using RedisInsight
 
 [Follow this link to set up RedisInsight](https://developer.redis.com/explore/redisinsightv2/getting-started) on your local system and get connected to the Redis database. Once connected, you should be able to run the following queries:
 
-
-
 ![Redis Insight](images/image18.png)
-
-
 
 ```
 > CMS.INFO baby-names
@@ -343,9 +273,7 @@ If you connect to the Redis database and run the `MONITOR` command, you should s
 1) 109
 ```
 
-
 ### Additional references:
-
 
 - [Introduction to Azure Functions](https://azure.microsoft.com/en-in/services/functions/)
 - [Fully Managed Redis Enterprise for Azure](https://redis.com/cloud-partners/microsoft-azure/)

@@ -9,11 +9,9 @@ slug: /howtos/moviesdatabase/sampleapp
 
 It is time now to see how to use RediSearch in your application.
 
-
 ## Run the Sample Application
 
 The application and all the services, including RediSearch, are available as a Docker Compose application.
-
 
 If you have not already downloaded the project, clone it:
 
@@ -22,7 +20,6 @@ If you have not already downloaded the project, clone it:
 
 > cd redisearch-getting-started
 ```
-
 
 To run the application:
 
@@ -41,12 +38,10 @@ This Docker Compose will start:
 
 Once started you can access the application and its services using the following URLs:
 
-* http://localhost:8084
-* http://localhost:8085/api/1.0/movies/search?q=star&offset=0&limit=10
-* http://localhost:8086/api/1.0/movies/search?q=star&offset=0&limit=10
-* http://localhost:8087/api/1.0/movies/search?q=star&offset=0&limit=10
-
-
+- http://localhost:8084
+- http://localhost:8085/api/1.0/movies/search?q=star&offset=0&limit=10
+- http://localhost:8086/api/1.0/movies/search?q=star&offset=0&limit=10
+- http://localhost:8087/api/1.0/movies/search?q=star&offset=0&limit=10
 
 #### Stop and Delete Everything
 
@@ -55,4 +50,3 @@ Run the following command to delete the containers & images:
 ```
 > docker-compose down -v --rmi local --remove-orphans
 ```
-

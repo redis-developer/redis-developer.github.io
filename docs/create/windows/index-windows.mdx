@@ -1,96 +1,88 @@
 ---
 id: index-windows
-title: How to Install Redis on Windows  
+title: How to Install Redis on Windows
 sidebar_label: Redis on Windows
 slug: /create/windows
 authors: [ajeet]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 You can run Redis on Windows 10 using Windows Subsystem for Linux(a.k.a WSL2). WSL2 is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019. WSL2 lets developers run a GNU/Linux environment (that includes command-line tools, utilities, and applications) directly on Windows.
 
-Follow these instructions to run a Redis database  on Microsoft Windows 10.
-
+Follow these instructions to run a Redis database on Microsoft Windows 10.
 
 ### Step 1: Turn on Windows Subsystem for Linux
 
 In Windows 10, Microsoft replaced Command Prompt with PowerShell as the default shell. Open PowerShell as Administrator and run this command to enable Windows Subsystem for Linux (WSL):
 
-
-
- ```powershell
-  Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
- ```
+```powershell
+ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+```
 
 Reboot Windows after making the change — note that you only need to do this once.
 
-### Step 2: Launch Microsoft Windows Store 
+### Step 2: Launch Microsoft Windows Store
 
- ```powershell
-  start ms-windows-store:
- ```
+```powershell
+ start ms-windows-store:
+```
 
 ### Step 3: Install Redis server
 
 Installing Redis is simple and straightforward. The following example works with Ubuntu (you'll need to wait for initialization and create a login upon first use):
 
- ```bash
-  sudo apt-add-repository ppa:redislabs/redis
-  sudo apt-get update
-  sudo apt-get upgrade
-  sudo apt-get install redis-server
- ```
-Please note that the `sudo` command might or mightn't be required based on the user configuration of your system.
+```bash
+ sudo apt-add-repository ppa:redislabs/redis
+ sudo apt-get update
+ sudo apt-get upgrade
+ sudo apt-get install redis-server
+```
 
+Please note that the `sudo` command might or mightn't be required based on the user configuration of your system.
 
 ### Step 4: Restart the Redis server
 
 Restart the Redis server as follows:
 
- ```bash
-  sudo service redis-server restart
- ```
-
+```bash
+ sudo service redis-server restart
+```
 
 ### Step 5: Verify if your Redis server is running
 
 Use the `redis-cli` command to test connectivity to the Redis database.
 
-
-
- ```
-  $ redis-cli 
-  127.0.0.1:6379> set user:1 "Jane"
-  127.0.0.1:6379> get user:1
- "Jane"
- ```
+```
+ $ redis-cli
+ 127.0.0.1:6379> set user:1 "Jane"
+ 127.0.0.1:6379> get user:1
+"Jane"
+```
 
 Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
 
-### Step 6: Stop the Redis Server 
+### Step 6: Stop the Redis Server
 
- ```bash
-  sudo service redis-server stop
- ```
+```bash
+ sudo service redis-server stop
+```
+
 ### Next Steps
-
-
 
 <div class="row text--center">
 
 <div class="col ">
 <div className="ri-container">
 
-#### How to run Redis GUI tool on Windows 
+#### How to run Redis GUI tool on Windows
 
 ![Windows logo](/img/logos/windows.png)
 
-[Follow this tutorial](/explore/redisinsightv2/windows) in order to run RedisInsight on Windows 
-
+[Follow this tutorial](/explore/redisinsightv2/windows) in order to run RedisInsight on Windows
 
 </div>
 </div>
@@ -98,10 +90,7 @@ Please note: By default, Redis has 0-15 indexes for databases, you can change th
 <div class="col">
 <div className="ri-container">
 
-#### Model Redis data in your .NET Applications 
-
-
-
+#### Model Redis data in your .NET Applications
 
 ![redis OM logo](/img/logos/redisom.gif)
 
@@ -110,8 +99,6 @@ Learn how to [connect to a Redis database with Redis OM Dotnet](/develop/dotnet/
 </div>
 </div>
 </div>
-
-
 
 ### References
 
@@ -124,7 +111,11 @@ Learn how to [connect to a Redis database with Redis OM Dotnet](/develop/dotnet/
 Check out this video if you want to see Redis on Windows 10 Home Edition in action.
 
 <div class="text--center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qTN0GqF_Gq8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/qTN0GqF_Gq8"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-
-

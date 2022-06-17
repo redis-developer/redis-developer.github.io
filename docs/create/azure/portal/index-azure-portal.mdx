@@ -9,8 +9,7 @@ Redis is an open source, in-memory, key-value data store most commonly used as a
 
 The Azure cloud platform has more than 200+ products and cloud services designed to help you bring new solutions to life-to solve today's challenges and create the future. Azure services help you to build, run, and manage applications across multiple clouds, on-premises, and at the edge, with the tools and frameworks of your choice.
 
-
-Azure Cache for Redis is a native fully-managed service on Microsoft Azure. Azure Cache for Redis offers both the Redis open-source (OSS Redis) and a commercial product from Redis (Redis Enterprise) as a managed service. It provides secure and dedicated Redis server instances and full Redis API compatibility. The service is operated by Microsoft, hosted on Azure, and accessible to any application within or outside of Microsoft Azure. 
+Azure Cache for Redis is a native fully-managed service on Microsoft Azure. Azure Cache for Redis offers both the Redis open-source (OSS Redis) and a commercial product from Redis (Redis Enterprise) as a managed service. It provides secure and dedicated Redis server instances and full Redis API compatibility. The service is operated by Microsoft, hosted on Azure, and accessible to any application within or outside of Microsoft Azure.
 
 Azure Cache for Redis dashboard uses Azure Monitor to provide several options for monitoring your cache instances.[Learn more](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/redis-cache-insights-overview)
 Use Azure Monitor to:
@@ -21,26 +20,19 @@ Use Azure Monitor to:
 - Add and remove metrics from the charts
 - Set alerts when certain conditions are met
 
-### Step 1. Getting Started 
+### Step 1. Getting Started
 
+Search for "azure redis cache " in the search dashboard and launch [Azure Cache for Redis Enterprise](https://portal.azure.com)
 
-Search for "azure redis cache " in the search dashboard and launch  [Azure Cache for Redis Enterprise](https://portal.azure.com)
-
-
-![RedisLabs Azure Page](azure7.png) 
-
+![RedisLabs Azure Page](azure7.png)
 
 ### Step 2: Setup & Subscribe
 
 ![RedisLabs Azure Page](azure6.png)
 
-
 ### Step 3: Configuring New Redis Cache Instance
 
 ![RedisLabs Azure Page](azure5.png)
-
-
-
 
 ### Step 4: Connecting to Redis database
 
@@ -50,13 +42,21 @@ You can directly connect to the Redis cache instances using the Redis CLI comman
 sudo redis-cli -h demos.redis.cache.windows.net -p 6379
 demos.redis.cache.windows.net:6379>
 ```
-Please note that you can have multiple clients connected to a Redis database at the same time. The above Redis client command might require a password if you have setup authentication in your Redis configuration file. You can insert data to Redis using the `SET` command and then fetch it back with the `GET` command. You can also run the Redis `INFO` command to get the statistics about the health  of the Redis server (for example, memory usage, Redis server load etc).
+
+Please note that you can have multiple clients connected to a Redis database at the same time. The above Redis client command might require a password if you have setup authentication in your Redis configuration file. You can insert data to Redis using the `SET` command and then fetch it back with the `GET` command. You can also run the Redis `INFO` command to get the statistics about the health of the Redis server (for example, memory usage, Redis server load etc).
+
 ### Resources
 
 <div class="text--center">
-<iframe width="760" height="415" src="https://www.youtube.com/embed/t6XQHsKFMKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/t6XQHsKFMKQ"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-
 
 ### Next Steps
 
@@ -67,5 +67,17 @@ Please note that you can have multiple clients connected to a Redis database at 
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

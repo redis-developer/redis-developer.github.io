@@ -6,25 +6,38 @@
  */
 
 @media screen and (max-width: 997px) {
-  .displayOnlyInLargeViewport {
-    display: none !important;
-  }
+    .displayOnlyInLargeViewport {
+        display: none !important;
+    }
 }
 
 @media (max-width: 768px) {
-  .hideLogoText {
-    display: none;
-  }
+    .hideLogoText {
+        display: none;
+    }
 }
 
 .navbarHideable {
-  transition: top 0.2s ease-in-out;
+    transition: top 0.2s ease-in-out;
 }
 
 .navbarHidden {
-  top: calc(var(--ifm-navbar-height) * -1) !important;
+    top: calc(var(--ifm-navbar-height) * -1) !important;
 }
 
 .navbar {
-  background-color: red !important;
+    background-color: red !important;
+}
+
+.white {
+    color: #fff !important;
+}
+
+.navbarToggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.navbarLogo img {
+    display: block !important;
 }
