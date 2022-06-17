@@ -3,7 +3,7 @@ id: index-introduction
 title: 3.0 Introduction to High Availability
 sidebar_label: 3.0 Introduction to High Availability
 slug: /operate/redis-at-scale/high-availability/introduction
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -15,9 +15,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 <br />
 <p>High availability is a computing concept describing systems that guarantee a high level of uptime, designed to be fault-tolerant, highly dependable, operating continuously without intervention and without a single point of failure.</p>
 
-What does this mean for Redis specifically? Well, it means that if your primary Redis server fails, a backup will kick in, and you, as a user, will see little to no disruption in the service. There are two components needed for this to be possible: replication and automatic failover. 
+What does this mean for Redis specifically? Well, it means that if your primary Redis server fails, a backup will kick in, and you, as a user, will see little to no disruption in the service. There are two components needed for this to be possible: replication and automatic failover.
 
-Replication is the continuous copying of data from a primary database to a backup, or a replica database. The two databases are usually located on different physical servers, so that we can have a functional copy of our data in case we lose the server where our primary database sits. 
+Replication is the continuous copying of data from a primary database to a backup, or a replica database. The two databases are usually located on different physical servers, so that we can have a functional copy of our data in case we lose the server where our primary database sits.
 
 But having a backup of our data is not enough for high availability. We also have to have a mechanism that will automatically kick in and redirect all requests towards the replica in the event that the primary fails. This mechanism is called automatic failover.
 

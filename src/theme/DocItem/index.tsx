@@ -17,6 +17,8 @@ function DocItemWrapper(props: Props): JSX.Element {
     const { content: DocContent } = props;
     const authorLookup = (siteConfig.customFields as any).authors;
 
+    console.log(props);
+
     return (
         <>
             {(DocContent.frontMatter as any).authors && (

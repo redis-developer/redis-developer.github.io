@@ -3,7 +3,7 @@ id: index-identifying-issues
 title: 5.3 Identifying Issues
 sidebar_label: 5.3 Identifying Issues
 slug: /operate/redis-at-scale/observability/identifying-issues
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -86,7 +86,7 @@ There are a few options that can be passed to redis-cli that will trigger a keys
 
 
 ```bash
-$ redis-cli --bigkeys 
+$ redis-cli --bigkeys
 
 # Scanning the entire keyspace to find biggest keys as well as
 # average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec
@@ -181,7 +181,7 @@ OK
 The Redis log file is the other important log you need to be aware of. It contains useful information for troubleshooting configuration and deployment errors. If you don't configure Redis logging, troubleshooting will be significantly harder.
 
 
-Redis has four logging levels, which you can configure directly in `redis.conf` file. 
+Redis has four logging levels, which you can configure directly in `redis.conf` file.
 
 
 Log Levels:

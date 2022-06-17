@@ -3,7 +3,7 @@ id: index-data-points-in-redis
 title: 5.1 Data points in Redis
 sidebar_label: 5.1 Data points in Redis
 slug: /operate/redis-at-scale/observability/data-points-in-redis
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -159,7 +159,7 @@ $ redis-cli --latency --csv
 In order to sample for longer than one second you can use `latency-history` which has a default interval of 15 seconds but can be specified using the `-i` param.
 
 ```bash
-$ redis-cli --latency-history -i 60 
+$ redis-cli --latency-history -i 60
 min: 1, max: 30, avg: 4.84 (328 samples)
 ```
 This can also be combined with the `csv` or `raw` output format flag.
@@ -190,7 +190,7 @@ The `latency-dist` option shows latency as a spectrum. The default interval is o
 Get rolling stats from the server using the `stat` flag.
 
 ```bash
-$ redis-cli --stat 
+$ redis-cli --stat
 ------- data ------ --------------------- load -------------------- - child -
 keys       mem      clients blocked requests            connections
 4          9.98M    51      0       8168035 (+0)        4132
@@ -208,7 +208,7 @@ keys       mem      clients blocked requests            connections
 ## Memory stats
 Redis includes a `MEMORY` command that includes a subcommand to get stats.
 
-```bash                                                                        
+```bash
 127.0.0.1:6379> memory stats
  1) "peak.allocated"
  2) (integer) 11912984
@@ -319,5 +319,3 @@ While the cost of enabling latency monitoring is near zero and memory requiremen
 There are many open source monitoring tools and services to visualize your Redis metrics - some of which also provide alerting capabilities.
 
 One example of this is the [Redis Data Source for Grafana](https://grafana.com/grafana/plugins/redis-datasource/). It is a [Grafana](https://grafana.com/) plug-in that allows users to connect to the Redis database and build dashboards to easily observe Redis data. It provides an out-of-the-box predefined dashboard but also lets you build customized dashboards tuned to your specific needs.
-
-

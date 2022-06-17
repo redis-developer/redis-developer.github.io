@@ -3,7 +3,7 @@ id: index-redis-server-overview
 title: 1.0 Redis Server Overview
 sidebar_label: 1.0 Redis Server Overview
 slug: /operate/redis-at-scale/talking-to-redis/redis-server-overview
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -22,7 +22,4 @@ Indeed, this means that open source Redis can’t take advantage of the processi
 
 Let’s now look at exactly what happens behind the scenes with every Redis request. When a client sends a request to a Redis server, the request is first read from the socket, then parsed and processed and finally, the response is written back to the socket and sent to the user. The reading and especially writing to a socket are expensive operations, so in Redis version 6.0 multi-threaded I/O was introduced. When this feature is enabled, Redis can delegate the time spent reading and writing to I/O sockets over to other threads, freeing up cycles for storing and retrieving data and boosting overall performance by up to a factor of two for some workloads.
 
-Throughout the rest of the section, you’ll learn how to use the Redis command-line interface, how to configure your Redis server, and how to choose and tune your Redis client library. 
-
-
-
+Throughout the rest of the section, you’ll learn how to use the Redis command-line interface, how to configure your Redis server, and how to choose and tune your Redis client library.

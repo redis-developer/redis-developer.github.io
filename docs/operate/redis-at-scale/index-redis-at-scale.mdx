@@ -4,7 +4,7 @@ title: Introduction to Running Redis at Scale
 sidebar_label: Overview
 slug: /operate/redis-at-scale
 authors: [justin, elena, kurt]
-isEditable: false
+custom_edit_url: null
 ---
 
 import RedisCard from '@site/src/theme/RedisCard';
@@ -24,13 +24,13 @@ The convenience of "database-as-a-service" offerings means that you don't have t
 
 We at Redis offer Redis Cloud, a highly available cloud-based Redis service that provides a lot of features you can't find anywhere else, like active-active, geo-distribution.
 
-Redis Cloud is also really easy to use and has a free tier so you can get going quickly. So, that's the first answer. To run Redis these days, you might just use a fully-managed offering like Redis Cloud. But not everyone can or wants to use a cloud-hosted database. 
+Redis Cloud is also really easy to use and has a free tier so you can get going quickly. So, that's the first answer. To run Redis these days, you might just use a fully-managed offering like Redis Cloud. But not everyone can or wants to use a cloud-hosted database.
 
 There are a bunch of reasons for this. For example, maybe you're a large enterprise with your own data centers and dedicated ops teams. Or perhaps you're a mission-critical application whose SLAs are so rigid that you need to be able to dig deeply into any potential performance issue. This often rules out cloud-based deployments, since the cloud hides away the hardware and networks you're operating in. In this case, you're deploying Redis on your own. And for that, you need to know how Redis scales.
 
 Learning this isn't just useful; it's also genuinely interesting. Sharding, replication, high availability, and disaster recovery are all important concepts that anyone can understand with the right explanation. These concepts aren't rocket science. They're no harder to understand than basic high school math, and knowing about them makes you a better developer.In this course, we'll look closely at how open source Redis scales. And you'll learn by doing, as we present a lot of the ideas through hands-on labs.
 
-These ideas will apply whether you're deploying open source Redis on your own or managing a Redis Enterprise cluster - which is, ultimately, what  you'll want to reach for if you ever outgrow open source Redis. These are some important topics to consider during your time with this course. But let's first learn how to walk before we run.  
+These ideas will apply whether you're deploying open source Redis on your own or managing a Redis Enterprise cluster - which is, ultimately, what  you'll want to reach for if you ever outgrow open source Redis. These are some important topics to consider during your time with this course. But let's first learn how to walk before we run.
 
 We sincerely hope you enjoy what you learn with us about scaling Redis, and as always, it's my pleasure to help.
 

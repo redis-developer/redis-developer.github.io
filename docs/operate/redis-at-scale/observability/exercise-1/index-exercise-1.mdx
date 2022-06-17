@@ -3,7 +3,7 @@ id: index-exercise-1
 title: 5.2 Getting Redis Statistics
 sidebar_label: 5.2 Getting Redis Statistics
 slug: /operate/redis-at-scale/observability/exercise-1
-isEditable: false
+custom_edit_url: null
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -88,7 +88,7 @@ Use `redis-cli` to list the full 'stats' section.
 A cache hit/miss ratio could be generated using two data points in the stats section.
 
 ```bash
-$ redis-cli INFO stats | grep keyspace 
+$ redis-cli INFO stats | grep keyspace
 ```
 
 <strong>Evicted keys</strong>
