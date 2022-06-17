@@ -84,7 +84,7 @@ function Hero() {
                 <div className="text">
                   <h3 className="title">Explore</h3>
                   <p className="description">
-                    Insert,update and explore your database using RedisInsight{' '}
+                    Insert,update and explore your database using RedisInsight
                   </p>
                   <span className="more">
                     Explore your data
@@ -104,7 +104,7 @@ function Hero() {
                 <div className="text">
                   <h3 className="title">Operate</h3>
                   <p className="description">
-                    Provision Redis and accelerate app deployment using DevOps{' '}
+                    Provision Redis and accelerate app deployment using DevOps
                   </p>
                   <span className="more">
                     Operate your database

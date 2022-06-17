@@ -8,7 +8,7 @@ function Demos() {
     <section className="rds-demos">
       <div className="container">
         <h2 className="section-title">
-          <br />{' '}
+          <br />
         </h2>
 
         <div className="row terminals">
