@@ -1,6 +1,6 @@
 ---
 id: index-lesson_4
-title: "User/Roles & Secondary Indexes"
+title: 'User/Roles & Secondary Indexes'
 sidebar_label: User Roles & Secondary Indexes
 slug: /develop/java/redis-and-spring-course/lesson_4
 authors: [bsb]
@@ -9,19 +9,20 @@ authors: [bsb]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ### Objectives
+
 To finish creating the user-role domain, load and transform JSON data, and begin crafting the Redi2Read API.
 
 ### Agenda
 
 In this lesson, you'll learn:
 
-* How to load JSON data using Jackson.
-* How to create and work with secondary indexes
-* How to use the repositories with a REST controller.
+- How to load JSON data using Jackson.
+- How to create and work with secondary indexes
+- How to use the repositories with a REST controller.
 
 If you get stuck:
 
-* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-4
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-4
 
 ### Loading Users
 
@@ -68,17 +69,19 @@ one of the most popular Java JSON libraries.
 
 The recipe to load the user goes as follows:
 
-  1. Create an input stream from the user’s JSON data file
-  2. Using Jackson, read the input stream into a collection of users
-  3. For each user:
-  * Encode the plain text password
-  * Add the customer role
+1. Create an input stream from the user’s JSON data file
+2. Using Jackson, read the input stream into a collection of users
+3. For each user:
+
+- Encode the plain text password
+- Add the customer role
 
 ### Prerequisites
 
 Based on the loading recipe above, there are two things our application can’t currently do that it needs:
-* A way to encode plain text user password
-* A way to find a role by name
+
+- A way to encode plain text user password
+- A way to find a role by name
 
 ### Password Encoding
 
@@ -123,6 +126,7 @@ import org.springframework.data.redis.core.index.Indexed;
 ```
 
 Now when a new `Role` instance is created, with ID as `"abc-123"` and role as `"superuser"`, Spring Data Redis will do the following:
+
 1. Create the `"by name"` index: Created as a Redis Set with the key `com.redislabs.edu.redi2read.models.Role:name:superuser` containing one entry; the id of the indexed object `"abc-123"`
 2. A list of indexes for the `Role` "superuser": Create a Redis Set with the key `"com.redislabs.edu.redi2read.models.Role:abc-123:idx"`
    containing one entry; the key of the index `"com.redislabs.edu.redi2read.models.Role:name:superuser"`
@@ -234,14 +238,15 @@ public class CreateUsers implements CommandLineRunner {
 ```
 
 Let’s break it down:
-  * At the top, we use the `@Autowired` annotation to inject the `RoleRepository`, the `UserRepository`, and the `BCryptPasswordEncoder`.
-  * As with the `CreateRoles` `CommandLineRunner`, we only execute the logic if there are no database users.
-  * We then load the admin and customer roles by using the Repository custom finder method `findFirstByName`.
-  * To process the JSON, we create a Jackson ObjectMapper and a TypeReference, which will serve as a recipe for serializing the JSON into Java objects.
-  * Using the `getResourceAsStream` from the `Class` object, we load the JSON file from the resources directory
-  * Then we use the `ObjectMapper` to convert the incoming input stream into a `List` of `User` objects
-  * For each user, we encode the password and add the customer role
-  * Near the end of the file, we create a single user with the admin role, which we will use in a later Lesson
+
+- At the top, we use the `@Autowired` annotation to inject the `RoleRepository`, the `UserRepository`, and the `BCryptPasswordEncoder`.
+- As with the `CreateRoles` `CommandLineRunner`, we only execute the logic if there are no database users.
+- We then load the admin and customer roles by using the Repository custom finder method `findFirstByName`.
+- To process the JSON, we create a Jackson ObjectMapper and a TypeReference, which will serve as a recipe for serializing the JSON into Java objects.
+- Using the `getResourceAsStream` from the `Class` object, we load the JSON file from the resources directory
+- Then we use the `ObjectMapper` to convert the incoming input stream into a `List` of `User` objects
+- For each user, we encode the password and add the customer role
+- Near the end of the file, we create a single user with the admin role, which we will use in a later Lesson
 
 On application restart, we should now see:
 
@@ -280,17 +285,20 @@ set
 11) "password"
 12) "$2a$10$/UHTESWIqcl6HZmGpWSUHexNymIgM7rzOsWc4tcgqh6W5OVO4O46."
 ```
+
 We now have a Redis Set holding the collection of user keys for the Redis Hashes containing user instances.
 We use the SCARD command to get the set’s cardinality (1001, the 1000 users from the JSON plus the admin user).
 Using the SRANDMEMBER command, we can pull a random member from a `Set`. We then use that and the `User` Hashes prefix to retrieve the data for a random User hash.
 A few things to point out:
-  * The user’s set of roles are stored using indexed hash fields (`roles.[0], roles.[1]`, etc.) with a value being the key for a given role.
-    This is the result of annotating the Java Set of Role using `@Reference`
-  * The password field is hashed correctly.
+
+- The user’s set of roles are stored using indexed hash fields (`roles.[0], roles.[1]`, etc.) with a value being the key for a given role.
+  This is the result of annotating the Java Set of Role using `@Reference`
+- The password field is hashed correctly.
 
 ### Building the Redi2Read API
 
 Now that we have `User`s and `Role`s, let’s create an `UserController` to expose some user management functionality.
+
 ```java
 package com.redislabs.edu.redi2read.controllers;
 
@@ -358,7 +366,9 @@ public class User {
 ...
 }
 ```
+
 With the import statement:
+
 ```java
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 ```
@@ -415,19 +425,21 @@ Invoking the endpoint with curl:
 ```bash
 curl --location --request GET 'http://localhost:8080/api/users/?email=donald.gibson@example.com'
 ```
+
 Returns the expected result:
+
 ```json
 [
-    {
-        "id": "-1266125356844480724",
-        "name": "Donald Gibson",
-        "email": "donald.gibson@example.com",
-        "roles": [
-            {
-                "id": "a9f9609f-c173-4f48-a82d-ca88b0d62d0b",
-                "name": "customer"
-            }
-        ]
-    }
+  {
+    "id": "-1266125356844480724",
+    "name": "Donald Gibson",
+    "email": "donald.gibson@example.com",
+    "roles": [
+      {
+        "id": "a9f9609f-c173-4f48-a82d-ca88b0d62d0b",
+        "name": "customer"
+      }
+    ]
+  }
 ]
 ```

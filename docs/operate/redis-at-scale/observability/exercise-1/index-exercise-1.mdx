@@ -74,11 +74,13 @@ You can pull the `clients` section of the `INFO` command:
 ```bash
 $ redis-cli info clients
 ```
+
 or maybe a particular metric you would want to track:
 
 ```bash
 $ redis-cli info clients | grep connected_clients
 ```
+
 <strong>Stats section</strong>
 
 Use `redis-cli` to list the full 'stats' section.

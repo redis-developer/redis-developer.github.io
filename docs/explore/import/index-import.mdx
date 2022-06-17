@@ -8,88 +8,83 @@ authors: [ajeet]
 
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-
 Redis offers multiple ways to import data into a database; from an file, an script or from an existing Redis database.
-
 
 ## Import using `redis-cli` script
 
 1. Create a simple file `users.redis` with all the commands you want to run
 
-    ```bash
-    HSET 'user:001' first_name 'John' last_name 'doe' dob '12-JUN-1970'
-    HSET 'user:002' first_name 'David' last_name 'Bloom' dob '03-MAR-1981'
-    ```
+   ```bash
+   HSET 'user:001' first_name 'John' last_name 'doe' dob '12-JUN-1970'
+   HSET 'user:002' first_name 'David' last_name 'Bloom' dob '03-MAR-1981'
+   ```
 
 2. Use the `redis-cli` tool to execute the script
 
-    ```bash
-    redis-cli -h localhost -p 6379 < users.redis
-    ```
+   ```bash
+   redis-cli -h localhost -p 6379 < users.redis
+   ```
 
-*This approach will only run the commands and will not impact the existing data, except if you modify existing keys in the script.*
+_This approach will only run the commands and will not impact the existing data, except if you modify existing keys in the script._
 
 > Sample dataset: You can find sample dataset ready to be imported using this method in the [`https://github.com/redis-developer/redis-datasets`](https://github.com/redis-developer/redis-datasets) repository.
 
 ---
+
 ## Restore an RDB file
 
 If you have an RDB file `dump.rdb` that contains the data you want you can use this file to create a new database
 
-1. Copy the `dump.rdb` file into the Redis working directory 
+1. Copy the `dump.rdb` file into the Redis working directory
 
-    If you do not know what it is folder you can run the command [`CONFIG get dir`](https://redis.io/commands/config-get) where your Redis instance is up and running
+   If you do not know what it is folder you can run the command [`CONFIG get dir`](https://redis.io/commands/config-get) where your Redis instance is up and running
 
 2. Start the Redis service with the `redis-server`
 3. The file `dump.rdb` is automatically imported.
 4. Connect to the database using `redis-cli` or any other client, to check that data have been imported. (for example [`SCAN`](https://redis.io/commands/SCAN))
 
 #### Related Articles
+
 <div class="row">
-<div class="col">
-<RedisCard 
-        title="Redis Persistence" 
-        page="https://redis.io/topics/persistence"
-        />
-</div>
-<div class="col">
-</div>
+  <div class="col">
+    <RedisCard
+      title="Redis Persistence"
+      page="https://redis.io/topics/persistence"
+    />
+  </div>
+  <div class="col"></div>
 </div>
 
-
-*- **Warning**: Importing data erases all existing content in the database.*
+_- **Warning**: Importing data erases all existing content in the database._
 
 ---
+
 ## Import & Synchronize using RIOT
 
 [Redis Input/Output Tools (RIOT)](/explore/riot) is a set of import/export command line utilities for Redis:
 
-* RIOT DB: migrate from an RDBMS to Redis, RediSearch, RedisJSON, ...
-* RIOT File: bulk import/export data from/to files.
-* RIOT Gen: generate sample Redis datasets for new feature development and proof of concept.
-* RIOT Redis: live replication from any Redis database (including AWS Elasticache) to another Redis database.
-* RIOT Stream: import/export messages from/to Kafka topics.
-
+- RIOT DB: migrate from an RDBMS to Redis, RediSearch, RedisJSON, ...
+- RIOT File: bulk import/export data from/to files.
+- RIOT Gen: generate sample Redis datasets for new feature development and proof of concept.
+- RIOT Redis: live replication from any Redis database (including AWS Elasticache) to another Redis database.
+- RIOT Stream: import/export messages from/to Kafka topics.
 
 #### Related Articles
+
 <div class="row">
-<div class="col">
-<RedisCard 
-        title="Online Database Migration from Amazon ElastiCache to Redis Enterprise Cloud using RIOT" 
-        page="/create/aws/import/database-migration-aws-elasticache-redis-enterprise-cloud"
-        />
+  <div class="col">
+    <RedisCard
+      title="Online Database Migration from Amazon ElastiCache to Redis Enterprise Cloud using RIOT"
+      page="/create/aws/import/database-migration-aws-elasticache-redis-enterprise-cloud"
+    />
+  </div>
 </div>
-</div>
-
-
-
 
 ---
+
 ## Import data into Redis Enterprise
 
 You can easily import data into Redis Enterprise and Redis Enterprise Cloud, take a look to the following documentation:
 
-* [Redis Enterprise Software: Importing Data into a Database](https://docs.redis.com/latest/rs/administering/import-export/importing-data/)
-* [Redis Enterprise Cloud: Databases Backup and Import](https://docs.redis.com/latest/rc/api/examples/back-up-and-import-data/)
-
+- [Redis Enterprise Software: Importing Data into a Database](https://docs.redis.com/latest/rs/administering/import-export/importing-data/)
+- [Redis Enterprise Cloud: Databases Backup and Import](https://docs.redis.com/latest/rc/api/examples/back-up-and-import-data/)

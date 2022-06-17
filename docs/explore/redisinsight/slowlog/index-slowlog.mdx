@@ -11,7 +11,6 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 RedisInsight, a free GUI for Redis, allows you to identify and troubleshoot bottlenecks with the Slowlog analysis tool. If you are experiencing high latency and high CPU usage with Redis operations and looking for a tool for debugging and tracing your Redis database, RedisInsight Slow Log is a perfect tool for you.
 
 Redis Slow Log is highly effective at showing the actual processing time of each slow command. The Redis slowlog is a log of all commands which exceed a specified run time. Please note that the network latency is not included in the measurement, just the time taken to actually execute the command. Redis Slow Log is a list of slow operations for your Redis instance.
@@ -24,38 +23,30 @@ Follow [https://developer.redis.com/create](https://developer.redis.com/create) 
 
 ## Step 2: Download RedisInsight
 
-
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
 
 [Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
 
 ![My Image](images/redisinsightinstall.png)
 
-
 Run the installer. After the web server starts, open http://YOUR_HOST_IP:8001 and add a Redis database connection.
 
 Select "Connect to a Redis database"
 ![My Image](images/redisinsight4.png)
 
-Enter the requested details, including Name, Host (endpoint), Port, and Password.  Then click “ADD REDIS DATABASE”.
+Enter the requested details, including Name, Host (endpoint), Port, and Password. Then click “ADD REDIS DATABASE”.
 
 ## Step 3. Connect to the database using RedisInsight GUI
 
-
 ![alt_text](images/image1.png)
-
 
 ## Step 4: Click “Slowlog” and then “Configure Slowlog”
 
-
 ![alt_text](images/image2.png)
-
 
 ## Step 5. Configure Slowlog
 
-There are two configurations related to slowlog query - 
-
-
+There are two configurations related to slowlog query -
 
 - slowlog-log-slower-than: Used to set the evaluation time of slow query, that is to say, commands that exceed this configuration item will be treated as slow operations and recorded in the slow query log. Its execution unit is microseconds (1 second equals 1000000 microseconds);
 - slowlog-max-len: Used to configure the maximum number of records in the slow query log.
@@ -64,149 +55,116 @@ Please note that a negative number disables the slowlog, while a value of zero f
 
 Slowlog will log the last X number(amount) of queries which took more time than Y microseconds to run. You can set this either in redis.conf or at runtime using CONFIG command
 
-
- ```bash
-  CONFIG SET slowlog-log-slower-than 500
-  CONFIG SET slowlog-max-len 50
- ```
+```bash
+ CONFIG SET slowlog-log-slower-than 500
+ CONFIG SET slowlog-max-len 50
+```
 
 ![alt_text](images/image3.png)
-
 
 ## Step 6. Prepare a script to add large dataset to Redis database
 
 To see slowlog in action, let us pick up a large dataset. Create a file called importcities.py and add the below content:
 
+```python
+ import csv
+ import config
+ from redis import Redis
 
- ```python
-  import csv
-  import config
-  from redis import Redis
+ # Database Connection
+ host = config.REDIS_CFG["host"]
+ port = config.REDIS_CFG["port"]
+ pwd = config.REDIS_CFG["password"]
+ redis = Redis(host=host, port=port, password=pwd, charset="utf-8", decode_responses=True)
 
-  # Database Connection
-  host = config.REDIS_CFG["host"]
-  port = config.REDIS_CFG["port"]
-  pwd = config.REDIS_CFG["password"]
-  redis = Redis(host=host, port=port, password=pwd, charset="utf-8", decode_responses=True)
+ # Import Cities
+ print("Importing ...")
 
-  # Import Cities
-  print("Importing ...")
+ count = 0
 
-  count = 0
+ with open("data/worldcities.csv", 'r') as cities:
+    reader = csv.DictReader(cities)
+    for row in reader:
+        id = row["id"]
+        name = row["city_ascii"]
+        lng = row["lng"]
+        lat = row["lat"]
+        country = row["country"]
+        pop = row["population"]
 
-  with open("data/worldcities.csv", 'r') as cities:
-     reader = csv.DictReader(cities)
-     for row in reader:
-         id = row["id"]
-         name = row["city_ascii"]
-         lng = row["lng"]
-         lat = row["lat"]
-         country = row["country"]
-         pop = row["population"]
+        print("id = {}, name = {}, lng = {}, lat = {}".format(id, name, lng, lat))
+        count += 1
 
-         print("id = {}, name = {}, lng = {}, lat = {}".format(id, name, lng, lat))
-         count += 1
+        redis.hmset("ct:{}".format(id), { "_id" : id, "name" : name, "country" : country, "population" : pop })
+        redis.geoadd("idx:cities", lng, lat, id)
+        redis.hset("idx:city_by_name", name, id)
 
-         redis.hmset("ct:{}".format(id), { "_id" : id, "name" : name, "country" : country, "population" : pop })
-         redis.geoadd("idx:cities", lng, lat, id)
-         redis.hset("idx:city_by_name", name, id)
-
- ```
-
+```
 
 Create a file called config.py as shown below:
 
+```python
+ REDIS_CFG = {
+        "host" : "localhost",
+        "port" : 6379,
+        "password" : ""
+ }
 
- ```python
-  REDIS_CFG = {
-         "host" : "localhost",
-         "port" : 6379,
-         "password" : ""
-  }
-
- ```
-
+```
 
 Ensure that you provide the right host and port details.
 
 Execute the script:
 
-
- ```bash
-  python3 importcities.py
- ```
-
+```bash
+ python3 importcities.py
+```
 
 You will see the below results:
 
+```bash
+ id = 762, name = Labatt Ontario Breweries, lng = -81.2467, lat = 42.9778
+ id = 915, name = Ninkasi Brewing, lng = -123.11, lat = 44.0569
+ id = 930, name = Oaken Barrel Brewing, lng = -86.0901, lat = 39.615
+ Import of 16790 records completed
 
- ```bash
-  id = 762, name = Labatt Ontario Breweries, lng = -81.2467, lat = 42.9778
-  id = 915, name = Ninkasi Brewing, lng = -123.11, lat = 44.0569
-  id = 930, name = Oaken Barrel Brewing, lng = -86.0901, lat = 39.615
-  Import of 16790 records completed
-
- ```
-
+```
 
 If you want to simulate slowlogs, then consider using KEYS command. It is always recommended NOT TO USE [KEYS](https://redis.io/commands/keys) in your regular application code. If you're looking for a way to find keys in a subset of your keyspace, consider using [SCAN](https://redis.io/commands/scan) or [sets](https://redis.io/topics/data-types#sets).
 
 The KEYS command may ruin performance when it is executed against large databases
 
-Let us try to run KEYS * in RedisInsight CLI and see if it generates slowlog as shown below:
-
+Let us try to run KEYS \* in RedisInsight CLI and see if it generates slowlog as shown below:
 
 ![alt_text](images/image4.png)
 
-
 Run it one more time and you will notice below:
-
 
 ![alt_text](images/image5.png)
 
-
-Try decreasing the execution time(50 ms), and you will notice that the below run query also gets logged into the slowlog 
-
-
+Try decreasing the execution time(50 ms), and you will notice that the below run query also gets logged into the slowlog
 
 ![alt_text](images/image6.png)
 
-
-## Step 7. Configuring the execution time 
-
+## Step 7. Configuring the execution time
 
 Each entry in the slowlog contains four fields: a slowlog entry ID, the Unix timestamp of when the command was run, the execution time in microseconds, and an array with the command itself, along with any arguments. See the example output below:
 
 In order to retrieve the slowlog queries, you have to use SLOWLOG GET X. Where X is the number of slow queries you want to retrieve.
 
-
-
-
-
 ![alt_text](images/image7.png)
 
-
-As shown above, the result displays a unique id, timestamp, time taken to execute the query in microseconds, and the actual command + parameter executed. It is important to note that  the Slow log is transient; there's no persistence for it so in the case of failover, the slowlog is lost. If you are looking to rely on a persistent slowlog, you'll be wanting to reconsider your design choices
+As shown above, the result displays a unique id, timestamp, time taken to execute the query in microseconds, and the actual command + parameter executed. It is important to note that the Slow log is transient; there's no persistence for it so in the case of failover, the slowlog is lost. If you are looking to rely on a persistent slowlog, you'll be wanting to reconsider your design choices
 
 Please note: If I choose “0” it forces the logging of every command while “-1” disabled the slowlog.
 
-
-
-
-
 ![alt_text](images/image8.png)
-
-
-
-
-
 
 ![alt_text](images/image9.png)
 
-
 :::important
 
-In a clustered database, each node can have different values for slowlog.  You will need to use the configuration tool in order to configure slowlog for clustered databases.
+In a clustered database, each node can have different values for slowlog. You will need to use the configuration tool in order to configure slowlog for clustered databases.
 :::
 
 ## Additional Links
@@ -222,5 +180,17 @@ In a clustered database, each node can have different values for slowlog.  You w
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

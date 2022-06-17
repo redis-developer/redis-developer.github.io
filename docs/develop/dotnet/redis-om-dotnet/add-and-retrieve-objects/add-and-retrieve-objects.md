@@ -8,7 +8,6 @@ authors: [steve]
 
 The Redis OM library supports declarative storage and retrieval of objects from Redis. Without the RediSearch and RedisJson modules, this is limited to using hashes, and id lookups of objects in Redis. You will still use the `Document` Attribute to decorate a class you'd like to store in Redis. From there, all you need to do is either call `Insert` or `InsertAsync` on the `RedisCollection` or `Set` or `SetAsync` on the RedisConnection, passing in the object you want to set in Redis. You can then retrieve those objects with `Get<T>` or `GetAsync<T>` with the `RedisConnection` or with `FindById` or `FindByIdAsync` in the RedisCollection.
 
-
 ```csharp
 public class Program
 {
@@ -22,11 +21,11 @@ public class Program
 
         public int Age { get; set; }
 
-        public double Sales { get; set; }    
+        public double Sales { get; set; }
 
         public string Department { get; set; }
     }
-    
+
     static async Task Main(string[] args)
     {
         var provider = new RedisConnectionProvider("redis://localhost:6379");
@@ -50,7 +49,6 @@ public class Program
 ```
 
 The Code above will declare an `Employee` class, and allow you to add employees to Redis, and then retrieve Employees from Redis the output from this method will look like this:
-
 
 ```text
 First Employee's name is Bob, they are 32 years old, they work in the Partner Sales department and have sold 100000, their ID is: 01FHDFE115DKRWZW0XNF17V2RK

@@ -1,7 +1,7 @@
 ---
 id: index-redistimeseries
 title: Manage Redis time-series data using RedisTimeSeries Browser Tool
-sidebar_label: Manage Redis time-series data using RedisTimeSeries Browser Tool 
+sidebar_label: Manage Redis time-series data using RedisTimeSeries Browser Tool
 slug: /explore/redisinsight/redistimeseries
 authors: [ajeet]
 ---
@@ -11,21 +11,17 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-
-If you want to add a time series data structure to your Redis database, check out RedisTimeSeries browser tool that comes with RedisInsight. 
+If you want to add a time series data structure to your Redis database, check out RedisTimeSeries browser tool that comes with RedisInsight.
 
 [RedisTimeseries](https://oss.redis.com/redistimeseries/) is a Redis module developed by Redis to enhance your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
 With RedisInsight browser tool, you can perform the below sets of activities:
 
-
-
-*   TS.RANGE & TS.MRANGE are supported
-*   Charts support milliseconds.
-*   Ability to configure auto refresh interval.
-*   Ability to submit query with ‘ctrl + enter’ in single line mode
-*   Display tabular as well as JSON view 
+- TS.RANGE & TS.MRANGE are supported
+- Charts support milliseconds.
+- Ability to configure auto refresh interval.
+- Ability to submit query with ‘ctrl + enter’ in single line mode
+- Display tabular as well as JSON view
 
 ## Step 1. Create Redis database
 
@@ -33,32 +29,27 @@ With RedisInsight browser tool, you can perform the below sets of activities:
 
 ## Step 2: Download RedisInsight
 
-
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
 
 [Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
 
 ![My Image](images/redisinsightinstall.png)
 
-
 Run the installer. After the web server starts, open http://YOUR_HOST_IP:8001 and add a Redis database connection.
 
 Select "Connect to a Redis database"
 ![My Image](images/redisinsight4.png)
 
-Enter the requested details, including Name, Host (endpoint), Port, and Password.  Then click “ADD REDIS DATABASE”.
+Enter the requested details, including Name, Host (endpoint), Port, and Password. Then click “ADD REDIS DATABASE”.
 
 ## Step 3. Clone the repository
-
 
 ```
 $ git clone https://github.com/redis-developer/redis-datasets
 cd redis-datasets/redistimeseries/AirQualityUCI
 ```
 
-
 ## Step 4. Execute the Python script
-
 
 ```
 #!/usr/bin/env python3
@@ -187,45 +178,26 @@ with open(args.csv, newline="") as csv_file:
 
 ```
 
-
 ## Step 5. Execute the script
 
-
 ```
-$ python3 dataloader.py                        
+$ python3 dataloader.py
 9471it [00:29, 326.33it/s]
 ```
 
-
 ## Step 6. Query a range across one or multiple time-series
 
- ` TS.RANGE ts:carbon_monoxide 1112596200 1112603400`
-
-
-
-
+` TS.RANGE ts:carbon_monoxide 1112596200 1112603400`
 
 ![alt_text](images/image1.png)
 
-
 ## Step 7 . Displaying the JSON view
-
-
-
-
 
 ![alt_text](images/image2.png)
 
-
-## Step 8.  Displaying the tabular view
-
-
-
-
+## Step 8. Displaying the tabular view
 
 ![alt_text](images/image3.png)
-
-
 
 ## Additional Resources
 
@@ -237,5 +209,17 @@ $ python3 dataloader.py
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

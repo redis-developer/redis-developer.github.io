@@ -21,19 +21,20 @@ Login in Azure using the Azure CLI
 ```bash
 az login
 ```
->Login with a Service Principal will also work
+
+> Login with a Service Principal will also work
 
 Login using an Azure Service Principal
 
 ```bash
 az login --service-principal --username APP_ID --tenant TENANT_ID --password [password || /path/to/cert]
 ```
+
 ### Step 2: Clone the repository
 
 ```bash
 git clone https://github.com/redis-developer/acre-terraform
 ```
-
 
 ### Step 3: Initialize the repository
 
@@ -41,14 +42,13 @@ git clone https://github.com/redis-developer/acre-terraform
 cd acre-terraform
 terraform init
 ```
->The output should include: ```Terraform has been successfully initialized```
 
+> The output should include: `Terraform has been successfully initialized`
 
 ### Step 4: Modify the variables(optional)
 
 The default variables are setup to deploy the smallest 'E10' instance into the 'East US' region.
-Changes can be made by updating the ```variables.tf``` file.
-
+Changes can be made by updating the `variables.tf` file.
 
 ### Step 5: Verify the plan
 
@@ -57,7 +57,8 @@ The 'plan' output will show you everything being created by the template.
 ```bash
 terraform plan
 ```
->The output should include: ```Plan: 18 to add, 0 to change, 0 to destroy.```
+
+> The output should include: `Plan: 18 to add, 0 to change, 0 to destroy.`
 
 ### Step 6: Apply the plan
 
@@ -66,7 +67,8 @@ When the plan looks good, 'apply' the template.
 ```bash
 terraform apply
 ```
->The output should include: ```Apply complete! Resources: 18 added, 0 changed, 0 destroyed.```
+
+> The output should include: `Apply complete! Resources: 18 added, 0 changed, 0 destroyed.`
 
 ### Step 7: Connect using generated output
 
@@ -76,7 +78,9 @@ The output is also in JSON format.
 ```bash
 terraform output redisgeek_config
 ```
+
 > Example output:
+
 ```
 {
 "hostname" = "redisgeek-8jy4.eastus.redisenterprise.cache.azure.net"
@@ -90,15 +94,27 @@ terraform output redisgeek_config
 ##### 1. How to use Redis Cache for Redis like a Pro
 
 <div class="text--center">
-    <iframe width="760" height="415" src="https://www.youtube.com/embed/eThj-jwViZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/eThj-jwViZw"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-
 
 ##### 2. Do More with Azure Cache for Redis, Enterprise Tiers
 
-
 <div class="text--center">
-   <iframe width="760" height="415" src="https://www.youtube.com/embed/t6XQHsKFMKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/t6XQHsKFMKQ"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ### References

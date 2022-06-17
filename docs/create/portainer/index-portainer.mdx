@@ -6,13 +6,9 @@ slug: /create/portainer
 authors: [ryan]
 ---
 
-
-
-
 Redis is an in-memory data structure store, used as a distributed, in-memory key–value database, cache and message broker, with optional durability. Redis supports different kinds of abstract data structures, such as strings, lists, maps, sets, sorted sets, HyperLogLogs, bitmaps, streams, and spatial indices. [~Wikipedia](https://en.wikipedia.org/wiki/Redis)
 
 ![portainer and redis](images/portainer.png)
-
 
 You can’t travel far in the modern software world without finding that you need an in-memory data store. Today, the answer to “Which data store?” is often Redis. Also today, the answer to “How to Redis?” can be Portainer.
 
@@ -46,7 +42,7 @@ Next, scroll to the top of the page to configure Redis for deployment.
 
 - Select **“redis”** in the Namespace dropdown.
 - Enter **“redis”** for the Name.
-- Click **“Show custom values”**. I am going to expose Redis via NodePort 31000. I picked port 31000 because I know that ports 31000-31010 are open to my cluster. To get this done I will set the **.service.type* to NodePort and the **.service.nodePorts.redis* to 31000. As you can see in the screenshot below, these can currently be found on lines 431 and 441 in the Helm chart.
+- Click **“Show custom values”**. I am going to expose Redis via NodePort 31000. I picked port 31000 because I know that ports 31000-31010 are open to my cluster. To get this done I will set the **.service.type\* to NodePort and the **.service.nodePorts.redis\* to 31000. As you can see in the screenshot below, these can currently be found on lines 431 and 441 in the Helm chart.
 - Click the **“Install”** button.
 
 ![redis-helm-custom-values](images/redis4.png)
@@ -63,7 +59,7 @@ See that each pod has its own copy/replica of the DB content, and note that it d
 
 ![change_volumes_size](images/redis7.png)
 
-And that’s it. The only thing left to do is test it. Before we do that, we’re going to take a short detour. There are two facts about the Helm chart install of Redis that you should know. First, Redis will come up requiring authentication to connect to it. Second, a random password was created during installation. To find it, in Portainer click on “ConfigMaps & Secrets” in the navigation menu on the left. Find the secret named **“redis”** and click on it. The password that you’ll need to authenticate with is the value of the *redis-password* key.
+And that’s it. The only thing left to do is test it. Before we do that, we’re going to take a short detour. There are two facts about the Helm chart install of Redis that you should know. First, Redis will come up requiring authentication to connect to it. Second, a random password was created during installation. To find it, in Portainer click on “ConfigMaps & Secrets” in the navigation menu on the left. Find the secret named **“redis”** and click on it. The password that you’ll need to authenticate with is the value of the _redis-password_ key.
 
 ![find-redis-password](images/redis8.png)
 

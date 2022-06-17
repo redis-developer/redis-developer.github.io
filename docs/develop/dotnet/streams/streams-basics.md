@@ -28,7 +28,6 @@ dotnet new console -n RedisStreamsBasics
 
 Next, we'll need to add the client library that we will use to interface with Redis StackExchange.Redis is the canonical package, thus, we will use that in this example. First cd into the RedisStreamsBasics directory and then run the `dotnet add package` directory:
 
-
 ```bash
 cd RedisStreamsBasics
 dotnet add package StackExchange.Redis
@@ -58,7 +57,7 @@ We're also initializing a `CancellationToken` and `CancellationTokenSource` here
 A Consumer Group in a Redis Stream allows you to group a bunch of consumers to pull messages off the stream for the group. This functionality is excellent when you have high throughput workloads, and you want to scale out the workers who will process your messages. To use a consumer group, you first need to create it. To create a consumer group, you'll use the `StreamCreateConsumerGroupAsync` method, passing in the `streamName` and `groupName`, as well as the starting id - we'll use the `0-0` id (the lowest id allowable in Redis Streams). Before invoking this call, it's wise to validate that the group doesn't exist yet, as creating an already existing user group will result in an error. So first, we'll check if the stream exists; if it doesn't, we can create the group. Next, we'll use the stream info method to see if any groups match the `avg` `groupName`.
 
 ```csharp
-if (!(await db.KeyExistsAsync(streamName)) || 
+if (!(await db.KeyExistsAsync(streamName)) ||
     (await db.StreamGroupInfoAsync(streamName)).All(x=>x.Name!=groupName))
 {
     await db.StreamCreateConsumerGroupAsync(streamName, groupName, "0-0", true);
@@ -67,7 +66,7 @@ if (!(await db.KeyExistsAsync(streamName)) ||
 
 ## Spin up producer task
 
-Three tasks will run in parallel for our program. The first is the `producerTask`. This Task will write a random number between 50 and 65 as the `temp` and send the current time as the `time`. 
+Three tasks will run in parallel for our program. The first is the `producerTask`. This Task will write a random number between 50 and 65 as the `temp` and send the current time as the `time`.
 
 ```csharp
 var producerTask = Task.Run(async () =>
@@ -93,7 +92,6 @@ Dictionary<string, string> ParseResult(StreamEntry entry) => entry.Values.ToDict
 
 > Note: Stream messages enforce no requirement that field names be unique. We use a dictionary for clarity sake in this example, but you will need to ensure that you are not passing in multiple fields with the same names in your usage to prevent an issue using a dictionary.
 
-
 ## Spin up most recent element task
 
 Next, we'll need to spin up a task to read the most recent element off of the stream. To do this, we'll use the `StreamRangeAsync` method passing in two special ids, `-` which means the lowest id, and `+`, which means the highest id. Running this command will result in some duplication. This redundancy is necessary because the `StackExchange.Redis` library does not support blocking stream reads and does not support the special `$` character for stream reads. Overcoming this behavior is explored in-depth in the [Blocking Reads](blocking-reads) tutorial. For this tutorial, you can manage these most-recent reads with the following code:
@@ -117,7 +115,7 @@ var readTask = Task.Run(async () =>
 
 ## Spin up consumer group read Task
 
-The final Task we'll spin up is the read task for the consumer group. Due to the nature of consumer groups, you can spin this Task up multiple times to scale out the processing as needed. It's the responsibility of Redis to keep track of which messages it's distributed to the consumer group. As well as tracking which messages Consumers have acknowledged. Acknowledging messages adds a layer of validation that all messages were processed. If something happens to one of your processing tasks or processes, you can more easily know what messages you missed. 
+The final Task we'll spin up is the read task for the consumer group. Due to the nature of consumer groups, you can spin this Task up multiple times to scale out the processing as needed. It's the responsibility of Redis to keep track of which messages it's distributed to the consumer group. As well as tracking which messages Consumers have acknowledged. Acknowledging messages adds a layer of validation that all messages were processed. If something happens to one of your processing tasks or processes, you can more easily know what messages you missed.
 
 We'll check to see if we have a recent message-id to handle all of this. If we do, we will send an acknowledgment to the server that the id was processed. Then we will grab the next message to be processed from the stream, pull out the data and the id and print out the result.
 
@@ -164,6 +162,6 @@ You can now run this app with the `dotnet run` command.
 
 ## Resources:
 
-* The source for this tutorial is in [GitHub](https://github.com/redis-developer/redis-streams-with-dotnet/tree/main/RedisStreamsStackExchange)
-* Redis University has an extensive [course](https://university.redis.com/courses/ru202/) on Redis Streams where you can learn everything you need to know about them.
-* You can learn more about Redis Streams in the [Streams Info](https://redis.io/topics/streams-intro) article on redis.io
+- The source for this tutorial is in [GitHub](https://github.com/redis-developer/redis-streams-with-dotnet/tree/main/RedisStreamsStackExchange)
+- Redis University has an extensive [course](https://university.redis.com/courses/ru202/) on Redis Streams where you can learn everything you need to know about them.
+- You can learn more about Redis Streams in the [Streams Info](https://redis.io/topics/streams-intro) article on redis.io

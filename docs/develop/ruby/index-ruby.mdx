@@ -1,14 +1,14 @@
 ---
 id: index-ruby
 title: Ruby and Redis
-sidebar_label: Ruby 
+sidebar_label: Ruby
 slug: /develop/ruby/
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
-
 
 Find tutorials, examples and technical articles that will help you to develop with Redis and Ruby.
 
@@ -31,7 +31,6 @@ Redis is an open source, in-memory, key-value data store most commonly used as a
 You can either run Redis in a Docker container or directly on your machine.
 Follow the below commands to setup a Redis server on Mac OS:
 
-
 ```
  brew tap redis-stack/redis-stack
  brew install --cask redis-stack
@@ -42,7 +41,6 @@ Redis Stack unifies and simplifies the developer experience of the leading Redis
 [Learn more](/create/redis-stack)
 :::
 
-
 Ensure that you are able to use the following Redis command to connect to the Redis instance.
 
 ```bash
@@ -50,7 +48,7 @@ Ensure that you are able to use the following Redis command to connect to the Re
  127.0.0.1:6379>
 ```
 
-Now you should be able to perform CRUD operations with Redis commands. For example, you can insert data to Redis with the `SET` command and the fetch it with the `GET` command. The above Redis client command might require a password if you have setup authentication in your Redis configuration file. By default, Redis listens on port 6379.  This can be modified in the Redis configuration file.
+Now you should be able to perform CRUD operations with Redis commands. For example, you can insert data to Redis with the `SET` command and the fetch it with the `GET` command. The above Redis client command might require a password if you have setup authentication in your Redis configuration file. By default, Redis listens on port 6379. This can be modified in the Redis configuration file.
 
 ### Step 2. Clone the repository
 
@@ -58,7 +56,7 @@ Now you should be able to perform CRUD operations with Redis commands. For examp
 git clone https://github.com/redis-developer/redis-ruby-getting-started
 ```
 
-### Step 3.  Install redis-rb:
+### Step 3. Install redis-rb:
 
 ```
 $ gem install redis
@@ -72,7 +70,6 @@ OR
 $cat Gemfile
 gem 'redis'
 ```
-
 
 ### Step 5. Execute
 
@@ -96,8 +93,8 @@ Bundle complete! 1 Gemfile dependency, 2 gems now installed.
 Use `bundle info [gemname]` to see where a bundled gem is installed.
 ```
 
-### Step 6. Verifying 
-  
+### Step 6. Verifying
+
 ```
 bundle info redis
   * redis (4.2.5)
@@ -130,7 +127,9 @@ Just execute the below command:
 ```
 ruby connect.rb
 ```
-### Step 8.  Verifying
+
+### Step 8. Verifying
+
 ```
 127.0.0.1:6379> monitor
 OK
@@ -140,7 +139,7 @@ OK
 
 ```
 
-###  Redis Launchpad
+### Redis Launchpad
 
 Redis Launchpad is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
 Check out a few of these apps below, or [click here to access the complete list](https://launchpad.redis.com).
@@ -152,10 +151,10 @@ Check out a few of these apps below, or [click here to access the complete list]
 
 #### Rate-Limiting app in Ruby on Rails
 
-
 ![Launchpad](images/ratelimitingruby.png)
 
 [Rate Limiting app](http://Launchpad.redis.com/?id=project%3Abasic-redis-rate-limiting-demo-ruby) built in Ruby on Rails
+
 </div>
 </div>
 
@@ -167,6 +166,7 @@ Check out a few of these apps below, or [click here to access the complete list]
 ![Launchpad](images/leaderboardruby.png)
 
 [How to implement leaderboard app](https://Launchpad.redis.com/?id=project%3Abasic-redis-leaderboard-demo-ruby) in Ruby on Rails
+
 </div>
 </div>
 </div>
@@ -176,8 +176,5 @@ Check out a few of these apps below, or [click here to access the complete list]
 - [A Ruby client library for Redis](https://github.com/redis/redis-rb/)
 - [Async::Redis - An asynchronous client for Redis including TLS](https://github.com/socketry/async-redis)
 
-
-
-  </TabItem>
+</TabItem>
 </Tabs>
-  

@@ -5,11 +5,11 @@ sidebar_label: Redis on Docker
 slug: /create/docker/redis-on-docker
 authors: [ajeet]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
-
 
 <Tabs
   defaultValue="Redis Enterprise"
@@ -20,13 +20,11 @@ import RedisCard from '@site/src/theme/RedisCard';
 
   <TabItem value="Redis Enterprise" className="has-small-images">
 
-
 ### Pre-requisite
 
 Ensure that Docker is installed in your system.
 
-If you're new, refer https://docs.docker.com/docker-for-mac/install/ to install Docker on Mac. 
-
+If you're new, refer https://docs.docker.com/docker-for-mac/install/ to install Docker on Mac.
 
 To pull and start the Redis Enterprise Software Docker container, run this docker run command in the terminal or command-line for your operating system.
 
@@ -42,11 +40,9 @@ In the web browser on the host machine, go to https://localhost:8443 to see the 
 
 Click Setup to start the node configuration steps.
 
-
 ![My Image](images/resoftware-1.png)
 
-
-### Step 2:  Enter your preferred FQDN 
+### Step 2: Enter your preferred FQDN
 
 In the Node Configuration settings, enter a cluster FQDN such as demo.redis.com. Then click Next button.
 
@@ -60,12 +56,10 @@ Enter an email and password for the admin account for the web console.
 
 ![My Image](images/resoftware-4.png)
 
-These credentials are also used for connections to the REST API. 
+These credentials are also used for connections to the REST API.
 Click OK to confirm that you are aware of the replacement of the HTTPS SSL/TLS certificate on the node, and proceed through the browser warning.
- 
 
-
-### Step 4:  Create a Database:
+### Step 4: Create a Database:
 
 Select “redis database” and the “single region” deployment, and click Next.
 
@@ -73,14 +67,11 @@ Select “redis database” and the “single region” deployment, and click Ne
 
 Enter a database name such as demodb and click Activate to create your database
 
-
 ![My Image](images/resoftware-7.png)
 
 You now have a Redis database!
 
-
-
-### Step 5: Connecting using redis-cli 
+### Step 5: Connecting using redis-cli
 
 After you create the Redis database, you are ready to store data in your database. redis-cli is a built-in simple command-line tool to interact with Redis database. Run redis-cli, located in the /opt/redislabs/bin directory, to connect to port 12000 and store and retrieve a key in database1
 
@@ -99,7 +90,6 @@ OK
 </TabItem>
 <TabItem value="Redis">
 
-
 ### Pre-requisite
 
 Ensure that Docker is installed in your system. Follow https://docs.docker.com/engine/install/ if you haven’t installed yet.
@@ -114,39 +104,38 @@ You can run Redis Stack using a Docker container. There are two types of Docker 
 
 To start Redis Stack server using the redis-stack image, run the following command in your terminal:
 
- ```bash
-  docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
- ````
+```bash
+ docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+```
 
 You can use `redis-cli` to connect to the server, just as you connect to any Redis instance.
 If you don’t have redis-cli installed locally, you can run it from the Docker container:
 
- ```bash
-  docker exec -it redis-stack redis-cli
- ```
+```bash
+ docker exec -it redis-stack redis-cli
+```
 
 :::info TIP
 The `docker run` command above also exposes RedisInsight on port 8001. You can use RedisInsight by pointing your browser to http://localhost:8001.
 :::
 
-
 To persist your Redis data to a local path, specify -v to configure a local volume. This command stores all data in the local directory local-data:
 
- ```bash
-  docker run -v /local-data/:/data redis/redis-stack:latest
- ```
+```bash
+ docker run -v /local-data/:/data redis/redis-stack:latest
+```
 
 If you want to expose Redis Stack server or RedisInsight on a different port, update the left hand of portion of the `-p` argument. This command exposes Redis Stack server on port 10001 and RedisInsight on port 13333:
 
- ```bash
-  docker run -p 10001:6379 -p 13333:8001 redis/redis-stack:latest
- ```
+```bash
+ docker run -p 10001:6379 -p 13333:8001 redis/redis-stack:latest
+```
 
 By default, the Redis Stack Docker containers use internal configuration files for Redis. To start Redis with local a configuration file, you can use the -v volume options:
 
- ```bash
-  docker run -v `pwd`/local-redis-stack.conf:/redis-stack.conf -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
- ```
+```bash
+ docker run -v `pwd`/local-redis-stack.conf:/redis-stack.conf -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+```
 
 To pass in arbitrary configuration changes, you can set any of these environment variables:
 
@@ -159,13 +148,12 @@ To pass in arbitrary configuration changes, you can set any of these environment
 
 For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
 
- ```
-  docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest
- ```
+```
+ docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest
+```
 
 </TabItem>
 
-  
 </Tabs>
 
 ### Next Step
@@ -176,5 +164,17 @@ For example, here’s how to use the `REDIS_ARGS` environment variable to pass t
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

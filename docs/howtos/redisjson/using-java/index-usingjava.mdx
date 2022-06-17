@@ -45,7 +45,7 @@ You'll need to initialize you connection to Redis. This means configuring and cr
 
 You'll need to represent your data by creating [POJOs](https://en.wikipedia.org/wiki/Plain_old_Java_object). Jedis will then help you serialize these objects to JSON.
 
-Suppose you're building an online learning platform, and you want to represent 
+Suppose you're building an online learning platform, and you want to represent
 students. Let's create a simple POJO to represent these students:
 
 ```java
@@ -82,15 +82,14 @@ Notice we pass the `Student` instances to the `jsonSet()` method. Jedis then ser
 
 ## Querying and indexing JSON
 
-If we want to be able to query this JSON, we'll need to create an index. Let's 
+If we want to be able to query this JSON, we'll need to create an index. Let's
 create an index on the "firstName" and "lastName" fields. To do this:
 
 1. We define which fields to index ("firstName" and "lastName").
-2. We set up the index definition to recognize JSON and include only those 
-documents 
-whose key starts with "student:".
-3. Then we actually create the index, called "student-index", by calling `ftCreate
-()`.
+2. We set up the index definition to recognize JSON and include only those
+   documents
+   whose key starts with "student:".
+3. Then we actually create the index, called "student-index", by calling `ftCreate ()`.
 
 ```java
 Schema schema = new Schema().addTextField("$.firstName", 1.0).addTextField("$" +
@@ -102,7 +101,7 @@ client.ftCreate("student-index",
             schema);
 ```
 
-With an index now defined, we can query our JSON. Let's find all students whose 
+With an index now defined, we can query our JSON. Let's find all students whose
 name begins with "maya":
 
 ```java
@@ -111,7 +110,7 @@ SearchResult mayaSearch = client.ftSearch("student-index", q);
 ```
 
 We can then iterate over our search results:
-    
+
 ```java
 List<Document> docs = mayaSearch.getDocuments();
 for (Document doc : docs) {
@@ -119,13 +118,12 @@ for (Document doc : docs) {
 }
 ```
 
-This example just scratches the surface. You can atomically manipulate JSON documents and query them in a variety of ways. See the [RedisJSON docs](https://oss.redis.com/redisjson/), the [RediSearch](https://oss.redis.com/redisearch/) docs, and our course, ["Querying, Indexing, and Full-text Search in Redis"](https://university.redis.com/courses/ru203/), for a lot more examples. 
+This example just scratches the surface. You can atomically manipulate JSON documents and query them in a variety of ways. See the [RedisJSON docs](https://oss.redis.com/redisjson/), the [RediSearch](https://oss.redis.com/redisearch/) docs, and our course, ["Querying, Indexing, and Full-text Search in Redis"](https://university.redis.com/courses/ru203/), for a lot more examples.
 
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
 - [RedisJSON and Python](/howtos/redisjson/using-python)
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
-- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs) 
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
 - Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
 - [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)
-

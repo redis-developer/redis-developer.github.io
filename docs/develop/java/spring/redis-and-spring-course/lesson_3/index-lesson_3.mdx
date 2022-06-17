@@ -1,6 +1,6 @@
 ---
 id: index-lesson_3
-title: "Object Mapping & Redis Repositories"
+title: 'Object Mapping & Redis Repositories'
 sidebar_label: Mapping & Repositories
 slug: /develop/java/redis-and-spring-course/lesson_3
 authors: [bsb]
@@ -12,18 +12,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 To configure a `RedisTemplate `and learn how to access different operation bundles to read and write data to Redis from a Spring REST controller.
 
-###  Agenda
+### Agenda
 
 In this lesson, you will learn:
 
-* How to use the `@RedisHash` annotation to map domain objects.
-* How to use `@Id` to provide primary keys to your mapped objects.
-* How to use `@Reference` to create referential associations between objects.
-* How to create and use Redis Repositories to store domain objects.
+- How to use the `@RedisHash` annotation to map domain objects.
+- How to use `@Id` to provide primary keys to your mapped objects.
+- How to use `@Reference` to create referential associations between objects.
+- How to create and use Redis Repositories to store domain objects.
 
 If you get stuck:
 
-  * The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-3
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-3
 
 ### Users and roles
 
@@ -150,14 +150,15 @@ public class User {
 ```
 
 This class is a little more involved, so let’s break it down:
-  1. We have another POJO (`@Data`) whose instances can be persisted as Redis Hashes (`@RedisHash`)
-  2. The class is annotated to only add fields to equals/hashcode/toString that are explicitly annotations with `@EqualsHashCode.Include` and `@ToString.Include`
-  3. Once again, we have an auto-generated String Redis Hash key using `@Id`
-  4. We create a (secondary) index on the email field by annotating the property with `@Indexed`. We will learn more about secondary indexes in the next lesson.
-  5. Several `javax.validation.constraints `annotations are used to denote fields as being of type `@Email`, being `@NotNull`-able, and restricting their `@Size`
-  6. The passwordConfirm field, which will hold the traditional “password confirmation”, is marked as `@Transient` so that `@RedisHash` does not attempt to serialize it to the database
-  7. For the `User`’s roles, we have a `Set `of `Role` objects marked as `@References` which will cause them to be stored as the id of a given role in the Redis Hash backing a `User` instance.
-  8. Finally at the bottom, we add a utility method to add `Role`s to the `User`’s Role Set.
+
+1. We have another POJO (`@Data`) whose instances can be persisted as Redis Hashes (`@RedisHash`)
+2. The class is annotated to only add fields to equals/hashcode/toString that are explicitly annotations with `@EqualsHashCode.Include` and `@ToString.Include`
+3. Once again, we have an auto-generated String Redis Hash key using `@Id`
+4. We create a (secondary) index on the email field by annotating the property with `@Indexed`. We will learn more about secondary indexes in the next lesson.
+5. Several `javax.validation.constraints `annotations are used to denote fields as being of type `@Email`, being `@NotNull`-able, and restricting their `@Size`
+6. The passwordConfirm field, which will hold the traditional “password confirmation”, is marked as `@Transient` so that `@RedisHash` does not attempt to serialize it to the database
+7. For the `User`’s roles, we have a `Set `of `Role` objects marked as `@References` which will cause them to be stored as the id of a given role in the Redis Hash backing a `User` instance.
+8. Finally at the bottom, we add a utility method to add `Role`s to the `User`’s Role Set.
 
 ### Spring Repositories
 
@@ -167,6 +168,7 @@ further abstract the underlying storage mechanism by focusing on the management 
 while DAOs are more SQL/Table centric.
 
 ### Role Repository
+
 Under the `src/main/java/com/redislabs/edu/redi2read/repositories` let's create the RoleRepository interface as follows:
 
 ```java

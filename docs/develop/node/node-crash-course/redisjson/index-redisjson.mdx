@@ -9,10 +9,16 @@ authors: [simon]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/NAGMJ6kEVEQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/NAGMJ6kEVEQ"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
-We used Redis' built-in Hash data type to represent our user and location entities.  Hashes are great for this, but they are limited in that they can only contain flat name/value pairs.  For our locations, we want to store extra details in a more structured way.
+We used Redis' built-in Hash data type to represent our user and location entities. Hashes are great for this, but they are limited in that they can only contain flat name/value pairs. For our locations, we want to store extra details in a more structured way.
 
 Here's an example of the additional data we want to store about a location:
 
@@ -41,13 +47,13 @@ Here's an example of the additional data we want to store about a location:
 }
 ```
 
-We could store this data as serialized JSON in a Redis String, but then our application would have to retrieve and parse the entire document every time it wanted to read some of the data.  And we'd have to do the same to update it too.  Furthermore, with this approach, update operations aren't atomic and a second client could update the JSON stored at a given key while we're making changes to it in our application code.  Then, when we serialize our version of the JSON back into the Redis String, the other client's changes would be lost.
+We could store this data as serialized JSON in a Redis String, but then our application would have to retrieve and parse the entire document every time it wanted to read some of the data. And we'd have to do the same to update it too. Furthermore, with this approach, update operations aren't atomic and a second client could update the JSON stored at a given key while we're making changes to it in our application code. Then, when we serialize our version of the JSON back into the Redis String, the other client's changes would be lost.
 
-RedisJSON adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server.  This makes our application code simpler, more efficient, and much more reliable.
+RedisJSON adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server. This makes our application code simpler, more efficient, and much more reliable.
 
 ## Coding Exercise
 
-In this exercise, you'll complete the code for an API route that gets just the object representing a location's opening hours for a given day.  Open the file `src/routes/location_routes.js`, and find the route for `/location/:locationId/hours/:day`.  The starter code looks like this:
+In this exercise, you'll complete the code for an API route that gets just the object representing a location's opening hours for a given day. Open the file `src/routes/location_routes.js`, and find the route for `/location/:locationId/hours/:day`. The starter code looks like this:
 
 ```javascript
 // EXERCISE: Get opening hours for a given day.
@@ -73,7 +79,9 @@ router.get(
     const jsonPath = 'TODO';
 
     /* eslint-enable no-unused-vars */
-    const hoursForDay = JSON.parse(await redisClient.call('JSON.GET', locationDetailsKey, jsonPath));
+    const hoursForDay = JSON.parse(
+      await redisClient.call('JSON.GET', locationDetailsKey, jsonPath),
+    );
     /* eslint-disable */
 
     // If null response, return empty object.
@@ -96,7 +104,7 @@ If you're using redis-cli, you can look at the structure of the JSON document wi
 json.get ncc:locationdetails:121 .
 ```
 
-Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis.  Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
+Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis. Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
 
 To test your code, start the server with:
 
@@ -122,7 +130,13 @@ Don't forget that if you have questions or need help, we're available on [Discor
 In this video, Justin introduces RedisJSON using a fun taco truck example!
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/2mFakgHKme4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/2mFakgHKme4"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 Learn more about RedisJSON at its [official homepage](https://redisjson.io/).

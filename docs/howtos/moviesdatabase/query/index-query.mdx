@@ -5,12 +5,11 @@ sidebar_label: 4. Query Data
 slug: /howtos/moviesdatabase/query
 ---
 
-
 The database contains a few movies, and an index, it is now possible to execute some queries.
 
 ## Queries
 
-**Example : *All the movies that contains the string "`war`"***
+**Example : _All the movies that contains the string "`war`"_**
 
 ```
 > FT.SEARCH idx:movie "war"
@@ -32,7 +31,7 @@ The database contains a few movies, and an index, it is now possible to execute 
 
 The FT.SEARCH commands returns a list of results starting with the number of results, then the list of elements (keys & fields).
 
-As you can see the movie *Star Wars: Episode V - The Empire Strikes Back* is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redis.com/redisearch/Escaping/) and [stemmed](https://oss.redis.com/redisearch/Stemming/).
+As you can see the movie _Star Wars: Episode V - The Empire Strikes Back_ is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redis.com/redisearch/Escaping/) and [stemmed](https://oss.redis.com/redisearch/Stemming/).
 
 Later when looking at the query syntax in more detail you will learn more about the search capabilities.
 
@@ -63,7 +62,8 @@ If you need to perform a query on a specific field you can specify it using the 
 ```
 
 ---
-**Example : *All the movies that contains the string "`war` but NOT the `jedi` one"***
+
+**Example : _All the movies that contains the string "`war` but NOT the `jedi` one"_**
 
 Adding the string `-jedi` (minus) will ask the query engine not to return values that contain `jedi`.
 
@@ -79,7 +79,8 @@ Adding the string `-jedi` (minus) will ask the query engine not to return values
 ```
 
 ---
-**Example : *All the movies that contains the string "`gdfather` using fuzzy search"***
+
+**Example : _All the movies that contains the string "`gdfather` using fuzzy search"_**
 
 As you can see the word godfather contains a speelling error, it can however be matched using [fuzzy matching](https://oss.redis.com/redisearch/Query_Syntax/#fuzzy_matching). Fuzzy matches are performed based on [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) (LD).
 
@@ -95,11 +96,12 @@ As you can see the word godfather contains a speelling error, it can however be 
 ```
 
 ---
-**Example  : *All `Thriller` movies"***
+
+**Example : _All `Thriller` movies"_**
 
 The `genre` fields is indexed as a TAG and allows exact match queries.
 
-The syntax to query a TAG field is  @field_name:{value}
+The syntax to query a TAG field is @field_name:{value}
 
 ```
 > FT.SEARCH idx:movie "@genre:{Thriller}" RETURN 2 title release_year
@@ -114,7 +116,8 @@ The syntax to query a TAG field is  @field_name:{value}
 ```
 
 ---
-**Example : *All `Thriller` or `Action` movies"***
+
+**Example : _All `Thriller` or `Action` movies"_**
 
 ```
 > FT.SEARCH idx:movie "@genre:{Thriller|Action}" RETURN 2 title release_year
@@ -140,7 +143,8 @@ The syntax to query a TAG field is  @field_name:{value}
 You can find more information about the Tag filters in [the documentation](https://oss.redis.com/redisearch/master/Query_Syntax/#tag_filters).
 
 ---
-**Example : *All `Thriller` or `Action` movies that does not have `Jedi` in the title"***
+
+**Example : _All `Thriller` or `Action` movies that does not have `Jedi` in the title"_**
 
 ```
 > FT.SEARCH idx:movie "@genre:{Thriller|Action} @title:-jedi" RETURN 2 title release_year
@@ -159,16 +163,16 @@ You can find more information about the Tag filters in [the documentation](https
 ```
 
 ---
-**Example : *All the movies released between 1970 and 1980 (included)***
+
+**Example : _All the movies released between 1970 and 1980 (included)_**
 
 The FT.SEARCH syntax has two ways to query numeric fields:
 
-* using the `FILTER` parameter
+- using the `FILTER` parameter
 
-or 
+or
 
-* using the `@field` in the query string.
-
+- using the `@field` in the query string.
 
 ```
 > FT.SEARCH idx:movie * FILTER release_year 1970 1980 RETURN 2 title release_year
@@ -198,11 +202,12 @@ To exclude a value prepend it with `(` in the FILTER or query string, for exampl
 ```
 
 ---
+
 ## Insert, Update, Delete and Expire Documents
 
 As part of this tutorial you have:
 
-1. Created few movies, as Redis hashes (*that we call document*) with the following key pattern `movie:*`
+1. Created few movies, as Redis hashes (_that we call document_) with the following key pattern `movie:*`
 2. Created an index using the `FT.CREATE` command
 3. Queried the data using `FT.SEARCH`
 
@@ -255,7 +260,7 @@ Now you **update** one of the field, and search for `007`
    4) "1997"
 ```
 
-When you *delete* the hash, the index is also updated, and the same happens when the key expires (TTL-Time To Live). 
+When you _delete_ the hash, the index is also updated, and the same happens when the key expires (TTL-Time To Live).
 
 For example, set the James Bond movie to expire in 20 seconds time:
 
@@ -276,12 +281,12 @@ You can run the following query, and you will that the document expires after 20
 > Note: When you are using Redis as your primary database you are not necessarily using TTLs to delete records. However, if the data you are storing and indexing are transient, for example a caching layer at the top of another datastore or Web service, query user sessions content, ... This is often qualified as a "[Ephemeral Search](https://redis.com/blog/the-case-for-ephemeral-search/)" use case: lightweight, fast and expiration.
 
 ---
-##  More
+
+## More
+
 You have many additional features regarding indexing and searching that you can find in the documentation:
 
-* [FT.SEARCH command](https://oss.redis.com/redisearch/master/Commands/#ftsearch)
-* [Query Syntax](https://oss.redis.com/redisearch/master/Query_Syntax/)
-
+- [FT.SEARCH command](https://oss.redis.com/redisearch/master/Commands/#ftsearch)
+- [Query Syntax](https://oss.redis.com/redisearch/master/Query_Syntax/)
 
 Let's see how to inspect, modify and drop an index.
-

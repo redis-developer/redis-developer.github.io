@@ -44,26 +44,23 @@ You can refer to [Heroku documentation](https://devcenter.heroku.com/categories/
 
 ![heroku](create_heroku.png)
 
-
 ### Step 3. Install Heroku CLI on your system
 
 Run the following command to install the Heroku CLI on your system.
 
-
-   ```macos
-    brew install heroku
-   ```
+```macos
+ brew install heroku
+```
 
 ### Step 4. Login to Heroku
 
-   ```bash
-    heroku login
-    heroku: Press any key to open up the browser to login or q to exit:
-    Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
-    Logging in... done
-    Logged in as your_email_address
-   ```
-
+```bash
+ heroku login
+ heroku: Press any key to open up the browser to login or q to exit:
+ Opening browser to https://cli-auth.heroku.com/auth/cli/browser/XXXXXXXXXXA
+ Logging in... done
+ Logged in as your_email_address
+```
 
 ### Step 5. Connect your application to Redis Enterprise Cloud
 
@@ -71,13 +68,11 @@ For this demonstration, we will be using a [Sample Rate Limiting application](ht
 
 #### Clone the repository
 
-   ```bash
-    git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
-   ```
+```bash
+ git clone https://github.com/redis-developer/basic-rate-limiting-demo-python
+```
 
 Run the commands below to get a functioning Git repository that contains a simple application as well as a package.json file.
-
-
 
 ```
 $ heroku create
@@ -92,17 +87,13 @@ Refer to Step 1 for the correct values to use.
 
 ![heroku](heroku_app1_env.png)
 
-
-
 ### Step 7. Deploy your code
 
 Heroku generates a random name (in this case fast-reef-76278) for your app, or you can pass a parameter to specify your own app name.
 Now deploy your code:
- 
-
 
 ```
-$ git push heroku                        
+$ git push heroku
 Enumerating objects: 512, done.
 Counting objects: 100% (512/512), done.
 Delta compression using up to 12 threads
@@ -111,7 +102,7 @@ Writing objects: 100% (512/512), 1.52 MiB | 660.00 KiB/s, done.
 Total 512 (delta 244), reused 512 (delta 244)
 remote: Compressing source files... done.
 remote: Building source:
-remote: 
+remote:
 remote: -----> Building on the Heroku-20 stack
 remote: -----> Determining which buildpack to use for this app
 remote: -----> Python app detected
@@ -122,7 +113,7 @@ remote:        Done: 59.3M
 remote: -----> Launching...
 remote:        Released v5
 remote:        https://fast-reef-76278.herokuapp.com/ deployed to Heroku
-remote: 
+remote:
 remote: Verifying deploy... done.
 To https://git.heroku.com/fast-reef-76278.git
  * [new branch]      master -> master
@@ -130,12 +121,9 @@ To https://git.heroku.com/fast-reef-76278.git
 
 ### Step 8. Accessing the application
 
-
 Open https://fast-reef-76278.herokuapp.com/ to see your application
 
 ![heroku](heroku_ratelimiter.png)
-
-
 
 ### Next Step
 

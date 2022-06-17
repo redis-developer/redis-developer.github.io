@@ -60,7 +60,7 @@ public static class Producer
 }
 ```
 
-This code will send new telemetry every 10 seconds to the `telemetry` stream, with a `temp` record and a `time` record. 
+This code will send new telemetry every 10 seconds to the `telemetry` stream, with a `temp` record and a `time` record.
 
 ### Reading messages
 
@@ -192,6 +192,6 @@ dotnet run
 
 ## Resources:
 
-* The source for this tutorial is in [GitHub](https://github.com/redis-developer/redis-streams-with-dotnet/tree/main/StreamsWithServicestack)
-* Redis University has an extensive [course](https://university.redis.com/courses/ru202/) on Redis Streams where you can learn everything you need to know about them.
-* You can learn more about Redis Streams in the [Streams Info](https://redis.io/topics/streams-intro) article on redis.io
+- The source for this tutorial is in [GitHub](https://github.com/redis-developer/redis-streams-with-dotnet/tree/main/StreamsWithServicestack)
+- Redis University has an extensive [course](https://university.redis.com/courses/ru202/) on Redis Streams where you can learn everything you need to know about them.
+- You can learn more about Redis Streams in the [Streams Info](https://redis.io/topics/streams-intro) article on redis.io

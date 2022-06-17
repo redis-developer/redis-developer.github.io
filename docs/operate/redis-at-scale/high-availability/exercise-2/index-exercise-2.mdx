@@ -9,11 +9,13 @@ custom_edit_url: null
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Step 1
+
 If you still have the primary and replica instances we set up in the previous exercise (3.2) - great! We’ll reuse them to create our Sentinel setup. If not - refer back to the [instructions](/operate/redis-at-scale/high-availability/exercise-1) and go through them again.
 
 When done, you will have a primary Redis instance with one replica.
 
 ## Step 2
+
 To initialise a Redis Sentinel, you need to provide a configuration file, so let’s go ahead and create one:
 
 ```bash
@@ -34,30 +36,35 @@ sentinel auth-pass myprimary a_strong_password
 
 - `port` - The port on which the Sentinel should run
 - `sentinel monitor` - monitor the Primary on a specific IP address and port. Having the address of the Primary the Sentinels will be able to discover all the replicas on their own. The last argument on this line is the number of Sentinels needed for quorum. In our example - the number is 2.
-- `sentinel down-after-milliseconds`  - how many milliseconds should an instance be unreachable so that it’s considered down
+- `sentinel down-after-milliseconds` - how many milliseconds should an instance be unreachable so that it’s considered down
 - `sentinel failover-timeout` - if a Sentinel voted another Sentinel for the failover of a given master, it will wait this many milliseconds to try to failover the same master again.
 - `sentinel auth-pass` - In order for Sentinels to connect to Redis server instances when they are configured with `requirepass`, the Sentinel configuration must include the sentinel auth-pass directive.
 
 ## Step 3
+
 Make two more copies of this file - `sentinel2.conf` and `sentinel3.conf` and edit them so that the `PORT` configuration is set to 5001 and 5002, respectively.
 
 ## Step 4
+
 Let’s initialise the three Sentinels in three different terminal tabs:
 
 ```bash
 # Tab 1
 $ redis-server ./sentinel1.conf --sentinel
 ```
+
 ```bash
 # Tab 2
 $ redis-server ./sentinel2.conf --sentinel
 ```
+
 ```bash
 # Tab3
 $ redis-server ./sentinel3.conf --sentinel
 ```
 
 ## Step 5
+
 If you connected to one of the Sentinels now you would be able to run many new commands that would give an error if run on a Redis instance. For example:
 
 ```bash
@@ -75,7 +82,8 @@ SENTINEL get-master-addr-by-name myprimary
 ```
 
 ## Step 6
-If we killed the primary Redis instance now by pressing  Ctrl+C or by running the `redis-cli -p 6379 DEBUG sleep 30` command, we’ll be able to observe in the Sentinels’ logs that the failover process will start in about 5 seconds. If you run the command that returns the IP address of the Primary again you will see that the replica has been promoted to a Primary:
+
+If we killed the primary Redis instance now by pressing Ctrl+C or by running the `redis-cli -p 6379 DEBUG sleep 30` command, we’ll be able to observe in the Sentinels’ logs that the failover process will start in about 5 seconds. If you run the command that returns the IP address of the Primary again you will see that the replica has been promoted to a Primary:
 
 ```bash
 redis> SENTINEL get-master-addr-by-name myprimary

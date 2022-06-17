@@ -12,12 +12,12 @@ authors: [steve]
 
 Aggregations in Redis are build around an aggregation pipeline, you will start off with a `RedisAggregationSet<T>` of objects that you have indexed in Redis. From there you can
 
-* Query to filter down the results you want
-* Apply functions to them to combine functions to them
-* Group like features together
-* Run reductions on groups
-* Sort records
-* Further filter down records
+- Query to filter down the results you want
+- Apply functions to them to combine functions to them
+- Group like features together
+- Run reductions on groups
+- Sort records
+- Further filter down records
 
 ## Setting up for Aggregations
 
@@ -29,7 +29,7 @@ public class Employee
 {
     [Indexed]
     public string Name { get; set; }
-    
+
     [Indexed]
     public GeoLoc? HomeLoc { get; set; }
 
@@ -38,7 +38,7 @@ public class Employee
 
     [Indexed(Aggregatable = true)]
     public double Sales { get; set; }
-    
+
     [Indexed(Aggregatable = true)]
     public double SalesAdjustment { get; set; }
 

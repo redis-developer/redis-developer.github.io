@@ -9,12 +9,24 @@ custom_edit_url: null
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <div align="center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/08V8KeXhZY4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/08V8KeXhZY4"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-<br/>
-<br/>
-<p>If a Redis server that only stores data in RAM is restarted, all data is lost. To prevent such data loss, there needs to be some mechanism for persisting the data to disk;
-Redis provides two of them: <strong>snapshotting</strong> and an <strong>append-only file</strong>, or <strong>AOF</strong>. You can configure your Redis instances to use either of the two, or a combination of both.</p>
+<br />
+<br />
+<p>
+  If a Redis server that only stores data in RAM is restarted, all data is lost.
+  To prevent such data loss, there needs to be some mechanism for persisting the
+  data to disk; Redis provides two of them: <strong>snapshotting</strong> and an{' '}
+  <strong>append-only file</strong>, or <strong>AOF</strong>. You can configure
+  your Redis instances to use either of the two, or a combination of both.
+</p>
 
 When a snapshot is created, the entire point-in-time view of the dataset is written to persistent storage in a compact <strong>.rdb</strong> file. You can set up recurring backups, for example every 1, 12, or 24 hours and use these backups to easily restore different versions of the data set in case of disasters. You can also use these snapshots to create a clone of the server, or simply leave them in place for a future restart.
 
@@ -28,8 +40,18 @@ AOF, or append-only file works by logging every incoming write command to disk a
 
 Depending on your durability requirements (or how much data you can afford to lose), you can choose which fsync policy is the best for your use case:
 
-- <strong>fsync every write</strong>: The safest policy: The write is acknowledged to the client only after it has been written to the AOF file and flushed to disk. Since in this approach we are writing to disk synchronously, we can expect a much higher latency than usual.
-- <strong>fsync every second</strong>: The default policy. Fsync is performed asynchronously, in a background thread, so write performance is still high. Choose this option if you need high performance and can afford to lose up to one second worth of writes.
-- <strong>no fsync</strong>: In this case Redis will log the command to the file descriptor, but will not force the OS to flush the data to disk. If the OS crashes we can lose a few seconds of data (Normally Linux will flush data every 30 seconds with this configuration, but it's up to the kernel’s exact tuning.).
+- <strong>fsync every write</strong>: The safest policy: The write is
+  acknowledged to the client only after it has been written to the AOF file and
+  flushed to disk. Since in this approach we are writing to disk synchronously,
+  we can expect a much higher latency than usual.
+- <strong>fsync every second</strong>: The default policy. Fsync is performed
+  asynchronously, in a background thread, so write performance is still high.
+  Choose this option if you need high performance and can afford to lose up to
+  one second worth of writes.
+- <strong>no fsync</strong>: In this case Redis will log the command to the file
+  descriptor, but will not force the OS to flush the data to disk. If the OS
+  crashes we can lose a few seconds of data (Normally Linux will flush data
+  every 30 seconds with this configuration, but it's up to the kernel’s exact
+  tuning.).
 
 The relevant configuration directives for AOF are shown on the screen. AOF contains a log of all the operations that modified the database in a format that’s easy to understand and parse. When the file gets too big, Redis can automatically rewrite it in the background, compacting it in a way that only the latest state of the data is preserved.

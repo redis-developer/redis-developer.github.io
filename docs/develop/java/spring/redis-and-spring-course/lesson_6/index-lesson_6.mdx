@@ -1,6 +1,6 @@
 ---
 id: index-lesson_6
-title: "Domain Models with RedisJSON"
+title: 'Domain Models with RedisJSON'
 sidebar_label: Domain Models w/ RedisJSON
 slug: /develop/java/redis-and-spring-course/lesson_6
 authors: [bsb]
@@ -9,18 +9,21 @@ authors: [bsb]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ### Objectives
+
 Add a JSON-backed domain model to Redi2Read using the RedisJSON Redis module.
 
 ### Agenda
 
 In this lesson, you'll learn how to:
-* Use JSON documents as extensions of your domain.
-* Implement a custom Spring Repository to work with JSON documents.
-* Implement the `CartController` using the JRedisJSON client library.
-If you get stuck:
-* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-6
+
+- Use JSON documents as extensions of your domain.
+- Implement a custom Spring Repository to work with JSON documents.
+- Implement the `CartController` using the JRedisJSON client library.
+  If you get stuck:
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-6
 
 ### Carts and Cart Items
+
 We will implement the `Cart` and `CartItem` models backed by a custom Spring Repository that uses the RedisJSON API via the JRedisJSON client library.
 
 We will represent a user’s cart as a JSON document containing cart item subdocuments. As you can see in the class diagram, a `Cart` has zero or more `CartItems`, and it belongs to a `User`.
@@ -34,6 +37,7 @@ JSON can be a better fit for modeling complex data in Redis than Hashes because,
 JSON values can contain nested arrays and objects.
 
 ### JRedisJSON
+
 JRedisJSON (https://github.com/RedisJSON/JRedisJSON) is a Java client that provides access to RedisJSON's Redis API and provides Java serialization using Google’s GSON library.
 
 #### Adding JRedisJSON as a Dependency
@@ -60,6 +64,7 @@ And then the JRedisJSON dependency to the dependencies block:
 ### The Models
 
 #### The CartItem Model
+
 We’ll start with the `CartItem `model. It holds information about a `Book` in the `Cart`; it stores the `Book` ISBN (id), price, and quantity added to the cart.
 Add the file `src/main/java/com/redislabs/edu/redi2read/models/CartItem.java` with the following contents:
 
@@ -79,6 +84,7 @@ public class CartItem {
 ```
 
 #### The Cart Model
+
 The Cart model contains the ID of the owning User and a set of `CartItem`s. Utility methods exist to return the total number of items in the cart and the total cost.
 Add the file `src/main/java/com/redislabs/edu/redi2read/models/Cart.java` with the following contents:
 
@@ -150,7 +156,7 @@ The `@Reference` annotation works for our `Set`s in the context of Redis seriali
 the roles were being fully serialized into the resulting JSON payload by Jackson.
 We will add the `@JsonIdentityReference `with the `alwaysAsId` parameter set to `true`, which, given the proper meta-information in the target classes (`Book` and `Role`), will make Jackson serialize collections of these objects as IDs.
 The `@JsonIdentityInfo` annotation allows us to set a generator (`ObjectIdGenerator.PropertyGenerator`) using the `id` property to direct how the serialization will happen in the presence of the `@JsonIdentityReference` annotation.
- Add the annotation to the `Book` model as shown:
+Add the annotation to the `Book` model as shown:
 
 ```java
 @Data
@@ -181,6 +187,7 @@ public class Role {
 Now, when JSON serialization occurs in the REST controllers, the user collection will include the roles as JSON arrays of role IDs. The user collection will also include the newly added collection of books as an array of book IDs.
 
 ### The Cart Repository
+
 RedisJSON is not yet seamlessly integrated with Spring, but that does not prevent us from using RedisJSON the “Spring Way”. We have provided an implementation of Spring’s CrudRepository so that we can implement our services and controllers.
 Add the file src/main/java/com/redislabs/edu/redi2read/repositories/CartRepository.java with the following contents:
 
@@ -320,10 +327,10 @@ routing and deal with incoming parameters and outgoing JSON payloads.
 An approach to keep both models and controllers from getting bloated with business logic (“fat” models and “fat” controllers) is to introduce a business logic service layer.
 We’ll do so for the cart business logic by introducing the `CartService`. The `CartService` introduces four cart-related business methods:
 
-* `get`: Finds a cart by id
-* `addToCart`: Adds a cart item to a cart
-* `removeFromCart`: Removes an isbn from the cart’s set of cart items
-* `checkout`: Given a cart ID, adds the contents to the user’s collection of owned books
+- `get`: Finds a cart by id
+- `addToCart`: Adds a cart item to a cart
+- `removeFromCart`: Removes an isbn from the cart’s set of cart items
+- `checkout`: Given a cart ID, adds the contents to the user’s collection of owned books
 
 Add the file `src/main/java/com/redislabs/edu/redi2read/services/CartService.java` with the following contents:
 
@@ -410,10 +417,11 @@ Let’s delve deeper into the implementation of these methods.
 #### Adding Items to the cart
 
 In the addToCart method:
-* We search for the cart by ID
-* If we find the card, then we search for the book to be added to the cart by ISBN using the `BookRepository`
-* If we find the book, we add the book’s current price to the item (we don’t want customers setting their own prices)
-* We then use the JSON.ARRAPPEND command to insert the JSON object into the JSON array at the JSONPath expression `".cartItems"`
+
+- We search for the cart by ID
+- If we find the card, then we search for the book to be added to the cart by ISBN using the `BookRepository`
+- If we find the book, we add the book’s current price to the item (we don’t want customers setting their own prices)
+- We then use the JSON.ARRAPPEND command to insert the JSON object into the JSON array at the JSONPath expression `".cartItems"`
 
 ```java
 public void addToCart(String id, CartItem item) {
@@ -430,8 +438,9 @@ public void addToCart(String id, CartItem item) {
 
 In the removeFromCart method:
 We search for the cart by ID.
-* If we find the cart, we search for the index of the item to be removed in the array of cart items.
-* If we find the item, we use the JSON.ARRPOP command to remove the item by its index at the JSONPath expression “.cartItems”.
+
+- If we find the cart, we search for the index of the item to be removed in the array of cart items.
+- If we find the item, we use the JSON.ARRPOP command to remove the item by its index at the JSONPath expression “.cartItems”.
 
 ```java
 public void removeFromCart(String id, String isbn) {
@@ -449,6 +458,7 @@ public void removeFromCart(String id, String isbn) {
 ```
 
 ### Generating Random Carts
+
 We now have all the pieces in place to create a `CommandLineRunner` that can generate random carts for our users.
 As done previously, we will set the number of carts generated using an application property. To do so, add the following to the file `src/main/resources/application.properties`:
 
@@ -567,13 +577,14 @@ public class CreateCarts implements CommandLineRunner {
 ```
 
 Let’s break down the CreateCarts class:
-* As with other `CommandLineRunner`s, we check that there are no carts created.
-* For each cart to be created, we
-* Retrieve a random user.
-* Create a cart for the user.
-* Retrieve between 1 and 7 books.
-* Add the cart items to the cart for the retrieved books.
-* Randomly “checkout” the cart.
+
+- As with other `CommandLineRunner`s, we check that there are no carts created.
+- For each cart to be created, we
+- Retrieve a random user.
+- Create a cart for the user.
+- Retrieve between 1 and 7 books.
+- Add the cart items to the cart for the retrieved books.
+- Randomly “checkout” the cart.
 
 There are two private utility methods at the bottom of the class to get a random number of books and to create cart items from a set of books.
 Upon server start (after some CPU cycles) you should see:
@@ -581,6 +592,7 @@ Upon server start (after some CPU cycles) you should see:
 ```bash
 2021-04-04 14:58:08.737  INFO 31459 --- [  restartedMain] c.r.edu.redi2read.boot.CreateCarts       : >>>> Created Carts...
 ```
+
 We can now use the Redis CLI to get a random cart key from the cart set, check the type of one of the keys (ReJSON-RL) and use the JSON.GET command to retrieve the JSON payload:
 
 ```bash
@@ -593,6 +605,7 @@ ReJSON-RL
 ```
 
 #### The Cart Controller
+
 The `CartController` is mostly a pass-through to the `CartService` (as controllers are intended to be).
 
 ```java
@@ -651,24 +664,20 @@ Which should return a payload like:
 
 ```json
 {
-    "id": "dcd6a6c3-59d6-43b4-8750-553d159cdeb8",
-    "userId": "-3356969291827598172",
-    "cartItems": [
-        {
-            "isbn": "1784391093",
-            "price": 17.19,
-            "quantity": 1
-        },
-        {
-            "isbn": "3662433524",
-            "price": 59.99,
-            "quantity": 1
-        }
-    ],
-    "total": 77.18
+  "id": "dcd6a6c3-59d6-43b4-8750-553d159cdeb8",
+  "userId": "-3356969291827598172",
+  "cartItems": [
+    {
+      "isbn": "1784391093",
+      "price": 17.19,
+      "quantity": 1
+    },
+    {
+      "isbn": "3662433524",
+      "price": 59.99,
+      "quantity": 1
+    }
+  ],
+  "total": 77.18
 }
 ```
-
-
-
-

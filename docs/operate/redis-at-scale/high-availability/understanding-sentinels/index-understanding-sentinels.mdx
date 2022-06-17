@@ -14,9 +14,14 @@ Redis Sentinel is a distributed system consisting of multiple Redis instances st
 
 The group of Sentinels monitors a primary Redis instance and its replicas. If the sentinels detect that the primary instance has failed, the sentinel processes will look for the replica that has the latest data and will promote that replica to be the new primary. This way, the clients talking to the database will be able to reconnect to the new primary and continue functioning as usual, with minimal disruption to the users.
 
-<br/>
-<img height="75%" width="75%" src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/3.4/image1.png" alt="Sentinel Quorum Diagram"/>
-<br/>
+<br />
+<img
+  height="75%"
+  width="75%"
+  src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/3.4/image1.png"
+  alt="Sentinel Quorum Diagram"
+/>
+<br />
 
 ## Deciding that a primary instance is down
 
@@ -25,6 +30,7 @@ In order for the Sentinels to be able to decide that a primary instance is down 
 Having a number of Sentinels agreeing that they need to take an action is called <strong>reaching a quorum</strong>. If the Sentinels can’t reach quorum, they cannot decide that the primary has failed. The exact number of Sentinels needed for quorum is configurable.
 
 ## Triggering a failover
+
 Once the Sentinels have decided that a primary instance is down, they need to elect and authorize a leader (a Sentinel instance) that will do the failover. A leader can only be chosen if the majority of the Sentinels agree on it.
 
 In the final step, the leader will reconfigure the chosen replica to become a primary by sending the command `REPLICAOF NO ONE` and it will reconfigure the other replicas to follow the newly promoted primary.

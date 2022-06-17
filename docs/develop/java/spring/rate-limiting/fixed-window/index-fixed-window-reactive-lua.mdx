@@ -5,6 +5,7 @@ sidebar_label: Atomicity with Lua
 slug: /develop/java/spring/rate-limiting/fixed-window/reactive-lua
 authors: [bsb]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -46,7 +47,7 @@ Place the script under `src/main/resources/scripts`. Now, Let's break it down:
 1. Lua scripts in Redis work with keys (`KEYS[]`) and arguments (`ARGV[]`) in our case
    we are expecting one `key` in `KEYS[1]` (Lua arrays are 1-based)
 2. We retrieve the quota for the key in `requests` by making a `call` to the `GET` command,
-  returning `-1` if the key does not exist, and converting the value to a number.
+   returning `-1` if the key does not exist, and converting the value to a number.
 3. The quota is passed as the first argument (`ARGV[1]`) and stored in `max_requests`, the
    expiry in seconds is the second argument and stored in `expiry`
 4. The `if` statement checks whether the request is the first request in the time window or

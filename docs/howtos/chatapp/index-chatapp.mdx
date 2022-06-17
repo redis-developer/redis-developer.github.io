@@ -11,22 +11,23 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
 Real-time chat app is an online communication channel that allows you to conduct real-time conversations. More and more developers are tapping into the power of Redis as it is extremely fast & due to its support for variety of rich data structure such as Lists, Sets, Sorted Sets, Hashes etc. Redis comes along with a Pub/Sub messaging feature functionality that allows developers to scale the backend by spawning multiple server instances.
 Please note that this code is open source. You can find the link at the end of this tutorial.
 
-
 <div class="text--center">
-<iframe width="760" height="415" src="https://www.youtube.com/embed/miK7xDkDXF0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/miK7xDkDXF0"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
-
-
-In this tutorial, we will see how to develop real time messaging apps with Flask, Socket.IO and Redis. This example uses Redis Pub/sub feature  combined with websockets for implementing the real time chat app communication between client and server.
-
+In this tutorial, we will see how to develop real time messaging apps with Flask, Socket.IO and Redis. This example uses Redis Pub/sub feature combined with websockets for implementing the real time chat app communication between client and server.
 
 Please note that this code is open source and implements the basic features of a live chat app. You can find the link at the end of this tutorial.
-
 
 ### Step 1. Prerequisites
 
@@ -34,15 +35,13 @@ In order to perform this instant messaging app development, you will need the fo
 
 - Python 3.6+
 
-### Step 2. Clone the repository 
+### Step 2. Clone the repository
 
 First of all, we will clone the project that implements basic chat functionality.
-
 
 ```
 git clone https://github.com/redis-developer/basic-redis-chat-app-demo-python
 ```
-
 
 ### Step 3. Installing the requred packages
 
@@ -66,13 +65,9 @@ You can now access a chat window in the browser.
   On Your Network:  http://192.168.1.9:3000
 ```
 
-
 ![chatapp](chatapp_server.png)
 
-
-
 ### Step 4. Installing the required Python modules
-
 
 ```
 cd ..
@@ -83,7 +78,6 @@ pip3 install -r requirements.txt
 
 To start the fully chat app, run the following commands:
 
-
 ```
 python3 -m venv venv/
 source venv/bin/activate
@@ -91,7 +85,7 @@ python3 app.py
 ```
 
 ```
-python3 app.py                  
+python3 app.py
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 220-696-610
@@ -104,7 +98,6 @@ python3 app.py
 
 This instant messaging app server works as a basic REST API which involves keeping the session and handling the user state in the chat room (besides the WebSocket/real-time part). When the server starts, the initialization step occurs. At first, a new Redis connection is established and it's checked whether it's needed to load the demo data.
 
-
 #### Initialization
 
 For simplicity, a key with total_users value is checked: if it does not exist, we fill the Redis database with initial data. EXISTS total_users (checks if the key exists)
@@ -112,40 +105,41 @@ The demo data initialization is handled in multiple steps:
 
 #### Creating of demo users
 
-We create a new user id: INCR total_users. Then we set a user ID lookup key by user name: e.g. 
+We create a new user id: INCR total_users. Then we set a user ID lookup key by user name: e.g.
 
 ```
 SET username:nick user:1
 ```
 
-And finally, the rest of the data is written to the hash set: 
+And finally, the rest of the data is written to the hash set:
 
 Example:
 
- ```bash
-   HSET user:1 username "nick" password "bcrypt_hashed_password".
- ```
+```bash
+  HSET user:1 username "nick" password "bcrypt_hashed_password".
+```
 
-Additionally, each user is added to the default "General" room. 
-For handling chat rooms for each user, we have a set that holds the chat room ids. Here's an example command of how to add the room: 
+Additionally, each user is added to the default "General" room.
+For handling chat rooms for each user, we have a set that holds the chat room ids. Here's an example command of how to add the room:
 
- ```bash
-  SADD user:1:rooms "0"
- ```
+```bash
+ SADD user:1:rooms "0"
+```
 
 Populate private messages between users. At first, private rooms are created: if a private room needs to be established, for each user a room id: room:1:2 is generated, where numbers correspond to the user ids in ascending order.
 
-E.g. Create a private room between 2 users: 
- 
- ```bash
-  SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
- ```
+E.g. Create a private room between 2 users:
 
-Then we add messages to this room by writing to a sorted set: 
+```bash
+ SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
+```
 
- ```bash
-  ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
- ```
+Then we add messages to this room by writing to a sorted set:
+
+```bash
+ ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
+```
+
 We use a stringified JSON for keeping the message structure and simplify the implementation details for this demo-app.
 
 Populate the "General" room with messages. Messages are added to the sorted set with id of the "General" room: room:0
@@ -166,11 +160,11 @@ When a WebSocket/real-time server is instantiated, which listens for the next ev
 
 A global set with online_users key is used for keeping the online state for each user. So on a new connection, a user ID is written to that set:
 
- ```bash
-  SADD online_users 1
- ```
+```bash
+ SADD online_users 1
+```
 
-Here we  have added user with id 1 to the set online_users
+Here we have added user with id 1 to the set online_users
 
 After that, a message is broadcasted to the clients to notify them that a new user is joined the chat.
 
@@ -178,9 +172,9 @@ After that, a message is broadcasted to the clients to notify them that a new us
 
 - Message. A user sends a message, and it needs to be broadcasted to the other clients. The pub/sub allows us also to broadcast this message to all server instances which are connected to this Redis:
 
- ```
-  PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
- ```
+```
+ PUBLISH message "{'serverId': 4132, 'type':'message', 'data': {'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}}"
+```
 
 Note we send additional data related to the type of the message and the server id. Server id is used to discard the messages by the server instance which sends them since it is connected to the same MESSAGES channel.
 
@@ -196,6 +190,7 @@ The real-time functionality is handled by Socket.IO for server-client messaging.
 
 The chat data is stored in various keys and various data types.
 User data is stored in a hash set where each user entry contains the next values:
+
 - username: unique user name;
 - password: hashed password
 
@@ -213,34 +208,33 @@ User data is stored in a hash set where each user entry contains the next values
 
 ### How the data is accessed?
 
-Get User HGETALL user:{id}. 
+Get User HGETALL user:{id}.
 
- ```bash
-  HGETALL user:2
- ```
+```bash
+ HGETALL user:2
+```
 
 where we get data for the user with id: 2.
 
 - Online users: SMEMBERS online_users. This will return ids of users which are online
 
-- Get room ids of a user: SMEMBERS user:{id}:rooms. 
-Example: 
+- Get room ids of a user: SMEMBERS user:{id}:rooms.
+  Example:
 
- ```
-  SMEMBERS user:2:rooms
- ```
+```
+ SMEMBERS user:2:rooms
+```
 
 This will return IDs of chat rooms for user with ID: 2
 
-- Get list of messages `ZREVRANGE room:{roomId} {offset_start} {offset_end}`. 
-Example: 
+- Get list of messages `ZREVRANGE room:{roomId} {offset_start} {offset_end}`.
+  Example:
 
- ```
-  ZREVRANGE room:1:2 0 50
- ```
+```
+ ZREVRANGE room:1:2 0 50
+```
+
 It will return 50 messages with 0 offsets for the private room between users with IDs 1 and 2.
-
-
 
 ## Related Posts
 
@@ -249,6 +243,3 @@ It will return 50 messages with 0 offsets for the private room between users wit
 - [Building a Chat application demo in NodeJS](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs)
 - [Building a Chat application demo in Go](https://github.com/redis-developer/basic-redis-chat-demo-go)
 - [Building a Chat application demo in Ruby](https://github.com/redis-developer/basic-redis-chat-demo-ruby)
- 
-
-

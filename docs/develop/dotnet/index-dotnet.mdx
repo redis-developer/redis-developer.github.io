@@ -31,37 +31,37 @@ There are a few ways to Install the Package:
 
 Run the following in the directory of the `csproj` file you want to add the package too.
 
-  ```sh
-    dotnet add package StackExchange.Redis
-  ```
+```sh
+  dotnet add package StackExchange.Redis
+```
 
   </TabItem>
   <TabItem value="pmConsole">
 
-  Run the following command from the Package Manager Console
+Run the following command from the Package Manager Console
 
-  ```sh
-  Install-Package StackExchange.Redis
-  ```
+```sh
+Install-Package StackExchange.Redis
+```
 
   </TabItem>
 
   <TabItem value="csproj">
 
-  You can also add the package directly to you `csproj` file with the following XML:
+You can also add the package directly to you `csproj` file with the following XML:
 
-  ```XML
-  <ItemGroup>    
-    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
-  </ItemGroup>
-  ```
-  
+```XML
+<ItemGroup>
+  <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+</ItemGroup>
+```
+
   </TabItem>
 
   <TabItem value="gui">
 
-  If you're using Visual Studio, and you want to use the NuGet GUI just follow the steps outlined by [Microsoft](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio), and make sure to search for **StackExchange.Redis**
-    
+If you're using Visual Studio, and you want to use the NuGet GUI just follow the steps outlined by [Microsoft](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio), and make sure to search for **StackExchange.Redis**
+
   </TabItem>
 </Tabs>
 
@@ -99,102 +99,102 @@ Now that you've retreived the connection to the database, all that's left is to 
     {label: 'List Operations', value: 'lists'},
     {label: 'Set Operations', value: 'sets'},
     {label: 'Hash Operations', value: 'hashes'}
-  ]}>  
+  ]}>
 
   <TabItem value='ping'>
 
-  ```csharp
-  db.Ping();
-  ```
+```csharp
+db.Ping();
+```
 
   </TabItem>
 
   <TabItem value='strings'>
 
-  ### Set String
+### Set String
 
-  ```csharp
-  db.StringGetSet("foo","bar");
-  ```
+```csharp
+db.StringGetSet("foo","bar");
+```
 
-  ### Get String
+### Get String
 
-  ```csharp
-  Console.WriteLine(db.StringGet("foo"));
-  ```
+```csharp
+Console.WriteLine(db.StringGet("foo"));
+```
 
   </TabItem>
 
   <TabItem value="lists">
 
-  ### Insert Into List
+### Insert Into List
 
-  ```csharp
-  db.ListLeftPush("simple-list", 1);
-  ```
+```csharp
+db.ListLeftPush("simple-list", 1);
+```
 
-  ### Pop Out of List
+### Pop Out of List
 
-  ```csharp
-  var result = db.ListRightPop("simple-list");
-  Console.WriteLine(result);
-  ```
+```csharp
+var result = db.ListRightPop("simple-list");
+Console.WriteLine(result);
+```
 
   </TabItem>
 
   <TabItem value="sets">
 
-  ### Insert Into Set
+### Insert Into Set
 
-  ```csharp
-  db.SetAdd("sample-set-1", new RedisValue[]{"apple", "banana", "tangerine", "kiwi"});
-  db.SetAdd("sample-set-2", new RedisValue[]{"apple", "banana", "orange", "blueberries"});
-  ```
+```csharp
+db.SetAdd("sample-set-1", new RedisValue[]{"apple", "banana", "tangerine", "kiwi"});
+db.SetAdd("sample-set-2", new RedisValue[]{"apple", "banana", "orange", "blueberries"});
+```
 
-  ### Set Union
+### Set Union
 
-  ```csharp
-  var union = db.SetCombine(SetOperation.Union, "sample-set-1", "sample-set-2");
-  Console.WriteLine(String.Join(", ", union));
-  ```
+```csharp
+var union = db.SetCombine(SetOperation.Union, "sample-set-1", "sample-set-2");
+Console.WriteLine(String.Join(", ", union));
+```
 
-  ### Set Intersection
+### Set Intersection
 
-  ```csharp
-  var intersection = db.SetCombine(SetOperation.Intersect, "sample-set-1", "sample-set-2");
-  Console.WriteLine(String.Join(", ", intersection));
-  ```
+```csharp
+var intersection = db.SetCombine(SetOperation.Intersect, "sample-set-1", "sample-set-2");
+Console.WriteLine(String.Join(", ", intersection));
+```
 
-  ### Set Difference 
+### Set Difference
 
-  ```csharp
-  var difference = db.SetCombine(SetOperation.Difference, "sample-set-1", "sample-set-2");
-  Console.WriteLine(String.Join(", ",difference));
-  ```
+```csharp
+var difference = db.SetCombine(SetOperation.Difference, "sample-set-1", "sample-set-2");
+Console.WriteLine(String.Join(", ",difference));
+```
 
   </TabItem>
 
   <TabItem value="hashes">
 
-  ### Add to Hash
+### Add to Hash
 
-  ```csharp
-  db.HashSet("person:1", new HashEntry[]{new HashEntry("first-name","John"), new HashEntry("last-name","Smith")});
-  ```
+```csharp
+db.HashSet("person:1", new HashEntry[]{new HashEntry("first-name","John"), new HashEntry("last-name","Smith")});
+```
 
-  ### Get Field From Hash
+### Get Field From Hash
 
-  ```csharp
-  var firstName = db.HashGet("person:1", "first-name");
-  Console.WriteLine(firstName);
-  ```
+```csharp
+var firstName = db.HashGet("person:1", "first-name");
+Console.WriteLine(firstName);
+```
 
-  ### Get All Fields From Hash
+### Get All Fields From Hash
 
-  ```csharp
-  var allFields = db.HashGetAll("person:1");
-  Console.WriteLine(string.Join(", ",allFields));
-  ```
+```csharp
+var allFields = db.HashGetAll("person:1");
+Console.WriteLine(string.Join(", ",allFields));
+```
 
   </TabItem>
 
@@ -202,7 +202,7 @@ Now that you've retreived the connection to the database, all that's left is to 
 
 ## Redis Launchpad
 
-Redis Launchpad is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages. 
+Redis Launchpad is like an “App Store” for Redis sample apps. You can easily find apps for your preferred frameworks and languages.
 Check out a few of these apps below, or [click here to access the complete list](https://launchpad.redis.com).
 
 <div class="row text--center">
@@ -222,7 +222,6 @@ Check out a few of these apps below, or [click here to access the complete list]
 #### Leaderboard App in .NET
 
 [![Launchpad](images/leaderboard.png)](https://launchpad.redis.com/?id=project%3Abasic-redis-leaderboard-demo-dotnet)
-
 
 </div>
 </div>
@@ -256,6 +255,3 @@ Check out a few of these apps below, or [click here to access the complete list]
 
 - [Using C# with Redis](https://docs.redis.com/latest/rs/references/client_references/client_csharp/)
 - [Using SSL and StackExchange.Redis](https://docs.redis.com/latest/rs/references/client_references/client_csharp/)
-
-
-

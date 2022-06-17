@@ -19,9 +19,9 @@ For our example, we will use the US National Weather Service's (NWS) Weather API
 
 ## Prerequisites
 
-* IDE to write C# code - Visual Studio, Rider, VS Code, etc. . .
-* [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
-* [Docker](https://www.docker.com/products/docker-desktop)
+- IDE to write C# code - Visual Studio, Rider, VS Code, etc. . .
+- [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Start Redis
 
@@ -189,5 +189,5 @@ All that's left to do now is run the app. Run `dotnet run` in your console, and 
 
 ## Resources
 
-* Source code for this demo is located in [GitHub](https://github.com/redis-developer/basic-aspnetcore-api-caching)
-* More documentation for the StackExchange.Redis library is located on it's [docs site](https://stackexchange.github.io/StackExchange.Redis/)
+- Source code for this demo is located in [GitHub](https://github.com/redis-developer/basic-aspnetcore-api-caching)
+- More documentation for the StackExchange.Redis library is located on it's [docs site](https://stackexchange.github.io/StackExchange.Redis/)

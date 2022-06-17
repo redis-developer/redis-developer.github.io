@@ -131,6 +131,6 @@ When we run the application with `dotnet run`, you will see that the application
 
 ## Resources
 
-* The Source Code for this demo is located in [GitHub](https://github.com/redis-developer/redis-time-series-demo-dotnet)
-* The source code for NRedisTimeSeries is also located in [GitHub](https://github.com/redistimeseries/nredistimeseries)
-* More information about Redis Time Series can be found at [redistimeseries.io](https://redistimeseries.io/)
+- The Source Code for this demo is located in [GitHub](https://github.com/redis-developer/redis-time-series-demo-dotnet)
+- The source code for NRedisTimeSeries is also located in [GitHub](https://github.com/redistimeseries/nredistimeseries)
+- More information about Redis Time Series can be found at [redistimeseries.io](https://redistimeseries.io/)

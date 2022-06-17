@@ -9,11 +9,23 @@ custom_edit_url: null
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <div align="center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/-osCdf90tRA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/-osCdf90tRA"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 <br />
 <br />
-<p>Replication in Redis follows a simple primary-replica model where the replication happens in one direction - from the primary to one or multiple replicas. Data is only written to the primary instance and replicas are kept in sync so that they’re exact copies of the primaries.</p>
+<p>
+  Replication in Redis follows a simple primary-replica model where the
+  replication happens in one direction - from the primary to one or multiple
+  replicas. Data is only written to the primary instance and replicas are kept
+  in sync so that they’re exact copies of the primaries.
+</p>
 
 To create a replica, you instantiate a Redis server instance with the configuration directive <strong>replicaof</strong> set to the address and port of the primary instance. Once the replica instance is up and running, the replica will try to sync with the primary. To transfer all of its data as efficiently as possible, the primary instance will produce a compacted version of the data in a snapshot (.rdb) file and send it to the replica.
 

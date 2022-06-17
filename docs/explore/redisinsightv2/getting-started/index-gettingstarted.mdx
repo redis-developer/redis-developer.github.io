@@ -20,9 +20,15 @@ RedisInsight is a visual tool that lets you do both GUI- and CLI-based interacti
 RedisInsight v2.0 is a complete product rewrite based on a new tech stack comprising of [Electron](https://www.electronjs.org/), [Elastic UI](https://elastic.github.io/eui/#/), [Monaco Editor](https://microsoft.github.io/monaco-editor/) and [NodeJS](https://nodejs.org). This version contains a number of must-have and most-used capabilities from previous releases, plus a number of differentiators and delighters. You can run the application locally along with your favorite IDE, and it remains cross-platform, supported on Linux, Windows, and MacOS.
 
 <div class="text--center">
-<iframe width="760" height="315" src="https://www.youtube.com/embed/ppYSS6opUiQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="315"
+    src="https://www.youtube.com/embed/ppYSS6opUiQ"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-
 
 Starting with RedisInsight v2.0 release, the code is open source and publicly available over on [GitHub](https://github.com/redisinsight/redisinsight). Below are the list of new features introduced with this latest release:
 
@@ -32,8 +38,7 @@ Starting with RedisInsight v2.0 release, the code is open source and publicly av
 - Support for Light and Dark themes
 - Enhanced user experience with Browser
 
-
-## Getting Started 
+## Getting Started
 
 <Tabs
   defaultValue="MacOS"
@@ -44,34 +49,29 @@ Starting with RedisInsight v2.0 release, the code is open source and publicly av
   ]}>
   <TabItem value="MacOS">
 
-
 ## Using MacOS
 
 To install RedisInsight on MacOS, the easiest way is to install Redis Stack.
 Make sure that you have Homebrew installed before starting on the installation instructions below.
 
-
-
-
 ### Step 1. Install Redis Stack using Homebrew
 
 First, tap the Redis Stack Homebrew tap and then run `brew install` as shown below:
 
- ```bash
-  brew tap redis-stack/redis-stack
-  brew install --cask redis-stack
- ```
+```bash
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
 
 This will install all Redis and Redis Stack binaries. How you run these binaries depends on whether you already have Redis installed on your system.
 
-
- ```
-  ==> Installing Cask redis-stack-redisinsight
-  ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
-  🍺  redis-stack-redisinsight was successfully installed!
-  ==> Installing Cask redis-stack
-  🍺  redis-stack was successfully installed!
- ```
+```
+ ==> Installing Cask redis-stack-redisinsight
+ ==> Moving App 'RedisInsight-preview.app' to '/Applications/RedisInsight-preview.app'
+ 🍺  redis-stack-redisinsight was successfully installed!
+ ==> Installing Cask redis-stack
+ 🍺  redis-stack was successfully installed!
+```
 
 :::info TIP
 
@@ -79,10 +79,9 @@ If this is the first time you’ve installed Redis on your system, then all Redi
 
 To check this, run:
 
- ```bash
-  echo $PATH
- ```
-
+```bash
+ echo $PATH
+```
 
 Then, confirm that the output contains `/opt/homebrew/bin` (M1 Mac) or `/usr/local/bin` (Intel Mac). If these directories are not in the output, see the “Existing Redis installation” instructions below.
 :::
@@ -91,10 +90,9 @@ Then, confirm that the output contains `/opt/homebrew/bin` (M1 Mac) or `/usr/loc
 
 You can now start Redis Stack Server as follows:
 
- ```bash
-  redis-stack-server
- ```
-
+```bash
+ redis-stack-server
+```
 
 ### Existing Redis installation
 
@@ -102,16 +100,11 @@ If you have an existing Redis installation on your system, then you’ll need to
 
 Open the file `~/.bashrc` or `~/zshrc` (depending on your shell), and add the following lines.
 
-
- ```bash
-   export PATH=/usr/local/Caskroom/redis-stack-server/<VERSION>/bin:$PATH
- ```
-
+```bash
+  export PATH=/usr/local/Caskroom/redis-stack-server/<VERSION>/bin:$PATH
+```
 
 Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
-
-
-
 
 ### Step 2. Add Redis database
 
@@ -121,33 +114,28 @@ Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI
 
 Add the local Redis database endpoint and port.
 
-
 ![access redisinsight](images/testredis1.png)
 
-
 ### Step 5. Redis for time series
-
 
 Redis Stack provides you with a native time series data structure. Let's see how a time series might be useful in our bike shop.
 
 As we have multiple physical shops too, alongside our online shop, it could be helpful to have an overview of the sales volume. We will create one time series per shop tracking the total amount of all sales. In addition, we will mark the time series with the appropriate region label, east or west. This kind of representation will allow us to easily query bike sales performance per certain time periods, per shop, per region or across all shops.
 
-
 Click "Guides" icon(just below the key) in the left sidebar and choose "Redis for the time series" for this demonstration. i
-
 
 ![redis for timeseries](images/testredis2.png)
 
 ### Step 6. Create time series per shop
 
+```bash
+ TS.CREATE bike_sales_1 DUPLICATE_POLICY SUM LABELS region east compacted no
+ TS.CREATE bike_sales_2 DUPLICATE_POLICY SUM LABELS region east compacted no
+ TS.CREATE bike_sales_3 DUPLICATE_POLICY SUM LABELS region west compacted no
+ TS.CREATE bike_sales_4 DUPLICATE_POLICY SUM LABELS region west compacted no
+ TS.CREATE bike_sales_5 DUPLICATE_POLICY SUM LABELS region west compacted no
+```
 
- ```bash
-  TS.CREATE bike_sales_1 DUPLICATE_POLICY SUM LABELS region east compacted no
-  TS.CREATE bike_sales_2 DUPLICATE_POLICY SUM LABELS region east compacted no
-  TS.CREATE bike_sales_3 DUPLICATE_POLICY SUM LABELS region west compacted no
-  TS.CREATE bike_sales_4 DUPLICATE_POLICY SUM LABELS region west compacted no
-  TS.CREATE bike_sales_5 DUPLICATE_POLICY SUM LABELS region west compacted no
- ```
 As shown in the following query, we make the shop id (1,2,3,4,5) a part of the time series name. You might also notice the `DUPLICATE_POLICY SUM` argument; this describes what should be done when two events in the same time series share the same timestamp: In this case, it would mean that two sales happened at exactly the same time, so the resulting value should be a sum of the two sales amounts.
 
 Since the metrics are collected with a millisecond timestamp, we can compact our time series into sales per hour:
@@ -164,14 +152,11 @@ RedisTimeSeries supports downsampling with the following aggregations: avg, sum,
 
 #### Example:
 
-
- ```
-  TS.CREATERULE bike_sales_5 bike_sales_5_per_day AGGREGATION sum 86400000
- ```
+```
+ TS.CREATERULE bike_sales_5 bike_sales_5_per_day AGGREGATION sum 86400000
+```
 
 ![time series compaction](images/testredis6.png)
-
-
 
 ### Overview of RedisInsight Workbench
 
@@ -179,11 +164,9 @@ With the new RedisInsight v2.0, a Workbench has been introduced. Workbench is ba
 
 You can locate the workbench on the left sidebar of RedisInsight dashboard UI. It displays a built-in click-through guides for Redis capabilities. You can also see a number of metrics always on display within the database workspace. These metrics get updated every 5 seconds. The metrics include CPU, number of keys, commands/sec, network input, network output, total memory, number of connected clients.
 
-
 ![My Image](images/image13.png)
 
 Check out the reference section to learn more about the new RedisInsight v2.0 features.
-
 
 ### Accessing the CLI
 
@@ -194,7 +177,6 @@ The new RedisInsight v2.0 comes with a command-line interface with enhanced type
 Try executing Redis commands as shown below:
 
 ![My Image](images/image17.png)
-
 
 </TabItem>
 
@@ -212,11 +194,10 @@ Open [this](https://redis.com/redis-enterprise/redis-insight/#insight-form) link
 
 Fill out the rest of the form and click “Download”. Please note that the package is based on AppImage. The AppImage file is a compressed image which is temporarily mounted to allow access to the program, but not having to extract the program or modify the underlying system.
 
-
 Package Name: RedisInsight-preview-linux.AppImage
 
 ```bash
- file RedisInsight-preview-linux.AppImage 
+ file RedisInsight-preview-linux.AppImage
  RedisInsight-preview-linux.AppImage: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.18, stripped
 ```
 
@@ -238,14 +219,11 @@ Run the below command to open up RedisInsight dashboard.
 ./RedisInsight-preview-linux.AppImage
 ```
 
-
-
 ### Step 4. Changing the appearance
 
 RedisInsight v2.x allows you to specify the color theme of your choice. Click on "Settings" and change the appearance from "Dark Theme" to "Light Theme" as shown in the image below:
 
 ![My Image](images/image_appearance.png)
-
 
 ### Step 5. Connect to Redis Database
 
@@ -272,7 +250,6 @@ Once added, you will see the database added as shown below:
 
 ![My Image](images/image_db.png)
 
-
 ### Step 7. Adding a New Key
 
 Select the "Key" icon on the left sidebar of RedisInsight UI and click "+Key" to add a new key.
@@ -289,7 +266,6 @@ With the new RedisInsight v2.0, a Workbench has been introduced. Workbench is ba
 
 You can locate the workbench on the left sidebar of RedisInsight dashboard UI. It displays a built-in click-through guides for Redis capabilities. You can also see a number of metrics always on display within the database workspace. These metrics get updated every 5 seconds. The metrics include CPU, number of keys, commands/sec, network input, network output, total memory, number of connected clients.
 
-
 ![My Image](images/image13.png)
 
 ### Step 9. Accessing the CLI
@@ -302,7 +278,6 @@ Try executing Redis commands as shown below:
 
 ![My Image](images/image17.png)
 
-
 </TabItem>
 
 <TabItem value="Windows">
@@ -311,17 +286,15 @@ Try executing Redis commands as shown below:
 
 ### Step 1. Download RedisInsight
 
-
-To install RedisInsight on Windows, you need to first download the RedisInsight windows bits. 
+To install RedisInsight on Windows, you need to first download the RedisInsight windows bits.
 
 Open [this](https://redis.com/redis-enterprise/redis-insight/#insight-form) link to open up a form that allows you to select the operating system of your choice.
 
 ![My Image](images/image_windows.png)
 
-### Step 2.  Install RedisInsight
+### Step 2. Install RedisInsight
 
 Once you download the bits, double-click the file 'RedisInsight-preview-win-installer.exe' to install RedisInsight in your Windows desktop.
-
 
 ### Step 3. Accessing RedisInsight
 
@@ -333,7 +306,6 @@ RedisInsight v2.x allows you to specify the color theme of your choice. Click on
 
 ![My Image](images/image_appearance.png)
 
-
 ### Step 5. Add a Redis Database
 
 Enter the requested details, including Host (endpoint), Port, and Alias in the form, as shown below. You can skip username for now. Then click “ADD REDIS DATABASE”:
@@ -343,7 +315,6 @@ Enter the requested details, including Host (endpoint), Port, and Alias in the f
 Once added, you will see the database added as shown below:
 
 ![My Image](images/image_db.png)
-
 
 ### Step 6. Adding a New Key
 
@@ -361,7 +332,6 @@ With the new RedisInsight v2.0, a Workbench has been introduced. Workbench is ba
 
 You can locate the workbench on the left sidebar of RedisInsight dashboard UI. It displays a built-in click-through guides for Redis capabilities. You can also see a number of metrics always on display within the database workspace. These metrics get updated every 5 seconds. The metrics include CPU, number of keys, commands/sec, network input, network output, total memory, number of connected clients.
 
-
 ![My Image](images/image13.png)
 
 ### Step 8. Accessing the CLI
@@ -374,7 +344,6 @@ Try executing Redis commands as shown below:
 
 ![My Image](images/image17.png)
 
-
 </TabItem>
 </Tabs>
 
@@ -385,9 +354,3 @@ RedisInsight allows you to browse, filter and visualize key-value Redis data str
 - [RedisInsight v2.0 Release Blog](https://redis.com/blog/introducing-redisinsight-2/)
 - [RedisInsight v2.0 Release Notes](https://docs.redis.com/latest/ri/release-notes/v2.0.2/)
 - [RedisInsight GitHub Repository](https://github.com/redisinsight/redisinsight)
-
-
-
-
-
-

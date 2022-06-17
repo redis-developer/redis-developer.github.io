@@ -10,8 +10,8 @@ Redis OM is designed to make using Redis easier for .NET developers, so naturall
 
 ## Prerequisites
 
-* A .NET Standard 2.0 compatible version of .NET. This means that all .NET Framework versions 4.6.1+, .NET Core 2.0+ and .NET 5+ will work with Redis OM .NET.
-* An IDE for writing .NET, Visual Studio, Rider, VS Code will all work.
+- A .NET Standard 2.0 compatible version of .NET. This means that all .NET Framework versions 4.6.1+, .NET Core 2.0+ and .NET 5+ will work with Redis OM .NET.
+- An IDE for writing .NET, Visual Studio, Rider, VS Code will all work.
 
 ## Installation
 
@@ -55,7 +55,7 @@ var provider = new RedisConnectionProvider("redis://username:password@hostname:p
 
 #### Connecting to Redis Sentinel
 
-When connecting to Redis Sentinel, you will need to provide the sentinel 
+When connecting to Redis Sentinel, you will need to provide the sentinel
 
 ```csharp
 var provider = new RedisConnectionProvider("redis://username:password@sentinel-hostname:port?endpoint=another-sentinel-host:port&endpoint=yet-another-sentinel-hot:port&sentinel_primary_name=redisprimary");
@@ -73,7 +73,6 @@ var provider = new RedisConnectionProvider("redis://username:password@hostname:p
 
 There are three primary drivers of Redis in this Library, which can all be accessed from the `provider` object after it's been initialize.
 
-* The RedisConnection - this provides a command level interface to Redis, a limited set of commands are directly implemented, but any command can be executed via the `Execute` and `ExecuteAsync` commands. To get a handle to the RedisConnection just use `provider.Connection`
-* `RedisCollection<T>` - This is a generic collection used to access Redis. It provides a fluent interface for retrieving data stored in Redis. To create a `RedisCollection<T>` use `provider.RedisCollection<T>()`
-* `RedisAggregationSet<T>` - This is another generic collection used to aggregate data in Redis. It provides a fluent interface for performing mapping & reduction operations on Redis. To create a `RedisAggregationSet<T>`use `provider.AggregationSet<T>()`
-
+- The RedisConnection - this provides a command level interface to Redis, a limited set of commands are directly implemented, but any command can be executed via the `Execute` and `ExecuteAsync` commands. To get a handle to the RedisConnection just use `provider.Connection`
+- `RedisCollection<T>` - This is a generic collection used to access Redis. It provides a fluent interface for retrieving data stored in Redis. To create a `RedisCollection<T>` use `provider.RedisCollection<T>()`
+- `RedisAggregationSet<T>` - This is another generic collection used to aggregate data in Redis. It provides a fluent interface for performing mapping & reduction operations on Redis. To create a `RedisAggregationSet<T>`use `provider.AggregationSet<T>()`

@@ -10,9 +10,9 @@ Let's consider the case (which is probably most cases) where we have multiple en
 
 ## Prerequisites
 
-* Must have the [.NET 5+ SDK](https://dotnet.microsoft.com/download/dotnet/5.0) installed
-* Some way of running Redis, for this tutorial we'll use [Docker Desktop](https://www.docker.com/products/docker-desktop)
-* IDE for writing C# [VS Code](https://code.visualstudio.com/download), [Visual Studio](https://visualstudio.microsoft.com/), or [Rider](https://www.jetbrains.com/rider/)
+- Must have the [.NET 5+ SDK](https://dotnet.microsoft.com/download/dotnet/5.0) installed
+- Some way of running Redis, for this tutorial we'll use [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- IDE for writing C# [VS Code](https://code.visualstudio.com/download), [Visual Studio](https://visualstudio.microsoft.com/), or [Rider](https://www.jetbrains.com/rider/)
 
 ## Startup Redis
 
@@ -40,7 +40,7 @@ namespace SlidingWindowRateLimiter.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class RateLimitedController : ControllerBase
-    {        
+    {
     }
 }
 ```
@@ -51,29 +51,29 @@ Now it's time to dig into the logic behind this middleware. The first thing we o
 
 ```json
 {
-    "RedisRateLimits":[
-        {
-            "Path":"/api/ratelimited/limited",
-            "Window":"30s",
-            "MaxRequests": 5
-        },
-        {
-            "PathRegex": "\/api\/*",
-            "Window":"1d",
-            "MaxRequests":1000
-        }
-    ]
+  "RedisRateLimits": [
+    {
+      "Path": "/api/ratelimited/limited",
+      "Window": "30s",
+      "MaxRequests": 5
+    },
+    {
+      "PathRegex": "/api/*",
+      "Window": "1d",
+      "MaxRequests": 1000
+    }
+  ]
 }
 ```
 
 In other words, we have four parameters.
 
-|Parameter Name| Description |
-|--------------|-------------|
-|Path|literal path to be rate-limited if the path matches completely, it will trigger a rate limit check|
-|PathRegex|Path regex to be rate-limited; if path matches, it will trigger a rate limit check|
-|Window|The Sliding Window to Rate Limit on should match the pattern `([0-9]+(s|m|d|h))`|
-|MaxRequests|The maximum number of requests allowable over the period|
+| Parameter Name | Description                                                                                        |
+| -------------- | -------------------------------------------------------------------------------------------------- | --- | --- | ---- |
+| Path           | literal path to be rate-limited if the path matches completely, it will trigger a rate limit check |
+| PathRegex      | Path regex to be rate-limited; if path matches, it will trigger a rate limit check                 |
+| Window         | The Sliding Window to Rate Limit on should match the pattern `([0-9]+(s                            | m   | d   | h))` |
+| MaxRequests    | The maximum number of requests allowable over the period                                           |
 
 And those parameters are going to be stored under the configuration node `RedisRateLimits` in our configuration.
 
@@ -175,7 +175,7 @@ We need to write a Lua script that will consider all the rules applicable to a p
 1. Check the current time
 2. Trim off entries that fall outside the window
 3. Check if another request violates the rule
-    * If the request would violate any rules return 1
+   - If the request would violate any rules return 1
 4. For each applicable rule
 5. Add a new entry to the sorted set with the score of the current time in seconds, and a member name of the current time in microseconds
 6. Return 0
@@ -200,7 +200,7 @@ for i=2, num_windows*2, 2 do
     local curr_key = KEYS[i/2]
     local window = ARGV[i]
     redis.call('ZADD', curr_key, current_time[1], current_time[1] .. current_time[2])
-    redis.call('EXPIRE', curr_key, window)                
+    redis.call('EXPIRE', curr_key, window)
 end
 return 0
 ```
@@ -244,7 +244,7 @@ private const string SlidingRateLimiter = @"
         local curr_key = KEYS[i/2]
         local window = ARGV[i]
         redis.call('ZADD', curr_key, current_time[1], current_time[1] .. current_time[2])
-        redis.call('EXPIRE', curr_key, window)                
+        redis.call('EXPIRE', curr_key, window)
     end
     return 0
     ";
@@ -284,7 +284,7 @@ private static string GetApiKey(HttpContext context)
 
 ### Extract Applicable Rules
 
-From the configuration structure we generated before, we will pull out the `RedisRateLimits` section and stuff it into an array of `RateLimitRule` objects. We then need to pull out the rules that apply to the current path, group them by the number of seconds in their windows and by the path key component that's relevant for them. If we have identical path keys, e.g., two instances of `^/api/*`, we'll take the more restrictive one(fewest allowable requests). We can pull the  with a LINQ query:
+From the configuration structure we generated before, we will pull out the `RedisRateLimits` section and stuff it into an array of `RateLimitRule` objects. We then need to pull out the rules that apply to the current path, group them by the number of seconds in their windows and by the path key component that's relevant for them. If we have identical path keys, e.g., two instances of `^/api/*`, we'll take the more restrictive one(fewest allowable requests). We can pull the with a LINQ query:
 
 ```csharp
 public IEnumerable<RateLimitRule> GetApplicableRules(HttpContext context)
@@ -319,7 +319,7 @@ private async Task<bool> IsLimited( IEnumerable<RateLimitRule> rules, string api
 
 ### Block or Allow
 
-Finally, in the `InvokeAsync` method for our middleware, we will glue all this together. First, we'll parse out the apiKey. If the apiKey isn't present, we'll return a 401. Otherwise, we will perform the rate-limiting checks and either throttle or proceed as appropriate. 
+Finally, in the `InvokeAsync` method for our middleware, we will glue all this together. First, we'll parse out the apiKey. If the apiKey isn't present, we'll return a 401. Otherwise, we will perform the rate-limiting checks and either throttle or proceed as appropriate.
 
 ```csharp
 public async Task InvokeAsync(HttpContext httpContext)
@@ -430,4 +430,4 @@ It should reject another two as throttled.
 
 ## Resources
 
-* The source code for this tutorial is located in [GitHub](https://github.com/redis-developer/rate-limiting-middleware-aspnetcore)
+- The source code for this tutorial is located in [GitHub](https://github.com/redis-developer/rate-limiting-middleware-aspnetcore)

@@ -7,24 +7,18 @@ slug: /howtos/moviesdatabase/querymovies
 
 # Querying the Movie Dataset
 
-
-
 As described earlier in the tutorial, one of the goals of RediSearch is to provide rich querying capabilities such as:
 
-* simple and complex conditions
-* sorting
-* pagination
-* counting
-
+- simple and complex conditions
+- sorting
+- pagination
+- counting
 
 ### Conditions
 
 The best way to start to work with RediSearch query capabilities is to look at the various conditions options.
 
-  
-####  Find all the movies that contain the word 'heat' or related to 'heat'
-
-
+#### Find all the movies that contain the word 'heat' or related to 'heat'
 
 ```
 > FT.SEARCH "idx:movie" "heat" RETURN 2 title plot
@@ -56,14 +50,14 @@ The best way to start to work with RediSearch query capabilities is to look at t
 The first line contains the number of documents (`4`) that match the query condition, then the list of movies.
 
 This query is a "fieldless" condition, this means that the query engine has:
-* searched in all the TEXT fields of the index(`title` and `plot`)
-* for the word `heat` and related words, this is why the movie:736 is returned since it has the word `heated` in the plot ([stemming](https://oss.redis.com/redisearch/Stemming/))
-* returned the result sorted by score, remember that the title has a weight of 1.0, and the plot a weight of 0.5. So when the word or related words are found in the title the score is larger.
+
+- searched in all the TEXT fields of the index(`title` and `plot`)
+- for the word `heat` and related words, this is why the movie:736 is returned since it has the word `heated` in the plot ([stemming](https://oss.redis.com/redisearch/Stemming/))
+- returned the result sorted by score, remember that the title has a weight of 1.0, and the plot a weight of 0.5. So when the word or related words are found in the title the score is larger.
+
 ---
 
-
-
-####    Find all the movies with a title that contains the word 'heat' or related to 'heat'
+#### Find all the movies with a title that contains the word 'heat' or related to 'heat'
 
 In this case you have to set the criteria to a the field title using the `@title` notation.
 
@@ -85,9 +79,7 @@ In this case you have to set the criteria to a the field title using the `@title
 
 So only 2 movies are returned.
 
-
-
-####   Find all the movies where the title contains 'heat' and does NOT contains 'california'
+#### Find all the movies where the title contains 'heat' and does NOT contains 'california'
 
 For this you add parentheses around the field condition and add the `-` sign to 'california'.
 
@@ -117,10 +109,3 @@ You can do test this with the following queries:
 ```
 
 As you can see the first query only searches for woman in the title and returns two movies "Heat" and "California Heat", where the second query eliminates "California Heat" from the list since the plot contains the word `woman`.
-
-
-
-
-
-
-

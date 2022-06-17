@@ -6,63 +6,61 @@ slug: /howtos/redisai/getting-started
 authors: [ajeet]
 ---
 
+RedisAI is a Redis module for executing deep learning/machine learning models and managing their data. It provides tensors as a data type and deep learning model execution on CPUs and GPUs. RedisAI turns Redis Enterprise into a full-fledged deep learning runtime.The RedisAI module is seamlessly plugged into Redis. It is a scalable platform that addresses the unique requirements for both AI training and AI inference in one server. It provides a complete software platform that allows data scientists to easily deploy and manage AI solutions for enterprise applications.
 
-RedisAI is a Redis module for executing deep learning/machine learning models and managing their data. It provides tensors as a data type and deep learning model execution on CPUs and GPUs. RedisAI turns Redis Enterprise into a full-fledged deep  learning runtime.The RedisAI module is seamlessly plugged into Redis. It is a scalable platform that addresses the unique requirements for both AI training and AI inference in one server. It provides a complete software platform that allows data scientists to easily deploy and manage AI solutions for enterprise applications. 
-
-The platform combines popular open source deep learning frameworks (PyTorch, ONNXRuntime, and TensorFlow), software libraries, and Redis modules like RedisGears, RedisTimeSeries, and more. With RedisAI, AI application developers no longer have to worry about tuning databases for performance. Requiring no added infrastructure, RedisAI lets you run your inference engine where the data lives, decreasing latency. 
+The platform combines popular open source deep learning frameworks (PyTorch, ONNXRuntime, and TensorFlow), software libraries, and Redis modules like RedisGears, RedisTimeSeries, and more. With RedisAI, AI application developers no longer have to worry about tuning databases for performance. Requiring no added infrastructure, RedisAI lets you run your inference engine where the data lives, decreasing latency.
 
 Below is an interesting example of Iris (a genus of species of flowering plants with showy flowers) classification based on measurement of width and length of sepal/petals that makes up input tensors and how to load these measurements into RedisAI:
 
 ### Step 1. Installing RedisAI
 
- ```bash
-  docker run \
-    -p 6379:6379 \
-    redislabs/redismod \
-    --loadmodule /usr/lib/redis/modules/redisai.so \
-      ONNX redisai_onnxruntime/redisai_onnxruntime.so
- ```
+```bash
+ docker run \
+   -p 6379:6379 \
+   redislabs/redismod \
+   --loadmodule /usr/lib/redis/modules/redisai.so \
+     ONNX redisai_onnxruntime/redisai_onnxruntime.so
+```
 
 You will see that ONNX backend getting loaded as shown below in the results.
 
- ```bash
-  1:C 09 Jun 2021 12:28:47.985 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
-  1:C 09 Jun 2021 12:28:47.985 # Redis version=6.0.1, bits=64, commit=00000000, modified=0, pid=1, just started
-  1:C 09 Jun 2021 12:28:47.985 # Configuration loaded
-  1:M 09 Jun 2021 12:28:47.987 * Running mode=standalone, port=6379.
-  1:M 09 Jun 2021 12:28:47.987 # Server initialized
-  1:M 09 Jun 2021 12:28:47.987 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
-  1:M 09 Jun 2021 12:28:47.989 * <ai> Redis version found by RedisAI: 6.0.1 - oss
-  1:M 09 Jun 2021 12:28:47.989 * <ai> RedisAI version 10003, git_sha=7f808a934dff121e188cb76fdfcc3eb1f9ec7cbf
-  1:M 09 Jun 2021 12:28:48.011 * <ai> ONNX backend loaded from /usr/lib/redis/modules/backends/redisai_onnxruntime/redisai_onnxruntime.so
-  1:M 09 Jun 2021 12:28:48.011 * Module 'ai' loaded from /usr/lib/redis/modules/redisai.so
-  1:M 09 Jun 2021 12:28:48.011 * Ready to accept connections
- ```
+```bash
+ 1:C 09 Jun 2021 12:28:47.985 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+ 1:C 09 Jun 2021 12:28:47.985 # Redis version=6.0.1, bits=64, commit=00000000, modified=0, pid=1, just started
+ 1:C 09 Jun 2021 12:28:47.985 # Configuration loaded
+ 1:M 09 Jun 2021 12:28:47.987 * Running mode=standalone, port=6379.
+ 1:M 09 Jun 2021 12:28:47.987 # Server initialized
+ 1:M 09 Jun 2021 12:28:47.987 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+ 1:M 09 Jun 2021 12:28:47.989 * <ai> Redis version found by RedisAI: 6.0.1 - oss
+ 1:M 09 Jun 2021 12:28:47.989 * <ai> RedisAI version 10003, git_sha=7f808a934dff121e188cb76fdfcc3eb1f9ec7cbf
+ 1:M 09 Jun 2021 12:28:48.011 * <ai> ONNX backend loaded from /usr/lib/redis/modules/backends/redisai_onnxruntime/redisai_onnxruntime.so
+ 1:M 09 Jun 2021 12:28:48.011 * Module 'ai' loaded from /usr/lib/redis/modules/redisai.so
+ 1:M 09 Jun 2021 12:28:48.011 * Ready to accept connections
+```
 
 You can verify if the RedisAI module is loaded or not by running the following command:
 
- ```bash
-  127.0.0.1:6379> info modules
-  # Modules
-  module:name=ai,ver=10003,api=1,filters=0,usedby=[],using=[],options=[]
+```bash
+ 127.0.0.1:6379> info modules
+ # Modules
+ module:name=ai,ver=10003,api=1,filters=0,usedby=[],using=[],options=[]
 
-  # ai_git
-  ai_git_sha:7f808a934dff121e188cb76fdfcc3eb1f9ec7cbf
+ # ai_git
+ ai_git_sha:7f808a934dff121e188cb76fdfcc3eb1f9ec7cbf
 
-  # ai_load_time_configs
-  ai_threads_per_queue:1
-  ai_inter_op_parallelism:0
-  ai_intra_op_parallelism:0
- ```
-
+ # ai_load_time_configs
+ ai_threads_per_queue:1
+ ai_inter_op_parallelism:0
+ ai_intra_op_parallelism:0
+```
 
 ### Step 2. Setup Python Environment
 
 Ensure that Python3.8+ is installed.
 
- ```bash
-  brew install python
- ```
+```bash
+ brew install python
+```
 
 Create a Python virtual environment and activate it:
 
@@ -71,26 +69,23 @@ Create a Python virtual environment and activate it:
  . ./venv/bin/activate
 ```
 
-
-
 ### Step 3. Install PIP
 
- ```bash
-  pip install --upgrade pip
- ```
+```bash
+ pip install --upgrade pip
+```
 
 ### Step 4. Clone the repository
 
- ```bash
-  git clone https://github.com/redis-developer/redisai-iris
- ```
+```bash
+ git clone https://github.com/redis-developer/redisai-iris
+```
 
 ### Step 5. Install the dependencies
 
- ```bash
-  pip install -r requirements.txt
- ```
-
+```bash
+ pip install -r requirements.txt
+```
 
 ### Step 6. Build the ONNX Model
 
@@ -103,20 +98,19 @@ RedisAI supports DL/ML identifiers and their respective backend libraries, inclu
 
 A complete list of supported backends is in the [release notes for each version](https://docs.redis.com/latest/modules/redisai/release-notes/redisai-1.0-release-notes/).
 
- ```bash
-  python build.py
- ```
+```bash
+ python build.py
+```
 
 ### Step 7: Deploy the Model into RedisAI
 
 A Model is a Deep Learning or Machine Learning frozen graph that was generated by some framework. The RedisAI Model data structure represents a DL/ML model that is stored in the database and can be run. Models, like any other Redis and RedisAI data structures, are identified by keys. A Model’s key is created using the `AI.MODELSET` command and requires the graph payload serialized as a protobuf for input.
 
-
 NOTE: This requires redis-cli. If you don't have redis-cli, I've found the easiest way to get it is to download, build, and install Redis itself. Details can be found at [the Redis quickstart page](https://redis.io/topics/quickstart)
 
- ```bash
-  redis-cli -x AI.MODELSET iris ONNX CPU BLOB < iris.onnx
- ```
+```bash
+ redis-cli -x AI.MODELSET iris ONNX CPU BLOB < iris.onnx
+```
 
 ### Step 8. Make Some Predictions
 
@@ -124,137 +118,132 @@ NOTE: This requires redis-cli. If you don't have redis-cli, I've found the easie
 
 Launch redis-cli:
 
- ```bash
-  redis-cli
- ```
+```bash
+ redis-cli
+```
 
-### Step 9. Set the input tensor 
-
+### Step 9. Set the input tensor
 
 This will set the key 'iris' to the 2x4 RedisAI tensor (i.e. 2 sets of inputs of 4 values each).
 
+```bash
+ AI.TENSORSET iris:in FLOAT 2 4 VALUES 5.0 3.4 1.6 0.4 6.0 2.2 5.0 1.5
+```
 
+where,
 
- ```bash
-  AI.TENSORSET iris:in FLOAT 2 4 VALUES 5.0 3.4 1.6 0.4 6.0 2.2 5.0 1.5
- ```
-
-where, 
 - iris:in refers to the tensor's key name,
 - FLOAT is a tensor's data type
 - {5.0 3.4 1.6 0.4} refers to 1st item with 4 features
 - {6.0 2.2 5.0 1.5} refers to 2nd item with 4 features
-
 
 ### Step 10. Display TENSORGET in BLOB format
 
 The `AI.TENSORGET` command returns a tensor stored as key's value.
 The BLOB indicates that data is in binary format and is provided via the subsequent data argument
 
-
- ```bash
-  redis-cli AI.TENSORGET iris:in BLOB
-  "\x00\x00\xa0@\x9a\x99Y@\xcd\xcc\xcc?\xcd\xcc\xcc>\x00\x00\xc0@\xcd\xcc\x0c@\x00\x00\xa0@\x00\x00\xc0?"
- ```
-
+```bash
+ redis-cli AI.TENSORGET iris:in BLOB
+ "\x00\x00\xa0@\x9a\x99Y@\xcd\xcc\xcc?\xcd\xcc\xcc>\x00\x00\xc0@\xcd\xcc\x0c@\x00\x00\xa0@\x00\x00\xc0?"
+```
 
 ### Step 11. Check the predictions
 
- ```bash
-  redis-cli AI.TENSORGET iris:in VALUES
-  1) "5"
-  2) "3.4000000953674316"
-  3) "1.6000000238418579"
-  4) "0.40000000596046448"
-  5) "6"
-  6) "2.2000000476837158"
-  7) "5"
-  8) "1.5"
- ```
-
-
+```bash
+ redis-cli AI.TENSORGET iris:in VALUES
+ 1) "5"
+ 2) "3.4000000953674316"
+ 3) "1.6000000238418579"
+ 4) "0.40000000596046448"
+ 5) "6"
+ 6) "2.2000000476837158"
+ 7) "5"
+ 8) "1.5"
+```
 
 ### Step 12. Display TENSORGET META information
 
 The META used with `AI.TENSORGET` returns the tensor's metadata as shown below:
 
+```bash
+ redis-cli AI.TENSORGET iris:in META
+   1) "dtype"
+   2) "FLOAT"
+   3) "shape"
+   4) 1) (integer) 2
+      2) (integer) 4
 
- ```bash
-  redis-cli AI.TENSORGET iris:in META
-    1) "dtype"
-    2) "FLOAT"
-    3) "shape"
-    4) 1) (integer) 2
-       2) (integer) 4
-
- ```
+```
 
 ### Step 13. Display TENSORGET META information with tensor values
 
- ```bash
-   redis-cli AI.TENSORGET iris:in META VALUES
-  1) "dtype"
-  2) "FLOAT"
-  3) "shape"
-  4) 1) (integer) 2
-     2) (integer) 4
-  5) "values"
-  6) 1) "5"
-     2) "3.4000000953674316"
-     3) "1.6000000238418579"
-     4) "0.40000000596046448"
-     5) "6"
-     6) "2.2000000476837158"
-     7) "5"
-     8) "1.5"
- ```
+```bash
+  redis-cli AI.TENSORGET iris:in META VALUES
+ 1) "dtype"
+ 2) "FLOAT"
+ 3) "shape"
+ 4) 1) (integer) 2
+    2) (integer) 4
+ 5) "values"
+ 6) 1) "5"
+    2) "3.4000000953674316"
+    3) "1.6000000238418579"
+    4) "0.40000000596046448"
+    5) "6"
+    6) "2.2000000476837158"
+    7) "5"
+    8) "1.5"
+```
 
-  
 ### Step 14. Run the model
 
 Define inputs for the loaded model.
 
+```bash
+ redis-cli AI.MODELRUN iris INPUTS iris:in OUTPUTS iris:inferences iris:scores
+ OK
+```
 
- ```bash
-  redis-cli AI.MODELRUN iris INPUTS iris:in OUTPUTS iris:inferences iris:scores
-  OK
- ```
+### Step 15. Make the prediction
 
-
-### Step 15. Make the prediction 
-
- ```bash
-  redis-cli AI.TENSORGET iris:inferences VALUES META
-  1) "dtype"
-  2) "INT64"
-  3) "shape"
-  4) 1) (integer) 2
-  5) "values"
-  6) 1) (integer) 0
-  2) (integer) 2
- ```
+```bash
+ redis-cli AI.TENSORGET iris:inferences VALUES META
+ 1) "dtype"
+ 2) "INT64"
+ 3) "shape"
+ 4) 1) (integer) 2
+ 5) "values"
+ 6) 1) (integer) 0
+ 2) (integer) 2
+```
 
 ### References
 
 - [Sample IRIS Classification Source Code](https://github.com/redis-developer/redisai-iris)
 - [RedisAI - A Server for Machine and Deep Learning Models](https://oss.redis.com/redisai/)
 
-
 ### Redis University
 
 #### RedisAI Explained
 
 <div class="text--center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gbiqF-eyTW4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/gbiqF-eyTW4"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-
-
 
 #### RedisAI from the Command Line
 
 <div class="text--center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-w6rxLyoJdA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/-w6rxLyoJdA"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-
-
-

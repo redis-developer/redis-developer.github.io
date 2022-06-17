@@ -1,6 +1,6 @@
 ---
 id: index-lesson_5
-title: "Books, Categories & The Catalog"
+title: 'Books, Categories & The Catalog'
 sidebar_label: Books, Categories & The Catalog
 slug: /develop/java/redis-and-spring-course/lesson_5
 authors: [bsb]
@@ -9,22 +9,27 @@ authors: [bsb]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ### Objectives
+
 Create the Book-Category-Book-Ratings domain, load and transform JSON data, and implement the Books API.
 
 ### Agenda
+
 In this lesson, students will learn:
-* How to load JSON data using Jackson
-* How to create and work with secondary indexes
-* How to use the repositories with a REST controller
-If you get stuck:
-* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-5
+
+- How to load JSON data using Jackson
+- How to create and work with secondary indexes
+- How to use the repositories with a REST controller
+  If you get stuck:
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-5
 
 ### Books, Categories, and Book Ratings
+
 This lesson will start by fleshing out the Book, Category, and BookRating models with their respective Spring Repositories.
 
 ![Books, Categories, and Book Ratings](./images/books_categories_ratings.png)
 
 #### The Category Model
+
 We’ll start with the `Category`. A `Book` belongs to one or more categories. The `Category` has a name that we will derive from the JSON data
 files in `src/main/resources/data/books`. As we’ve done previously, we will map the class to a Redis Hash.
 Add the file `src/main/java/com/redislabs/edu/redi2read/models/Category.java` with the following contents:
@@ -49,6 +54,7 @@ public class Category {
 ```
 
 ### The Category Repository
+
 The corresponding repository extends Spring’s CrudRepository. Add the file `src/main/java/com/redislabs/edu/redi2read/repositories/CategoryRepository.java` with the following contents:
 
 ```java
@@ -66,7 +72,7 @@ public interface CategoryRepository extends CrudRepository<Category, String> {
 
 ### The Book Model
 
-The Book model maps directly to the JSON payload in the *.json files in `src/main/resources/data/books`.
+The Book model maps directly to the JSON payload in the \*.json files in `src/main/resources/data/books`.
 For example, the JSON object shown below came from the the file redis_0.json:
 
 ```java
@@ -215,7 +221,7 @@ public interface BookRatingRepository extends CrudRepository<BookRating, String>
 ### Loading Books
 
 Now that we have our models and repositories defined, let’s load the books from the provided JSON data in the `src/main/resources/data/books` directory.
-We’ll create a `CommandLineRunner` to iterate over every .json file in the `data/books` directory.  We will map the content of each file to a Book object using Jackson.
+We’ll create a `CommandLineRunner` to iterate over every .json file in the `data/books` directory. We will map the content of each file to a Book object using Jackson.
 We'll create a category using the characters in the filename up to the last underscore. If there is no category with that name already, we will create one.
 The category is then added to the set of categories for the book.
 Add the file `src/main/java/com/redislabs/edu/redi2read/boot/CreateBooks.java` with the following contents:
@@ -308,21 +314,23 @@ public class CreateBooks implements CommandLineRunner {
 ```
 
 There's a lot to unpack here, so let’s take it from the top:
-* As done previously, we only execute if there are no books in the repository.
-* We use Jackson `ObjectMapper` and a `TypeReference `to perform the mapping.
-* We collect the paths of all the files with the .json extension in the target directory.
-* We create a `Map` of `String`s to `Category `objects to collect the categories as we process
+
+- As done previously, we only execute if there are no books in the repository.
+- We use Jackson `ObjectMapper` and a `TypeReference `to perform the mapping.
+- We collect the paths of all the files with the .json extension in the target directory.
+- We create a `Map` of `String`s to `Category `objects to collect the categories as we process
   the files and quickly determine whether we have already created a category.
-* For each book, we assign the category and save it to Redis.
+- For each book, we assign the category and save it to Redis.
 
 ### Book Controller
 
 Now we can implement the initial version of the `BookController`: our Bookstore Catalog API. This first version of the `BookController`
- will have three endpoints:
-* Get all books
-* Get a book by ISBN (id)
-* Get all categories
-Add the file `src/main/java/com/redislabs/edu/redi2read/controllers/BookController.java` with the following contents:
+will have three endpoints:
+
+- Get all books
+- Get a book by ISBN (id)
+- Get all categories
+  Add the file `src/main/java/com/redislabs/edu/redi2read/controllers/BookController.java` with the following contents:
 
 ```java
 package com.redislabs.edu.redi2read.controllers;
@@ -367,6 +375,7 @@ public class BookController {
 ### Get all Books
 
 To get all books, we issue a GET request to `http://localhost:8080/api/books/`. This endpoint is implemented in the all method, which calls the BookRepository findAll method. Using curl:
+
 ```bash
 curl --location --request GET 'http://localhost:8080/api/books/'
 ```
@@ -404,32 +413,32 @@ The result is an array of JSON objects containing the books:
 ### Get a book by ISBN
 
 To get a specific book, we issue a GET request to `http://localhost:8080/api/books/{isbn}`. This endpoint is implemented in the get method, which calls the BookRepository findById method. Using curl:
+
 ```bash
 curl --location --request GET 'http://localhost:8080/api/books/1680503545'
 ```
+
 The result is a JSON object containing the book:
 
 ```json
 {
-	"id": "1680503545",
-	"title": "Functional Programming in Java",
-	"subtitle": "Harnessing the Power Of Java 8 Lambda Expressions",
-	"description": "Intermediate level, for programmers fairly familiar with Java, but new to the functional style of programming and lambda expressions. Get ready to program in a whole new way. ...",
-	"language": "en",
-	"pageCount": 196,
-	"thumbnail": "http://books.google.com/books/content?id=_g5QDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-	"price": 28.99,
-	"currency": "USD",
-	"infoLink": "https://play.google.com/store/books/details?id=_g5QDwAAQBAJ&source=gbs_api",
-	"authors": [
-    	"Venkat Subramaniam"
-	],
-	"categories": [
-    	{
-        	"id": "9d5c025e-bf38-4b50-a971-17e0b7408385",
-        	"name": "java"
-    	}
-	]
+  "id": "1680503545",
+  "title": "Functional Programming in Java",
+  "subtitle": "Harnessing the Power Of Java 8 Lambda Expressions",
+  "description": "Intermediate level, for programmers fairly familiar with Java, but new to the functional style of programming and lambda expressions. Get ready to program in a whole new way. ...",
+  "language": "en",
+  "pageCount": 196,
+  "thumbnail": "http://books.google.com/books/content?id=_g5QDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+  "price": 28.99,
+  "currency": "USD",
+  "infoLink": "https://play.google.com/store/books/details?id=_g5QDwAAQBAJ&source=gbs_api",
+  "authors": ["Venkat Subramaniam"],
+  "categories": [
+    {
+      "id": "9d5c025e-bf38-4b50-a971-17e0b7408385",
+      "name": "java"
+    }
+  ]
 }
 ```
 
@@ -445,70 +454,70 @@ The result is an array of JSON objects containing the categories:
 
 ```json
 [
-	{
-    	"id": "2fd916fe-7ff8-44c7-9f86-ca388565256c",
-    	"name": "mongodb"
-	},
-	{
-    	"id": "9615a135-7472-48fc-b8ac-a5516a2c8b22",
-    	"name": "dynamodb"
-	},
-	{
-    	"id": "f2ada1e2-7c18-4d90-bfe7-e321b650c0a3",
-    	"name": "redis"
-	},
-	{
-    	"id": "08fc8148-d924-4d2e-af7e-f5fe6f2861f0",
-    	"name": "elixir"
-	},
-	{
-    	"id": "b6a0b57b-ebb8-4d98-9352-8236256dbc27",
-    	"name": "microservices"
-	},
-	{
-    	"id": "7821fd6a-ec94-4ac6-8089-a480a7c7f2ee",
-    	"name": "elastic_search"
-	},
-	{
-    	"id": "f2be1bc3-1700-45f5-a300-2c4cf2f90583",
-    	"name": "hbase"
-	},
-	{
-    	"id": "31c8ea64-cad2-40d9-b0f6-30b8ea6fcbfb",
-    	"name": "reactjs"
-	},
-	{
-    	"id": "5e527af7-93a1-4c00-8f20-f89e89a213e8",
-    	"name": "apache_spark"
-	},
-	{
-    	"id": "9d5c025e-bf38-4b50-a971-17e0b7408385",
-    	"name": "java"
-	},
-	{
-    	"id": "bcb2a01c-9b0a-4846-b1be-670168b5d768",
-    	"name": "clojure"
-	},
-	{
-    	"id": "aba53bb9-7cfa-4b65-8900-8c7e857311c6",
-    	"name": "couchbase"
-	},
-	{
-    	"id": "bd1b2877-1564-4def-b3f7-18871165ff10",
-    	"name": "riak"
-	},
-	{
-    	"id": "47d9a769-bbc2-4068-b27f-2b800bec1565",
-    	"name": "kotlin"
-	},
-	{
-    	"id": "400c8f5a-953b-4b8b-b21d-045535d8084d",
-    	"name": "nosql_big_data"
-	},
-	{
-    	"id": "06bc25ff-f2ab-481b-a4d9-819552dea0e0",
-    	"name": "javascript"
-	}
+  {
+    "id": "2fd916fe-7ff8-44c7-9f86-ca388565256c",
+    "name": "mongodb"
+  },
+  {
+    "id": "9615a135-7472-48fc-b8ac-a5516a2c8b22",
+    "name": "dynamodb"
+  },
+  {
+    "id": "f2ada1e2-7c18-4d90-bfe7-e321b650c0a3",
+    "name": "redis"
+  },
+  {
+    "id": "08fc8148-d924-4d2e-af7e-f5fe6f2861f0",
+    "name": "elixir"
+  },
+  {
+    "id": "b6a0b57b-ebb8-4d98-9352-8236256dbc27",
+    "name": "microservices"
+  },
+  {
+    "id": "7821fd6a-ec94-4ac6-8089-a480a7c7f2ee",
+    "name": "elastic_search"
+  },
+  {
+    "id": "f2be1bc3-1700-45f5-a300-2c4cf2f90583",
+    "name": "hbase"
+  },
+  {
+    "id": "31c8ea64-cad2-40d9-b0f6-30b8ea6fcbfb",
+    "name": "reactjs"
+  },
+  {
+    "id": "5e527af7-93a1-4c00-8f20-f89e89a213e8",
+    "name": "apache_spark"
+  },
+  {
+    "id": "9d5c025e-bf38-4b50-a971-17e0b7408385",
+    "name": "java"
+  },
+  {
+    "id": "bcb2a01c-9b0a-4846-b1be-670168b5d768",
+    "name": "clojure"
+  },
+  {
+    "id": "aba53bb9-7cfa-4b65-8900-8c7e857311c6",
+    "name": "couchbase"
+  },
+  {
+    "id": "bd1b2877-1564-4def-b3f7-18871165ff10",
+    "name": "riak"
+  },
+  {
+    "id": "47d9a769-bbc2-4068-b27f-2b800bec1565",
+    "name": "kotlin"
+  },
+  {
+    "id": "400c8f5a-953b-4b8b-b21d-045535d8084d",
+    "name": "nosql_big_data"
+  },
+  {
+    "id": "06bc25ff-f2ab-481b-a4d9-819552dea0e0",
+    "name": "javascript"
+  }
 ]
 ```
 
@@ -617,22 +626,25 @@ In this section, we will refactor the `BookController` all method to work with t
 ```
 
 Let’s break down the refactoring:
-* We want to control the method return value so we’ll use a `ResponseEntity`, which is an extension of `HttpEntity` and gives us control over the HTTP status code, headers, and body.
-* For the return type, we wrap a `Map<String,Object>` to return the collection of books as well as pagination data.
-* We’ve added two request parameters (HTTP query params) of type integer for the page number being retrieved and the size of the page.
+
+- We want to control the method return value so we’ll use a `ResponseEntity`, which is an extension of `HttpEntity` and gives us control over the HTTP status code, headers, and body.
+- For the return type, we wrap a `Map<String,Object>` to return the collection of books as well as pagination data.
+- We’ve added two request parameters (HTTP query params) of type integer for the page number being retrieved and the size of the page.
   The page number defaults to 0 and the size of the page defaults to 10.
-* In the body of the method, we use the `Pageable` and `PageRequest` abstractions to construct the paging request.
-* We get a `Page<Book>` result by invoking the `findAll` method, passing the `Pageable` paging request.
-* If the returned page contains any items, we add them to the response object. Otherwise, we add an empty list.
-* The response is constructed by instantiating a Map and adding the books, current page, total number of pages, and total number of books.
-* Finally we package the response map into a `ResponseEntity`.
+- In the body of the method, we use the `Pageable` and `PageRequest` abstractions to construct the paging request.
+- We get a `Page<Book>` result by invoking the `findAll` method, passing the `Pageable` paging request.
+- If the returned page contains any items, we add them to the response object. Otherwise, we add an empty list.
+- The response is constructed by instantiating a Map and adding the books, current page, total number of pages, and total number of books.
+- Finally we package the response map into a `ResponseEntity`.
 
 Let’s fire up a pagination request with curl as shown next:
 
 ```bash
 curl --location --request GET 'http://localhost:8080/api/books/?size=25&page=2'
 ```
+
 Passing a page size of 25 and requesting page number 2, we get the following:
+
 ```json
 {
 	"total": 2403,

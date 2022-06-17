@@ -6,15 +6,13 @@ slug: /howtos/leaderboard
 authors: [ajeet]
 ---
 
-
 The concept of a leaderboard—a scoreboard showing the ranked names and current scores (or other data points) of the leading competitors—is essential to the world of computer gaming, but leaderboards are now about more than just games. They are about gamification, a broader implementation that can include any group of people with a common goal (coworkers, students, sales groups, fitness groups, volunteers, and so on).
 
 Leaderboards can encourage healthy competition in a group by openly displaying the current ranking of each group member. They also provide a clear way to view the ongoing achievements of the entire team as members move towards a goal. Gamification of tasks and goals via leaderboards is a great way to motivate people by providing them with constant feedback of where they rank in comparison to other group members. Done well, this can lead to healthy competition that builds group cohesion.
 
-
 ![My Image](leaderboard.png)
 
-### Step 1. Install the below software 
+### Step 1. Install the below software
 
 - Docker (on mac: https://docs.docker.com/docker-for-mac/install/)
 - Docker Compose
@@ -22,11 +20,10 @@ Leaderboards can encourage healthy competition in a group by openly displaying t
 ### Step 2. Clone the repository
 
 ```
-git clone https://github.com/redis-developer/basic-redis-leaderboard-demo-java 
+git clone https://github.com/redis-developer/basic-redis-leaderboard-demo-java
 ```
 
-
-### Step 3. Run docker compose 
+### Step 3. Run docker compose
 
 ```
 docker network create global
@@ -37,12 +34,12 @@ docker-compose up -d --build
 
 ```
  docker-compose ps
-            Name                           Command               State             Ports          
+            Name                           Command               State             Ports
 --------------------------------------------------------------------------------------------------
 redis.redisleaderboard.docker   docker-entrypoint.sh redis ...   Up      127.0.0.1:55000->6379/tcp
 ```
 
-### Step 5. Copy .env.example to create .env 
+### Step 5. Copy .env.example to create .env
 
 Provide the values for environment variables (if needed)
 
@@ -67,7 +64,7 @@ REDIS_DB=
 
 ### Step 6. Run the backend
 
-- Install gradle 
+- Install gradle
 
 Follow the following link https://gradle.org/install/ for your MacOS
 
@@ -75,7 +72,7 @@ Follow the following link https://gradle.org/install/ for your MacOS
 brew install gradle
 ```
 
-- Install JDK 
+- Install JDK
 
 Follow the following link https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-macos.htm for your MacOS
 
@@ -85,11 +82,10 @@ export $(cat .env | xargs)
 
 ### Step 7. Run the wrapper task
 
-To use Wrapper, we need to generate some particular files. We'll generate these files using the built-in Gradle task called wrapper. 
+To use Wrapper, we need to generate some particular files. We'll generate these files using the built-in Gradle task called wrapper.
 Note that we need to generate these files only once.
 
 Now, let's run the wrapper task in our project directory:
-
 
 ```
 gradle wrapper
@@ -160,7 +156,7 @@ BUILD SUCCESSFUL in 1m 13s
 2021-03-01 07:10:00.551  INFO 3672 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 889 ms
 2021-03-01 07:10:00.756  INFO 3672 --- [  restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
 2021-03-01 07:10:00.845  INFO 3672 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: URL [file:/Users/ajeetraina/projects/basic-redis-leaderboard-demo-java/assets/index.html]
-2021-03-01 07:10:00.949  INFO 3672 --- [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+2021-03-01 07:10:00.949  INFO 3672 --- [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration :
 
 Using generated security password: ea2d5326-b04c-4f93-b771-57bcb53f656e
 
@@ -172,28 +168,27 @@ Using generated security password: ea2d5326-b04c-4f93-b771-57bcb53f656e
 > :run
 ```
 
-
 ### Step 10. Access the leaderboard application
 
 ![My Image](leaderboard.png)
 
 ### How it works?
 
-
-####  How the data is stored:
+#### How the data is stored:
 
 - The AAPL's details - market cap of 2.6 triillions and USA origin - are stored in a hash like below:
+
   ```bash
    HSET "company:AAPL" symbol "AAPL" market_cap "2600000000000" country USA
   ```
 
 - The Ranks of AAPL of 2.6 trillions are stored in a ZSET.
 
-   ```bash
-    ZADD  companyLeaderboard 2600000000000 company:AAPL
-   ```
+  ```bash
+   ZADD  companyLeaderboard 2600000000000 company:AAPL
+  ```
 
-####  How the data is accessed:
+#### How the data is accessed:
 
 - Top 10 companies:
 
@@ -245,9 +240,9 @@ Using generated security password: ea2d5326-b04c-4f93-b771-57bcb53f656e
 
 - Companies over a Trillion:
 
-   ```bash
-    ZCOUNT companyLeaderBoard 1000000000000 +inf
-   ```
+  ```bash
+   ZCOUNT companyLeaderBoard 1000000000000 +inf
+  ```
 
 ### References
 

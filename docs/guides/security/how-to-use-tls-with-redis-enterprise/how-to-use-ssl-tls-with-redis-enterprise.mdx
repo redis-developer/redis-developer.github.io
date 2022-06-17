@@ -4,36 +4,34 @@ title: How to Use SSL/TLS With Redis Enterprise
 slug: /guide/security/how-to-use-ssl-tls-with-redis-enterprise/
 description: Learn how to secure your Redis databases using SSL
 keywords:
-    - java
-    - node.js
-    - python
-    - ssl
-    - tls
+  - java
+  - node.js
+  - python
+  - ssl
+  - tls
 ---
 
 ![Header](/img/guides/security/how-to-use-tls-with-redis-enterprise/000_header.jpeg)
 
-
-* Date: 19-JAN-2021
-* Author: [Tug Grall](https://twitter.com/tgrall)
+- Date: 19-JAN-2021
+- Author: [Tug Grall](https://twitter.com/tgrall)
 
 In this article, I will explain how to secure your Redis databases using SSL (Secure Sockets Layer). In production, it is a good practice to use SSL to protect the data that are moving between various computers (client applications and Redis servers). Transport Level Security (TLS) guarantees that only allowed applications/computers are connected to the database, and also that data is not viewed or altered by a middle man process.
 
 You can secure the connections between your client applications and Redis cluster using:
 
-* One-Way SSL: the client (your application) get the certificate from the server (Redis cluster), validate it, and then all communications are encrypted
-* Two-Way SSL: (aka mutual SSL) here both the client and the server authenticate each other and validate that both ends are trusted.
+- One-Way SSL: the client (your application) get the certificate from the server (Redis cluster), validate it, and then all communications are encrypted
+- Two-Way SSL: (aka mutual SSL) here both the client and the server authenticate each other and validate that both ends are trusted.
 
 In this article, I will focus on the Two-Way SSL, and using Redis Enterprise.
 
 Prerequisites:
 
-* A Redis Enterprise 6.0.x database, (my database is protected by the password `secretdb01`, and listening on port `12000`)
-* `redis-cli` to run basic commands
-* Python, Node, and Java installed if you want to test various languages.
+- A Redis Enterprise 6.0.x database, (my database is protected by the password `secretdb01`, and listening on port `12000`)
+- `redis-cli` to run basic commands
+- Python, Node, and Java installed if you want to test various languages.
 
-
-**Simple  Test**
+**Simple Test**
 
 Let's make sure that the database is available:
 
@@ -42,7 +40,6 @@ redis-cli -p 12000 -a secretdb01 INFO SERVER
 ```
 
 This should print the Server information.
-
 
 ## 1- Get the Certificate from Redis Cluster
 
@@ -68,7 +65,7 @@ You can create as many certificates as you want, or reuse this one for all serve
 
 Open a terminal and run the following commands:
 
-```bash 
+```bash
 
 openssl req \
   -nodes \
@@ -82,26 +79,28 @@ openssl req \
 
 This command generate a new client key (`client_key_001.pem`) and certificate (`client_cert_001.pem`) with no passphrase.
 
-
 ## 3- Configure the Redis Database
 
-The next step is to take the certificate and add it to the database you want to protect. 
+The next step is to take the certificate and add it to the database you want to protect.
 
 Let's copy the certificate and paste it into the Redis Enterprise Web Console.
 
 Copy the certificate in your clipboard:
 
 Mac:
+
 ```bash
 pbcopy < client_cert_app_001.pem
 ```
 
 Linux:
+
 ```bash
  xclip -sel clip < client_cert_app_001.pem
 ```
 
 Windows:
+
 ```bash
 clip < client_cert_app_001.pem
 ```
@@ -118,9 +117,7 @@ Go to the Redis Enterprise Admin Web Console and enable TLS on your database:
 
 ![Security Configuration](/img/guides/security/how-to-use-tls-with-redis-enterprise/001-tls-configuration.png)
 
-
 The database is now protected, and it is mandatory to use the SSL certificate to connect to it.
-
 
 ```
 redis-cli -p 12000 -a secretdb01 INFO SERVER
@@ -129,7 +126,7 @@ redis-cli -p 12000 -a secretdb01 INFO SERVER
 
 ## 4- Connect to the Database using the Certificate
 
-In all following examples, I am using a "self-signed" certificate, so I do not check the validity of the hostname. 
+In all following examples, I am using a "self-signed" certificate, so I do not check the validity of the hostname.
 You should adapt the connections/TLS information based on your certificate configuration.
 
 ### 4.1 Using Redis-CLI
@@ -149,6 +146,7 @@ accept = 127.0.0.1:6380
 connect = 127.0.0.1:12000
 
 ```
+
 Start stunnel using the command
 
 ```
@@ -161,12 +159,11 @@ This will start a process that listen to port `6380` and used as a proxy to the 
 redis-cli -p 6380 -a secretdb01 INFO SERVER
 ```
 
-
 ### 4.2 Using Python
 
 Using Python, you have to set the SSL connection parameters:
 
-``` python
+```python
 #!/usr/local/bin/python3
 
 import redis
@@ -178,10 +175,10 @@ try:
     decode_responses=True,
     host='localhost',
     port=12000,
-    ssl=True, 
-    ssl_keyfile='./client_key_app_001.pem', 
-    ssl_certfile='./client_cert_app_001.pem', 
-    ssl_cert_reqs='required', 
+    ssl=True,
+    ssl_keyfile='./client_key_app_001.pem',
+    ssl_certfile='./client_cert_app_001.pem',
+    ssl_cert_reqs='required',
     ssl_ca_certs='./proxy_cert.pem',
     )
 
@@ -199,28 +196,33 @@ More information in the documentation "[Using Redis with Python](https://develop
 For [Node Redis](http://redis.js.org/), use the [TLS](https://nodejs.org/api/tls.html) library to configure the client connection:
 
 ```javascript
-var redis = require("redis");
+var redis = require('redis');
 var tls = require('tls');
 var fs = require('fs');
 
 var ssl = {
-    key: fs.readFileSync('../certificates/client_key_app_001.pem',encoding='ascii'),
-    cert: fs.readFileSync('../certificates/client_cert_app_001.pem',encoding='ascii'),
-    ca: [ fs.readFileSync('../certificates/proxy_cert.pem',encoding='ascii') ],
-    checkServerIdentity: () => { return null; },
+  key: fs.readFileSync(
+    '../certificates/client_key_app_001.pem',
+    (encoding = 'ascii'),
+  ),
+  cert: fs.readFileSync(
+    '../certificates/client_cert_app_001.pem',
+    (encoding = 'ascii'),
+  ),
+  ca: [fs.readFileSync('../certificates/proxy_cert.pem', (encoding = 'ascii'))],
+  checkServerIdentity: () => {
+    return null;
+  },
 };
 
-var client = redis.createClient(12000,'127.0.0.1', 
-    {
-      password : 'secretdb01',
-      tls: ssl
-    }
-);
-        
-client.info( "SERVER", function (err, reply) {
-    console.log(reply);
-} );
+var client = redis.createClient(12000, '127.0.0.1', {
+  password: 'secretdb01',
+  tls: ssl,
+});
 
+client.info('SERVER', function (err, reply) {
+  console.log(reply);
+});
 ```
 
 More information in the documentation "[Using Redis with Node.js](https://developer.redis.com/develop/node/)".
@@ -228,7 +230,6 @@ More information in the documentation "[Using Redis with Node.js](https://develo
 ### 4.4 Using Java
 
 In Java, to be able to connect using SSL, you have to install all the certificates in the Java environment using the [keytool](https://docs.oracle.com/en/java/javase/11/tools/keytool.html) utility.
-
 
 Create a **keystore** file that stores the key and certificate you have created earlier:
 
@@ -243,7 +244,6 @@ openssl pkcs12 -export \
 As you can see the keystore is used to store the credentials associated with you client; it will be used later with the `-javax.net.ssl.keyStore` system property in the Java application.
 
 In addition to the keys tore, you also have to create a trust store, that is used to store other credentials for example in our case the redis cluster certificate.
-
 
 Create a **trust store** file and add the Redis cluster certificate to it
 
@@ -307,19 +307,17 @@ public class SSLTest {
 }
 ```
 
-* line 8-12, the system environment variables are set to point to the keystore and trust store (this should be externalized)
-* line 14, the Redis URL start with `rediss` with 2 s to indicate that the connection should be encrypted
-* line 17, set the database password
-
+- line 8-12, the system environment variables are set to point to the keystore and trust store (this should be externalized)
+- line 14, the Redis URL start with `rediss` with 2 s to indicate that the connection should be encrypted
+- line 17, set the database password
 
 More information in the documentation "[Using Redis with Java](https://developer.redis.com/develop/java/)".
-
 
 ## Conclusion
 
 In this article, you have learned how to:
 
-* retrieve the Redis Server certificate
-* generate a client certificate
-* protect your database to enforce transport level security (TLS) with 2 ways authentication
-* connect to the database from `redis-cli`, Python, Node and Java
+- retrieve the Redis Server certificate
+- generate a client certificate
+- protect your database to enforce transport level security (TLS) with 2 ways authentication
+- connect to the database from `redis-cli`, Python, Node and Java

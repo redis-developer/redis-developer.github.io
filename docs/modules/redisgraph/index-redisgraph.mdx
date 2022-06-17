@@ -7,9 +7,6 @@ slug: /modules/redisgraph
 
 RedisGraph is a Redis module that enables enterprises to process any kind of connected data much faster than with traditional relational or existing graph databases. RedisGraph implements a unique data storage and processing solution (with sparse-adjacency matrices and GraphBLAS) to deliver the fastest and most efficient way to store, manage, and process connected data in graphs. With RedisGraph, you can process complex transactions 10 - 600 times faster than with traditional graph solutions while using 50 - 60% less memory resources than other graph databases!
 
-
-
-
 ### Step 1. Register and subscribe
 
 Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
@@ -20,13 +17,9 @@ Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis 
 
 ![RedisGraph](redisgraph.png)
 
-
 ### Step 3. Connect to a database
 
-
 Follow [this](explore/redisinsight) link to know how to connect to a database
-
-
 
 ### Step 4. Getting Started with RedisGraph
 
@@ -48,6 +41,7 @@ To interact with RedisGraph you will typically use the GRAPH.QUERY command and e
    3) "Properties set: 6"
    4) "Query internal execution time: 0.675400 milliseconds"
 ```
+
 This single query creates three actors, along with their names and unique IDs.
 
 #### Insert a movie
@@ -85,7 +79,7 @@ The core of a graph is the relationships between the nodes, allowing the applica
    3) "Query internal execution time: 0.664800 milliseconds"
 ```
 
-This command created a new relation indicating that the actor Mark Hamill acted in Star Wars: Episode V  as Luke Skywalker.
+This command created a new relation indicating that the actor Mark Hamill acted in Star Wars: Episode V as Luke Skywalker.
 
 Let’s repeat this process for the other actors:
 
@@ -105,8 +99,7 @@ You can also do all of this in a single query, for example:
    4) "Query internal execution time: 0.848500 milliseconds"
 ```
 
-
-####  Querying the graph
+#### Querying the graph
 
 Now that you have data in your graph, you’re ready to ask some questions, such as:
 
@@ -121,8 +114,7 @@ Now that you have data in your graph, you’re ready to ask some questions, such
 3) 1) "Query internal execution time: 0.349400 milliseconds"
 ```
 
-
-#### “What is the information for the movie with the ID of  1?”
+#### “What is the information for the movie with the ID of 1?”
 
 ```
 > GRAPH.QUERY graph:movies "MATCH (m:Movie) WHERE m.movie_id = 1 RETURN m"
@@ -174,8 +166,6 @@ Click on the Execute button, and double click on the actors to follow the relati
 
 ![RedisGraph](redisgraph4.png)
 
-
-### Next Step 
+### Next Step
 
 - Learn more about RedisGraph in the [Quickstart](https://oss.redis.com/redisgraph/) tutorial.
-

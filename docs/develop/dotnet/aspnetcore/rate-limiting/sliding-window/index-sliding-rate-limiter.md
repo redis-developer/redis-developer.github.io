@@ -14,9 +14,9 @@ The pattern that we are implementing here is a sliding window rate limiter. A sl
 
 ## Prerequisites
 
-* Must have the [.NET 5+ SDK](https://dotnet.microsoft.com/download/dotnet/5.0) installed
-* Some way of running Redis, for this tutorial we'll use [Docker Desktop](https://www.docker.com/products/docker-desktop)
-* IDE for writing C# [VS Code](https://code.visualstudio.com/download), [Visual Studio](https://visualstudio.microsoft.com/), or [Rider](https://www.jetbrains.com/rider/)
+- Must have the [.NET 5+ SDK](https://dotnet.microsoft.com/download/dotnet/5.0) installed
+- Some way of running Redis, for this tutorial we'll use [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- IDE for writing C# [VS Code](https://code.visualstudio.com/download), [Visual Studio](https://visualstudio.microsoft.com/), or [Rider](https://www.jetbrains.com/rider/)
 
 ## Startup Redis
 
@@ -44,7 +44,7 @@ namespace SlidingWindowRateLimiter.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class RateLimitedController : ControllerBase
-    {        
+    {
     }
 }
 ```
@@ -103,12 +103,12 @@ To implement this pattern we will need to do the following:
 2. That key will map to a sorted set in Redis, we will check the current time, and shave off any requests in the sorted set that are outside of our window
 3. We will then check the cardinality of the sorted set
 4. If the cardinality is less than our limit, we will
-    1. Add a new member to our sorted set with a score of the current time in seconds, and a member of the current time in microseconds
-    2. Set the expiration for our sorted set to the window length
-    3. return 0
+   1. Add a new member to our sorted set with a score of the current time in seconds, and a member of the current time in microseconds
+   2. Set the expiration for our sorted set to the window length
+   3. return 0
 5. If the cardinality is greater than or equal to our limit we will return 1
 
-The trick here is that everything needs to happen atomically, we want to be able to trim the set, check its cardinality, add an item to it, and set it's expiration, all without anything changing in the interim. Fortunately this is a perfect place to use a [Lua Script](https://redis.io/commands/eval). Specifically we are going to be using the StackExchange script preparation engine to drive our lua script, meaning we can use `@variable_name` in place of a particular position in `ARGV` or `KEYS` in the script. Our Lua script will be: 
+The trick here is that everything needs to happen atomically, we want to be able to trim the set, check its cardinality, add an item to it, and set it's expiration, all without anything changing in the interim. Fortunately this is a perfect place to use a [Lua Script](https://redis.io/commands/eval). Specifically we are going to be using the StackExchange script preparation engine to drive our lua script, meaning we can use `@variable_name` in place of a particular position in `ARGV` or `KEYS` in the script. Our Lua script will be:
 
 ```
 local current_time = redis.call('TIME')
@@ -159,7 +159,7 @@ Back in our `RateLimitedController` Sliding method, we will add a few lines of c
 var limited = ((int) await _db.ScriptEvaluateAsync(Scripts.SlidingRateLimiterScript,
     new {key = new RedisKey($"{Request.Path}:{apiKey}"), window = 30, max_requests = 10})) == 1;
 return limited ? new StatusCodeResult(429) : Ok();
-``` 
+```
 
 The whole method should look like this now:
 
@@ -213,4 +213,4 @@ HTTP 200, 0.001667 s
 
 ## Resources
 
-* You can find the code used for this tutorial in [GitHub](https://github.com/redis-developer/sliding-window-rate-limiter-aspnet)
+- You can find the code used for this tutorial in [GitHub](https://github.com/redis-developer/sliding-window-rate-limiter-aspnet)

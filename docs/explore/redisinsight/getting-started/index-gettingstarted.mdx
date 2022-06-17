@@ -11,16 +11,13 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-
 RedisInsight is an intuitive and efficient GUI for Redis, allowing you to interact with your databases and manage your data—with built-in support for most popular Redis modules. It is a 100% free Redis GUI tool that allows you to visualise, monitor, and optimize while developing your applications with Redis
 
 ![my image](redisinsight.gif)
 
-RedisInsight provides built-in support for the RedisJSON, RediSearch, RedisGraph, Redis Streams, and RedisTimeSeries modules to make it even easier to query, visualize, and interactively manipulate search indexes, graphs, streams, and time-series data. 
+RedisInsight provides built-in support for the RedisJSON, RediSearch, RedisGraph, Redis Streams, and RedisTimeSeries modules to make it even easier to query, visualize, and interactively manipulate search indexes, graphs, streams, and time-series data.
 
-
-A full-featured pure desktop GUI client, RedisInsight is available for Windows, macOS, and Linux and is fully compatible with Redis Enterprise. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. RedisInsight makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. 
+A full-featured pure desktop GUI client, RedisInsight is available for Windows, macOS, and Linux and is fully compatible with Redis Enterprise. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. RedisInsight makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
 ### Getting Started with RedisInsight
 
@@ -35,8 +32,7 @@ A full-featured pure desktop GUI client, RedisInsight is available for Windows, 
   ]}>
   <TabItem value="MacOS">
 
-
-####  Using MacOS 
+#### Using MacOS
 
 #### Step 1. Download RedisInsight
 
@@ -51,7 +47,7 @@ Fill out the rest of the form and click “Download.” Please note that the pac
 redisinsight-platform-version
 
 :::info TIP
-If you're using Redis Stack, you don't really need to install RedisInsight separately. 
+If you're using Redis Stack, you don't really need to install RedisInsight separately.
 Redis Stack includes RedisInsight, a visualization tool for understanding and optimizing Redis data.
 :::
 
@@ -60,7 +56,6 @@ Redis Stack includes RedisInsight, a visualization tool for understanding and op
 Click on the RedisInsight executable and install it in your system.
 
 ![My Image](redisinsight2.png)
-
 
 Head over to your web browser and go to http://localhost:8001
 
@@ -77,15 +72,11 @@ Assuming that you already have Redis database up and running, select "Connect to
 
 Enter the requested details, including Name, Host (endpoint), Port, and Password in the form, as shown below. You can skip username for now. Then click “ADD REDIS DATABASE”:
 
-
-
-
 ![My Image](redisinsight5.png)
-
 
 #### Step 5. Run the Redis CLI
 
-Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
+Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the menu on the left side of the RedisInsight UI:
 
 ![My Image](redisinsight7.png)
 
@@ -95,12 +86,12 @@ Then paste the appropriate Redis commands in the command section, marked with �
 
 You can see the output displayed at the top of the screen. If it says “OK,” the command was executed successfully.
 
-
 </TabItem>
 
 <TabItem value="Linux">
 
-####  Using Linux
+#### Using Linux
+
 #### Step 1. Download RedisInsight
 
 To use RedisInsight on your Linux machine, you can download from the RedisInsight page on the RedisLabs website:
@@ -133,11 +124,9 @@ To access your RedisInsight GUI, open a web browser and navigate to http://127.0
 
 Congratulations! You have successfully installed RedisInsight and are now ready to inspect your Redis data, monitor database health, and perform runtime server configuration with this browser-based management interface for your Redis deployment.
 
-
 ![My Image](redisinsight3.png)
 
 #### Step 4. Connect to Redis database
-
 
 Assuming that you already have Redis database up and running, select "Connect to a Redis database"
 ![My Image](redisinsight4.png)
@@ -146,10 +135,9 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 
 ![My Image](redisinsight5.png)
 
-
 #### Step 5. Run the Redis CLI
 
-Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
+Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the menu on the left side of the RedisInsight UI:
 
 ![My Image](redisinsight7.png)
 
@@ -159,31 +147,27 @@ Then paste the appropriate Redis commands in the command section, marked with �
 
 You can see the output displayed at the top of the screen. If it says “OK,” the command was executed successfully.
 
-
-
-
 </TabItem>
 
 <TabItem value="Windows">
 
-####  Using Windows 
+#### Using Windows
+
 #### Step 1. Download RedisInsight
 
-
-To install RedisInsight on Windows, there is no need to install any .NET framework. RedisInsight should install and run on a fresh Windows system. 
+To install RedisInsight on Windows, there is no need to install any .NET framework. RedisInsight should install and run on a fresh Windows system.
 
 To use RedisInsight on your Windows machine, you can download from the RedisInsight page on the RedisLabs website:
 
 Open [this](https://redis.com/redis-enterprise/redis-insight/#insight-form) link to open up a form that allows you to select the operating system of your choice.
 
-#### Step 2.  Install RedisInsight
+#### Step 2. Install RedisInsight
 
 ![My Image](redisinsight-windows.png)
 
 Fill out the rest of the form and click “Download.” Please note that the package name is the combination of the platform and version as shown here:
 
 redisinsight-win-msi
-
 
 #### Step 3. Accessing RedisInsight
 
@@ -193,7 +177,6 @@ Congratulations! You have successfully installed RedisInsight and are now ready 
 
 #### Step 4. Connect to a Redis database
 
-
 ![My Image](redisinsight3.png)
 
 Assuming that you already have Redis database up and running, select "Connect to a Redis database"
@@ -203,10 +186,9 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 
 ![My Image](redisinsight5.png)
 
-
 #### Step 5. Run the Redis CLI
 
-Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
+Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the menu on the left side of the RedisInsight UI:
 
 ![My Image](redisinsight7.png)
 
@@ -215,7 +197,6 @@ Then paste the appropriate Redis commands in the command section, marked with �
 ![My Image](redisinsight9.png)
 
 You can see the output displayed at the top of the screen. If it says “OK,” the command was executed successfully.
-
 
 </TabItem>
 
@@ -229,7 +210,7 @@ The first step is to install docker for your operating system. Run the docker ve
 
 Note - On Windows and Mac, install docker version 18.03 or higher. You can run docker version to find out your docker version.
 
-#### Step 2.  Run RedisInsight Docker image 
+#### Step 2. Run RedisInsight Docker image
 
 Next, run the RedisInsight container. The easiest way is to run the following command:
 
@@ -240,7 +221,6 @@ Next, run the RedisInsight container. The easiest way is to run the following co
 #### Step 3. Accessing RedisInsight
 
 Next, point your browser to http://localhost:8001.
-
 
 RedisInsight also provides a health check endpoint at http://localhost:8001/healthcheck/ to monitor the health of the running container.
 
@@ -268,11 +248,9 @@ If everything worked, you should see the following output in the terminal:
  Press CTRL-C to exit.
 ```
 
-
 Head over to your web browser and go to http://localhost:8001
 
 Congratulations! You have successfully installed RedisInsight and are now ready to inspect your Redis data, monitor database health, and perform runtime server configuration with this browser-based management interface for your Redis deployment.
-
 
 #### Step 4. Connect to a Redis database
 
@@ -285,10 +263,9 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 
 ![My Image](redisinsight5.png)
 
-
 #### Step 5. Run the Redis CLI
 
-Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
+Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the menu on the left side of the RedisInsight UI:
 
 ![My Image](redisinsight7.png)
 
@@ -298,14 +275,13 @@ Then paste the appropriate Redis commands in the command section, marked with �
 
 You can see the output displayed at the top of the screen. If it says “OK,” the command was executed successfully.
 
-
-
 </TabItem>
 
 <TabItem value="Kubernetes">
 
 #### Using Kubernetes
-#### Step 1. Create the RedisInsight deployment and service 
+
+#### Step 1. Create the RedisInsight deployment and service
 
 Below is an annotated YAML file that will create a RedisInsight deployment and a service in a k8s cluster.
 
@@ -350,7 +326,7 @@ Below is an annotated YAML file that will create a RedisInsight deployment and a
          app: redisinsight #label for pod/s
      spec:
        containers:
- 
+
        - name:  redisinsight #Container name (DNS_LABEL, unique)
          image: redislabs/redisinsight:1.7.0 #repo/image
          imagePullPolicy: IfNotPresent #Always pull image
@@ -363,7 +339,7 @@ Below is an annotated YAML file that will create a RedisInsight deployment and a
        volumes:
        - name: db
          emptyDir: {} # node-ephemeral volume https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
- ```
+```
 
 #### Step 3. Create the RedisInsight deployment and service
 
@@ -373,7 +349,7 @@ kubectl apply -f redisinsight.yaml
 
 #### Step 4. Accessing RedisInsight
 
-Once the deployment and service are successfully applied and complete, you shoould be able to access RedisInsight. 
+Once the deployment and service are successfully applied and complete, you shoould be able to access RedisInsight.
 This can be accomplished by listing the using the External IP address of the service we created to reach redisinsight.
 
 ```
@@ -395,7 +371,7 @@ $ minikube list
 |-------------|----------------------|--------------|---------------------------------------------|
 ```
 
-#### Step 5. Create the RedisInsight deployment without a service. 
+#### Step 5. Create the RedisInsight deployment without a service.
 
 Below is an annotated YAML file that will create a RedisInsight deployment in a K8s cluster.
 
@@ -465,10 +441,7 @@ kubectl port-forward deployment/redisinsight 8001
 
 Open your browser and point to http://localhost:8001
 
-
-
 Congratulations! You have successfully installed RedisInsight and are now ready to inspect your Redis data, monitor database health, and perform runtime server configuration with this browser-based management interface for your Redis deployment.
-
 
 ![My Image](redisinsight3.png)
 
@@ -479,10 +452,9 @@ Enter the requested details, including Name, Host (endpoint), Port, and Password
 
 ![My Image](redisinsight5.png)
 
-
 #### Step 7. Run the Redis CLI
 
-Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the  menu on the left side of the RedisInsight UI:
+Finally, although RedisInsight is a great GUI, sometimes you want to work directly in the command-line interface (CLI). To do so, click “CLI” in the menu on the left side of the RedisInsight UI:
 
 ![My Image](redisinsight7.png)
 
@@ -495,17 +467,18 @@ You can see the output displayed at the top of the screen. If it says “OK,” 
 </TabItem>
 </Tabs>
 
-
-
 ### RedisInsight Overview (RedisConf'21)
 
 <div class="text--center">
-<iframe width="760" height="315" src="https://www.youtube.com/embed/ppYSS6opUiQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="315"
+    src="https://www.youtube.com/embed/ppYSS6opUiQ"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
-  
-
-
-
 
 ### Further References
 
@@ -518,5 +491,17 @@ You can see the output displayed at the top of the screen. If it says “OK,” 
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>

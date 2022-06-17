@@ -99,22 +99,22 @@ I like to write my services with a little version and name endpoint at the root.
 Create a file named `server.js` in the root of your project folder and populate it thus:
 
 ```javascript
-import express from 'express'
+import express from 'express';
 
 // create an express app and use JSON
-let app = new express()
-app.use(express.json())
+let app = new express();
+app.use(express.json());
 
 // setup the root level GET to return name and version from package.json
 app.get('/', (req, res) => {
   res.send({
     name: process.env.npm_package_name,
-    version: process.env.npm_package_version
-  })
-})
+    version: process.env.npm_package_version,
+  });
+});
 
 // start listening
-app.listen(8080)
+app.listen(8080);
 ```
 
 We now have enough to actually run something. So let's run it:
@@ -147,7 +147,7 @@ We're going to use Redis OM to map data for a song from JSON data in Redis to Ja
 Create a file named `song-repository.js` in the root of your project folder. In it, import all the parts from Redis OM that you'll need:
 
 ```javascript
-import { Entity, Schema, Client, Repository } from 'redis-om'
+import { Entity, Schema, Client, Repository } from 'redis-om';
 ```
 
 Entities are the classes that you work with—the thing being mapped to. They are what you create, read, update, and delete. Any class that extends `Entity` is an entity. We'll define our Song entity with a single line for now, but we'll add some more to it later:
@@ -167,14 +167,14 @@ let schema = new Schema(Song, {
   music: { type: 'text' }, // who wrote the music for the song
   year: { type: 'number' }, // the year the song was releases
   duration: { type: 'number' }, // the duration of the song in seconds
-  link: { type: 'string' } // link to a YouTube video of the song
-})
+  link: { type: 'string' }, // link to a YouTube video of the song
+});
 ```
 
 Clients are used to connect to Redis. Create a `Client` and pass your Redis URL in the constructor. If you don't specify a URL, it will default to `redis://localhost:6379`. Clients have methods to `.open`, `.close`, and `.execute` raw Redis commands, but we're just going to open it:
 
 ```javascript
-let client = await new Client().open()
+let client = await new Client().open();
 ```
 
 > Remember that _top-level await_ stuff I mentioned at the top of the document? There it is!
@@ -182,13 +182,13 @@ let client = await new Client().open()
 Now we have all the pieces that we need to create a `Repository`. Repositories are the main interface into Redis OM. They give us the methods to read, write, and remove entities. Create a repository—and make sure it's exported as you'll need it when we get into the Express stuff:
 
 ```javascript
-export let songRepository = client.fetchRepository(schema)
+export let songRepository = client.fetchRepository(schema);
 ```
 
 We're almost done with setting up our repository. But we still need to create an index or we won't be able to search on anything. We do that by calling `.createIndex`. If an index already exists and it's the same, this function won't do anything. If it is different, it'll drop it and create a new one. In a real environment, you'd probably want to create your index as part of CI/CD. But we'll just cram them into our main code for this example:
 
 ```javascript
-await songRepository.createIndex()
+await songRepository.createIndex();
 ```
 
 We have what we need to talk to Redis. Now, let's use it to make some routes in Express.
@@ -198,47 +198,47 @@ We have what we need to talk to Redis. Now, let's use it to make some routes in 
 Let's create a truly RESTful API with the CRUD operations mapping to PUT, GET, POST, and DELETE respectively. We're going to do this using [Express Routers](https://expressjs.com/en/4x/api.html#router) as this makes our code nice and tidy. So, create a file called `song-router.js` in the root of your project folder. Then add the imports and create a `Router`:
 
 ```javascript
-import { Router } from 'express'
-import { songRepository as repository } from './song-repository.js'
+import { Router } from 'express';
+import { songRepository as repository } from './song-repository.js';
 
-export let router = Router()
+export let router = Router();
 ```
 
 This router needs to be added in `server.js` under the `/song` path so let's do that next. Add the following line of code to at the top of `server.js`—with all the other imports—to import the song router:
 
 ```javascript
-import { router as songRouter } from './song-router.js'
+import { router as songRouter } from './song-router.js';
 ```
 
 Also add a line of code to call `.use` so that the router we are about to implement is, well, used:
 
 ```javascript
-app.use('/song', songRouter)
+app.use('/song', songRouter);
 ```
 
 Our `server.js` should now look like this:
 
 ```javascript
-import express from 'express'
-import { router as songRouter } from './song-router.js'
+import express from 'express';
+import { router as songRouter } from './song-router.js';
 
 // create an express app and use JSON
-let app = new express()
-app.use(express.json())
+let app = new express();
+app.use(express.json());
 
 // bring in some routers
-app.use('/song', songRouter)
+app.use('/song', songRouter);
 
 // setup the root level GET to return name and version from package.json
 app.get('/', (req, res) => {
   res.send({
     name: process.env.npm_package_name,
-    version: process.env.npm_package_version
-  })
-})
+    version: process.env.npm_package_version,
+  });
+});
 
 // start listening
-app.listen(8080)
+app.listen(8080);
 ```
 
 ### Add a Create Route
@@ -247,27 +247,25 @@ Now, let's start putting some routes in our `song-router.js`. We'll create a son
 
 ```javascript
 router.put('/', async (req, res) => {
-
   // create the Song so we can save it
-  let song = repository.createEntity()
+  let song = repository.createEntity();
 
   // set all the properties, converting missing properties to null
-  song.title = req.body.title ?? null
-  song.artist = req.body.artist ?? null
-  song.genres = req.body.genres ?? null
-  song.lyrics = req.body.lyrics ?? null
-  song.music = req.body.music ?? null
-  song.year = req.body.year ?? null
-  song.duration = req.body.duration ?? null
-  song.link = req.body.link ?? null
+  song.title = req.body.title ?? null;
+  song.artist = req.body.artist ?? null;
+  song.genres = req.body.genres ?? null;
+  song.lyrics = req.body.lyrics ?? null;
+  song.music = req.body.music ?? null;
+  song.year = req.body.year ?? null;
+  song.duration = req.body.duration ?? null;
+  song.link = req.body.link ?? null;
 
   // save the Song to Redis
-  let id = await repository.save(song)
+  let id = await repository.save(song);
 
   // return the id of the newly created Song
-  res.send({ id })
-
-})
+  res.send({ id });
+});
 ```
 
 Now that we have a way to shove songs into Redis, let's start shoving. Out on GitHub, there are a bunch of [JSON files](https://github.com/redis-developer/redis-om-node-tutorial/tree/main/songs) with song data in them. (Thanks [Dylan](https://dylanbeattie.net/)!) Go ahead and pull those down and place them in a folder under your project root called `songs`.
@@ -279,9 +277,9 @@ Let's use `curl` to load in a song. I'm partial to [_HTML_](https://www.youtube.
 You should get back the ID of that newly inserted song:
 
 ```json
-  {
-    "id" : "01FKRW9WMVXTGF71NBEM3EBRPY"
-  }
+{
+  "id": "01FKRW9WMVXTGF71NBEM3EBRPY"
+}
 ```
 
 We're shipping HTML indeed. If you have the `redis-cli` handy—or want to use [RedisInsight](https://redis.com/redis-enterprise/redis-insight/)—you can take a look and see how Redis has stored this:
@@ -297,14 +295,12 @@ Create down, let's add a GET route to read this song from HTTP instead of using 
 
 ```javascript
 router.get('/:id', async (req, res) => {
-
-  // fetch the Song 
-  let song = await repository.fetch(req.params.id)
+  // fetch the Song
+  let song = await repository.fetch(req.params.id);
 
   // return the Song we just fetched
-  res.send(song)
-
-})
+  res.send(song);
+});
 ```
 
 Now you can use `curl` or your browser to load `http://localhost:8080/song/01FKRW9WMVXTGF71NBEM3EBRPY` to fetch the song:
@@ -315,24 +311,19 @@ And you should get back the JSON for the song:
 
 ```json
 {
-  "link" : "https://www.youtube.com/watch?v=woKUEIJkwxI",
-  "genres" : [
-    "blues rock",
-    "hard rock",
-    "parody",
-    "rock"
-  ],
-  "entityId" : "01FKRW9WMVXTGF71NBEM3EBRPY",
-  "title" : "HTML",
-  "lyrics" : "W3C, RFC, a JIRA ticket and a style guide.\\nI deploy with FTP, run it all on the client side\\nDon’t need Ruby, don’t need Rails,\\nAin’t nothing running on my stack\\nI’m hard wired, for web scale,\\nYeah, I’m gonna bring the 90s back\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\nNo logins, no trackers,\\nNo cookie banners to ignore\\nI ain’t afraid of, no hackers\\nJust the occasional 404\\nThey hatin’, what I do,\\nBut that’s ‘cos they don’t understand\\nMark it up, break it down,\\nRemember to escape your ampersands…\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\n(But it’s really just markdown.)",
-  "duration" : 220,
-  "artist" : "Dylan Beattie and the Linebreakers",
-  "music" : "\"Highway to Hell\" by AC/DC",
-  "year" : 2020
+  "link": "https://www.youtube.com/watch?v=woKUEIJkwxI",
+  "genres": ["blues rock", "hard rock", "parody", "rock"],
+  "entityId": "01FKRW9WMVXTGF71NBEM3EBRPY",
+  "title": "HTML",
+  "lyrics": "W3C, RFC, a JIRA ticket and a style guide.\\nI deploy with FTP, run it all on the client side\\nDon’t need Ruby, don’t need Rails,\\nAin’t nothing running on my stack\\nI’m hard wired, for web scale,\\nYeah, I’m gonna bring the 90s back\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\nNo logins, no trackers,\\nNo cookie banners to ignore\\nI ain’t afraid of, no hackers\\nJust the occasional 404\\nThey hatin’, what I do,\\nBut that’s ‘cos they don’t understand\\nMark it up, break it down,\\nRemember to escape your ampersands…\\n\\nI’m shipping HTML,\\nHTML,\\nI’m shipping HTML,\\nHTML…\\n\\n(But it’s really just markdown.)",
+  "duration": 220,
+  "artist": "Dylan Beattie and the Linebreakers",
+  "music": "\"Highway to Hell\" by AC/DC",
+  "year": 2020
 }
 ```
 
-Now that we can read and write, let's implement the *REST* of the HTTP verbs. REST... get it?
+Now that we can read and write, let's implement the _REST_ of the HTTP verbs. REST... get it?
 
 ### Add an Update Route
 
@@ -340,27 +331,25 @@ Here's the code to update using a POST route. You'll note this code is nearly id
 
 ```javascript
 router.post('/:id', async (req, res) => {
-
   // fetch the Song we are replacing
-  let song = await repository.fetch(req.params.id)
+  let song = await repository.fetch(req.params.id);
 
   // set all the properties, converting missing properties to null
-  song.title = req.body.title ?? null
-  song.artist = req.body.artist ?? null
-  song.genres = req.body.genres ?? null
-  song.lyrics = req.body.lyrics ?? null
-  song.music = req.body.music ?? null
-  song.year = req.body.year ?? null
-  song.duration = req.body.duration ?? null
-  song.link = req.body.link ?? null
+  song.title = req.body.title ?? null;
+  song.artist = req.body.artist ?? null;
+  song.genres = req.body.genres ?? null;
+  song.lyrics = req.body.lyrics ?? null;
+  song.music = req.body.music ?? null;
+  song.year = req.body.year ?? null;
+  song.duration = req.body.duration ?? null;
+  song.link = req.body.link ?? null;
 
   // save the Song to Redis
-  let id = await repository.save(song)
+  let id = await repository.save(song);
 
   // return the id of the Song we just saved
-  res.send({ id })
-
-})
+  res.send({ id });
+});
 ```
 
 And the `curl` command to try it out, replacing Dylan's _HTML_ with _D.M.C.A._—sung to the tune of _Y.M.C.A._ by the Village People:
@@ -379,14 +368,13 @@ And, finally, let's implement a DELETE route:
 
 ```javascript
 router.delete('/:id', async (req, res) => {
-
   // delete the Song with its id
-  await repository.remove(req.params.id)
+  await repository.remove(req.params.id);
 
   // respond with OK
-  res.type('application/json')
-  res.send('OK')
-})
+  res.type('application/json');
+  res.send('OK');
+});
 ```
 
 And test it out:
@@ -400,11 +388,11 @@ This just returns "OK", which is technically JSON but aside from the response he
 
 All the CRUD is done. Let's add some search. Search is where Redis OM really starts to shine. We're going to create routes to:
 
-  - Return all the songs, like, all of them.
-  - Fetch songs for a particular artist, like "Dylan Beattie and the Linebreakers".
-  - Fetch songs that are in a certain genre, like "rock" or "electronic".
-  - Fetch songs between years, like all the songs from the 80s.
-  - Fetch songs that have certain words in their lyrics, like "html" or "markdown".
+- Return all the songs, like, all of them.
+- Fetch songs for a particular artist, like "Dylan Beattie and the Linebreakers".
+- Fetch songs that are in a certain genre, like "rock" or "electronic".
+- Fetch songs between years, like all the songs from the 80s.
+- Fetch songs that have certain words in their lyrics, like "html" or "markdown".
 
 ### Load Songs into Redis
 
@@ -436,37 +424,37 @@ Note that this script will not erase any data. So any songs that you have in the
 Like with the CRUD operations for songs, we need to first create a router. This time we'll name the file `songs-router.js`. Note the plural. Add all the imports and exports to that file like before:
 
 ```javascript
-import { Router } from 'express'
-import { songRepository as repository } from './song-repository.js'
+import { Router } from 'express';
+import { songRepository as repository } from './song-repository.js';
 
-export let router = Router()
+export let router = Router();
 ```
 
 Add this router to Express in `server.js` under `/songs`, also like we did before. And, again, note the plural. Your `server.js` should now look like this:
 
 ```javascript
-import express from 'express'
-import { router as songRouter } from './song-router.js'
-import { router as songsRouter } from './songs-router.js'
+import express from 'express';
+import { router as songRouter } from './song-router.js';
+import { router as songsRouter } from './songs-router.js';
 
 // create an express app and use JSON
-let app = new express()
-app.use(express.json())
+let app = new express();
+app.use(express.json());
 
 // bring in some routers
-app.use('/song', songRouter)
-app.use('/songs', songsRouter)
+app.use('/song', songRouter);
+app.use('/songs', songsRouter);
 
 // setup the root level GET to return name and version from package.json
 app.get('/', (req, res) => {
   res.send({
     name: process.env.npm_package_name,
-    version: process.env.npm_package_version
-  })
-})
+    version: process.env.npm_package_version,
+  });
+});
 
 // start listening
-app.listen(8080)
+app.listen(8080);
 ```
 
 ### Add Some Search Routes
@@ -477,24 +465,23 @@ Here's the simplest search—it just returns everything. Go ahead and add it to 
 
 ```javascript
 router.get('/', async (req, res) => {
-  let songs = await repository.search().returnAll()
-  res.send(songs)
-})
+  let songs = await repository.search().returnAll();
+  res.send(songs);
+});
 ```
 
 Then try it out with `curl` or your browser:
 
     $ curl -X GET http://localhost:8080/songs -s | json_pp
 
-
 We can search for a specific field by calling `.where` and `.eq`. This route finds all songs by a particular artist. Note that you must specify the complete name of the artist for this to work:
 
 ```javascript
 router.get('/by-artist/:artist', async (req, res) => {
-  let artist = req.params.artist
-  let songs = await repository.search().where('artist').eq(artist).returnAll()
-  res.send(songs)
-})
+  let artist = req.params.artist;
+  let songs = await repository.search().where('artist').eq(artist).returnAll();
+  res.send(songs);
+});
 ```
 
 Then try it out with `curl` or your browser too:
@@ -505,10 +492,14 @@ Genres are stored as an array of strings. You can use `.contains` to see if the 
 
 ```javascript
 router.get('/by-genre/:genre', async (req, res) => {
-  let genre = req.params.genre
-  let songs = await repository.search().where('genres').contains(genre).returnAll()
-  res.send(songs)
-})
+  let genre = req.params.genre;
+  let songs = await repository
+    .search()
+    .where('genres')
+    .contains(genre)
+    .returnAll();
+  res.send(songs);
+});
 ```
 
 And try it out:
@@ -520,11 +511,15 @@ This route lets you get all the songs between two years. Great for finding all t
 
 ```javascript
 router.get('/between-years/:start-:stop', async (req, res) => {
-  let start = Number.parseInt(req.params.start)
-  let stop = Number.parseInt(req.params.stop)
-  let songs = await repository.search().where('year').between(start, stop).returnAll()
-  res.send(songs)
-})
+  let start = Number.parseInt(req.params.start);
+  let stop = Number.parseInt(req.params.stop);
+  let songs = await repository
+    .search()
+    .where('year')
+    .between(start, stop)
+    .returnAll();
+  res.send(songs);
+});
 ```
 
 And, try it out, of course:
@@ -535,10 +530,14 @@ Let's add the final route to find songs that have certain words in the lyrics us
 
 ```javascript
 router.get('/with-lyrics/:lyrics', async (req, res) => {
-  let lyrics = req.params.lyrics
-  let songs = await repository.search().where('lyrics').match(lyrics).returnAll()
-  res.send(songs)
-})
+  let lyrics = req.params.lyrics;
+  let songs = await repository
+    .search()
+    .where('lyrics')
+    .match(lyrics)
+    .returnAll();
+  res.send(songs);
+});
 ```
 
 We can try this out too, getting all the songs that contain both the words "html" and "markdown":

@@ -6,20 +6,15 @@ slug: /create/cloudrun
 authors: [ajeet]
 ---
 
-
 ![alt_text](images/cloudrun_logo.png)
-
 
 If you’re looking for a solution that lets you go from container to URL within seconds, check out Google Cloud Run. [Cloud Run](https://cloud.google.com/run) is Google’s fully managed compute platform for running stateless, HTTP-driven containers. By using a single command (“[gcloud run deploy”](https://cloud.google.com/sdk/gcloud/reference/run/deploy)) you can convert a container image to a fully managed web application and run it in a production environment with auto-scalability, high availability, and security.
 
 [Google Cloud Run](https://cloud.google.com/run/docs) allows you to deploy and scale serverless HTTP containers without worrying about provisioning servers, scaling servers up and down to meet demands, or overpaying by consuming more resources than necessary. It makes container deployment much easier. It is good for developing software in cloud applications, hence delivering web apps, [APIs](https://cloud.google.com/run/docs/reference/rest), background jobs, etc.
 
-Cloud Run is [powered and built on Knative](https://cloud.google.com/knative). Knative is an open source community project which adds components for deploying, running, and managing serverless, cloud-native applications to Kubernetes. It allows you to easily run your containers either in your [https://cloud.google.com/kubernetes-engine](https://cloud.google.com/kubernetes-engine/) (GKE) cluster with Cloud Run on GKE or fully managed with Cloud Run. Cloud Run helps developers focus on writing high-value code, regardless of where their organizations are on the path to the cloud. 
-
+Cloud Run is [powered and built on Knative](https://cloud.google.com/knative). Knative is an open source community project which adds components for deploying, running, and managing serverless, cloud-native applications to Kubernetes. It allows you to easily run your containers either in your [https://cloud.google.com/kubernetes-engine](https://cloud.google.com/kubernetes-engine/) (GKE) cluster with Cloud Run on GKE or fully managed with Cloud Run. Cloud Run helps developers focus on writing high-value code, regardless of where their organizations are on the path to the cloud.
 
 ### Compelling features of Google Cloud Run
-
-
 
 - Cloud Run provides you with the option to write your code in your preferred programming languages such as [NodeJS](https://github.com/GoogleCloudPlatform/nodejs-docs-samples/blob/master/run/helloworld/), [Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/run/), [Go](https://github.com/GoogleCloudPlatform/golang-samples/tree/master/run/), and [Java](https://github.com/GoogleCloudPlatform/java-docs-samples/tree/master/run/).
 - Cloud Run provides you a better ROI as you get charged only for the resources used.
@@ -31,17 +26,14 @@ In this tutorial, you will learn how to deploy a simple Redis rate limiting appl
 
 ### Table of Contents
 
-
-
-
-* Step 1. Set up a free Redis Enterprise Cloud account
-* Step 2. Install Google Cloud CLI
-* Step 3. Authenticate your GCP account
-* Step 4. Enable Google Services
-* Step 5. Deploy to Google Cloud Run from source
-* Step 6. Verify if service is listed
-* Step 7. Set up environment variables
-* Step 8. Access your app
+- Step 1. Set up a free Redis Enterprise Cloud account
+- Step 2. Install Google Cloud CLI
+- Step 3. Authenticate your GCP account
+- Step 4. Enable Google Services
+- Step 5. Deploy to Google Cloud Run from source
+- Step 6. Verify if service is listed
+- Step 7. Set up environment variables
+- Step 8. Access your app
 
 ### Step 1. Set up a free Redis Enterprise Cloud account
 
@@ -54,42 +46,30 @@ For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise
 
 :::
 
-
-
 ### Step 2. Install Google Cloud CLI
 
 Run the following command to install Google Cloud CLI Core Libraries and dependencies:
-
 
 ```
 brew install --cask google-cloud-sdk
 
 ```
 
-
 ### Step 3. Authenticate your GCP account
 
-To deploy your app you must first download, install, and initialize the [gcloud CLI](https://cloud.google.com/sdk/docs). 
+To deploy your app you must first download, install, and initialize the [gcloud CLI](https://cloud.google.com/sdk/docs).
 
 Download and install gcloud SDK via [https://cloud.google.com/sdk/docs](https://cloud.google.com/sdk/docs)
-
 
 ```
 gcloud auth login
 ```
 
-
 Allow Google Cloud SDK access to your Google Account:
-
-
-
-
 
 ![Authenticating with Google Cloud](images/authenticate_gcloud.png)
 
-
 ### Step 4. Enable Google Services
-
 
 ```
 gcloud services enable \
@@ -101,11 +81,9 @@ Operation "operations/acat.p2-406459833831-88327c08-1fe9-4d9a-a6b9-db8c8b007863"
 
 ```
 
-
 ### Step 5 . Deploy to Google Cloud Run from source
 
 Deploying from source automatically builds a container image from source code and deploys it.
-
 
 ```
 gcloud run deploy
@@ -185,22 +163,13 @@ Service URL: https://django-redis-rate-limiting-example-opcboau66a-de.a.run.app
 
 ```
 
-
-
 ### Step 6. Verify if the service is listed under Cloud Run dashboard
-
-
-
 
 ![Verifying if the service is listed](images/gcloud1.png)
 
-
-
 ![Verifying if the service is listed](images/gcloud2.png)
 
-
 #### Verifying the service via terminal UI
-
 
 ```
 $ gcloud run services describe django-redis-rate-limiting-example
@@ -225,65 +194,37 @@ Last updated on 2022-02-19T02:50:03.100357Z by ajeet.raina@redis.com:
 
 ```
 
-
-### Step 7. Set up environment variables 
-
-
+### Step 7. Set up environment variables
 
 - Adding Redis URL to point to Redis Enterprise Cloud
 
-
-
-
 ![Setting up environment variables](images/gcloud3.png)
-
-
-
 
 - Enable HTTPS
 
-
-
-
 ![Enabling HTTPS](images/gcloud4.png)
 
-
-
--  Ensuring the VPC connector shows as “none”
-
-
+- Ensuring the VPC connector shows as “none”
 
 ![Configuring the VPC connector](images/gcloud5.png)
 
-
-
 - Allowing all traffic
-
-
 
 ![Allowing all traffic](images/gcloud6.png)
 
-
 ### Step 8. Access your app
-
 
 Wait for the build and deploy to complete. When finished, a message with unique URL will be displayed.
 Please note that the URL shown in your case will be different from the one shown below:
 
 Open [https://django-redis-rate-limiting-example-opcboau66a-de.a.run.app/](https://django-redis-rate-limiting-example-opcboau66a-de.a.run.app/) and access your app.
 
-
-
 ![Running the application](images/ratelimit.png)
-
 
 This app allows you to choose the desired number of requests in each 10 second period. The app blocks connections from a client after surpassing a certain amount of requests (default: 10) in the time window (default: 10 sec). That will let the user know how many requests they have remaining before they run over the limit. On the tenth run, the server should return an HTTP status code of 429 (“Too Many Requests”).
 
 ### Additional references:
 
-
-
 - [Google Cloud Run](https://cloud.google.com/run)
 - [Features of Google Run](https://cloud.google.com/run#section-13)
 - [Create Redis Database using Google Cloud](https://developer.redis.com/create/gcp)
-

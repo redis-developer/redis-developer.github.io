@@ -1,18 +1,16 @@
 ---
 id: index-rust
 title: Rust and Redis
-sidebar_label: Rust 
+sidebar_label: Rust
 slug: /develop/rust/
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-
 Find tutorials, examples and technical articles that will help you to develop with Redis and Rust.
-
 
 ### Getting Started
 
@@ -21,7 +19,6 @@ The web page “Redis Enterprise and Rust” will help you to get started with R
 redis-rs is a rust implementation of a Redis client library.
 It exposes a general purpose interface to Redis and also provides specific helpers for commonly used functionality.
 
-
 <Tabs
   defaultValue="redis-rs"
   values={[
@@ -29,54 +26,48 @@ It exposes a general purpose interface to Redis and also provides specific helpe
   ]}>
   <TabItem value="redis-rs">
 
-
 ### Step 1. Install Rust
 
-   ```bash
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-   ```
+```bash
+ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
 ### Step 2. Configure your current shell:
- 
-  ```bash
-   source $HOME/.cargo/env
-  ```
+
+```bash
+ source $HOME/.cargo/env
+```
 
 ### Step 3. Verify Rust compiler:
- 
-  ```bash
-   rustc --version
-   rustc 1.49.0
-  ```
+
+```bash
+ rustc --version
+ rustc 1.49.0
+```
 
 ### Step 4. Creating Cargo.toml with Redis dependency:
- 
-  ```bash
-   [dependencies]
-   redis = "0.8.0"
-  ```
 
+```bash
+ [dependencies]
+ redis = "0.8.0"
+```
 
 ### Step 5. Clone the repository
 
-  ```bash
-   git clone https://github.com/redis-developer/redis-rust-getting-started
-  ```
+```bash
+ git clone https://github.com/redis-developer/redis-rust-getting-started
+```
 
- 
 ### Step 6. Run the application
-   
-  ```bash
-   cargo run
-  ```
+
+```bash
+ cargo run
+```
 
 ### Further References
 
 - [Redis Enterprise and Rust](https://redis.com/lp/redis-enterprise-rust/)
 - [Getting Started with Redis & Rust](https://github.com/redis-developer/redis-rust-getting-started)
 
-
-
-  </TabItem>
+</TabItem>
 </Tabs>
-  

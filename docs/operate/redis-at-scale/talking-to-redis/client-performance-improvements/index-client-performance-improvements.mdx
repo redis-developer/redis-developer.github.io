@@ -9,25 +9,39 @@ custom_edit_url: null
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Connection management - Pooling
+
 As we showed in the previous section, Redis clients are responsible for managing connections to the Redis server. Creating and recreating new connections over and over again, creates a lot of unnecessary load on the server. A good client library will offer some way of optimizing connection management, by setting up a connection pool, for example.
 With connection pooling, the client library will instantiate a series of (persistent) connections to the Redis server and keep them open. When the application needs to send a request, the current thread will get one of these connections from the pool, use it, and return it when done.
-<br/>
-<img src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/1.5/image1.png" alt="Connection Pool diagram" />
-<br/>
-So if possible, always try to choose a client library that supports pooling connections, because that decision alone can have a huge influence on your system’s performance.
+
+<br />
+<img
+  src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/1.5/image1.png"
+  alt="Connection Pool diagram"
+/>
+<br />
+So if possible, always try to choose a client library that supports pooling connections,
+because that decision alone can have a huge influence on your system’s performance.
 
 ## Pipelining
+
 As in any client-server application, Redis can handle many clients simultaneously.
 Each client does a (typically blocking) read on a socket and waits for the server response. The server reads the request from the socket, parses it, processes it, and writes the response to the socket. The time the data packets take to travel from the client to the server, and then back again, is called network round trip time, or <strong>RTT</strong>.
 If, for example, you needed to execute 50 commands, you would have to send a request and wait for the response 50 times, paying the <strong>RTT</strong> cost every single time. To tackle this problem, Redis can process new requests even if the client hasn't already read the old responses. This way, you can send multiple commands to the server without waiting for the replies at all; the replies are read in the end, in a single step.
 
-<br/>
-<img height="75%" width="75%" src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/1.5/image2.png" alt="Pipelining diagram" />
-<br/>
-This technique is called pipelining and is another good way to improve the performance of your system. Most Redis libraries support this technique out of the box.
+<br />
+<img
+  height="75%"
+  width="75%"
+  src="https://s3.us-east-2.amazonaws.com/assets-university.redislabs.com/ru301/1.5/image2.png"
+  alt="Pipelining diagram"
+/>
+<br />
+This technique is called pipelining and is another good way to improve the performance
+of your system. Most Redis libraries support this technique out of the box.
 <hr />
 
 Supplemental Reading:
+
 - [Redis Pipelining](https://redis.io/topics/pipelining)
 - [Redis Client Handling](https://redis.io/topics/clients)
 - [Connection Pools for Serverless Functions and Backend Services](https://redislabs.com/blog/connection-pools-for-serverless-functions-and-backend-services/)

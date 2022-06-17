@@ -109,6 +109,6 @@ matches = await graph.QueryAsync("pets", "MATCH(a:human),(p:pet) where (a)-[:OWN
 
 ## Resources
 
-* Code for this demo is available in [GitHub](https://github.com/redis-developer/redis-graph-dotnet-basic-app)
-* To learn more about RedisGraph, check out the [docs site](https://oss.redis.com/redisgraph/)
-* To learn more about The Cypher Query Language, check out [opencypher.org](http://opencypher.org/)
+- Code for this demo is available in [GitHub](https://github.com/redis-developer/redis-graph-dotnet-basic-app)
+- To learn more about RedisGraph, check out the [docs site](https://oss.redis.com/redisgraph/)
+- To learn more about The Cypher Query Language, check out [opencypher.org](http://opencypher.org/)

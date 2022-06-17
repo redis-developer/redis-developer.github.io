@@ -19,33 +19,33 @@ Redis Stack is an extension of Redis that adds modern data models and processing
 
 In addition to all of the features of OSS Redis, Redis Stack supports:
 
--   Queryable JSON documents
--   Full-text search
--   Time series data (ingestion & querying)
--   Graph data models with the Cypher query language
--   Probabilistic data structures
+- Queryable JSON documents
+- Full-text search
+- Time series data (ingestion & querying)
+- Graph data models with the Cypher query language
+- Probabilistic data structures
 
 ### Redis Stack License
 
 Redis Stack is made up of several components, licensed as follows:
 
--   Redis Stack Server combines open source Redis with RediSearch, RedisJSON RedisGraph, RedisTimeSeries and RedisBloom is licensed under the [Redis Source Available License](https://github.com/RediSearch/RediSearch/blob/master/LICENSE) (RSAL).
--   RedisInsight is licensed under the [Server Side Public License](https://en.wikipedia.org/wiki/Server_Side_Public_License) (SSPL).
+- Redis Stack Server combines open source Redis with RediSearch, RedisJSON RedisGraph, RedisTimeSeries and RedisBloom is licensed under the [Redis Source Available License](https://github.com/RediSearch/RediSearch/blob/master/LICENSE) (RSAL).
+- RedisInsight is licensed under the [Server Side Public License](https://en.wikipedia.org/wiki/Server_Side_Public_License) (SSPL).
 
 ### Which client libraries support Redis Stack?
 
 The following core client libraries support Redis Stack:
 
--   [Jedis](https://github.com/redis/jedis) >= 4.0
--   [node-redis](https://github.com/redis/node-redis) >= 4.0
--   [redis-py](https://github.com/redis/redis-py/) >= 4.0
+- [Jedis](https://github.com/redis/jedis) >= 4.0
+- [node-redis](https://github.com/redis/node-redis) >= 4.0
+- [redis-py](https://github.com/redis/redis-py/) >= 4.0
 
 The Redis OM client libraries let you use the document modeling, indexing, and querying capabilities of Redis Stack much like the way you’d use an ORM. The following Redis OM libraries support Redis Stack:
 
--   [Redis OM .NET](https://github.com/redis/redis-om-dotnet)
--   [Redis OM Node](https://github.com/redis/redis-om-node)
--   [Redis OM Python](https://github.com/redis/redis-om-python)
--   [Redis OM Spring](https://github.com/redis/redis-om-spring)
+- [Redis OM .NET](https://github.com/redis/redis-om-dotnet)
+- [Redis OM Node](https://github.com/redis/redis-om-node)
+- [Redis OM Python](https://github.com/redis/redis-om-python)
+- [Redis OM Spring](https://github.com/redis/redis-om-spring)
 
 ### Getting Started
 
@@ -268,9 +268,9 @@ RedisTimeSeries supports downsampling with the following aggregations: avg, sum,
 
 You can run Redis Stack using a Docker container. There are two types of Docker images available in Docker Hub.
 
--   The `redis/redis-stack` Docker image contains both Redis Stack server and RedisInsight. This container is recommended for local development because you can use RedisInsight to visualize your data.
+- The `redis/redis-stack` Docker image contains both Redis Stack server and RedisInsight. This container is recommended for local development because you can use RedisInsight to visualize your data.
 
--   The `redis/redis-stack-server` provides Redis Stack but excludes RedisInsight. This container is best for production deployment.
+- The `redis/redis-stack-server` provides Redis Stack but excludes RedisInsight. This container is best for production deployment.
 
 ### Getting started
 
@@ -311,12 +311,12 @@ By default, the Redis Stack Docker containers use internal configuration files f
 
 To pass in arbitrary configuration changes, you can set any of these environment variables:
 
--   `REDIS_ARGS`: extra arguments for Redis
--   `REDISEARCH_ARGS`: arguments for RediSearch
--   `REDISJSON_ARGS`: arguments for RedisJSON
--   `REDISGRAPH_ARGS`: arguments for RedisGraph
--   `REDISTIMESERIES_ARGS`: arguments for RedisTimeSeries
--   `REDISBLOOM_ARGS`: arguments for RedisBloom
+- `REDIS_ARGS`: extra arguments for Redis
+- `REDISEARCH_ARGS`: arguments for RediSearch
+- `REDISJSON_ARGS`: arguments for RedisJSON
+- `REDISGRAPH_ARGS`: arguments for RedisGraph
+- `REDISTIMESERIES_ARGS`: arguments for RedisTimeSeries
+- `REDISBLOOM_ARGS`: arguments for RedisBloom
 
 For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
 

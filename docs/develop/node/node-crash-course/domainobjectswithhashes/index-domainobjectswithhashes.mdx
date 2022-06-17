@@ -11,23 +11,26 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 In this module, you'll see how we're using Redis Hashes to model the user and location data in our application.
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/xASSiToabSM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/xASSiToabSM"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 ## Coding Exercise
 
 In your first coding exercise, you'll be adding a new route that takes a user's ID and returns their full name.
 
-Using your IDE, open the `node-js-crash-course` folder that you cloned the GitHub repository into.  Open the file `src/routes/user_routes.js` and find the route `/user/:userId/fullname` which looks like this:
+Using your IDE, open the `node-js-crash-course` folder that you cloned the GitHub repository into. Open the file `src/routes/user_routes.js` and find the route `/user/:userId/fullname` which looks like this:
 
 ```javascript
 // EXERCISE: Get user's full name.
 router.get(
   '/user/:userId/fullname',
-  [
-    param('userId').isInt({ min: 1 }),
-    apiErrorReporter,
-  ],
+  [param('userId').isInt({ min: 1 }), apiErrorReporter],
   async (req, res) => {
     const { userId } = req.params;
     /* eslint-disable no-unused-vars */
@@ -45,7 +48,7 @@ router.get(
 );
 ```
 
-In this exercise, you'll modify the code to return the user's full name by retrieving the firstName and lastName fields for the requested user from Redis.  
+In this exercise, you'll modify the code to return the user's full name by retrieving the firstName and lastName fields for the requested user from Redis.
 
 First, make sure your server is still running, if not start it with:
 
@@ -63,7 +66,7 @@ You should see:
 }
 ```
 
-Take a look at the [documentation for the Redis HMGET command](https://redis.io/commands/hmget), which retrieves multiple named fields from a Redis Hash.  You'll need to add code that calls the Redis client's `hmget` function, then place the values returned into the `firstName` and `lastName` variables.  You should be able to retrieve both values using a single call to `hmget`.  For guidance on how to invoke Redis commands, check out the code for the `/user/:userId` route which calls the `HGETALL` command.
+Take a look at the [documentation for the Redis HMGET command](https://redis.io/commands/hmget), which retrieves multiple named fields from a Redis Hash. You'll need to add code that calls the Redis client's `hmget` function, then place the values returned into the `firstName` and `lastName` variables. You should be able to retrieve both values using a single call to `hmget`. For guidance on how to invoke Redis commands, check out the code for the `/user/:userId` route which calls the `HGETALL` command.
 
 nodemon will restart the server automatically for you each time you save your changes.
 
@@ -82,7 +85,13 @@ If you need help from our team, [join us in Discord](https://discord.gg/redis).
 In this video, Justin explains what Redis Hashes are and shows how common Redis Hash commands work:
 
 <div class="text--center">
-<iframe width="896" height="509" src="https://www.youtube.com/embed/-agsJUihrWw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="896"
+    height="509"
+    src="https://www.youtube.com/embed/-agsJUihrWw"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
 You can find documentation for all of the [Redis Hash commands on redis.io](https://redis.io/commands#hash).

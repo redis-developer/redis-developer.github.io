@@ -8,8 +8,6 @@ authors: [ajeet]
 
 RedisGraph is a Redis module that enables enterprises to process any kind of connected data much faster than with traditional relational or existing graph databases. RedisGraph implements a unique data storage and processing solution (with sparse-adjacency matrices and GraphBLAS) to deliver the fastest and most efficient way to store, manage, and process connected data in graphs. With RedisGraph, you can process complex transactions 10 - 600 times faster than with traditional graph solutions while using 50 - 60% less memory resources than other graph databases!
 
-
-
 ### Step 1. Create a free Cloud account
 
 Create your free <a href="https://redis.com/try-free/" target="_blank" rel="noopener">Redis Enterprise Cloud account</a>. Once you click on “Get Started”, you will receive an email with a link to activate your account and complete your signup process.
@@ -32,27 +30,22 @@ click "Create a custom database" option shown in the image.
 
 ![create database ](images/select_cloud_vendor.png)
 
-
 ### Step 3. Verify the database details
 
 You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
-
-
 
 ![verify database](images/details_database.png)
 
 ### Step 4. Install RedisInsight
 
-
 RedisInsight is a visual tool that lets you do both GUI- and CLI-based interactions with your Redis database, and so much more when developing your Redis based application. It is a fully-featured pure Desktop GUI client that provides capabilities to design, develop and optimize your Redis application. It works with any cloud provider as long as you run it on a host with network access to your cloud-based Redis server. It makes it easy to discover cloud databases and configure connection details with a single click. It allows you to automatically add Redis Enterprise Software and Redis Enterprise Cloud databases.
 
 You can install Redis Stack on your local system to get RedisInsight GUI tool up and running. Ensure that you have `brew` package installed in your Mac system.
 
-
- ```bash
-  brew tap redis-stack/redis-stack
-  brew install --cask redis-stack
- ```
+```bash
+ brew tap redis-stack/redis-stack
+ brew install --cask redis-stack
+```
 
 ```
   ==> Installing Cask redis-stack-redisinsight
@@ -60,7 +53,7 @@ You can install Redis Stack on your local system to get RedisInsight GUI tool up
   🍺  redis-stack-redisinsight was successfully installed!
   ==> Installing Cask redis-stack
   🍺  redis-stack was successfully installed!
- ```
+```
 
 Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI tool.
 
@@ -72,16 +65,11 @@ Go to Applications and click "RedisInsight-v2" to bring up the Redis Desktop GUI
 
 Add the Redis Enterprise cloud database endpoint, port and password.
 
-
 ![access redisinsight](images/database_creds.png)
-
 
 ### Step 7. Verify the database under RedisInsight dashboard
 
-
 ![database details](images/database_details.png)
-
-
 
 ### Step 8. Getting Started with RedisGraph
 
@@ -103,6 +91,7 @@ To interact with RedisGraph you will typically use the GRAPH.QUERY command and e
    3) "Properties set: 6"
    4) "Query internal execution time: 0.675400 milliseconds"
 ```
+
 This single query creates three actors, along with their names and unique IDs.
 
 #### Insert a movie
@@ -140,7 +129,7 @@ The core of a graph is the relationships between the nodes, allowing the applica
    3) "Query internal execution time: 0.664800 milliseconds"
 ```
 
-This command created a new relation indicating that the actor Mark Hamill acted in Star Wars: Episode V  as Luke Skywalker.
+This command created a new relation indicating that the actor Mark Hamill acted in Star Wars: Episode V as Luke Skywalker.
 
 Let’s repeat this process for the other actors:
 
@@ -160,8 +149,7 @@ You can also do all of this in a single query, for example:
    4) "Query internal execution time: 0.848500 milliseconds"
 ```
 
-
-####  Querying the graph
+#### Querying the graph
 
 Now that you have data in your graph, you’re ready to ask some questions, such as:
 
@@ -176,8 +164,7 @@ Now that you have data in your graph, you’re ready to ask some questions, such
 3) 1) "Query internal execution time: 0.349400 milliseconds"
 ```
 
-
-#### “What is the information for the movie with the ID of  1?”
+#### “What is the information for the movie with the ID of 1?”
 
 ```
 > GRAPH.QUERY graph:movies "MATCH (m:Movie) WHERE m.movie_id = 1 RETURN m"
@@ -232,11 +219,17 @@ Click on the Execute button, and double click on the actors to follow the relati
 ### Resources
 
 <div class="text--center">
-<iframe width="760" height="415" src="https://www.youtube.com/embed/NLRbq2FtcIk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/NLRbq2FtcIk"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 </div>
 
-
-### Next Step 
+### Next Step
 
 - [Building Movies database app using RedisGraph and NodeJS](/howtos/redisgraphmovies/)
 - Learn more about RedisGraph in the [Quickstart](https://oss.redis.com/redisgraph/3) tutorial.
@@ -245,6 +238,17 @@ Click on the Execute button, and double click on the actors to follow the relati
 ##
 
 <div>
-<a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    {' '}
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
 </div>
-

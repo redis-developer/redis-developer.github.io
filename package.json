@@ -12,6 +12,7 @@
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
+    "format:mdx": "prettier --loglevel warn --write \"docs/**/*.{md,mdx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json --fix",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json",
     "clear": "docusaurus clear",

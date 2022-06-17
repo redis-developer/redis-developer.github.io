@@ -11,13 +11,9 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-
-
-
 ![alt_text](images/profiler_1.png)
 
-
-Last week [the maintenance release of RedisInsight Preview 2.0](https://docs.redis.com/latest/ri/release-notes/v2.0.2/) (v2.0.4) was introduced by the RedisInsight Team. RedisInsight v2.0 is a complete product rewrite based on a new tech stack composed of [Electron](https://www.electronjs.org/), [Elastic UI](https://elastic.github.io/eui/#/), [Monaco Editor](https://microsoft.github.io/monaco-editor/), and [Node](https://nodejs.org/).js. This newer preview build added a dedicated RedisInsight Profiler UI for the first time. The profiler uses the MONITOR command to analyze every command sent to the Redis instance in real time. 
+Last week [the maintenance release of RedisInsight Preview 2.0](https://docs.redis.com/latest/ri/release-notes/v2.0.2/) (v2.0.4) was introduced by the RedisInsight Team. RedisInsight v2.0 is a complete product rewrite based on a new tech stack composed of [Electron](https://www.electronjs.org/), [Elastic UI](https://elastic.github.io/eui/#/), [Monaco Editor](https://microsoft.github.io/monaco-editor/), and [Node](https://nodejs.org/).js. This newer preview build added a dedicated RedisInsight Profiler UI for the first time. The profiler uses the MONITOR command to analyze every command sent to the Redis instance in real time.
 
 RedisInsight Profiler analyzes your Redis commands that are being run on the Redis server in real time. The tool provides you detailed information about the number of commands processed, commands/second, and number of connected clients. It also gives information about top prefixes, top keys, and top commands.
 
@@ -25,84 +21,47 @@ It basically runs the Redis MONITOR command and generates a summarized view. MON
 
 Follow the below instructions to test drive RedisInsight Profiler tool introduced under the RedisInsight v2.0.4 release:
 
-
 ### Step 1. Create Redis database with RedisTimeSeries module enabled
-
-
-
 
 ![alt_text](images/profiler_2.png)
 
-
 Visit [https://developer.redis.com/create/rediscloud](https://developer.redis.com/create/rediscloud) and create a Redis database. [Follow these steps to enable RedisTimeSeries module ](https://developer.redis.com/howtos/redistimeseries)on Redis Enterprise Cloud.
-
 
 ### Step 2. Create database
 
-Click “Create Database”.  Enter database name and select RedisTimeSeries Module.
-
-
+Click “Create Database”. Enter database name and select RedisTimeSeries Module.
 
 ![alt_text](images/profiler_3.png)
 
-
 Once the database is created, you will see the endpoint URL that gets generated. Save it for future reference.
-
-
-
-
 
 ![alt_text](images/profiler_4.png)
 
-
-
 ### Step 3. Download RedisInsight
 
-To install RedisInsight on your local system, you need to first download the software from the Redis website.**
+To install RedisInsight on your local system, you need to first download the software from the Redis website.\*\*
 
-[Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form)to access a form that allows you to select the operating system of your choice.**
-
-
-
-
+[Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form)to access a form that allows you to select the operating system of your choice.\*\*
 
 ![alt_text](images/profiler_5.png)
 
-
-Execute the installer. Once it is installed on your computer, click on the RedisInsight icon to open the tool. 
-
-
-
-
+Execute the installer. Once it is installed on your computer, click on the RedisInsight icon to open the tool.
 
 ![alt_text](images/profiler_6.png)
 
-
 ### Step 4. Connect to Redis Enterprise Cloud Database
-
-
 
 ![alt_text](images/profiler_7.png)
 
-
-
-
-
 ![alt_text](images/profiler_8.png)
-
 
 As the database is empty, you won’t be able to see any key.
 
-
-
-
 ![alt_text](images/profiler_9.png)
-
 
 ### Step 5. Execute the script
 
 Below is the script that creates a time series representing sensor temperature measurements. After you create the time series, you can send temperature measurements. Then you can query the data for a time range on some aggregation rule.
-
 
 ```
 from redistimeseries.client import Client as RedisTimeSeries
@@ -180,7 +139,7 @@ def print_loop(loops):
 create(key)
 interval = 10
 begin_time, end_time = store(key,interval)
-time.sleep(1) 
+time.sleep(1)
 query(key,begin_time,end_time)
 query(key,begin_time+4,end_time-5)
 print_info()
@@ -206,9 +165,7 @@ print('')
 
 ```
 
-
 Results:
-
 
 ```
 Create new time series: temperature
@@ -216,78 +173,61 @@ Create new time series: temperature
 
  Append new value to time series:
 
- 2022-02-13 17:52:16 : 36.50 
- 2022-02-13 17:52:17 : 84.56 
- 2022-02-13 17:52:18 : 25.90 
- 2022-02-13 17:52:19 : 29.24 
- 2022-02-13 17:52:20 : 35.75 
- 2022-02-13 17:52:21 : 78.14 
- 2022-02-13 17:52:22 : 28.77 
- 2022-02-13 17:52:23 : 26.37 
- 2022-02-13 17:52:24 : 74.93 
- 2022-02-13 17:52:25 : 46.61 
+ 2022-02-13 17:52:16 : 36.50
+ 2022-02-13 17:52:17 : 84.56
+ 2022-02-13 17:52:18 : 25.90
+ 2022-02-13 17:52:19 : 29.24
+ 2022-02-13 17:52:20 : 35.75
+ 2022-02-13 17:52:21 : 78.14
+ 2022-02-13 17:52:22 : 28.77
+ 2022-02-13 17:52:23 : 26.37
+ 2022-02-13 17:52:24 : 74.93
+ 2022-02-13 17:52:25 : 46.61
 
  Query time series in range:
 
- 2022-02-13 17:52:16 to 2022-02-13 17:52:25 
+ 2022-02-13 17:52:16 to 2022-02-13 17:52:25
 
- 2022-02-13 17:52:16 : 36.50 
- 2022-02-13 17:52:17 : 84.56 
- 2022-02-13 17:52:18 : 25.90 
- 2022-02-13 17:52:19 : 29.24 
- 2022-02-13 17:52:20 : 35.75 
- 2022-02-13 17:52:21 : 78.14 
- 2022-02-13 17:52:22 : 28.77 
- 2022-02-13 17:52:23 : 26.37 
- 2022-02-13 17:52:24 : 74.93 
- 2022-02-13 17:52:25 : 46.61 
+ 2022-02-13 17:52:16 : 36.50
+ 2022-02-13 17:52:17 : 84.56
+ 2022-02-13 17:52:18 : 25.90
+ 2022-02-13 17:52:19 : 29.24
+ 2022-02-13 17:52:20 : 35.75
+ 2022-02-13 17:52:21 : 78.14
+ 2022-02-13 17:52:22 : 28.77
+ 2022-02-13 17:52:23 : 26.37
+ 2022-02-13 17:52:24 : 74.93
+ 2022-02-13 17:52:25 : 46.61
 
 
  Query time series in range:
 
- 2022-02-13 17:52:20 to 2022-02-13 17:52:20 
+ 2022-02-13 17:52:20 to 2022-02-13 17:52:20
 
- 2022-02-13 17:52:20 : 35.75 
+ 2022-02-13 17:52:20 : 35.75
 
 
 ```
 
+### Step 6. Running Profiler
 
-### Step 6. Running Profiler 
+The new RedisInsight Browser tool allows you to explore keys in your Redis server. You can add, edit, and delete a key. It also helps you to browse, filter, and visualize key-value Redis data structures.
 
-The new RedisInsight Browser tool allows you to explore keys in your Redis server. You can add, edit, and delete a key. It also helps you to browse, filter, and visualize key-value Redis data structures. 
-
-Open Browser tool and select TS from the drop-down menu as shown below: 
-
-
+Open Browser tool and select TS from the drop-down menu as shown below:
 
 ![alt_text](images/profiler_10.png)
 
-
 It will display temperature as a key. Choose the “Profiler” option and click on “Start Profiler.”
-
- 
-
-
-
 
 ![alt_text](images/profiler_11.png)
 
-
 Soon you will be able to see the detailed information about the number of commands processed, commands/second, and number of connected clients. It also gives information about top prefixes, top keys, and top commands.
-
-
-
-
 
 ![alt_text](images/profiler_12.png)
 
-
 ### References:
 
-
-
-* [RedisInsight: The Best Redis GUI](https://redis.com/redis-enterprise/redis-insight/)
-* [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
-* [Explore Redis keys using RedisInsight browser tool](/explore/redisinsight/browser)
-* [Memory Analysis using RedisInsight](/explore/redisinsight/memoryanalyzer)
+- [RedisInsight: The Best Redis GUI](https://redis.com/redis-enterprise/redis-insight/)
+- [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
+- [Explore Redis keys using RedisInsight browser tool](/explore/redisinsight/browser)
+- [Memory Analysis using RedisInsight](/explore/redisinsight/memoryanalyzer)

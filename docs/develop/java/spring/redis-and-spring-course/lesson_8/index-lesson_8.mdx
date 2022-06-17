@@ -1,6 +1,6 @@
 ---
 id: index-lesson_8
-title: "Recommendations with RedisGraph"
+title: 'Recommendations with RedisGraph'
 sidebar_label: Recommendations w/ RedisGraph
 slug: /develop/java/redis-and-spring-course/lesson_8
 ---
@@ -10,14 +10,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 Author: [Brian Sam-Bodden](https://twitter.com/bsbodden)
 
 ### Objectives
+
 Build a simple but powerful graph-based recommendation engine in the Redi2Read application.
 
 ### Agenda
+
 In this lesson, students will learn:
-* How to use RedisGraph in a Spring Boot application to construct a Graph from model data using the JRedisGraph client library.
-* How to query data using the Cypher query language.
-If you get stuck:
-* The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-8
+
+- How to use RedisGraph in a Spring Boot application to construct a Graph from model data using the JRedisGraph client library.
+- How to query data using the Cypher query language.
+  If you get stuck:
+- The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-8
 
 ### Graphs
 
@@ -29,10 +32,11 @@ Relationships connect nodes. They represent an association between nodes that ar
 
 Redis Graph is a low-latency graph database based on the property graph model built as a Redis module.
 Like all graphs, a property graph has nodes and relationships. However, it adds extra expressiveness by providing:
-* Nodes: Graph data entities
-* Relationships: Connect nodes (has direction and a type)
-* Properties: Stores data in key-value pairs in nodes and relationships
-* Labels: Groups nodes and relationships (optional)
+
+- Nodes: Graph data entities
+- Relationships: Connect nodes (has direction and a type)
+- Properties: Stores data in key-value pairs in nodes and relationships
+- Labels: Groups nodes and relationships (optional)
 
 Redis Graph meets the two most essential requirements of a graph database:
 Native Graph Storage: Uses a Redis-native optimized graph data structure (sparse adjacency matrices).
@@ -41,6 +45,7 @@ It supports a large subset of the Cypher Query Language, an open standard suppor
 The Cypher Query Language is a SQL-inspired pattern-matching language with an easy to grasp visual aspect due to its use of ASCII-Art to easily visual graph relationships in text. The specification is becoming an industry standard among graph database vendors (see openCypher).
 
 ### Nodes
+
 Nodes are enclosed by parenthesis. For example:
 `()`
 
@@ -100,7 +105,9 @@ Notice that the Redis Graph Cypher command starts with:
 ```bash
 GRAPH.QUERY key-of-the-graph cypher-query
 ```
+
 First, let’s see what are the unique labels (classes) in the graph:
+
 ```bash
 127.0.0.1:6379> GRAPH.QUERY "imdb-grf" "match (n) return distinct labels(n)"
 1) 1) "labels(n)"
@@ -133,6 +140,7 @@ GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pr'}), (m:Movie {nick: 'cacw'}) CRE
 GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'pr'}), (s:Show {nick: 'tsnd'}) CREATE (a)-[:ACTS]->(s)"
 GRAPH.QUERY imdb-grf "MATCH (a:Actor {nick: 'ka'}), (s:Show {nick: 'tsnd'}) CREATE (a)-[:ACTS]->(s)"
 ```
+
 What are the relationships in our graph?
 
 ```bash
@@ -140,6 +148,7 @@ What are the relationships in our graph?
 1) 1) "type(e)"
 2) 1) 1) "ACTS"
 ```
+
 Count the labels in the graph:
 
 ```bash
@@ -204,11 +213,13 @@ In your Maven pom.xml, add the following dependency:
 ```
 
 #### CommandLineRunner
+
 To create our graph we’ll use the now familiar CommandLineRunner recipe. We will keep the name of the created graph in the applications property field as shown:
 
 ```bash
 app.graphId=redi2read-grf
 ```
+
 Next, create the src/main/java/com/redislabs/edu/redi2read/boot/CreateGraph.java file and add the contents as follows:
 
 ```java
@@ -321,18 +332,18 @@ public class CreateGraph implements CommandLineRunner {
 ```
 
 Let’s break down the graph creation:
-* We inject the needed repositories for users, books, book rating and categories
-* We check if the key for the graph does not exist to prevent recreating the graph on restarts
-* We create 4 single property indexes for the Book id, Category id, Author name and User id. RedisGraph supports indexes for node labels. Indexes are automatically used by queries that reference any indexed properties.
-  * For each book category we create a node
-  * For each book we create a node
-  * For each author we create a node
-  * For each book author we created a AUTHORED relationship between the author and the book
-  * For each book we created an IN relationship with the category
-  * For each user we create a node
-  * For each book owned by a user we create a PURCHASED relationship
-  * For each book rating we create a RATED relationship between the user and the book
 
+- We inject the needed repositories for users, books, book rating and categories
+- We check if the key for the graph does not exist to prevent recreating the graph on restarts
+- We create 4 single property indexes for the Book id, Category id, Author name and User id. RedisGraph supports indexes for node labels. Indexes are automatically used by queries that reference any indexed properties.
+  - For each book category we create a node
+  - For each book we create a node
+  - For each author we create a node
+  - For each book author we created a AUTHORED relationship between the author and the book
+  - For each book we created an IN relationship with the category
+  - For each user we create a node
+  - For each book owned by a user we create a PURCHASED relationship
+  - For each book rating we create a RATED relationship between the user and the book
 
 ### Creating the Recommendations Service
 
@@ -377,12 +388,13 @@ ORDER BY frequency DESC
 ```
 
 Let’s break down the Cypher query:
-* The anchor for the query is the User’s id, in this case ‘8675309’
-* On the first MATCH we look for the given user purchases
-* On the second MATCH we find other users that have purchase a book the user has purchased and also collect the other users books
-* On WHERE clause we make sure that the user doesn’t already own any of the recommended books
-* ON the RETURN we make sure to remove duplicates and we count how often a book has been purchased
-* Finally on the ORDER BY, we return the most purchased books first
+
+- The anchor for the query is the User’s id, in this case ‘8675309’
+- On the first MATCH we look for the given user purchases
+- On the second MATCH we find other users that have purchase a book the user has purchased and also collect the other users books
+- On WHERE clause we make sure that the user doesn’t already own any of the recommended books
+- ON the RETURN we make sure to remove duplicates and we count how often a book has been purchased
+- Finally on the ORDER BY, we return the most purchased books first
 
 Running the query on RedisInsight we get graphical display in which we can navigate the relationships of the result set:
 
@@ -432,11 +444,11 @@ ORDER BY freq, avg(r.rating) DESC
 
 Let's break it down:
 
-* The first MATCH find users that have the bought the target book
-* The second MATCH finds other books purchased by those users
-* The third MATCH find the ratings if any for those books
-* The WITH clause groups the values gathered so far, counts number of purchases of the collected books and grab the metadata from the RATED notes
-* The RETURN line returns the collected books, with the number of purchases and their average star rating
+- The first MATCH find users that have the bought the target book
+- The second MATCH finds other books purchased by those users
+- The third MATCH find the ratings if any for those books
+- The WITH clause groups the values gathered so far, counts number of purchases of the collected books and grab the metadata from the RATED notes
+- The RETURN line returns the collected books, with the number of purchases and their average star rating
 
 To implement the above query in our service add the following method:
 
@@ -499,12 +511,15 @@ public class RecommendationController {
   }
 }
 ```
+
 You can invoke the recommendation service with a curl request like:
+
 ```bash
 curl --location --request GET 'http://localhost:8080/api/recommendations/user/55214615117483454'
 ```
+
 or:
+
 ```bash
 curl --location --request GET 'http://localhost:8080/api/recommendations/isbn/1789610222/pairings'
 ```
-

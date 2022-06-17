@@ -5,6 +5,7 @@ sidebar_label: C
 slug: /develop/C/
 authors: [ajeet]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -12,13 +13,10 @@ import RedisCard from '@site/src/theme/RedisCard';
 
 Find tutorials, examples and technical articles that will help you to develop with Redis and C.
 
-
 ## Getting Started
 
-In order to use Redis with C, you need a C Redis client. 
+In order to use Redis with C, you need a C Redis client.
 For your first steps with C and Redis, this article will show how to use the recommended library: [hiredis](https://github.com/redis/hiredis).
-
-
 
 <Tabs
   defaultValue="hiredis"
@@ -29,88 +27,76 @@ For your first steps with C and Redis, this article will show how to use the rec
 
 Hiredis is a minimalistic C client library for the Redis database.It is minimalistic because it just adds minimal support for the protocol, but at the same time it uses a high level printf-alike API in order to make it much higher level than otherwise suggested by its minimal code base and the lack of explicit bindings for every Redis command.
 
-
-
 ### Step 1. Install the pre-requisites
 
 Version 1.0.0 marks the first stable release of Hiredis.
 Follow the below steps to install the pre-requisite packages in order to compile the latest version of hiredis.
 
- ```bash
-  brew install gcc make
- ```
+```bash
+ brew install gcc make
+```
 
 Run the below command to run Redis server
 
- ```bash
-  redis-server 
- ```
+```bash
+ redis-server
+```
 
+### Step 2. Install and compile hiredis
 
-### Step 2. Install and compile hiredis 
-
- ```bash
-  wget https://github.com/redis/hiredis/archive/master.zip
-  make
-  make install
- ```
+```bash
+ wget https://github.com/redis/hiredis/archive/master.zip
+ make
+ make install
+```
 
 ### Step 3. Copy the below C code:
 
- ```bash
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <hiredis/hiredis.h>
+```bash
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <hiredis/hiredis.h>
 
-  int main (int argc, char **argv) {
-    redisReply *reply;
-    redisContext *c;
+ int main (int argc, char **argv) {
+   redisReply *reply;
+   redisContext *c;
 
-    c = redisConnect("127.0.0.1", 6381);
-    if (c->err) {
-        printf("error: %s\n", c->errstr);
-        return 1;
-    }
+   c = redisConnect("127.0.0.1", 6381);
+   if (c->err) {
+       printf("error: %s\n", c->errstr);
+       return 1;
+   }
 
-    /* PINGs */
-    reply = redisCommand(c,"PING %s", "Hello World");
-    printf("RESPONSE: %s\n", reply->str);
-    freeReplyObject(reply);
+   /* PINGs */
+   reply = redisCommand(c,"PING %s", "Hello World");
+   printf("RESPONSE: %s\n", reply->str);
+   freeReplyObject(reply);
 
-    redisFree(c);
-  }
- ```
+   redisFree(c);
+ }
+```
+
 ### Step 4. Compile the code
 
- ```bash
-  gcc redistest.c -o redistest -I /usr/local/include/hiredis -lhiredis
- ```
+```bash
+ gcc redistest.c -o redistest -I /usr/local/include/hiredis -lhiredis
+```
 
 ### Step 5. Test the code
 
- ```bash
-  ./redistest
-  RESPONSE: Hello World
- ```
+```bash
+ ./redistest
+ RESPONSE: Hello World
+```
+
  </TabItem>
 </Tabs>
- 
 
 ## More C Clients Resources
 
-
 - [hiredis-cluster](https://github.com/Nordix/hiredis-cluster) - C client library for Redis Cluster
-
 
 - [libredis](https://github.com/toymachine/libredis) - A C based general low-level PHP extension and client library for Redis, focusing on performance, generality and efficient parallel communication with multiple Redis servers.
 
 - [hiredispool](https://github.com/aclisp/hiredispool) - Provides connection pooling and auto-reconnect for hiredis. It is also minimalistic and easy to do customization.
-
-
-
-
-
-
-
-
