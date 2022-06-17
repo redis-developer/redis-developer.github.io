@@ -581,5 +581,19 @@ module.exports = {
       ]
     },
 
+    {
+        type: 'category',
+        label: 'Community',
+        items: [
+            {
+                type: 'category',
+                label: 'Tutorials',
+                items: [
+                  'community/tutorials/bert-qa-benchmarking/bert-qa-benchmarking-with-redisai-and-redisgears',
+                ]
+            },
+        ]
+    }
+
   ]
 };
