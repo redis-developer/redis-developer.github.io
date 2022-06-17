@@ -9,42 +9,40 @@ import clsx from 'clsx';
 import { useThemeConfig, useAnnouncementBar } from '@docusaurus/theme-common';
 
 function AnnouncementBar() {
-    const { close, isActive } = useAnnouncementBar();
-    const { announcementBar } = useThemeConfig();
+  const { close, isActive } = useAnnouncementBar();
+  const { announcementBar } = useThemeConfig();
 
-    if (!announcementBar) {
-        return null;
-    }
+  if (!announcementBar) {
+    return null;
+  }
 
-    const { content, isCloseable } =
-        announcementBar;
+  const { content, isCloseable } = announcementBar;
 
-    if (!content || (isCloseable && !isActive)) {
-        return null;
-    }
+  if (!content || (isCloseable && !isActive)) {
+    return null;
+  }
 
-    return (
-        <div className="announcementBar" role="banner">
-            <div
-                className={clsx('announcementBarContent', {
-                    ['announcementBarCloseable']: isCloseable,
-                })} // Developer provided the HTML, so assume it's safe.
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{
-                    __html: content,
-                }}
-            />
-            {isCloseable ? (
-                <button
-                    type="button"
-                    className="announcementBarClose"
-                    onClick={close}
-                    aria-label="Close">
-                    ✖
-                </button>
-            ) : null}
-        </div>
-    );
+  return (
+    <div className="announcementBar" role="banner">
+      <div
+        className={clsx('announcementBarContent', {
+          ['announcementBarCloseable']: isCloseable,
+        })} // Developer provided the HTML, so assume it's safe.
+        dangerouslySetInnerHTML={{
+          __html: content,
+        }}
+      />
+      {isCloseable ? (
+        <button
+          type="button"
+          className="announcementBarClose"
+          onClick={close}
+          aria-label="Close">
+          ✖
+        </button>
+      ) : null}
+    </div>
+  );
 }
 
 export default AnnouncementBar;

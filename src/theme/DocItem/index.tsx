@@ -13,55 +13,49 @@ import type { Props } from '@theme/DocItem';
 import styles from './styles.module.css';
 
 function DocItemWrapper(props: Props): JSX.Element {
-    const { siteConfig } = useDocusaurusContext();
-    const { content: DocContent } = props;
-    const authorLookup = (siteConfig.customFields as any).authors;
+  const { siteConfig } = useDocusaurusContext();
+  const { content: DocContent } = props;
+  const authorLookup: Record<
+    string,
+    { link: string; name: string; title: string; image: string }
+  > = (siteConfig.customFields as any).authors;
 
-    console.log(props);
-
-    return (
-        <>
-            {(DocContent.frontMatter as any).authors && (
-                <div className="docAuthors">
-                    <hr />
-                    {(DocContent.frontMatter as any).authors.map((author) => {
-                        return (
-                            <div className={styles.authorByline}>
-                                <img
-                                    className={styles.authorProfileImage}
-                                    src={
-                                        '/img/' +
-                                        (authorLookup[author].image
-                                            ? authorLookup[author].image
-                                            : 'default_author_profile_pic.png')
-                                    }
-                                    alt={
-                                        'Profile picture for ' +
-                                        authorLookup[author].name
-                                    }
-                                />
-                                <div>
-                                    <div className={styles.authorLabel}>
-                                        Author:
-                                    </div>
-                                    <div>
-                                        <a
-                                            href={authorLookup[author].link}
-                                            target="_blank">
-                                            {authorLookup[author].name}
-                                        </a>
-                                        , {authorLookup[author].title}
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                    <hr />
+  return (
+    <>
+      {(DocContent.frontMatter as any).authors && (
+        <div className="docAuthors">
+          <hr />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
+          {(DocContent.frontMatter as any).authors.map((author: string) => {
+            return (
+              <div className={styles.authorByline}>
+                <img
+                  className={styles.authorProfileImage}
+                  src={`/img/${
+                    authorLookup[author].image
+                      ? authorLookup[author].image
+                      : 'default_author_profile_pic.png'
+                  }`}
+                  alt={`Profile picture for ${authorLookup[author].name}`}
+                />
+                <div>
+                  <div className={styles.authorLabel}>Author:</div>
+                  <div>
+                    <a href={authorLookup[author].link} target="_blank">
+                      {authorLookup[author].name}
+                    </a>
+                    , {authorLookup[author].title}
+                  </div>
                 </div>
-            )}
-            <DocItem {...props} />
-        </>
-    );
+              </div>
+            );
+          })}
+          <hr />
+        </div>
+      )}
+      <DocItem {...props} />
+    </>
+  );
 }
 
 export default DocItemWrapper;

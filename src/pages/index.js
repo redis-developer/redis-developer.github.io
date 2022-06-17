@@ -1,6 +1,5 @@
 import React from 'react';
 import Layout from '@docusaurus/theme-classic/lib/theme/Layout';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import Hero from '@site/src/theme/Hero';
 import Languages from '@site/src/theme/Languages';
@@ -9,7 +8,6 @@ import Demos from '@site/src/theme/Demos';
 import Resources from '@site/src/theme/Resources';
 
 function Home() {
-  const context = useDocusaurusContext();
   return (
     <Layout
       title={`The Home of Redis Developers`}

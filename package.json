@@ -12,6 +12,8 @@
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json --fix",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
@@ -34,7 +36,16 @@
     "typed.js": "^2.0.12"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.0.0-beta.21"
+    "@docusaurus/module-type-aliases": "2.0.0-beta.21",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.7.1",
+    "prettier-linter-helpers": "^1.0.0"
   },
   "browserslist": {
     "production": [
