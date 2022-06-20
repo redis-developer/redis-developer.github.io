@@ -23,9 +23,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 <p>
   If a Redis server that only stores data in RAM is restarted, all data is lost.
   To prevent such data loss, there needs to be some mechanism for persisting the
-  data to disk; Redis provides two of them: <strong>snapshotting</strong> and an{' '}
-  <strong>append-only file</strong>, or <strong>AOF</strong>. You can configure
-  your Redis instances to use either of the two, or a combination of both.
+  data to disk; Redis provides two of them: <strong>snapshotting</strong> and an
+  <strong>append-only file</strong>, or <strong>AOF</strong>. You can configure your
+  Redis instances to use either of the two, or a combination of both.
 </p>
 
 When a snapshot is created, the entire point-in-time view of the dataset is written to persistent storage in a compact <strong>.rdb</strong> file. You can set up recurring backups, for example every 1, 12, or 24 hours and use these backups to easily restore different versions of the data set in case of disasters. You can also use these snapshots to create a clone of the server, or simply leave them in place for a future restart.
