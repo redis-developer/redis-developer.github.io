@@ -103,6 +103,16 @@ authors: [suze,simon]
 
 * Note that multiple authors are supported as shown above.
 
+## Suppressing Next/Previous and Edit this Page Controls
+
+By default, each page has navigation at the bottom for the next and previous pages, as well as an "Edit this page" link.  If you want to suppress all or some of these, add the following extra front matter to your page's `.mdx` file:
+
+```yaml
+custom_edit_url: null
+pagination_next: null
+pagination_prev: null
+```
+
 ## How to modify the homepage banner
 
 In order to modify the homepage banner, you will need to edit the ```docusaurus.config.js``` file placed under the root of the repository.
