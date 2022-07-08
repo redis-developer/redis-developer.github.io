@@ -8,7 +8,7 @@ custom_edit_url: null
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Redis Live hosts a variety of live-streamed content on [Twitch](https://www.twitch.tv/redisinc) and occasionally [YouTube](https://www.youtube.com/redisinc). Follow us to get notified when we go live. And, you know, like and subscribe.
+Redis Live hosts a variety of live-streamed content on [Twitch][twitch] and occasionally [YouTube][yt]. Follow us to get notified when we go live. And, you know, like and subscribe.
 
 <Tabs
    defaultValue="upcoming"
@@ -17,8 +17,8 @@ Redis Live hosts a variety of live-streamed content on [Twitch](https://www.twit
     {label: 'Recurring Events', value: 'recurring'},
     {label: 'Past Events', value: 'past'}
    ]}>
-   <TabItem value="upcoming">
 
+  <TabItem value="upcoming">
 
 Check out our upcoming events:
 
@@ -26,19 +26,21 @@ Check out our upcoming events:
 | :----------------: | :---------: | :---------------------------------------------------- | :------------------------------------------------------ |
 | Wednesday, July 6  | 6:00 PM UTC | [Steve Lorello][steve]                                | Steve works on Redis OM .NET                            |
 | Thursday, July 7   | 2:00 PM UTC | [Simon Prickett][simon]                               | Up and Running with the RU202 Redis Streams Course      |
-|   Friday, July 8   | 6:00 PM UTC | [Brian Sam-Bodden][brian], [Guy Royse][guy]           | Extending Redis with Rust                               |
+|   Friday, July 8   | 6:00 PM UTC | [Guy Royse][guy]                                      | Graph, Graph, and Graph                                 |
 | Wednesday, July 13 | 6:00 PM UTC | [Steve Lorello][steve]                                | Coding with Steve                                       |
 |  Thursday, July 14 | 3:00 PM UTC | [Simon Prickett][simon]                               | Introduction to Redis Streams with RedisInsight         |
-|  Friday, July 15   | 6:00 PM UTC | [Brian Sam-Bodden][brian], [Guy Royse][guy]           | Extending Redis with Rust                               |
-|  Friday, July 22   | 6:00 PM UTC | [Brian Sam-Bodden][brian], [Guy Royse][guy]           | Extending Redis with Rust                               |
+|  Friday, July 15   | 6:00 PM UTC | [Brian Sam-Bodden][bsb], [Guy Royse][guy]             | Extending Redis with Rust                               |
+|  Friday, July 22   | 6:00 PM UTC | [Brian Sam-Bodden][bsb], [Guy Royse][guy]             | Extending Redis with Rust                               |
+
   </TabItem>
   <TabItem value="recurring">
+
 Sometimes we're on the road speaking at in-person events or enjoying a well deserved vacation. But when we're not, here's our weekly streaming schedule:
 
-|    Day    |    Time    | Streamers              | Show                                                                                |
-| :-------: | :--------: | :--------------------- | :---------------------------------------------------------------------------------- |
-| Wednesday | 2:00 PM ET | [Steve Lorello][steve] | [Coding with Steve](https://twitch.tv/redisinc)                                     |
-|  Friday   | 2:00 PM ET | [Guy Royse][guy]       | [Web, Whimsy, and Redis Stack: Random Projects with Guy](https://twitch.tv/redisinc)|
+|    Day    |    Time    | Streamers              | Show                                                             |
+| :-------: | :--------: | :--------------------- | :--------------------------------------------------------------- |
+| Wednesday | 2:00 PM ET | [Steve Lorello][steve] | [Coding with Steve][twitch]                                      |
+|  Friday   | 2:00 PM ET | [Guy Royse][guy]       | [Web, Whimsy, and Redis Stack: Random Projects with Guy][twitch] |
 
   </TabItem>
   <TabItem value="past">
@@ -47,26 +49,34 @@ Past events:
 
 |        Date        |    Time     | Streamers                                             | Show                                                    |
 | :----------------: | :---------: | :---------------------------------------------------- | :------------------------------------------------------ |
-| Thursday, June 30  | 6:00 PM UTC | [Savannah Norem][savannah], [Guy Royse][guy]          | Comparing Sets, Bloom Filters, and Cuckoo Filters       |
+| Thursday, June 30  | 6:00 PM UTC | [Savannah Norem][norem], [Guy Royse][guy]             | Comparing Sets, Bloom Filters, and Cuckoo Filters       |
 | Wednesday, June 29 | 6:00 PM UTC | [Steve Lorello][steve]                                | Steve works on Redis OM .NET!                           |
 |  Tuesday, June 28  | 3:00 PM UTC | [Simon Prickett][simon]                               | Up and Running with the RU102J Redis University Course  |
-|  Friday, June 24   | 6:00 PM UTC | [Guy Royse][guy]                                      | Graph, Graph, and Graph: Attorneys at Law               |
-| Thursday, June 23  | 6:00 PM UTC | [Justin Castilla][justin], [Savannah Norem][savannah] | [Redis OM: Python + JSON + Search](https://www.youtube.com/watch?v=ZP2j7bmWfmU)|
-| Thursday, June 16  | 3:00 PM UTC | [Simon Prickett][simon], [Justin Castilla][justin]    | [Counting Things At Scale with Redis](https://www.youtube.com/watch?v=FAJXq5Qqc0Y)|
+|  Friday, June 24   | 6:00 PM UTC | [Guy Royse][guy]                                      | Graph, Graph, and Graph                                 |
+| Thursday, June 23  | 6:00 PM UTC | [Justin Castilla][justin], [Savannah Norem][norem]    | [Redis OM: Python + JSON + Search][1]                   |
+| Thursday, June 16  | 3:00 PM UTC | [Simon Prickett][simon], [Justin Castilla][justin]    | [Counting Things At Scale with Redis][2]                |
 | Wednesday, June 15 | 5:00 PM UTC | [Simon Prickett][simon]                               | Up and Running with the RU102JS Redis University Course |
 | Wednesday, June 15 | 4:00 PM UTC | [Simon Prickett][simon]                               | Up and Running with the RU102PY Redis University Course |
 |  Friday, June 10   | 6:00 PM UTC | [Guy Royse][guy]                                      | Working on Redis OM for Node.js                         |
 |  Friday, June 10   | 3:00 PM UTC | [Justin Castilla][justin], [Suze Shardlow][suze]      | Working with Redis Data Structures                      |
 |   Friday, June 3   | 6:00 PM UTC | [Guy Royse][guy]                                      | Tracking Aircraft with Redis + Software-Defined Radio   |
 
-<!-- Links -->
+  </TabItem>
+</Tabs>
 
-[brian]: https://twitter.com/bsbodden
+<!-- Links to streamers -->
+[bsb]: https://twitter.com/bsbodden
 [guy]: https://twitter.com/guyroyse
 [justin]: https://twitter.com/JustCastilla
-[savannah]: https://twitter.com/sav_norem
+[norem]: https://twitter.com/sav_norem
 [simon]: https://twitter.com/simon_prickett
 [steve]: https://twitter.com/slorello
 [suze]: https://twitter.com/SuzeShardlow
-  </TabItem>
-</Tabs>
+
+<!-- Links to platforms -->
+[twitch]: [https://twitch.tv/redisinc]
+[yt]: [https://www.youtube.com/redisinc]
+
+<!-- Links to specific videos -->
+[1]: https://www.youtube.com/watch?v=ZP2j7bmWfmU
+[2]: https://www.youtube.com/watch?v=FAJXq5Qqc0Y
