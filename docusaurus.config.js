@@ -126,7 +126,7 @@ module.exports = {
             },
             kurt: {
                 name: 'Kurt Moeller',
-                title: 'Technical Enablement Manager, US',
+                title: 'Technical Enablement Manager, US at Redis',
                 image: 'profile_pic_kurt_moeller.png',
             },
             elena: {
