@@ -132,7 +132,7 @@ module.exports = {
             elena: {
                 name: 'Elena Kolevska',
                 link: 'https://twitter.com/elena_kolevska',
-                title: 'Technical Enablement Manager',
+                title: 'Technical Enablement Manager at Redis',
                 image: 'profile_pic_elena_kolevska.jpg',
             },
         },
