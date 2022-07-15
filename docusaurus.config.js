@@ -26,8 +26,7 @@ module.exports = {
             },
             ajeet: {
                 name: 'Ajeet Raina',
-                link: 'https://twitter.com/ajeetsraina',
-                title: 'Developer Growth Manager at Redis',
+                title: 'was Developer Growth Manager at Redis',
                 image: 'profile_pic_ajeet_raina.jpg',
             },
             talon: {
