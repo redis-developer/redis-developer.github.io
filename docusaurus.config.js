@@ -67,8 +67,7 @@ module.exports = {
             },
             andrew: {
                 name: 'Andrew Brookins',
-                link: 'https://twitter.com/abrookins',
-                title: 'Curriculum Software Engineer',
+                title: 'was Curriculum Software Engineer at Redis',
                 image: 'profile_pic_andrew_brookins.jpg',
             },
             manuel: {
