@@ -20,7 +20,7 @@ module.exports = {
             },
             suze: {
                 name: 'Suze Shardlow',
-                link: 'https://twitter.com/SuzeShardlow',
+                link: 'https://suze.dev',
                 title: 'Developer Community Manager at Redis',
                 image: 'profile_pic_suze_shardlow.jpg',
             },
