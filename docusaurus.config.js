@@ -20,14 +20,13 @@ module.exports = {
             },
             suze: {
                 name: 'Suze Shardlow',
-                link: 'https://twitter.com/SuzeShardlow',
+                link: 'https://suze.dev',
                 title: 'Developer Community Manager at Redis',
                 image: 'profile_pic_suze_shardlow.jpg',
             },
             ajeet: {
                 name: 'Ajeet Raina',
-                link: 'https://twitter.com/ajeetsraina',
-                title: 'Developer Growth Manager at Redis',
+                title: 'was Developer Growth Manager at Redis',
                 image: 'profile_pic_ajeet_raina.jpg',
             },
             talon: {
@@ -68,8 +67,7 @@ module.exports = {
             },
             andrew: {
                 name: 'Andrew Brookins',
-                link: 'https://twitter.com/abrookins',
-                title: 'Curriculum Software Engineer',
+                title: 'was Curriculum Software Engineer at Redis',
                 image: 'profile_pic_andrew_brookins.jpg',
             },
             manuel: {
@@ -128,13 +126,13 @@ module.exports = {
             },
             kurt: {
                 name: 'Kurt Moeller',
-                title: 'Technical Enablement Manager, US',
+                title: 'Technical Enablement Manager, US at Redis',
                 image: 'profile_pic_kurt_moeller.png',
             },
             elena: {
                 name: 'Elena Kolevska',
                 link: 'https://twitter.com/elena_kolevska',
-                title: 'Technical Enablement Manager',
+                title: 'Technical Enablement Manager at Redis',
                 image: 'profile_pic_elena_kolevska.jpg',
             },
         },

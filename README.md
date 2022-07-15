@@ -77,8 +77,10 @@ customFields: {
     },
     suze: {
       name: 'Suze Shardlow',
-      link: 'https://twitter.com/SuzeShardlow',
-      title: 'Developer Community Manager'
+      link: 'https://suze.dev',
+      title: 'Developer Community Manager',
+      image: 'profile_pic_suze_shardlow.jpg'
+
     }
   }
 },
