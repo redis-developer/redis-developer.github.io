@@ -77,7 +77,7 @@ customFields: {
     },
     suze: {
       name: 'Suze Shardlow',
-      link: 'https://twitter.com/SuzeShardlow',
+      link: 'https://suze.dev',
       title: 'Developer Community Manager'
     }
   }
