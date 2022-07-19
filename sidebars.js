@@ -558,7 +558,8 @@ module.exports = {
       label: 'Get Involved',
       items: [
         'get-involved/index-getinvolved',
-        'get-involved/devcember/index-devcember',
+        'get-involved/discord/index-discord',
+        'get-involved/redis-live/index-redis-live',
         {
           type: 'category',
           label: 'Hacktoberfest 2021',
@@ -568,8 +569,7 @@ module.exports = {
             'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story',
           ],
         },
-        'get-involved/discord/index-discord',
-        'get-involved/redis-live/index-redis-live',
+        'get-involved/devcember/index-devcember',
       ],
     },
   ],
