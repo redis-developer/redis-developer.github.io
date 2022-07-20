@@ -1483,7 +1483,7 @@
     "tslib" "^2.4.0"
     "utility-types" "^3.10.0"
 
-"@docusaurus/theme-search-algolia@^2.0.0-beta.21", "@docusaurus/theme-search-algolia@2.0.0-beta.21":
+"@docusaurus/theme-search-algolia@2.0.0-beta.21":
   "integrity" "sha512-T1jKT8MVSSfnztSqeebUOpWHPoHKtwDXtKYE0xC99JWoZ+mMfv8AFhVSoSddn54jLJjV36mxg841eHQIySMCpQ=="
   "resolved" "https://registry.npmjs.org/@docusaurus/theme-search-algolia/-/theme-search-algolia-2.0.0-beta.21.tgz"
   "version" "2.0.0-beta.21"
