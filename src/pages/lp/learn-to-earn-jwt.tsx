@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
 import Layout from '@theme/Layout';
 import LandingPageWrapper from '../../components/LandingPageWrapper';
 
 export default function LearnToEarnJWT() {
   return (
-    <LandingPageWrapper thankYou="test">
+    <LandingPageWrapper thankYou="Thank you for your submission, check your email to see your score!">
+      {/* @ts-ignore */}
       <Layout title="Learn to Earn with Redis!">
         <div className="padding-top--md">
           <h1

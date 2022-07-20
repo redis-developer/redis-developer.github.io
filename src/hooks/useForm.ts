@@ -13,10 +13,6 @@ export default function useForm(thankYou: string) {
       clearInterval(interval);
       document.querySelectorAll('.m-form').forEach(async (el) => {
         const id = el.id.split('_')[1];
-        MktoForms2.setOptions({
-          formXDPath:
-            'https://lp.redis.com/rs/915-NFD-128/images/marketo-xdframe-relative.html',
-        });
 
         let prefills = {};
         try {
@@ -35,7 +31,7 @@ export default function useForm(thankYou: string) {
         } catch (e) {}
 
         MktoForms2.loadForm(
-          '//lp.redis.com',
+          'https://lp.redis.com',
           '915-NFD-128',
           Number(id),
           (form: any) => {
@@ -43,12 +39,14 @@ export default function useForm(thankYou: string) {
               form.vals(prefills);
             }
 
-            if (!thankYou) {
-              return;
-            }
-
             form.onSuccess(() => {
-              form.getFormElem().hide();
+              const el = form.getFormElem();
+              const parent: HTMLElement = el.parent();
+              const div = document.createElement('div');
+              div.textContent = thankYou ?? 'Thank you for your submission!';
+
+              parent.append(div);
+              el.hide();
             });
           },
         );
