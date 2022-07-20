@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import Layout from '@theme/Layout';
 import LandingPageWrapper from '../../components/LandingPageWrapper';
 
@@ -17,7 +17,7 @@ export default function LearnToEarnJWT() {
             style={{
               width: '70%',
               minWidth: '370px',
-              margin: 'auto'
+              margin: 'auto',
             }}>
             <p>
               Complete this short assessment for a chance to earn a $25 Amazon

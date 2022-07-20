@@ -1,10 +1,17 @@
 import Head from '@docusaurus/Head';
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import useForm from '../hooks/useForm';
 import useMunchkin from '../hooks/useMunchkin';
 import useSqueeze from '../hooks/useSqueeze';
 
-export default function LandingPageWrapper({ thankYou, children }) {
+export interface LandingPageWrapperProps {
+  thankYou: string;
+}
+
+export default function LandingPageWrapper({
+  thankYou,
+  children,
+}: React.PropsWithChildren<LandingPageWrapperProps>) {
   useSqueeze();
   useForm(thankYou);
   useMunchkin();

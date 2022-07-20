@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-misused-promises */
 import { useLayoutEffect } from 'react';
 
-export default function useForm(thankYou) {
+declare const MktoForms2: any;
+
+export default function useForm(thankYou: string) {
   useLayoutEffect(() => {
     const interval = setInterval(() => {
       if (typeof MktoForms2 === 'undefined') {
@@ -11,7 +14,8 @@ export default function useForm(thankYou) {
       document.querySelectorAll('.m-form').forEach(async (el) => {
         const id = el.id.split('_')[1];
         MktoForms2.setOptions({
-          formXDPath: 'https://lp.redis.com/rs/915-NFD-128/images/marketo-xdframe-relative.html',
+          formXDPath:
+            'https://lp.redis.com/rs/915-NFD-128/images/marketo-xdframe-relative.html',
         });
 
         let prefills = {};
@@ -34,18 +38,17 @@ export default function useForm(thankYou) {
           '//lp.redis.com',
           '915-NFD-128',
           Number(id),
-          (form) => {
+          (form: any) => {
             if (Object.keys(prefills).length > 0) {
               form.vals(prefills);
             }
 
             if (!thankYou) {
-                return;
+              return;
             }
 
             form.onSuccess(() => {
-                form.getFormElem().hide();
-
+              form.getFormElem().hide();
             });
           },
         );

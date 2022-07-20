@@ -14,7 +14,6 @@ function Launchpad() {
           target="_blank"
           rel="noopener"
           className="link">
-
           <img
             src="/img/launchpad.png"
             className="thumb"
