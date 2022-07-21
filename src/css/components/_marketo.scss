@@ -1,0 +1,334 @@
+/**
+ * marketo
+ */
+.form-content {
+  //   margin-bottom: 0;
+  //   margin-top: 5%;
+
+  .mktoForm {
+    .mktoAsterix {
+      display: none !important;
+    }
+
+    .mktoField {
+      height: 2rem;
+    }
+
+    .mktoOffset {
+      display: none;
+    }
+  }
+
+  .not-you-link {
+    display: none;
+  }
+
+  .not-you-wrap {
+    display: none;
+    background: rgba(black, 0.05);
+    padding: 15px;
+    border: 1px solid rgba(black, 0.15);
+    border-radius: 5px;
+  }
+
+  button.mktoButton {
+    // @extend .CTA1;
+
+    background: var(--secondary-blue) !important;
+    border: none !important;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    color: var(--white) !important;
+    font-size: 1.06rem !important;
+    padding: 0.625rem 1.5rem !important;
+    position: relative !important;
+    transition: background-color 0.6s !important;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.4);
+      -webkit-transition: none;
+      -moz-transition: none;
+      transition: none;
+    }
+
+    &:hover {
+      background-color: var(--secondary-blue) !important;
+      color: var(--white) !important;
+
+      &:after {
+        width: 120%;
+        background-color: rgba(255, 255, 255, 0);
+        transition: all 0.4s ease-in-out;
+      }
+    }
+  }
+
+  .mktoHtmlText.mktoHasWidth {
+    width: 100% !important;
+
+    a {
+      font-size: 13px;
+    }
+  }
+}
+
+.mktoHtmlText.mktoHasWidth {
+  width: 100% !important;
+}
+.form-title {
+  font-size: 38px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.form-subtitle {
+  font-size: 16px;
+  max-width: 500px;
+  color: var(--grey);
+  margin: 10px auto 40px;
+}
+
+.form-response {
+  background-color: var(--chill);
+  padding: 20px;
+
+  &.inline {
+    display: none;
+
+    &.is-visible {
+      display: block;
+    }
+  }
+}
+
+.form-content {
+  padding: 40px;
+  box-shadow: 0 22.3px 17.9px 0 rgba(0, 0, 0, 0.04),
+    0 12.5px 10px 0 rgba(0, 0, 0, 0.04), 0 6.7px 5.3px 0 rgba(0, 0, 0, 0.03),
+    0 2.8px 2.2px 0 rgba(0, 0, 0, 0.02);
+
+  @media (max-width: 600px) {
+    padding: 5%;
+  }
+}
+
+.mktoButtonRow {
+  margin: 15px 0 0 !important;
+  display: inline-block;
+}
+
+.mktoForm {
+  width: 50% !important;
+  min-width: 370px;
+}
+
+.mktoFormRow,
+.mktoFieldWrap,
+.mktoFormCol,
+.mktoButtonRow,
+.mktoForm input[type='url'],
+.mktoForm input[type='text'],
+.mktoForm input[type='date'],
+.mktoForm input[type='tel'],
+.mktoForm input[type='email'],
+.mktoForm input[type='number'],
+.mktoForm textarea.mktoField,
+.mktoForm select.mktoField {
+  width: 100% !important;
+  // @include breakpoint(480px) {
+  // 	font-size: 16px !important;
+  // 	height: auto !important;
+  // }
+}
+.mktoForm input[type='url'],
+.mktoForm input[type='text'],
+.mktoForm input[type='date'],
+.mktoForm input[type='tel'],
+.mktoForm input[type='email'],
+.mktoForm input[type='number'],
+.mktoForm textarea.mktoField,
+.mktoForm select.mktoField {
+  border-radius: 4px !important;
+  border: 1px solid var(--ui) !important;
+  padding: 8px !important;
+}
+.mktoForm .mktoLabel,
+.mktoForm .mktoRequiredField label.mktoLabel {
+  font-weight: normal !important;
+  margin-bottom: 5px;
+  display: inline-block;
+  width: auto !important;
+}
+
+.mktoForm .mktoFormRow input[type='url'].mktoRequired,
+.mktoForm .mktoFormRow input[type='text'].mktoRequired,
+.mktoForm .mktoFormRow input[type='date'].mktoRequired,
+.mktoForm .mktoFormRow input[type='tel'].mktoRequired,
+.mktoForm .mktoFormRow input[type='email'].mktoRequired,
+.mktoForm .mktoFormRow input[type='number'].mktoRequired,
+.mktoForm .mktoFormRow textarea.mktoField.mktoRequired,
+.mktoForm .mktoFormRow select.mktoField.mktoRequired {
+  border-left: 3px solid red !important;
+}
+
+.mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
+  line-height: 1 !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  border-radius: 6px !important;
+  background-image: none !important;
+  padding: 12px 40px 12px !important;
+  color: var(--white) !important;
+  background-color: var(--purple) !important;
+  text-decoration: none !important;
+  border: none !important;
+  transition: all 0.2s ease-in-out !important;
+
+  &:hover {
+    border-color: var(--violet) !important;
+    opacity: 1 !important;
+    background-color: var(--violet) !important;
+    color: var(--white) !important;
+  }
+}
+
+.mktoForm .mktoAsterix {
+  color: var(--grey) !important;
+  float: right !important;
+  padding-left: 3px !important;
+  font-family: 'Graphik Web' !important;
+}
+
+.mktoButtonRow {
+  text-align: center !important;
+  display: inline-block;
+}
+.mktoButtonWrap {
+  margin-left: 0 !important;
+}
+
+// Marketo Columns ///////////
+// .mktoFormRow {
+// 	clear: none !important;
+// 	float: left !important;
+// 	width: 46% !important;
+// 	margin: 0 2% !important;
+// }
+// @media screen and (max-width:768px) {
+// 	body .mktoForm .mktoFormRow {
+// 		clear: none !important;
+// 		float: none !important;
+// 		width: 100% !important;
+// 		margin: 0  !important;
+// 		.mktoPlaceholderState {
+// 			height: auto !important;
+// 		}
+// 	}
+// }
+// One Columns Forms /////////////
+// body.wpx-webinars-template-default,
+// body.wpx-webinars-od-template-default,
+// body.wpx-docs-template-default,
+// body.page.page-id-18275 {
+// 	.mktoForm {
+// 		.mktoFormRow {
+// 			width: 96% !important;
+// 		}
+// 	}
+// }
+
+// Marketo Column Overrides /////////
+// .mktoForm {
+// 	label[for="Opt_in_Explicit_Consent__c"] {
+// 		float: none!important;
+// 		.mktoAsterix {
+// 			position: absolute;
+// 			left: 30px;
+// 		}
+// 		div:nth-of-type(2) {
+// 			padding-left: 16px;
+// 		}
+// 	}
+// 	.mktoCheckboxList {
+// 		width: 20px !important;
+// 	}
+// }
+
+// @media screen and (max-width:1023px) {
+// 	body .mktoForm {
+// 		label[for="Opt_in_Explicit_Consent__c"] {
+// 			width: calc(100% - 30px) !important;
+// 			float: right !important;
+// 			div:nth-of-type(2) {
+// 				padding-left: 16px;
+// 			}
+// 		}
+// 	}
+// }
+
+/**
+ * form elements
+ */
+.filters [type='radio']:not([disabled]) + label:hover {
+  cursor: pointer;
+}
+.select2-container--default {
+  .select2-selection--single {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+
+    .select2-selection__arrow {
+      b {
+        border: none;
+        margin-top: 0;
+        bottom: auto;
+        top: auto;
+        color: var(--purple);
+
+        &:after {
+          // @include font-size(14px);
+          content: '\e803';
+          font-family: 'fontello';
+        }
+      }
+    }
+
+    .select2-selection__rendered {
+      // @include font-size(14px);
+      padding-left: 0;
+      color: var(--grey);
+    }
+  }
+
+  li {
+    margin-bottom: 0 !important;
+  }
+
+  .select2-selection--multiple {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  &.select2-container--focus {
+    .select2-selection--multiple {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+    }
+  }
+
+  .select2-selection__choice {
+    // @include font-size(14px);
+  }
+}
