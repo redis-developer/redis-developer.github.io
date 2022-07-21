@@ -54,3 +54,12 @@ html[data-theme='dark'] {
 .home-main {
   overflow: hidden;
 }
+
+.card-link {
+  color: var(--primary-black) !important;
+  text-decoration: none !important;
+
+  :hover, :active, :visited, :focus {
+    text-decoration: none;
+  }
+}

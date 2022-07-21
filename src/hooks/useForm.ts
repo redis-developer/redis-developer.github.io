@@ -3,8 +3,16 @@ import { useLayoutEffect } from 'react';
 
 declare const MktoForms2: any;
 
-export default function useForm(thankYou: string) {
+export interface FormOptions {
+  skip?: boolean;
+}
+
+export default function useForm({ skip = false }: FormOptions) {
   useLayoutEffect(() => {
+    if (skip) {
+      return;
+    }
+
     const interval = setInterval(() => {
       if (typeof MktoForms2 === 'undefined') {
         return;
@@ -38,16 +46,6 @@ export default function useForm(thankYou: string) {
             if (Object.keys(prefills).length > 0) {
               form.vals(prefills);
             }
-
-            form.onSuccess(() => {
-              const el = form.getFormElem();
-              const parent: HTMLElement = el.parent();
-              const div = document.createElement('div');
-              div.textContent = thankYou ?? 'Thank you for your submission!';
-
-              parent.append(div);
-              el.hide();
-            });
           },
         );
       });

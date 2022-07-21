@@ -7,8 +7,16 @@ const selectorsToRemove = [
   'footer.footer',
 ];
 
-export default function useSqueeze() {
+export interface SqueezeOptions {
+  skip?: boolean;
+}
+
+export default function useSqueeze({ skip = false }: SqueezeOptions) {
   useLayoutEffect(() => {
+    if (skip) {
+      return;
+    }
+
     try {
       selectorsToRemove.forEach((selector) => {
         document.querySelectorAll(selector).forEach((el) => {
@@ -27,5 +35,5 @@ export default function useSqueeze() {
         ev.stopPropagation();
       });
     } catch (e) {}
-  });
+  }, [skip]);
 }

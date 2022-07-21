@@ -5,10 +5,10 @@ import LandingPageWrapper from '../../components/LandingPageWrapper';
 
 export default function LearnToEarnJWT() {
   return (
-    <LandingPageWrapper thankYou="Thank you for your submission, check your email to see your score!">
+    <LandingPageWrapper>
       {/* @ts-ignore */}
       <Layout title="Learn to Earn with Redis!">
-        <div className="padding-top--md padding-bottom--lg">
+        <article className="padding-top--md padding-bottom--lg">
           <h1
             style={{
               textAlign: 'center',
@@ -41,7 +41,7 @@ export default function LearnToEarnJWT() {
             }}>
             <form className="m-form" id="mktoForm_4161"></form>
           </div>
-        </div>
+        </article>
       </Layout>
     </LandingPageWrapper>
   );
