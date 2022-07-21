@@ -8,7 +8,7 @@ export default function LearnToEarnJWT() {
     <LandingPageWrapper thankYou="Thank you for your submission, check your email to see your score!">
       {/* @ts-ignore */}
       <Layout title="Learn to Earn with Redis!">
-        <div className="padding-top--md">
+        <div className="padding-top--md padding-bottom--lg">
           <h1
             style={{
               textAlign: 'center',
