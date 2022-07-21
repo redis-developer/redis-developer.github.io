@@ -1,3 +1,4 @@
+import useIsBrowser from '@docusaurus/useIsBrowser';
 import { useLayoutEffect } from 'react';
 
 const selectorsToRemove = [
@@ -12,8 +13,9 @@ export interface SqueezeOptions {
 }
 
 export default function useSqueeze({ skip = false }: SqueezeOptions) {
+  const isBrowser = useIsBrowser();
   useLayoutEffect(() => {
-    if (skip) {
+    if (skip || !isBrowser) {
       return;
     }
 
@@ -35,5 +37,5 @@ export default function useSqueeze({ skip = false }: SqueezeOptions) {
         ev.stopPropagation();
       });
     } catch (e) {}
-  }, [skip]);
+  }, [skip, isBrowser]);
 }

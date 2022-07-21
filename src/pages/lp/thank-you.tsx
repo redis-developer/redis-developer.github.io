@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useLayoutEffect } from 'react';
 import Layout from '@theme/Layout';
-import LandingPageWrapper from '../../../components/LandingPageWrapper';
-import useQueryParams from '../../../hooks/useQueryParams';
-import Card from '../../../components/Card';
-import { codeLinks } from './data';
+import LandingPageWrapper from '../../components/LandingPageWrapper';
+import useQueryParams from '../../hooks/useQueryParams';
+import Card from '../../components/Card';
+import { codeLinks } from '../../data/thank-you-data';
+import useIsBrowser from '@docusaurus/useIsBrowser';
 
 interface ThankYouParams {
   m?: string;
@@ -26,9 +27,14 @@ function alignCardHeights() {
 }
 
 export default function ThankYou() {
-  const params: ThankYouParams = useQueryParams();
+  const params: ThankYouParams | undefined = useQueryParams();
+  const isBrowser = useIsBrowser();
 
   useLayoutEffect(() => {
+    if (!isBrowser) {
+      return;
+    }
+
     // attempt this for 1 second to make it as snappy as possible
     const timeouts = [
       setTimeout(alignCardHeights, 50),
@@ -48,10 +54,10 @@ export default function ThankYou() {
     };
   });
 
-  const code = params.code;
-  let links: typeof codeLinks.jwt[0][] = [];
+  const code = params?.code;
+  let links = codeLinks.jwt;
   if (!!code) {
-    links = codeLinks[code as keyof typeof codeLinks];
+    links = codeLinks[code as keyof typeof codeLinks] ?? codeLinks.jwt;
   }
 
   return (
@@ -75,7 +81,7 @@ export default function ThankYou() {
                 margin: 'auto',
                 textAlign: 'center',
               }}>
-              <p>{params.m ?? 'Thank you for your submission!'}</p>
+              <p>{params?.m ?? 'Thank you for your submission!'}</p>
             </div>
           </div>
           {!!links && links.length > 0 && (

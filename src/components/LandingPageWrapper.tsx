@@ -24,6 +24,7 @@ export default function LandingPageWrapper({
           <script src="//lp.redis.com/js/forms2/js/forms2.min.js"></script>
         )}
       </Head>
+
       <main className="lp-main">{children}</main>
     </>
   );

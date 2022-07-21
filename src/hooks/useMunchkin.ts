@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/ban-ts-comment */
+import useIsBrowser from '@docusaurus/useIsBrowser';
 import { useLayoutEffect } from 'react';
 
 declare const Munchkin: any;
@@ -8,8 +9,9 @@ export interface MunchkinOptions {
 }
 
 export default function useMunchkin({ skip = false }: MunchkinOptions) {
+  const isBrowser = useIsBrowser();
   useLayoutEffect(() => {
-    if (skip) {
+    if (skip || !isBrowser) {
       return;
     }
 
@@ -34,5 +36,5 @@ export default function useMunchkin({ skip = false }: MunchkinOptions) {
     };
     s.onload = initMunchkin;
     document.getElementsByTagName('head')[0].appendChild(s);
-  }, [skip]);
+  }, [skip, isBrowser]);
 }

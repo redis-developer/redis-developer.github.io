@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-misused-promises */
+import useIsBrowser from '@docusaurus/useIsBrowser';
 import { useLayoutEffect } from 'react';
 
 declare const MktoForms2: any;
@@ -8,8 +9,10 @@ export interface FormOptions {
 }
 
 export default function useForm({ skip = false }: FormOptions) {
+  const isBrowser = useIsBrowser();
+
   useLayoutEffect(() => {
-    if (skip) {
+    if (skip || !isBrowser) {
       return;
     }
 
@@ -54,5 +57,5 @@ export default function useForm({ skip = false }: FormOptions) {
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [skip, isBrowser]);
 }
