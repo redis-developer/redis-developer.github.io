@@ -1,0 +1,25 @@
+main.lp-main {
+  @include dark {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    small,
+    button,
+    label,
+    span {
+      color: var(--white);
+    }
+  }
+
+  .follow-up-section {
+    background-color: var(--ifm-color-secondary-lightest);
+
+    @include dark {
+      background-color: var(--ifm-color-secondary-darkest);
+    }
+  }
+}

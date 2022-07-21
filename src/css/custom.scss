@@ -22,6 +22,8 @@
 @import './components/resources';
 @import './components/404';
 @import './components/marketo';
+@import './components/cards';
+@import './components/lp';
 
 /* You can override the default Infima variables here. */
 :root {
@@ -53,13 +55,4 @@ html[data-theme='dark'] {
 
 .home-main {
   overflow: hidden;
-}
-
-.card-link {
-  color: var(--primary-black) !important;
-  text-decoration: none !important;
-
-  :hover, :active, :visited, :focus {
-    text-decoration: none;
-  }
 }

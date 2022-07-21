@@ -60,12 +60,14 @@ export default function ThankYou() {
       <Layout title="Learn to Earn with Redis!">
         <article className="padding-top--md">
           <div className="padding-vert--md">
-            <h1
-              style={{
-                textAlign: 'center',
-              }}>
-              Thank you!
-            </h1>
+            <header>
+              <h1
+                style={{
+                  textAlign: 'center',
+                }}>
+                Thank you!
+              </h1>
+            </header>
             <div
               style={{
                 width: '70%',
@@ -77,11 +79,7 @@ export default function ThankYou() {
             </div>
           </div>
           {!!links && links.length > 0 && (
-            <div
-              className="padding-vert--md"
-              style={{
-                backgroundColor: 'var(--ifm-color-secondary-lightest)',
-              }}>
+            <div className="padding-vert--md follow-up-section">
               <h2
                 style={{
                   textAlign: 'center',
