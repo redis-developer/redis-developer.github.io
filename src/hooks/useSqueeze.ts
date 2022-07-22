@@ -1,3 +1,4 @@
+import useIsBrowser from '@docusaurus/useIsBrowser';
 import { useLayoutEffect } from 'react';
 
 const selectorsToRemove = [
@@ -7,8 +8,17 @@ const selectorsToRemove = [
   'footer.footer',
 ];
 
-export default function useSqueeze() {
+export interface SqueezeOptions {
+  skip?: boolean;
+}
+
+export default function useSqueeze({ skip = false }: SqueezeOptions) {
+  const isBrowser = useIsBrowser();
   useLayoutEffect(() => {
+    if (skip || !isBrowser) {
+      return;
+    }
+
     try {
       selectorsToRemove.forEach((selector) => {
         document.querySelectorAll(selector).forEach((el) => {
@@ -27,5 +37,5 @@ export default function useSqueeze() {
         ev.stopPropagation();
       });
     } catch (e) {}
-  });
+  }, [skip, isBrowser]);
 }

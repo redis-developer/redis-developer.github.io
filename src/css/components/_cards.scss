@@ -1,0 +1,16 @@
+.cardLink {
+  color: var(--primary-black);
+
+  @include dark {
+    color: var(--white);
+  }
+
+  text-decoration: none;
+
+  :hover,
+  :active,
+  :visited,
+  :focus {
+    text-decoration: none;
+  }
+}

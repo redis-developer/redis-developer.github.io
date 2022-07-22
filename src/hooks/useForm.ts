@@ -1,10 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-misused-promises */
+import useIsBrowser from '@docusaurus/useIsBrowser';
 import { useLayoutEffect } from 'react';
 
 declare const MktoForms2: any;
 
-export default function useForm(thankYou: string) {
+export interface FormOptions {
+  skip?: boolean;
+}
+
+export default function useForm({ skip = false }: FormOptions) {
+  const isBrowser = useIsBrowser();
+
   useLayoutEffect(() => {
+    if (skip || !isBrowser) {
+      return;
+    }
+
     const interval = setInterval(() => {
       if (typeof MktoForms2 === 'undefined') {
         return;
@@ -38,16 +49,6 @@ export default function useForm(thankYou: string) {
             if (Object.keys(prefills).length > 0) {
               form.vals(prefills);
             }
-
-            form.onSuccess(() => {
-              const el = form.getFormElem();
-              const parent: HTMLElement = el.parent();
-              const div = document.createElement('div');
-              div.textContent = thankYou ?? 'Thank you for your submission!';
-
-              parent.append(div);
-              el.hide();
-            });
           },
         );
       });
@@ -56,5 +57,5 @@ export default function useForm(thankYou: string) {
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [skip, isBrowser]);
 }
