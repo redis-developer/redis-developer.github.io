@@ -63,7 +63,7 @@ export default function ThankYou() {
   return (
     <LandingPageWrapper hasForm={false}>
       {/* @ts-ignore */}
-      <Layout title="Learn to Earn with Redis!">
+      <Layout title="Learn and Earn with Redis!">
         <article className="padding-top--md">
           <div className="padding-vert--md">
             <header>
