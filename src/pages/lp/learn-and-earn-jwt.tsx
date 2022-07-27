@@ -3,17 +3,17 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import LandingPageWrapper from '../../components/LandingPageWrapper';
 
-export default function LearnToEarnJWT() {
+export default function LearnAndEarnJWT() {
   return (
     <LandingPageWrapper>
       {/* @ts-ignore */}
-      <Layout title="Learn to Earn with Redis!">
+      <Layout title="Learn and Earn with Redis!">
         <article className="padding-top--md padding-bottom--lg">
           <h1
             style={{
               textAlign: 'center',
             }}>
-            Learn to Earn with Redis!
+            Learn and Earn with Redis!
           </h1>
           <div
             style={{
