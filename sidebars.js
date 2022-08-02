@@ -567,6 +567,7 @@ module.exports = {
             'get-involved/redis-insiders/index-redis-insiders',
             'get-involved/redis-insiders/jyotsna-gupta/index-jyotsna-gupta',
             'get-involved/redis-insiders/jyotsna-gupta/index-moiz-kapasi',
+            'get-involved/redis-insiders/jyotsna-gupta/index-michael-owolabi',
 
             'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story',
           ],
