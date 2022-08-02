@@ -567,7 +567,7 @@ module.exports = {
             'get-involved/redis-insiders/index-redis-insiders',
             'get-involved/redis-insiders/jyotsna-gupta/index-jyotsna-gupta',
             'get-involved/redis-insiders/moiz-kapasi/index-moiz-kapasi',
-            'get-involved/redis-insiders/jyotsna-gupta/index-michael-owolabi',
+            'get-involved/redis-insiders/michael-owolabi/index-michael-owolabi',
             'get-involved/redis-insiders/jyotsna-gupta/index-stevan-thomas',
           ],
         },
