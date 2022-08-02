@@ -560,7 +560,17 @@ module.exports = {
         'get-involved/index-getinvolved',
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
-        'get-involved/redis-insiders/index-redis-insiders',
+        {
+          type: 'category',
+          label: 'Redis Insiders',
+          items: [
+            'get-involved/redis-insiders/index-redis-insiders',
+            'get-involved/redis-insiders/jyotsna-gupta/index-jyotsna-gupta',
+            'get-involved/redis-insiders/moiz-kapasi/index-moiz-kapasi',
+            'get-involved/redis-insiders/michael-owolabi/index-michael-owolabi',
+            'get-involved/redis-insiders/stevan-thomas/index-stevan-thomas',
+          ],
+        },
         {
           type: 'category',
           label: 'Hacktoberfest 2021',
