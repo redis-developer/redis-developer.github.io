@@ -560,6 +560,7 @@ module.exports = {
         'get-involved/index-getinvolved',
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
+        'get-involved/redis-insiders/index-redis-insiders',
         {
           type: 'category',
           label: 'Hacktoberfest 2021',
