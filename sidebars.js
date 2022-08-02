@@ -560,7 +560,15 @@ module.exports = {
         'get-involved/index-getinvolved',
         'get-involved/discord/index-discord',
         'get-involved/redis-live/index-redis-live',
-        'get-involved/redis-insiders/index-redis-insiders',
+        {
+          type: 'category',
+          label: 'Redis Insiders',
+          items: [
+            'get-involved/redis-insiders/index-redis-insiders',
+            'get-involved/redis-insiders/jyotsna-gupta/index-jyotsna-gupta',
+            'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story',
+          ],
+        },
         {
           type: 'category',
           label: 'Hacktoberfest 2021',
