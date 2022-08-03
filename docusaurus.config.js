@@ -150,7 +150,11 @@ module.exports = {
         title: 'Redis Insider',
         image: 'profile_pic_michael_owolabi.jpeg',
       },
-
+      stevan: {
+        name: 'Stevan Thomas',
+        title: 'Redis Insider',
+        image: 'profile_pic_stevan_thomas.png',
+      },
     },
   },
   themeConfig: {
