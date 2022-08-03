@@ -138,7 +138,7 @@ module.exports = {
       jyotsna: {
         name: 'Jyotsna Gupta',
         title: 'Redis Insider',
-        image: 'profile_pic_jyotsna_gupta.jpg',
+        image: 'profile_pic_jyotsna_gupta.jpeg',
       },
       michael: {
         name: 'Michael Owolabi',
