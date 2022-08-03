@@ -135,6 +135,26 @@ module.exports = {
         title: 'Technical Enablement Manager at Redis',
         image: 'profile_pic_elena_kolevska.jpg',
       },
+      jyotsna: {
+        name: 'Jyotsna Gupta',
+        title: 'Redis Insider',
+        image: 'profile_pic_jyotsna_gupta.jpeg',
+      },
+      moiz: {
+        name: 'Moiz Kapasi',
+        title: 'Redis Insider',
+        image: 'profile_pic_moiz_kapasi.jpeg',
+      },
+      michael: {
+        name: 'Michael Owolabi',
+        title: 'Redis Insider',
+        image: 'profile_pic_michael_owolabi.jpeg',
+      },
+      stevan: {
+        name: 'Stevan Thomas',
+        title: 'Redis Insider',
+        image: 'profile_pic_stevan_thomas.png',
+      },
     },
   },
   themeConfig: {
