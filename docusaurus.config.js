@@ -140,6 +140,11 @@ module.exports = {
         title: 'Redis Insider',
         image: 'profile_pic_jyotsna_gupta.jpg',
       },
+      michael: {
+        name: 'Michael Owolabi',
+        title: 'Redis Insider',
+        image: 'profile_pic_michael_owolabi.jpeg',
+      },
 
     },
   },
