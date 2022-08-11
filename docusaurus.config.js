@@ -14,7 +14,7 @@ module.exports = {
     authors: {
       simon: {
         name: 'Simon Prickett',
-        link: 'https://twitter.com/simon_prickett',
+        link: 'https://simonprickett.dev',
         title: 'Principal Developer Advocate at Redis',
         image: 'profile_pic_simon_prickett.jpg',
       },
