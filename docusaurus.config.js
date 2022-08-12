@@ -147,6 +147,7 @@ module.exports = {
       },
       michael: {
         name: 'Michael Owolabi',
+        link: 'https://www.linkedin.com/in/imichaelowolabi/',
         title: 'Redis Insider',
         image: 'profile_pic_michael_owolabi.jpeg',
       },
