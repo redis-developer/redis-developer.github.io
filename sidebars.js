@@ -7,6 +7,36 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Get Involved',
+      items: [
+        'get-involved/index-getinvolved',
+        'get-involved/discord/index-discord',
+        'get-involved/redis-live/index-redis-live',
+        {
+          type: 'category',
+          label: 'Redis Insiders',
+          items: [
+            'get-involved/redis-insiders/index-redis-insiders',
+            'get-involved/redis-insiders/jyotsna-gupta/index-jyotsna-gupta',
+            'get-involved/redis-insiders/moiz-kapasi/index-moiz-kapasi',
+            'get-involved/redis-insiders/michael-owolabi/index-michael-owolabi',
+            'get-involved/redis-insiders/stevan-thomas/index-stevan-thomas',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Hacktoberfest 2021',
+          items: [
+            'get-involved/hacktoberfest/index-hacktoberfest',
+            'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
+            'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story',
+          ],
+        },
+        'get-involved/devcember/index-devcember',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Create',
       items: [
         'create/index-create',
@@ -551,36 +581,6 @@ module.exports = {
         'howtos/herokunodejs/index-herokunodejs',
         'howtos/herokupython/index-herokupython',
         'howtos/herokujava/index-herokujava',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Get Involved',
-      items: [
-        'get-involved/index-getinvolved',
-        'get-involved/discord/index-discord',
-        'get-involved/redis-live/index-redis-live',
-        {
-          type: 'category',
-          label: 'Redis Insiders',
-          items: [
-            'get-involved/redis-insiders/index-redis-insiders',
-            'get-involved/redis-insiders/jyotsna-gupta/index-jyotsna-gupta',
-            'get-involved/redis-insiders/moiz-kapasi/index-moiz-kapasi',
-            'get-involved/redis-insiders/michael-owolabi/index-michael-owolabi',
-            'get-involved/redis-insiders/stevan-thomas/index-stevan-thomas',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Hacktoberfest 2021',
-          items: [
-            'get-involved/hacktoberfest/index-hacktoberfest',
-            'get-involved/hacktoberfest/lara-aasem-story/index-lara-aasem-story',
-            'get-involved/hacktoberfest/vincent-aceto-story/index-vincent-aceto-story',
-          ],
-        },
-        'get-involved/devcember/index-devcember',
       ],
     },
   ],
