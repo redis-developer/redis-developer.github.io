@@ -23,9 +23,7 @@ export default function LearnAndEarnJWT() {
             }}>
             <p>
               Complete this short assessment for a chance to earn a $25 Amazon
-              gift card! The first 1,000 unique winners will be awarded the gift
-              card, and the final submission date is August 31, 2022. If you
-              need help, all of the answers can be found in{' '}
+              gift card! If you need help, all of the answers can be found in{' '}
               <a
                 href="https://redis.com/docs/json-web-tokens-jwts-are-not-safe/"
                 target="_blank">
