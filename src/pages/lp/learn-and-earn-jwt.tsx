@@ -2,8 +2,30 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import LandingPageWrapper from '../../components/LandingPageWrapper';
+import useFormEmailValidator from '../../hooks/useFormEmailValidator';
 
 export default function LearnAndEarnJWT() {
+  const form = React.createRef<HTMLFormElement>();
+  const warn = React.createRef<HTMLSpanElement>();
+
+  useFormEmailValidator({
+    form,
+    invalid() {
+      if (!warn.current) {
+        return;
+      }
+
+      warn.current.style.display = 'block';
+    },
+    valid() {
+      if (!warn.current) {
+        return;
+      }
+
+      warn.current.style.display = 'none';
+    },
+  });
+
   return (
     <LandingPageWrapper>
       {/* @ts-ignore */}
@@ -17,9 +39,9 @@ export default function LearnAndEarnJWT() {
           </h1>
           <div
             style={{
-              width: '70%',
-              minWidth: '370px',
-              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '1rem',
             }}>
             <p>
               Complete this short assessment for a chance to earn a $25 Amazon
@@ -29,6 +51,9 @@ export default function LearnAndEarnJWT() {
                 target="_blank">
                 this e-book.
               </a>
+              <strong>
+                Only business emails (no gmail, yahoo, etc.) will be accepted.
+              </strong>
             </p>
           </div>
           <div
@@ -36,8 +61,12 @@ export default function LearnAndEarnJWT() {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              flexDirection: 'column',
             }}>
-            <form className="m-form" id="mktoForm_4161"></form>
+            <form ref={form} className="m-form" id="mktoForm_4161"></form>
+            <strong ref={warn} style={{ display: 'none' }}>
+              Only business emails (no gmail, yahoo, etc.) will be accepted.
+            </strong>
           </div>
         </article>
       </Layout>
