@@ -2,30 +2,8 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import LandingPageWrapper from '../../components/LandingPageWrapper';
-import useFormEmailValidator from '../../hooks/useFormEmailValidator';
 
 export default function LearnAndEarnJWT() {
-  const form = React.createRef<HTMLFormElement>();
-  const warn = React.createRef<HTMLSpanElement>();
-
-  useFormEmailValidator({
-    form,
-    invalid() {
-      if (!warn.current) {
-        return;
-      }
-
-      warn.current.style.display = 'block';
-    },
-    valid() {
-      if (!warn.current) {
-        return;
-      }
-
-      warn.current.style.display = 'none';
-    },
-  });
-
   return (
     <LandingPageWrapper>
       {/* @ts-ignore */}
@@ -51,9 +29,6 @@ export default function LearnAndEarnJWT() {
                 target="_blank">
                 this e-book.
               </a>
-              <strong>
-                Only business emails (no gmail, yahoo, etc.) will be accepted.
-              </strong>
             </p>
           </div>
           <div
@@ -62,10 +37,13 @@ export default function LearnAndEarnJWT() {
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'column',
+              margin: '1rem',
             }}>
-            <form ref={form} className="m-form" id="mktoForm_4161"></form>
-            <strong ref={warn} style={{ display: 'none' }}>
-              Only business emails (no gmail, yahoo, etc.) will be accepted.
+            <form className="m-form" id="mktoForm_4161"></form>
+            <strong style={{ maxWidth: '30rem' }}>
+              To receive your gift card, you must be a legal resident of any of
+              the 50 United States and D.C., Canada, Germany, Ireland, France,
+              and the United Kingdom;
             </strong>
           </div>
         </article>
