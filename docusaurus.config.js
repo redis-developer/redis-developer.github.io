@@ -26,7 +26,8 @@ module.exports = {
       },
       ajeet: {
         name: 'Ajeet Raina',
-        title: 'was Developer Growth Manager at Redis',
+        link: 'https://twitter.com/ajeetsraina',
+        title: 'Former Developer Growth Manager at Redis',
         image: 'profile_pic_ajeet_raina.jpg',
       },
       talon: {
@@ -67,7 +68,8 @@ module.exports = {
       },
       andrew: {
         name: 'Andrew Brookins',
-        title: 'was Curriculum Software Engineer at Redis',
+        link: 'https://andrewbrookins.com/',
+        title: 'Former Curriculum Software Engineer at Redis',
         image: 'profile_pic_andrew_brookins.jpg',
       },
       manuel: {
@@ -85,7 +87,7 @@ module.exports = {
       christian: {
         name: 'Christian Mague',
         link: 'https://www.linkedin.com/in/chris-mague-35b1624/',
-        title: 'Principal Field Engineer at Redis',
+        title: 'Former Principal Field Engineer at Redis',
         image: 'profile_pic_christian_mague.jpg',
       },
       karan: {
