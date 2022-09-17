@@ -17,9 +17,9 @@ export default function LearnAndEarnJWT() {
           </h1>
           <div
             style={{
-              width: '70%',
-              minWidth: '370px',
-              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '1rem',
             }}>
             <p>
               Complete this short assessment for a chance to earn a $25 Amazon
@@ -36,8 +36,15 @@ export default function LearnAndEarnJWT() {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              flexDirection: 'column',
+              margin: '1rem',
             }}>
             <form className="m-form" id="mktoForm_4161"></form>
+            <strong style={{ maxWidth: '30rem' }}>
+              To receive your gift card, you must be a legal resident of any of
+              the 50 United States and D.C., Canada, Germany, Ireland, France,
+              and the United Kingdom;
+            </strong>
           </div>
         </article>
       </Layout>
