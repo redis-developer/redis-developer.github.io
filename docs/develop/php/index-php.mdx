@@ -1,7 +1,7 @@
 ---
 id: index-php
-title: Php and Redis
-sidebar_label: Php
+title: PHP and Redis
+sidebar_label: PHP
 slug: /develop/php/
 authors: [ajeet]
 ---
@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
 
-Find tutorials, examples and technical articles that will help you to develop with Redis and Php.
+Find tutorials, examples and technical articles that will help you to develop with Redis and PHP.
 
 ### Getting Started
 
@@ -56,7 +56,7 @@ pecl install redis
 
 ### Step 4. Opening a Connection to Redis Using PhpRedis
 
-The following code creates a connection to Redis using Phpredis
+The following code creates a connection to Redis using PhpRedis
 
 ```php
 <?php
@@ -67,7 +67,7 @@ $redis->connect('hostname', port);
 $redis->auth('password');
 
 if ($redis->ping()) {
- echo "PONGn";
+ echo "PONG";
 }
 
 ?>
@@ -91,7 +91,7 @@ OK
 
 ### Further Reference:
 
-- [Getting Started with Redis & Php](https://github.com/redis-developer/redis-php-getting-started/)
+- [Getting Started with Redis & PHP](https://github.com/redis-developer/redis-php-getting-started/)
 - [PHP extension for Redis based on Hiredis](https://github.com/nrk/phpiredis)
 - [Redis distributed locks in PHP](https://github.com/ronnylt/redlock-php)
 - [Support for Redis Cluster](https://github.com/phpredis/phpredis/blob/develop/cluster.markdown#redis-cluster)
