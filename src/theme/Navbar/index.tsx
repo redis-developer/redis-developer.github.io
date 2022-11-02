@@ -10,9 +10,10 @@ import Search from '@site/src/theme/Search';
 import ColorModeToggle from '@docusaurus/theme-classic/lib/theme/Navbar/ColorModeToggle';
 import {
   useColorMode,
-  useHideableNavbar,
-  useLockBodyScroll,
+  //   useHideableNavbar,
+  //   useLockBodyScroll,
   useWindowSize,
+  type NavbarItem as NavbarItemType,
 } from '@docusaurus/theme-common';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import NavbarItem from '@theme/NavbarItem';
@@ -22,7 +23,7 @@ import styles from './styles.module.css'; // retrocompatible with v1
 const DefaultNavItemPosition = 'right'; // If split links by left/right
 // if position is unspecified, fallback to right (as v1)
 
-function splitNavItemsByPosition(items: NavbarItem[]) {
+function splitNavItemsByPosition(items: NavbarItemType[]) {
   const leftItems = items.filter(
     (item) => (item.position ?? DefaultNavItemPosition) === 'left',
   );
@@ -43,8 +44,8 @@ function Navbar() {
   const [sidebarShown, setSidebarShown] = useState(false);
   const [isSearchBarExpanded] = useState(false);
   const { colorMode } = useColorMode();
-  const { navbarRef, isNavbarVisible } = useHideableNavbar(hideOnScroll);
-  useLockBodyScroll(sidebarShown);
+  //   const { navbarRef, isNavbarVisible } = useHideableNavbar(hideOnScroll);
+  //   useLockBodyScroll(sidebarShown);
   const showSidebar = useCallback(() => {
     setSidebarShown(true);
   }, [setSidebarShown]);
@@ -60,13 +61,13 @@ function Navbar() {
   const { leftItems, rightItems } = splitNavItemsByPosition(items);
   return (
     <nav
-      ref={navbarRef}
+      //   ref={navbarRef}
       className={clsx('navbar', 'navbar--fixed-top', {
         'navbar--dark': colorMode === 'dark',
         'navbar--primary': style === 'primary',
         'navbar-sidebar--show': sidebarShown,
         [styles.navbarHideable]: hideOnScroll,
-        [styles.navbarHidden]: !isNavbarVisible,
+        // [styles.navbarHidden]: !isNavbarVisible,
       })}>
       <div className="navbar__inner">
         <div className="navbar__items">
@@ -93,13 +94,13 @@ function Navbar() {
             })}
           />
           {leftItems.map((item, i) => (
-            <NavbarItem {...item} key={i} />
+            <NavbarItem {...(item as any)} key={i} />
           ))}
         </div>
         <div className="navbar__items navbar__items--right">
           <Search />
           {rightItems.map((item, i) => (
-            <NavbarItem {...item} key={i} />
+            <NavbarItem {...(item as any)} key={i} />
           ))}
           {!disableColorModeSwitch && (
             <ColorModeToggle
@@ -133,7 +134,12 @@ function Navbar() {
           <div className="menu">
             <ul className="menu__list">
               {items.map((item, i) => (
-                <NavbarItem mobile {...item} onClick={hideSidebar} key={i} />
+                <NavbarItem
+                  mobile
+                  {...(item as any)}
+                  onClick={hideSidebar}
+                  key={i}
+                />
               ))}
             </ul>
           </div>

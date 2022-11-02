@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-  title: 'Redis Developer Hub',
-  tagline: 'The Home of Redis Developers',
+  title: 'The Home of Redis Developers',
+  tagline: 'Learn all the best practices to get up and running with Redis in no time. Get started and discover the power of Redis, whether on your local machines or in the cloud.',
   url: 'https://developer.redis.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -315,7 +315,7 @@ module.exports = {
             '**/*.test.{js,jsx,ts,tsx}',
             '**/__tests__/**',
           ],
-          mdxPageComponent: '@theme/MDXPage',
+        //   mdxPageComponent: '@theme/MDXPage',
           remarkPlugins: [],
           rehypePlugins: [],
           beforeDefaultRemarkPlugins: [],

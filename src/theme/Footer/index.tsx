@@ -7,7 +7,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import { useThemeConfig } from '@docusaurus/theme-common';
+import { useThemeConfig, type FooterLinkItem } from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
@@ -65,7 +65,7 @@ function Footer() {
     copyright,
     links = [],
     logo = { src: undefined, alt: '' },
-  } = footer || {};
+  } = footer ?? {};
   const logoUrl = useBaseUrl(logo.src);
 
   if (!footer) {
@@ -105,38 +105,48 @@ function Footer() {
           <div className="col col--9">
             {links && links.length > 0 && (
               <div className="row footer__links">
-                {links.map((linkItem, i) => (
-                  <div key={i} className="col col--4 footer__col">
-                    {linkItem.title != null ? (
-                      <h4 className="footer__title">
-                        {linkItem.title as string}
-                      </h4>
-                    ) : null}
-                    {linkItem.items != null &&
-                    Array.isArray(linkItem.items) &&
-                    linkItem.items.length > 0 ? (
-                      <ul className="footer__items">
-                        {linkItem.items.map((item, key) =>
-                          item.html ? (
-                            <li
-                              key={key}
-                              className="footer__item" // Developer provided the HTML, so assume it's safe.
-                              dangerouslySetInnerHTML={{
-                                __html: item.html,
-                              }}
-                            />
-                          ) : (
-                            <li
-                              key={item.href || item.to}
-                              className="footer__item">
-                              <FooterLink {...item} />
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    ) : null}
-                  </div>
-                ))}
+                {links.map(
+                  (
+                    linkItem:
+                      | {
+                          title: string;
+                          items: FooterLinkItem[];
+                        }
+                      | FooterLinkItem,
+                    i,
+                  ) => (
+                    <div key={i} className="col col--4 footer__col">
+                      {linkItem.title != null ? (
+                        <h4 className="footer__title">
+                          {linkItem.title as string}
+                        </h4>
+                      ) : null}
+                      {linkItem.items != null &&
+                      Array.isArray(linkItem.items) &&
+                      linkItem.items.length > 0 ? (
+                        <ul className="footer__items">
+                          {linkItem.items.map((item, key) =>
+                            item.html ? (
+                              <li
+                                key={key}
+                                className="footer__item" // Developer provided the HTML, so assume it's safe.
+                                dangerouslySetInnerHTML={{
+                                  __html: item.html,
+                                }}
+                              />
+                            ) : (
+                              <li
+                                key={item.href || item.to}
+                                className="footer__item">
+                                <FooterLink {...item} />
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      ) : null}
+                    </div>
+                  ),
+                )}
               </div>
             )}
           </div>
