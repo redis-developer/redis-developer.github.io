@@ -1,20 +1,15 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React from 'react';
-
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import DocItem from '@docusaurus/theme-classic/lib/theme/DocItem';
-import type { Props } from '@theme/DocItem';
 import styles from './styles.module.css';
 
-function DocItemWrapper(props: Props): JSX.Element {
+interface AuthorsProps {
+  frontMatter: {
+    authors?: string[];
+  };
+}
+
+function Authors({ frontMatter }: AuthorsProps): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
-  const { content: DocContent } = props;
   const authorLookup: Record<
     string,
     { link: string; name: string; title: string; image: string }
@@ -22,13 +17,12 @@ function DocItemWrapper(props: Props): JSX.Element {
 
   return (
     <>
-      {(DocContent.frontMatter as any).authors && (
+      {frontMatter.authors && (
         <div className="docAuthors">
           <hr />
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
-          {(DocContent.frontMatter as any).authors.map((author: string) => {
+          {frontMatter.authors.map((author) => {
             return (
-              <div className={styles.authorByline}>
+              <div key={author} className={styles.authorByline}>
                 <img
                   className={styles.authorProfileImage}
                   src={`/img/${
@@ -53,9 +47,8 @@ function DocItemWrapper(props: Props): JSX.Element {
           <hr />
         </div>
       )}
-      <DocItem {...props} />
     </>
   );
 }
 
-export default DocItemWrapper;
+export default Authors;

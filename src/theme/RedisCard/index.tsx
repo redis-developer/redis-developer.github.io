@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
-import MDXComponents from '@docusaurus/theme-classic/lib/theme/MDXComponents';
+import MDXComponents from '@theme/MDXComponents';
 
 import styles from './styles.module.css';
 import clsx from 'clsx';

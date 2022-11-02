@@ -8,6 +8,13 @@
    min-width: 350px
  }
 
+ .redis-sitesearch .search-root-item .search-root,
+ .redis-sitesearch .search-right .search-section-title,
+ .redis-sitesearch .search-right .search-body,
+ .redis-sitesearch .redis-sitesearch-input {
+    color: black;
+ }
+
  .redis-sitesearch-input {
    padding: 5px 5px 5px 48px
  }

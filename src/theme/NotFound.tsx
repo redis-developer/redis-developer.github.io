@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import Layout from '@docusaurus/theme-classic/lib/theme/Layout';
+import Layout from '@theme/Layout';
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 

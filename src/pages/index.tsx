@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '@docusaurus/theme-classic/lib/theme/Layout';
+import Layout from '@theme/Layout';
 
 import Hero from '@site/src/theme/Hero';
 import Languages from '@site/src/theme/Languages';
