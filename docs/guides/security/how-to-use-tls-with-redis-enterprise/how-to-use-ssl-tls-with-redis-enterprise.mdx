@@ -3,6 +3,7 @@ id: how-to-use-ssl-tls-with-redis-enterprise
 title: How to Use SSL/TLS With Redis Enterprise
 slug: /guide/security/how-to-use-ssl-tls-with-redis-enterprise/
 description: Learn how to secure your Redis databases using SSL
+authors: [tug]
 keywords:
   - java
   - node.js
@@ -11,10 +12,11 @@ keywords:
   - tls
 ---
 
-![Header](/img/guides/security/how-to-use-tls-with-redis-enterprise/000_header.jpeg)
+import Authors from '@site/src/theme/Authors';
 
-- Date: 19-JAN-2021
-- Author: [Tug Grall](https://twitter.com/tgrall)
+<Authors frontMatter={frontMatter} />
+
+![Header](/img/guides/security/how-to-use-tls-with-redis-enterprise/000_header.jpeg)
 
 In this article, I will explain how to secure your Redis databases using SSL (Secure Sockets Layer). In production, it is a good practice to use SSL to protect the data that are moving between various computers (client applications and Redis servers). Transport Level Security (TLS) guarantees that only allowed applications/computers are connected to the database, and also that data is not viewed or altered by a middle man process.
 

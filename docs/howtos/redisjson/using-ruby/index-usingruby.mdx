@@ -6,6 +6,10 @@ slug: /howtos/redisjson/using-ruby
 authors: [ajeet]
 ---
 
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
 rejson-rb is a package that allows storing, updating and querying objects as JSON documents in a Redis database that is extended with the RedisJSON module.
 The package extends redis-rb's interface with RedisJSON's API, and performs on-the-fly serialization/deserialization of objects to/from JSON.
 

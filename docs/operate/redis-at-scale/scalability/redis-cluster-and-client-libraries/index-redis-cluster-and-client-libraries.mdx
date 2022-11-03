@@ -6,8 +6,6 @@ slug: /operate/redis-at-scale/scalability/redis-cluster-and-client-libraries
 custom_edit_url: null
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
 To use a client library with Redis Cluster, the client libraries need to be cluster-aware. Clients that support Redis Cluster typically feature a special connection module for managing connections to the cluster. The process that some of the better client libraries follow usually goes like this:
 
 The client connects to any shard in the cluster and gets the addresses of the rest of the shards. The client also fetches a mapping of hash slots to shards so it can know where to look for a key in a specific hash slot. This hash slot map is cached locally.

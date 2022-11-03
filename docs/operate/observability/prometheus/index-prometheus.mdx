@@ -6,6 +6,10 @@ slug: /operate/observability/prometheus
 authors: [ajeet]
 ---
 
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
 ![My Image](images/prometheus.png)
 
 Time-series data is basically a series of data stored in time order and produced continuously over a long period of time. These measurements and events are tracked, monitored, downsampled, and aggregated over time. The events could be, for example, IoT sensor data. Every sensor is a source of time-series data. Each data point in the series stores the source information and other sensor measurements as labels. Data labels from every source may not conform to the same structure or order.

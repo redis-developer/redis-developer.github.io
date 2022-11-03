@@ -8,8 +8,9 @@ authors: [steve]
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RedisCard from '@site/src/theme/RedisCard';
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
 
 ## Getting Started
 
@@ -25,7 +26,7 @@ There are a few ways to Install the Package:
     {label: '.NET CLI', value: 'cli'},
     {label: 'PM Console', value: 'pmConsole'},
     {label: 'Package Reference', value: 'csproj'},
-    {label: 'NuGet GUI', value: 'gui'}    
+    {label: 'NuGet GUI', value: 'gui'}
   ]}>
   <TabItem value="cli">
 

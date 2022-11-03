@@ -6,8 +6,6 @@ slug: /operate/redis-at-scale/talking-to-redis/client-performance-improvements
 custom_edit_url: null
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
 ## Connection management - Pooling
 
 As we showed in the previous section, Redis clients are responsible for managing connections to the Redis server. Creating and recreating new connections over and over again, creates a lot of unnecessary load on the server. A good client library will offer some way of optimizing connection management, by setting up a connection pool, for example.
