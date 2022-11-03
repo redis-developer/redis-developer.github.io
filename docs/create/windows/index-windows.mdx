@@ -10,6 +10,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RedisCard from '@site/src/theme/RedisCard';
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
 
 You can run Redis on Windows 10 using Windows Subsystem for Linux(a.k.a WSL2). WSL2 is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019. WSL2 lets developers run a GNU/Linux environment (that includes command-line tools, utilities, and applications) directly on Windows.
 
@@ -31,7 +34,7 @@ Reboot Windows after making the change — note that you only need to do this on
  start ms-windows-store:
 ```
 
-Then search for Ubuntu, or your preferred distribution of Linux, and download the latest version. 
+Then search for Ubuntu, or your preferred distribution of Linux, and download the latest version.
 
 ### Step 3: Install Redis server
 

@@ -1,8 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  title: 'Redis Developer Hub',
-  tagline: 'The Home of Redis Developers',
+  title: 'The Home of Redis Developers',
+  tagline:
+    'Learn all the best practices to get up and running with Redis in no time. Get started and discover the power of Redis, whether on your local machines or in the cloud.',
   url: 'https://developer.redis.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -10,6 +11,13 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'redis-developer', // Usually your GitHub org/user name.
   projectName: 'redis-developer', // Usually your repo name.
+  // Even if you don't use internalization, you can use this field to set useful
+  // metadata like html lang. For example, if your site is Chinese, you may want
+  // to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
   customFields: {
     authors: {
       simon: {
@@ -160,136 +168,143 @@ module.exports = {
       },
     },
   },
-  themeConfig: {
-    // ...
-    googleTagManager: {
-      trackingID: 'GTM-W8Z6BLQ',
-    },
-    prism: {
-      additionalLanguages: [
-        'csharp',
-        'php',
-        'ruby',
-        'java',
-        'rust',
-        'elixir',
-        'groovy',
-      ],
-    },
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      // ...
+      googleTagManager: {
+        trackingID: 'GTM-W8Z6BLQ',
+      },
+      prism: {
+        additionalLanguages: [
+          'csharp',
+          'php',
+          'ruby',
+          'java',
+          'rust',
+          'elixir',
+          'groovy',
+        ],
+      },
 
-    navbar: {
-      style: 'dark',
-      title: null,
-      logo: {
-        alt: 'Redis Developer Hub logo',
-        src: 'img/logo-1.png',
+      navbar: {
+        style: 'dark',
+        title: null,
+        logo: {
+          alt: 'Redis Developer Hub logo',
+          src: 'img/logo-1.png',
+        },
+        hideOnScroll: true,
+        items: [
+          {
+            type: 'search',
+            position: 'right',
+          },
+          {
+            to: '/create/rediscloud',
+            activeBasePath: 'docs',
+            label: 'Get started',
+            position: 'right',
+          },
+          {
+            href: 'https://launchpad.redis.com',
+            label: 'Redis Launchpad',
+            position: 'right',
+          },
+          {
+            href: 'https://redis.com/try-free/',
+            label: 'Try Free',
+            position: 'right',
+          },
+        ],
       },
-      hideOnScroll: true,
-      items: [
-        {
-          to: '/create/rediscloud',
-          activeBasePath: 'docs',
-          label: 'Get started',
-          position: 'right',
+      footer: {
+        style: 'dark',
+        logo: {
+          alt: 'Redis logo',
+          src: 'img/redis_logo_red_white_rgb.svg',
+          href: 'https://redis.com/',
         },
-        {
-          href: 'https://launchpad.redis.com',
-          label: 'Redis Launchpad',
-          position: 'right',
-        },
-        {
-          href: 'https://redis.com/try-free/',
-          label: 'Try Free',
-          position: 'right',
-        },
-      ],
-    },
-    footer: {
-      style: 'dark',
-      logo: {
-        alt: 'Redis logo',
-        src: 'img/redis_logo_red_white_rgb.svg',
-        href: 'https://redis.com/',
+        links: [
+          {
+            title: 'Get Started',
+            items: [
+              {
+                label: 'Create Database',
+                to: '/create/rediscloud',
+              },
+              {
+                label: 'Develop',
+                to: '/develop/',
+              },
+              {
+                label: 'Explore your data',
+                to: '/explore/redisinsight/',
+              },
+              {
+                label: 'Best Practices',
+                href: 'https://redis.com/redis-best-practices/introduction/',
+              },
+              // {
+              //   label: 'Tutorials',
+              //   to: '#',
+              // },
+              // {
+              //   label: 'Samples & Demos',
+              //   to: '#',
+              // },
+              {
+                label: 'Redis Stack',
+                href: '/create/redis-stack/',
+              },
+            ],
+          },
+          {
+            title: 'Resources',
+            items: [
+              {
+                label: 'Community',
+                href: 'https://redis.com/community/',
+              },
+              {
+                label: 'Redis University',
+                href: 'https://university.redis.com',
+              },
+              {
+                label: 'Command Reference',
+                href: 'https://redis.io/commands',
+              },
+              {
+                label: 'How-tos & tutorials',
+                to: '/howtos',
+              },
+              //   label: 'Use Cases',
+              //   href: 'https://redis.com/solutions',
+              // },
+            ],
+          },
+        ],
+        copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`,
       },
-      links: [
-        {
-          title: 'Get Started',
-          items: [
-            {
-              label: 'Create Database',
-              to: '/create/rediscloud',
-            },
-            {
-              label: 'Develop',
-              to: '/develop/',
-            },
-            {
-              label: 'Explore your data',
-              to: '/explore/redisinsight/',
-            },
-            {
-              label: 'Best Practices',
-              href: 'https://redis.com/redis-best-practices/introduction/',
-            },
-            // {
-            //   label: 'Tutorials',
-            //   to: '#',
-            // },
-            // {
-            //   label: 'Samples & Demos',
-            //   to: '#',
-            // },
-            {
-              label: 'Redis Stack',
-              href: '/create/redis-stack/',
-            },
-          ],
-        },
-        {
-          title: 'Resources',
-          items: [
-            {
-              label: 'Community',
-              href: 'https://redis.com/community/',
-            },
-            {
-              label: 'Redis University',
-              href: 'https://university.redis.com',
-            },
-            {
-              label: 'Command Reference',
-              href: 'https://redis.io/commands',
-            },
-            {
-              label: 'How-tos & tutorials',
-              to: '/howtos',
-            },
-            //   label: 'Use Cases',
-            //   href: 'https://redis.com/solutions',
-            // },
-          ],
-        },
-      ],
-      copyright: `Copyright: © ${new Date().getFullYear()} Redis. All rights reserved. Redis and the cube logo are registered trademarks of Redis Ltd.`,
-    },
-    colorMode: {
-      // Hides the switch in the navbar
-      // Useful if you want to support a single color mode
-      disableSwitch: false,
-    },
-    announcementBar: {
-      id: 'redisconf20201cfp', // Any value that will identify this message.
-      content:
-        '<p class="text"> RedisDays Available Now On-Demand. </p> <a href="https://redis.com/redisdays/" target="_blank" rel="noopener" class="btn">Learn More</a>',
-      //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
-      backgroundColor: '#fff', // Defaults to `#fff`.
-      textColor: '#000', // Defaults to `#000`.
-      isCloseable: true, // Defaults to `true`.
-    },
-  },
+      colorMode: {
+        // Hides the switch in the navbar
+        // Useful if you want to support a single color mode
+        disableSwitch: false,
+      },
+      announcementBar: {
+        id: 'redisconf20201cfp', // Any value that will identify this message.
+        content:
+          '<p class="text"> RedisDays Available Now On-Demand. </p> <a href="https://redis.com/redisdays/" target="_blank" rel="noopener" class="btn">Learn More</a>',
+        //  content: '<p class="text"></p> <a href="https://redislabs.com/redisconf/" target="_blank" rel="noopener" class="btn"></a>',
+        backgroundColor: '#fff', // Defaults to `#fff`.
+        textColor: '#000', // Defaults to `#000`.
+        isCloseable: true, // Defaults to `true`.
+      },
+    }),
   presets: [
     [
-      '@docusaurus/preset-classic',
+      'classic',
+      /** @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
           routeBasePath: '/',
