@@ -166,6 +166,11 @@ module.exports = {
         title: 'Redis Insider',
         image: 'profile_pic_stevan_thomas.png',
       },
+      sachin: {
+        name: 'Sachin Kottarathodi',
+        title: 'Staff Software Engineer at Walmart Global Tech India',
+        image: 'profile_pic_sachin_kottarathodi.jpg',
+      }
     },
   },
   themeConfig:
