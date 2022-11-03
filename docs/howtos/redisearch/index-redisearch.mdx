@@ -6,6 +6,10 @@ slug: /howtos/redisearch
 authors: [ajeet]
 ---
 
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
 RediSearch is a powerful text search and secondary indexing engine, built on top of Redis as a Redis module. Written in C, RediSearch is extremely fast compared to other open-source search engines. It implements multiple data types and commands that fundamentally change what you can do with Redis. RediSearch supports capabilities for search and filtering such as geo-spatial queries, retrieving only IDs (instead of whole documents), and custom document scoring. Aggregations can combine map, filter, and reduce/group-by operations in custom pipelines that run across millions of elements in an instant.
 
 RediSearch also supports auto-completion with fuzzy prefix matching, and atomic real-time insertion of new documents to a search index. With the latest RediSearch 2.0 release, it’s now easier than ever to create a secondary index on top of your existing data. You can just add RediSearch to your existing Redis database, create an index, and start querying it, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new RediSearch users and lets you create indexes on your existing Redis databases—without even having to restart them.

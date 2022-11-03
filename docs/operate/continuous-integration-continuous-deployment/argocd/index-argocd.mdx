@@ -6,6 +6,10 @@ slug: /operate/continuous-integration-continuous-deployment/argocd
 authors: [ajeet, talon]
 ---
 
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
 ## What is an Argo CD?
 
 Argo CD is a combination of the two terms “Argo” and “CD,” [Argo](https://argoproj.github.io/) being an open source container-native workflow engine for Kubernetes. It is a [CNCF-hosted project](https://www.cncf.io/blog/2020/04/07/toc-welcomes-argo-into-the-cncf-incubator/) that provides an easy way to combine all three modes of computing—services, workflows, and event-based—all of which are very useful for creating jobs and applications on Kubernetes. It is an engine that makes it easy to specify, schedule, and coordinate the running of complex workflows and applications on Kubernetes. The CD in the name refers to [continuous delivery](https://en.wikipedia.org/wiki/Continuous_delivery), which is an extension of continuous integration (CI) since it automatically deploys all code changes to a testing and/or production environment after the build stage.

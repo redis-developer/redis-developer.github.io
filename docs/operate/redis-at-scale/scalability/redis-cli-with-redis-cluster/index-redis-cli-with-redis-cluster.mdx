@@ -6,8 +6,6 @@ slug: /operate/redis-at-scale/scalability/redis-cli-with-redis-cluster
 custom_edit_url: null
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
 When you use `redis-cli` to connect to a shard of a Redis Cluster, you are connected to that shard only, and cannot access data from other shards. If you try to access keys from the wrong shard, you will get a `MOVED` error.
 
 There is a trick you can use with `redis-cli` so you don’t have to open connections to all the shards, but instead you let it do the connect and reconnect work for you. It’s the `redis-cli` cluster support mode, triggered by the `-c` switch:
