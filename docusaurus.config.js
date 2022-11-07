@@ -281,12 +281,16 @@ module.exports = {
                 href: 'https://university.redis.com',
               },
               {
-                label: 'Command Reference',
+                label: 'Redis Commands',
                 href: 'https://redis.io/commands',
               },
               {
                 label: 'How-tos & tutorials',
                 to: '/howtos',
+              },
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/search?q=redis',
               },
               //   label: 'Use Cases',
               //   href: 'https://redis.com/solutions',
