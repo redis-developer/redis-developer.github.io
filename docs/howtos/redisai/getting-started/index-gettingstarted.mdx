@@ -21,7 +21,8 @@ Below is an interesting example of Iris (a genus of species of flowering plants 
 ```bash
  docker run \
    -p 6379:6379 \
-   redislabs/redismod
+   redislabs/redismod \
+   --loadmodule /usr/lib/redis/modules/redisai.so
 ```
 
 You can verify if the RedisAI module is loaded or not by running the following command:
