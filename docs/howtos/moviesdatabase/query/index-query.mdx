@@ -278,7 +278,11 @@ You can run the following query, and you will that the document expires after 20
 
 ```
 
-> Note: When you are using Redis as your primary database you are not necessarily using TTLs to delete records. However, if the data you are storing and indexing are transient, for example a caching layer at the top of another datastore or Web service, query user sessions content, ... This is often qualified as a "[Ephemeral Search](https://redis.com/blog/the-case-for-ephemeral-search/)" use case: lightweight, fast and expiration.
+:::tip
+
+When you are using Redis as your primary database you are not necessarily using TTLs to delete records. However, if the data you are storing and indexing are transient (e.g a caching layer at the top of another datastore or Web service, query user sessions content, etc.), this is often qualified as an "[Ephemeral Search](https://redis.com/blog/the-case-for-ephemeral-search/)" use case: lightweight, fast and expiration.
+
+:::
 
 ---
 

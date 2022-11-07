@@ -35,10 +35,12 @@ To install RedisInsight on your local system, you need to first download the sof
 
 ![My Image](images/redisinsightinstall.png)
 
-:::important
+:::note
 
-If you're using RedisInsight Docker container, you might need to follow the below steps to add a mount point so as to acess the RDB dumps.
+If you're using RedisInsight Docker container, you might need to follow the below steps to add a mount point so as to access the RDB dumps.
+
 :::
+
 It is recommended to add a volume mount point using the ”-v” parameter as shown below:
 
 ```bash
@@ -111,7 +113,7 @@ Click “Proceed”.
 
 ![alt_text](images/image6.png)
 
-:::important
+:::note
 
 If you are using online memory analysis, you will want to have enough space to store the RDB file for your Redis database. This is usually 10-50% of the Redis instance’s memory usage.
 
@@ -131,7 +133,7 @@ You can click on each of these keys patterns(as shown above) and check the memor
 
 RedisInsight provides recommendations on how you can save your memory. The recommendations are specially curated according to your Redis instance. These recommendations have been formed based on industry standards.
 
-:::important
+:::tip
 
 Combine Small Strings to Hash
 
@@ -139,7 +141,8 @@ Small key value pairs in redis consume a lot of memory because a top level key h
 Read Instagram's blog post on how they used this technique to save memory
 Once you combine strings into a larger hash, evaluate hash-max-ziplist-entries and hash-max-ziplist-value settings. You may want to increase them to save even more memory.
 
-Performance comes with a cost. By converting the strings to hash, we will be saving on a lot of memory because it saves only the string value and no extra information like: idle time, expiration, object reference count, and encoding related to it. But if we want the key with the expiration value, we can't associate it with a hash structure as expiration is not available. Read More
+Performance comes with a cost. By converting the strings to hash, we will be saving on a lot of memory because it saves only the string value and no extra information like: idle time, expiration, object reference count, and encoding related to it. But if we want the key with the expiration value, we can't associate it with a hash structure as expiration is not available.
+
 :::
 
 Let us add 1 million keys using redis-benchmark tool:
@@ -161,7 +164,7 @@ Summary:
 
 Click on Recommendations and you will see the below messages
 
-:::important
+:::tip
 
 Avoid unnecessary Long Keys
 
