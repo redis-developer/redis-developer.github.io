@@ -30,7 +30,7 @@ Fortunately, my buddy [Dylan Beattie](https://dylanbeattie.net/) is literally th
 
 We're using Redis as our database—that's the whole idea behind Redis OM. So, you'll need some Redis, specifically with [RediSearch](https://redisearch.io) and [RedisJSON](https://redisjson.io) installed. The easiest way to do this is to set up a free [Redis Cloud](https://redis.com/try-free) instance. But, you can also use Docker:
 
-    $ docker run -p 6379:6379 redislabs/redismod:preview
+    $ docker run -p 6379:6379 redis/redis-stack:latest
 
 I'm assuming you are relatively Node.js savvy so you should be able to get that installed on your own. We'll be using the _top-level await_ feature for modules that was introduced in Node v14.8.0 so do make sure you have that version, or a newer one. If you don't, go and get it.
 

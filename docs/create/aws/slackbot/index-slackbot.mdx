@@ -107,7 +107,7 @@ The [S3 bucket](https://aws.amazon.com/s3/) is a simple storage service from Ama
 This simple container image bundles together the latest stable releases of Redis and select Redis modules from Redis Labs. This image is based on the official image of Redis from Docker. By default, the container starts with Redis' default configuration and all included modules loaded.
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod
+ docker run -d -p 6379:6379 redis/redis-stack
 ```
 
 ### 2. Setup a Python environment

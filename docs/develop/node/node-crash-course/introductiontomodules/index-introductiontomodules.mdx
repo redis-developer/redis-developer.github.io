@@ -22,14 +22,17 @@ Modules are loaded into the Redis server at startup by modifying the redis.conf 
 
 The redis.io website has a [catalog of available modules](https://redis.io/modules). Redis has developed a number of these that extend Redis in different ways, and we'll use some of them in our sample application.
 
-One way to get started with Redis modules is to use the [redismod Docker container](https://registry.hub.docker.com/r/redislabs/redismod) from Docker Hub. This is the container that you're using on this course, and it includes all of the following modules:
+One way to get started with Redis modules is to use the [Redis Stack Docker container](https://registry.hub.docker.com/r/redis/redis-stack) from Docker Hub. This is the container that you're using on this course, and it includes all of the following modules:
 
 - [RediSearch](https://redisearch.io/) - a full-featured search engine.
 - [RedisGraph](https://redisgraph.io/) - a powerful graph database that uses the Cypher query language.
 - [RedisTimeSeries](https://redistimeseries.io/) - a timeseries database.
-- [RedisAI](https://redisai.io/) - a tensor storage and AI model server.
 - [RedisJSON](https://redisjson.io/) - adds a native JSON data type to Redis.
 - [RedisBloom](https://redisbloom.io/) - adds native Bloom and Cuckoo filter data types to Redis, plus other probabilistic data structures.
+
+The following two modules are not currently included in Redis Stack:
+
+- [RedisAI](https://redisai.io/) - a tensor storage and AI model server.
 - [RedisGears](https://redisgears.io/) - a dynamic execution framework for running code on the Redis server.
 
 Redis offers Redis Enterprise Cloud, a fully managed service for running and scaling Redis and Redis modules. [Sign up for Redis Enterprise Cloud](https://redis.com/try-free/) and use the full-featured free tier to try it out!
