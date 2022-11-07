@@ -46,8 +46,12 @@ complete this tutorial.
 The latest version of Redis is available from [Redis.io](https://redis.io/). You
 can also install Redis with your operating system's package manager.
 
-**NOTE:** This tutorial will guide you through starting Redis locally, but the
+:::note
+
+This tutorial will guide you through starting Redis locally, but the
 instructions will also work if Redis is running on a remote server.
+
+:::
 
 ### Installing Redis On Windows
 
@@ -645,9 +649,13 @@ You can view the data stored in Redis for any Redis OM model.
 First, get the key of a model instance you want to inspect. The `key()` method
 will give you the exact Redis key used to store the model.
 
-**NOTE:** The naming of this method may be confusing. This is not the primary
+:::note
+
+The naming of this method may be confusing. This is not the primary
 key, but is instead the Redis key for this model. For this reason, the method
 name may change.
+
+:::
 
 In this example, we're looking at the key created for the `Customer` model we've
 been building:
