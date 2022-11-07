@@ -33,7 +33,7 @@ Let’s dive under the covers and see [Redis Streams](https://redis.io/topics/st
 Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT. You can run a Redis database directly over your local mac os or in a container. If you have Docker installed in your sytem, type the following command:
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod
+ docker run -d -p 6379:6379 redis/redis-stack:latest
 ```
 
 You can connect to Redis server using the `redis-cli` command like this:
@@ -155,13 +155,11 @@ It also displays pending items/messages for the specific streams as shown above.
     target="_blank"
     rel="noopener"
     className="link">
-
     <img
       src="/img/launchpad.png"
       className="thumb"
       loading="lazy"
       alt="Redis Launchpad"
     />
-
   </a>
 </div>

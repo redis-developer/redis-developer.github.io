@@ -9,12 +9,12 @@ RedisJSON lets you store, index, and query JSON data in Redis. Jedis, a Java dri
 
 Follow along with the steps below to get started with Java and RedisJSON.
 
-### 1. Run the RedisMod Docker container
+### 1. Run the Redis Stack Docker container
 
-The RedisMod docker container bundles the Redis modules that power RedisJSON. To get a running Redis instance with RedisJSON, run the following bash command:
+The Redis Stack docker container bundles the Redis modules that power RedisJSON. To get a running Redis instance with RedisJSON, run the following bash command:
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod:latest
+ docker run -d -p 6379:6379 redis/redis-stack:latest
 ```
 
 ### 2. Add Jedis as a Dependency

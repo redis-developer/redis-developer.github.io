@@ -198,11 +198,11 @@ More information in the documentation "[Using Redis with Python](https://develop
 For [Node Redis](http://redis.js.org/), use the [TLS](https://nodejs.org/api/tls.html) library to configure the client connection:
 
 ```javascript
-var redis = require('redis');
-var tls = require('tls');
-var fs = require('fs');
+import { createClient } from 'redis';
+import tls from 'tls';
+import fs from 'fs';
 
-var ssl = {
+const ssl = {
   key: fs.readFileSync(
     '../certificates/client_key_app_001.pem',
     (encoding = 'ascii'),
@@ -217,14 +217,22 @@ var ssl = {
   },
 };
 
-var client = redis.createClient(12000, '127.0.0.1', {
-  password: 'secretdb01',
-  tls: ssl,
+const client = redis.createClient({
+  // replace with your connection string
+  url: 'rediss://localhost:12000',
+  socket: {
+    tls: true,
+    key: ssl.key,
+    cert: ssl.cert,
+    ca: ssl.ca,
+  },
 });
 
 client.info('SERVER', function (err, reply) {
   console.log(reply);
 });
+
+await client.connect();
 ```
 
 More information in the documentation "[Using Redis with Node.js](https://developer.redis.com/develop/node/)".

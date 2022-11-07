@@ -13,10 +13,10 @@ import Authors from '@site/src/theme/Authors';
 rejson-rb is a package that allows storing, updating and querying objects as JSON documents in a Redis database that is extended with the RedisJSON module.
 The package extends redis-rb's interface with RedisJSON's API, and performs on-the-fly serialization/deserialization of objects to/from JSON.
 
-### Step 1. Run RedisJSON docker container
+### Step 1. Run Redis Stack docker container
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod:latest
+ docker run -d -p 6379:6379 redis/redis-stack:latest
 ```
 
 ### Step 2. Install Ruby

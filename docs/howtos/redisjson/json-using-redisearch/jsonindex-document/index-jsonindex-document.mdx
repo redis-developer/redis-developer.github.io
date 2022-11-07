@@ -19,22 +19,20 @@ By exposing its capabilities to other modules, RedisJSON gives RediSearch the ab
 - RediSearch 2.2 or later
 - RediJSON 2.0 or later
 
-### Step 1. Run the "preview" tagged Redismod container
+### Step 1. Run the "latest" tagged Redis Stack container
 
-Please note that this publicly available Docker Image is a community preview and doesn't support Active-Active.This Docker image contains Redis together with the main Redis modules, including RediSearch and RedisJSON. You'll need the preview tag of the image, which you can access as follows:
+This Docker image contains Redis together with the main Redis modules, including RediSearch and RedisJSON. You'll need the latest tag of the image, which you can access as follows:
 
 ```bash
- docker run -p 6379:6379 redislabs/redismod:preview
+ docker run -p 6379:6379 redis/redis-stack:latest
 ```
 
 ```bash
  info modules
  # Modules
- module:name=rg,ver=10006,api=1,filters=0,usedby=[],using=[ai],options=[]
  module:name=graph,ver=20406,api=1,filters=0,usedby=[],using=[],options=[]
  module:name=timeseries,ver=10410,api=1,filters=0,usedby=[],using=[],options=[]
  module:name=bf,ver=20205,api=1,filters=0,usedby=[],using=[],options=[]
- module:name=ai,ver=10003,api=1,filters=0,usedby=[rg],using=[],options=[]
  module:name=ReJSON,ver=20000,api=1,filters=0,usedby=[search],using=[],options=[]
  module:name=search,ver=20200,api=1,filters=0,usedby=[],using=[ReJSON],options=[]
 ```

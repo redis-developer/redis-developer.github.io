@@ -19,10 +19,10 @@ IMDb(Internet Movie Database) is the world's most popular and authoritative sour
 - Node - v13.14.0+
 - NPM - v7.6.0+
 
-### Step 2. Run Redismod Docker container
+### Step 2. Run Redis Stack Docker container
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod
+ docker run -d -p 6379:6379 redis/redis-stack
 ```
 
 Ensure that Docker container is up and running:
@@ -30,7 +30,7 @@ Ensure that Docker container is up and running:
 ```bash
  docker ps
  CONTAINER ID   IMAGE                           COMMAND                  CREATED             STATUS             PORTS                    NAMES
- fd5ef30f025a   redislabs/redismod              "redis-server --load…"   2 hours ago         Up 2 hours         0.0.0.0:6379->6379/tcp   nervous_buck
+ fd5ef30f025a   redis/redis-stack               "redis-server --load…"   2 hours ago         Up 2 hours         0.0.0.0:6379->6379/tcp   nervous_buck
 ```
 
 ### Step 3. Run RedisInsight Docker container
@@ -45,7 +45,7 @@ Ensure that Docker container is up and runnig
  docker ps
  CONTAINER ID   IMAGE                           COMMAND                  CREATED             STATUS             PORTS                    NAMES
  264db1706dcc   redislabs/redisinsight:latest   "bash ./docker-entry…"   About an hour ago   Up About an hour   0.0.0.0:8001->8001/tcp   angry_shirley
- fd5ef30f025a   redislabs/redismod              "redis-server --load…"   2 hours ago         Up 2 hours         0.0.0.0:6379->6379/tcp   nervous_buck
+ fd5ef30f025a   redis/redis-stack               "redis-server --load…"   2 hours ago         Up 2 hours         0.0.0.0:6379->6379/tcp   nervous_buck
 ```
 
 ### Step 4. Clone the repository

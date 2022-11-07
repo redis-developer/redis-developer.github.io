@@ -17,7 +17,7 @@ Find tutorials, examples and technical articles that will help you to develop wi
 ## Getting Started
 
 Golang community has built many client libraries that you can find [here](https://redis.io/clients#go).
-For your first steps with Golang and Redis, this article will show how to use the recommended library: [redigo](https://github.com/gomodule/redigo).
+For your first steps with Golang and Redis, this article will show how to use the recommended library: [go-redis](https://github.com/go-redis/redis).
 
  <Tabs
   defaultValue="go-redis"
@@ -146,7 +146,7 @@ Do check [Redis Cache Library for Golang](https://github.com/go-redis/cache)
 Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT. You can run a Redis database directly over your local mac os or in a container. If you have Docker installed in your sytem, type the following command:
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod
+ docker run -d -p 6379:6379 redis/redis-stack
 ```
 
 You can connect to Redis server using the `redis-cli` command like this:

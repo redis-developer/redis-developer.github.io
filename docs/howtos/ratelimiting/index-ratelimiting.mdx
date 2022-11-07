@@ -282,7 +282,7 @@ Copy config/application.yml.example to config/application.yml
 ### Step 5. Run Redis Docker container
 
 ```bash
- docker run -d -p 6379:6379 redislabs/redismod
+ docker run -d -p 6379:6379 redis/redis-stack:latest
 ```
 
 ### Step 6. Running the app
@@ -377,13 +377,11 @@ You can get permitted_requests_count with this command:
     target="_blank"
     rel="noopener"
     className="link">
-
     <img
       src="/img/launchpad.png"
       className="thumb"
       loading="lazy"
       alt="Redis Launchpad"
     />
-
   </a>
 </div>

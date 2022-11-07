@@ -18,12 +18,12 @@ Node.js is a fast runtime, but adding the power, speed and flexibility of Redis 
 
 We'll use the [node-redis](https://npmjs.com/package/redis) client to connect to Redis and leverage the power of RedisJSON.
 
-### Step 1. Run the redismod Docker Container
+### Step 1. Run the Redis Stack Docker Container
 
 This simple container image bundles together the latest stable releases of Redis and select Redis modules from Redis, Inc.
 
 ```bash
-$ docker run -d -p 6379:6379 redislabs/redismod:latest
+$ docker run -d -p 6379:6379 redis/redis-stack:latest
 ```
 
 ### Step 2. Install Node.js
