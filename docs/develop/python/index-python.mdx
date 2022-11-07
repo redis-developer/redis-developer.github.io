@@ -65,9 +65,8 @@ The following Python code allows you to connect to the default Redis server inst
 ```python
  import redis
 
- redis = redis.Redis(
-     host= 'localhost',
-     port= '6379')
+ pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+ redis = redis.Redis(connection_pool=pool)
 
  redis.set('mykey', 'Hello from Python!')
  value = redis.get('mykey')
