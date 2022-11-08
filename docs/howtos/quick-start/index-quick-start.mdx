@@ -135,7 +135,7 @@ Detailed Windows instructions can be viewed [here](/create/windows)
 <Tabs
   defaultValue="CLI"
   values={[
-    {label: 'CLI/ RedisInsights', value: 'CLI'},
+    {label: 'CLI/ Redis GUI', value: 'CLI'},
     {label: 'NodeJS', value: 'NODEJS'},
     {label: 'C#.Net', value: 'DOT_NET'},
     {label: 'Python', value: 'PYTHON'},
@@ -144,7 +144,10 @@ Detailed Windows instructions can be viewed [here](/create/windows)
 
 <TabItem value="CLI">
 
-- We can connect to Redis using CLI or **[Redis Insights](https://redis.io/docs/stack/insight/)** (a GUI tool to visualize data & run commands)
+- Connect to Redis using CLI or **[RedisInsight](https://redis.io/docs/stack/insight/)** (a GUI tool to visualize data & run commands)
+
+**RedisInsight**
+![RedisInsight](./images/redis-insight.svg)
 
 ```sh
 # syntax 1 : connect using host & port
@@ -161,7 +164,7 @@ redis-cli -u redis://LJenkins:p%40ssw0rd@redis-16379.hosted.com:16379/0
 
 ```
 
-- Basic CLI / RedisInsights workbench commands
+- Basic CLI / RedisInsight workbench commands
 
 ```sh
 # syntax : Check specific keys
@@ -355,10 +358,10 @@ await client.disconnect();
   defaultValue="CLI"
   values={[
     {label: 'CLI/ RedisInsight', value: 'CLI'},
-    {label: 'JS (Redis OM)', value: 'REDIS_OM_JS'},
-    {label: 'Python (Redis OM)', value: 'REDIS_OM_PYTHON'},
-    {label: 'Java (Redis OM)', value: 'REDIS_OM_JAVA'},
-    {label: 'C# (Redis OM)', value: 'REDIS_OM_DOTNET'},
+    {label: 'Javascript', value: 'REDIS_OM_JS'},
+    {label: 'Python', value: 'REDIS_OM_PYTHON'},
+    {label: 'Java', value: 'REDIS_OM_JAVA'},
+    {label: 'C#', value: 'REDIS_OM_DOTNET'},
 ]}>
 
 <TabItem value="CLI">
@@ -526,6 +529,8 @@ Watch video [RediSearch (RedisConf 2020)](https://www.youtube.com/watch?v=9R29LL
 </TabItem>
 
 <TabItem value="REDIS_OM_JS">
+
+[Redis OM Node](https://github.com/redis/redis-om-node) client library is used in below example but you can also use [Node Redis](https://github.com/redis/node-redis), [IO Redis](https://github.com/luin/ioredis) or any other supported [client](https://redis.io/resources/clients/)
 
 ```sh
 # install RedisOM in the project
@@ -745,13 +750,33 @@ Now insert a json item in to redis starting with the prefix specified in the pyt
 
 More resources at [Redis gear sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo),[RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute),[rgsync](https://github.com/RedisGears/rgsync#running-the-recipe),[gears-cli](https://github.com/RedisGears/gears-cli), [RedisGears dynamic script](/howtos/redisgears)
 
-## Probabilistic queries (Bloom)
+## Probabilistic queries
 
-Probabilistic Datatypes Module for Redis
+Redis bloom adds probabilistic Datatypes Module for Redis.
+
+![RedisBloom](./images/redis-bloom.svg)
+
+More details in [docs](https://redis.io/docs/stack/bloom/)
+
+## Graph queries
+
+RedisGraph is a graph database built on Redis.
+
+![RedisGraph](./images/redis-graph.svg)
+
+More details in [docs](https://redis.io/docs/stack/graph/)
+
+## Timeseries queries
+
+RedisTimeSeries is used to ingest and query time series data with Redis
+
+![RedisTimeSeries](./images/redis-timeseries.svg)
+
+More details in [docs](https://redis.io/docs/stack/timeseries/)
 
 ## Links
 
 - Join the [community](/community/)
-- [Redis Insight](https://redis.com/redis-enterprise/redis-insight/)
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/)
 
 </div>
