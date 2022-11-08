@@ -56,6 +56,12 @@ module.exports = {
         title: 'Developer Growth Manager at Redis',
         image: 'profile_pic_will_johnston.jpg',
       },
+      prasan: {
+        name: 'Prasan Kumar',
+        link: 'https://www.linkedin.com/in/prasankumar93/',
+        title: 'Technical Solutions Developer at Redis',
+        image: 'profile_pic_prasan_kumar.jpg',
+      },
       ryan: {
         name: 'Ryan Gray',
         link: 'https://www.linkedin.com/in/ryan-t-gray/',
@@ -211,7 +217,8 @@ module.exports = {
             position: 'right',
           },
           {
-            to: '/create/rediscloud',
+            to: '/howtos/quick-start',
+            //to: '/create/rediscloud',
             activeBasePath: 'docs',
             label: 'Get started',
             position: 'right',
@@ -305,14 +312,14 @@ module.exports = {
         // Useful if you want to support a single color mode
         disableSwitch: false,
       },
-    //   announcementBar: {
-    //     id: 'redisconf20201cfp', // Any value that will identify this message.
-    //     content:
-    //       '<a href="https://redis.com/redisdays/" target="_blank" rel="noopener">RedisDays Available Now On-Demand.</a>',
-    //     backgroundColor: '#fff', // Defaults to `#fff`.
-    //     textColor: '#000', // Defaults to `#000`.
-    //     isCloseable: true, // Defaults to `true`.
-    //   },
+      //   announcementBar: {
+      //     id: 'redisconf20201cfp', // Any value that will identify this message.
+      //     content:
+      //       '<a href="https://redis.com/redisdays/" target="_blank" rel="noopener">RedisDays Available Now On-Demand.</a>',
+      //     backgroundColor: '#fff', // Defaults to `#fff`.
+      //     textColor: '#000', // Defaults to `#000`.
+      //     isCloseable: true, // Defaults to `true`.
+      //   },
     }),
   presets: [
     [

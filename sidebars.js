@@ -71,6 +71,7 @@ module.exports = {
           ],
         },
         'create/homebrew/index-homebrew',
+        'create/linux/index-linux',
         'create/windows/index-windows',
         'create/from-source/index-from-source',
         'create/jenkins/index-jenkins',
@@ -450,6 +451,7 @@ module.exports = {
       label: 'HowTos & Tutorials',
       items: [
         'howtos/index-howtos',
+        'howtos/quick-start/index-quick-start',
         'howtos/redisearch/index-redisearch',
         {
           type: 'category',

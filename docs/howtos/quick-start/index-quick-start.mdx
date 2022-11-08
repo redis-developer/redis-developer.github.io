@@ -1,0 +1,757 @@
+---
+id: index-quick-start
+title: Quick Start
+sidebar_label: Quick Start
+slug: /howtos/quick-start
+authors: [prasan]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Authors from '@site/src/theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+<div class="cst-tabs-page">
+
+## Setup Redis
+
+Use one of the following ways to set up Redis :
+
+- **Cloud** : Hosted and serverless database-as-a-service (DBaaS). The fastest way to deploy Redis Enterprise via Amazon AWS, Google Cloud Platform or Microsoft Azure.
+  - [Getting Started](/create/rediscloud), [Videos](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K),
+    [Free Signup](https://app.redislabs.com/#/login)
+- **OnPrem/ Desktop** : A self-managed data platform that unlocks the full potential of Redis at enterprise scale on various operating systems like Mac OS, Windows or Linux.
+
+<Tabs
+  defaultValue="MAC_OS"
+  values={[
+    {label: 'Mac OS', value: 'MAC_OS'},
+    {label: 'Linux', value: 'LINUX'},
+    {label: 'Docker', value: 'DOCKER'},
+    {label: 'Windows', value: 'WINDOWS'}
+  ]}>
+
+<TabItem value="MAC_OS">
+
+```sh
+# install redis-stack
+brew tap redis-stack/redis-stack
+brew install --cask redis-stack
+
+# start redis-stack
+redis-stack-server
+```
+
+Detailed MacOS instructions can be viewed [here](/create/homebrew/)
+
+</TabItem>
+
+<TabItem value="LINUX">
+
+- **Ubuntu** (16.04, 18.04, 20.04)
+
+```sh
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+sudo apt-get update
+sudo apt-get install redis-stack-server
+```
+
+- **RHEL/ CentOS** (7, 8)
+
+Create the file /etc/yum.repos.d/redis.repo with the following contents
+
+```
+[Redis]
+name=Redis
+baseurl=http://packages.redis.io/rpm/rhel7
+enabled=1
+gpgcheck=1
+```
+
+```sh
+curl -fsSL https://packages.redis.io/gpg > /tmp/redis.key
+sudo rpm --import /tmp/redis.key
+sudo yum install epel-release
+sudo yum install redis-stack-server
+```
+
+Detailed Linux instructions can be viewed [here](/create/linux/)
+
+</TabItem>
+<TabItem value="DOCKER">
+
+Below docker run command exposes RedisServer on 6379 and RedisInsight on port 8001.
+You can use RedisInsight by pointing your browser to localhost:8001.
+
+```sh
+# install
+docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+```
+
+You can use redis-cli to connect to the server.
+If you don’t have redis-cli installed locally, you can run it from the Docker container like below:
+
+```sh
+# connect
+docker exec -it redis-stack redis-cli
+```
+
+Detailed Docker instructions can be viewed [here](/create/docker/redis-on-docker)
+
+</TabItem>
+
+<TabItem value="WINDOWS">
+
+Redis is not officially supported on Windows, but can be installed via WSL2 (Windows Subsystem for Linux) for development purpose
+
+- Enable [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) to run Ubuntu on Windows and follow below Ubuntu steps
+
+```sh
+ sudo apt-add-repository ppa:redislabs/redis
+ sudo apt-get update
+ sudo apt-get upgrade
+ sudo apt-get install redis-server
+```
+
+```
+# Restart the Redis server
+sudo service redis-server restart
+
+# Connect to Redis
+redis-cli
+```
+
+Detailed Windows instructions can be viewed [here](/create/windows)
+
+</TabItem>
+
+</Tabs>
+
+## Basic Querying
+
+<Tabs
+  defaultValue="CLI"
+  values={[
+    {label: 'CLI/ RedisInsights', value: 'CLI'},
+    {label: 'NodeJS', value: 'NODEJS'},
+    {label: 'C#.Net', value: 'DOT_NET'},
+    {label: 'Python', value: 'PYTHON'},
+    {label: 'Java', value: 'JAVA'},
+  ]}>
+
+<TabItem value="CLI">
+
+- We can connect to Redis using CLI or **[Redis Insights](https://redis.io/docs/stack/insight/)** (a GUI tool to visualize data & run commands)
+
+```sh
+# syntax 1 : connect using host & port
+redis-cli -h host -p port -a password
+
+# example 1
+redis-cli -h redis15.localnet.org -p 6390 -a myUnguessablePassword
+
+# syntax 2 : connect using uri
+redis-cli -u redis://user:password@host:port/dbnum
+
+# example 2
+redis-cli -u redis://LJenkins:p%40ssw0rd@redis-16379.hosted.com:16379/0
+
+```
+
+- Basic CLI / RedisInsights workbench commands
+
+```sh
+# syntax : Check specific keys
+keys pattern
+
+# example
+keys *
+
+#------------
+# syntax : Check number of keys in database
+dbsize
+
+#------------
+# syntax : set a key value
+set key value EX expirySeconds
+
+# example
+set company redis EX 60
+
+#------------
+# syntax : get value by key
+get key
+
+# example
+get company
+
+#------------
+# syntax : delete keys
+del key1 key2 key3 ... keyN
+
+# example
+del company
+
+#------------
+# syntax : Check if key exists
+exists key1
+
+# example
+exists company
+
+#------------
+# syntax : set expiry to key
+expire key seconds
+
+# example
+expire lastname 60
+
+#------------
+# syntax : remove expiry from key
+persist key
+
+# example
+persist lastname
+
+#------------
+# syntax : find (remaining) time to live of a key
+ttl key
+
+# example
+ttl lastname
+
+#------------
+# syntax : increment a number
+incr key
+
+# example
+incr counter
+
+#------------
+# syntax : decrement a number
+decr key
+
+# example
+decr counter
+```
+
+Detailed CLI instructions can be viewed [here](https://redis.io/docs/manual/cli/) and
+commands can be checked [here](https://redis.io/commands/)
+
+</TabItem>
+
+<TabItem value="NODEJS">
+
+```sh
+# install redis in the project
+npm install redis --save
+```
+
+```js
+//create client & connect to redis
+
+import { createClient } from 'redis';
+
+const client = createClient({
+  //redis[s]://[[username][:password]@][host][:port][/db-number]
+  url: 'redis://alice:foobared@awesome.redis.server:6380',
+});
+
+client.on('error', (err) => console.log('Redis Client Error', err));
+
+await client.connect();
+```
+
+```js
+// Check specific keys
+const pattern = '*';
+await client.keys(pattern);
+
+#------------
+// Check number of keys in database
+await client.dbsize();
+
+#------------
+// set key value
+await client.set('key', 'value');
+await client.set('key', 'value', {
+  EX: 10,
+  NX: true,
+});
+
+#------------
+// get value by key
+const value = await client.get('key');
+
+#------------
+//syntax : delete keys
+await client.del('key');
+const keyArr = ['key1', 'key2', 'key3'];
+await client.del(...keyArr);
+
+#------------
+// Check if key exists
+await client.exists('key');
+
+#------------
+// set expiry to key
+const expireInSeconds = 30;
+await client.expire('key', expireInSeconds);
+
+#------------
+// remove expiry from key
+await client.persist('key');
+
+#------------
+// find (remaining) time to live of a key
+await client.ttl('key');
+
+#------------
+// increment a number
+await client.incr('key');
+
+#------------
+// decrement a number
+await client.decr('key');
+
+#------------
+//use below style for unsupported commands by client library
+await client.sendCommand(['SET', 'key', 'value']);
+```
+
+```js
+//graceful disconnecting
+await client.quit();
+
+//forceful disconnecting
+await client.disconnect();
+```
+
+- More details at [Github repo](https://github.com/redis/node-redis) and also check Javascript/ NodeJS apps at [Redis Launchpad](https://launchpad.redis.com/)
+
+</TabItem>
+<TabItem value="JAVA">
+- TODO: similar commands to be written
+
+</TabItem>
+<TabItem value="PYTHON">
+
+- TODO: similar commands to be written
+
+</TabItem>
+<TabItem value="DOT_NET">
+
+- TODO: similar commands to be written
+
+</TabItem>
+</Tabs>
+
+## Secondary indexing & searching JSON
+
+<Tabs
+  defaultValue="CLI"
+  values={[
+    {label: 'CLI/ RedisInsight', value: 'CLI'},
+    {label: 'JS (Redis OM)', value: 'REDIS_OM_JS'},
+    {label: 'Python (Redis OM)', value: 'REDIS_OM_PYTHON'},
+    {label: 'Java (Redis OM)', value: 'REDIS_OM_JAVA'},
+    {label: 'C# (Redis OM)', value: 'REDIS_OM_DOTNET'},
+]}>
+
+<TabItem value="CLI">
+
+**RedisJSON** adds JSON data type for Redis.
+
+```sh
+# syntax : set an object value to a key
+JSON.SET objKey $ value
+
+# example
+JSON.SET person $ '{"name":"Leonard Cohen","dob":1478476800,"isActive": true, "hobbies":["music", "cricket"]}'
+
+#------------
+# syntax : get object value of a key
+JSON.GET objKey $
+
+# example
+JSON.GET person $
+
+#------------
+# syntax : find object key length
+JSON.OBJLEN objKey $
+
+# example
+JSON.OBJLEN person $
+
+#------------
+# syntax : find object keys
+JSON.OBJKEYS objKey $
+
+# example
+JSON.OBJKEYS person $
+
+#------------
+# syntax : update nested property
+JSON.SET objKey $.prop value
+
+# example
+JSON.SET person $.name '"Alex"'
+
+#------------
+# syntax : update nested array
+JSON.SET objKey $.arrayProp fullValue
+JSON.SET objKey $.arrayProp[index] value
+
+# example
+JSON.SET person $.hobbies '["music", "cricket"]'
+JSON.SET person $.hobbies[1] '"dance"'
+
+#------------
+# syntax : remove nested array item by index
+JSON.ARRPOP objKey $.arrayProp index
+
+# example
+JSON.ARRPOP person $.hobbies 1
+```
+
+More RedisJSON details can be found in [docs](https://redis.io/docs/stack/json/)
+
+---
+
+**Redis Search** is a query and indexing engine for Redis, providing secondary indexing, full-text search and aggregations capabilities.
+
+- We have to create index on schema to be able to search on its data
+
+```sh
+# syntax
+FT.CREATE {index_name} ON JSON SCHEMA {json_path} AS {attribute} {type}
+# note : attribute = logical name,  json_path = JSONPath expressions
+
+# example
+FT.CREATE userIdx ON JSON SCHEMA $.user.name AS name TEXT $.user.hobbies AS hobbies TAG $.user.age as age NUMERIC
+# note : Can search by any attribute mentioned in the above index.
+```
+
+- More details on Indexing JSON can be found [here](https://redis.io/docs/stack/search/indexing_json/)
+
+Once index is created, any pre-existing/ new/ modified JSON document is automatically indexed.
+
+```json
+//sample json document
+{
+  "user": {
+    "name": "John Smith",
+    "hobbies": "foo,bar",
+    "age": 23
+  }
+}
+```
+
+```sh
+# adding JSON document
+JSON.SET myDoc $ '{"user":{"name":"John Smith","hobbies":"foo,bar","age":23}}'
+```
+
+- Search
+
+```sh
+# search all user documents with name 'John'
+FT.SEARCH userIdx '@name:(John)'
+
+# output
+1) (integer) 1
+2) "myDoc"
+3) 1) "$"
+   2)  {"user":{"name":"John Smith","hobbies":"foo,bar","age":23}}"
+```
+
+- Search & project required fields
+
+```sh
+# search documents with name 'John' & project only age field
+FT.SEARCH userIdx '@name:(John)' RETURN 1 $.user.age
+
+# output
+1) (integer) 1
+2) "myDoc"
+3) 1) "$.user.age"
+   2) "23"
+```
+
+```sh
+# project multiple fields
+FT.SEARCH userIdx '@name:(John)' RETURN 2 $.user.age $.user.name
+
+# output
+1) (integer) 1
+2) "myDoc"
+3) 1) "$.user.age"
+   2) "23"
+   3) "$.user.name"
+   4) "John Smith"
+
+#------------
+# project with alias name
+FT.SEARCH userIdx '@name:(John)' RETURN 3 $.user.age AS userAge
+
+1) (integer) 1
+2) "myDoc"
+3) 1) "userAge"
+   2) "23"
+#------------
+
+# multi field query
+FT.SEARCH userIdx '@name:(John) @hobbies:{foo | me} @age:[20 30]'
+
+# output
+1) (integer) 1
+2) "myDoc"
+3) 1) "$"
+   2)  {"user":{"name":"John Smith","hobbies":"foo,bar","age":23}}"
+```
+
+More details on [query syntax](https://redis.io/docs/stack/search/reference/query_syntax/)
+
+- Drop index
+
+```sh
+FT.DROPINDEX userIdx
+```
+
+Watch video [RediSearch (RedisConf 2020)](https://www.youtube.com/watch?v=9R29LLWquME), also more details can be found in [docs](https://redis.io/docs/stack/search/)
+
+</TabItem>
+
+<TabItem value="REDIS_OM_JS">
+
+```sh
+# install RedisOM in the project
+npm install redis-om --save
+```
+
+- create RedisOM Client & connect to redis
+
+```js
+//client.js file
+
+import { Client } from 'redis-om';
+
+// pulls the Redis URL from .env
+const url = process.env.REDIS_URL;
+
+const client = new Client();
+await client.open(url);
+
+export default client;
+```
+
+- Create Entity, Schema & Repository
+
+```js
+//person.js file
+
+import { Entity, Schema } from 'redis-om';
+import client from './client.js';
+
+class Person extends Entity {}
+
+const personSchema = new Schema(Person, {
+  firstName: { type: 'string' },
+  lastName: { type: 'string' },
+  age: { type: 'number' },
+  verified: { type: 'boolean' },
+  location: { type: 'point' },
+  locationUpdated: { type: 'date' },
+  skills: { type: 'string[]' },
+  personalStatement: { type: 'text' },
+});
+
+export const personRepository = client.fetchRepository(personSchema);
+
+//creating index to make person schema searchable
+await personRepository.createIndex();
+```
+
+```js
+import { Router } from 'express';
+import { personRepository } from 'person.js';
+```
+
+- Insert sample
+
+```js
+let input = {
+  firstName: 'Rupert',
+  lastName: 'Holmes',
+  age: 75,
+  verified: false,
+  location: {
+    longitude: 45.678,
+    latitude: 45.678,
+  },
+  locationUpdated: '2022-03-01T12:34:56.123Z',
+  skills: ['singing', 'songwriting', 'playwriting'],
+  personalStatement: 'I like piña coladas and walks in the rain',
+};
+const person = await personRepository.createAndSave(input);
+```
+
+- Read sample
+
+```js
+const id = '01FX8N39YVZRCQNAW0R5T53H5T';
+const person = await personRepository.fetch(id);
+```
+
+- Update sample
+
+```js
+const person = await personRepository.fetch(req.params.id);
+
+person.firstName = 'Alex';
+
+//null to remove that field
+person.lastName = null;
+
+await personRepository.save(person);
+```
+
+- Update location sample
+
+```js
+const id = '01G79HZ6P3WYWFTY36JF6H3529';
+const longitude = Number('45.678');
+const latitude = 45.678;
+const locationUpdated = new Date();
+
+const person = await personRepository.fetch(id);
+person.location = { longitude, latitude };
+person.locationUpdated = locationUpdated;
+await personRepository.save(person);
+```
+
+- Delete sample
+
+```js
+await personRepository.remove(req.params.id);
+```
+
+- Search samples
+
+```js
+//get all records of persons
+const queryBuilder = personRepository.search();
+const persons = await queryBuilder.return.all();
+
+//"multiple and" condition sample
+const queryBuilder = personRepository
+  .search()
+  .where('verified')
+  .eq(true) // ==
+  .and('age')
+  .gte(21) // >=
+  .and('lastName')
+  .eq(lastName);
+//console.log(queryBuilder.query);
+const persons = await queryBuilder.return.all();
+
+// "OR" condition sample
+const queryBuilder = personRepository
+  .search()
+  .where('verified')
+  .eq(true)
+  .or((search) => search.where('age').gte(21).and('lastName').eq(lastName))
+  .sortAscending('age');
+const persons = await queryBuilder.return.all();
+```
+
+Useful links : [Github repo](https://github.com/redis/redis-om-node) and [getting started docs](https://redis.io/docs/stack/get-started/tutorials/stack-node/),
+[getting started video](https://www.youtube.com/watch?v=KUfufrwpBkM) and it's [source code](https://github.com/redis-developer/express-redis-om-workshop)
+
+</TabItem>
+
+<TabItem value="REDIS_OM_PYTHON">
+
+</TabItem>
+
+<TabItem value="REDIS_OM_JAVA">
+
+</TabItem>
+
+<TabItem value="REDIS_OM_DOTNET">
+
+</TabItem>
+</Tabs>
+
+## Sync with other databases
+
+RedisGears adds dynamic execution framework for your Redis data.
+
+Consider following example to sync data with MongoDB.
+
+- Create the below python file and update the MongoDB connection details, database, collection and primary key name to be synced
+
+```python
+# movies-write-behind.py
+
+# Gears Recipe for a single write behind
+
+# import redis gears & mongo db libs
+from rgsync import RGJSONWriteBehind, RGJSONWriteThrough
+from rgsync.Connectors import MongoConnector, MongoConnection
+
+# change mongodb connection
+connection = MongoConnection("", "", "", "", "ENV_MONGODB_CONNECTION_URL")
+
+# change MongoDB database
+db = 'ENV_DB_NAME'
+
+# change MongoDB collection & it's primary key
+collection1Connector = MongoConnector(connection, db, 'ENV_COLLECTION1_NAME', 'ENV_COLLECTION1_PRIMARY_KEY')
+
+# change redis keys with prefix that must be synced with mongodb collection
+RGJSONWriteBehind(GB,  keysPrefix='ENV_COLLECTION1_PREFIX_KEY',
+                  connector=collection1Connector, name='Collection1WriteBehind',
+                  version='99.99.99')
+```
+
+```env
+ENV_MONGODB_CONNECTION_URL=mongodb://usrAdmin:passwordAdmin@10.10.20.2:27017/dbSpeedMernDemo?authSource=admin
+ENV_DB_NAME=dbSpeedMernDemo
+ENV_COLLECTION1_NAME=movies
+ENV_COLLECTION1_PRIMARY_KEY=movieId
+ENV_COLLECTION1_PREFIX_KEY=movie
+```
+
+Above code shows keys starting with "movie" in Redis will be synced with "movies" collection of MongoDB
+
+- Created python file must be loaded in redis server
+
+```sh
+redis-cli rg.pyexecute "`cat movies-write-behind.py`" REQUIREMENTS rgsync pymongo==3.12.0
+```
+
+Now insert a json item in to redis starting with the prefix specified in the python file
+
+```sh
+# redis cli command
+> JSON.SET movie:123 $ '{"movieId":123,"name":"RRR","isActive": true}'
+```
+
+- Now, verify whether the json is inserted in MongoDB
+
+More resources at [Redis gear sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo),[RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute),[rgsync](https://github.com/RedisGears/rgsync#running-the-recipe),[gears-cli](https://github.com/RedisGears/gears-cli), [RedisGears dynamic script](/howtos/redisgears)
+
+## Probabilistic queries (Bloom)
+
+Probabilistic Datatypes Module for Redis
+
+## Links
+
+- Join the [community](/community/)
+- [Redis Insight](https://redis.com/redis-enterprise/redis-insight/)
+
+</div>
