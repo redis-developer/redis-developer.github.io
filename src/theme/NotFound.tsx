@@ -10,7 +10,7 @@ import Layout from '@theme/Layout';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import SvgDots from '@site/src/svg/Dots';
-import Typed from '@site/src/theme/Typed';
+import Typed from '@theme/Typed';
 
 function NotFound() {
   return (

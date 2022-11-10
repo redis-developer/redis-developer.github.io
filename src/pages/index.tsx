@@ -1,11 +1,11 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 
-import Hero from '@site/src/theme/Hero';
-import Languages from '@site/src/theme/Languages';
-import Launchpad from '@site/src/theme/Launchpad';
-import Demos from '@site/src/theme/Demos';
-import Resources from '@site/src/theme/Resources';
+import Hero from '@theme/Hero';
+import Languages from '@theme/Languages';
+import Launchpad from '@theme/Launchpad';
+import Demos from '@theme/Demos';
+import Resources from '@theme/Resources';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 function Home() {

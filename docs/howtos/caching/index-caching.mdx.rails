@@ -8,7 +8,7 @@ slug: /howtos/caching
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RedisCard from '@site/src/theme/RedisCard';
+import RedisCard from '@theme/RedisCard';
 
 ![My Image](caching.png)
 
@@ -68,4 +68,4 @@ npm run serve
 
 ```
 rails s
-```  
+```
