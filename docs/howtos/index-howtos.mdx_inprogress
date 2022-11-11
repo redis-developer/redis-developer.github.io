@@ -5,7 +5,7 @@ sidebar_label: Redis HowTos
 slug: /howtos
 ---
 
-import RedisCard from '@site/src/theme/RedisCard';
+import RedisCard from '@theme/RedisCard';
 
 This page holds a catalog with dozens of ready-to-use app listings from Redis. Now it is easy to build, test and  deploy software that runs using Redis.
 
@@ -13,9 +13,9 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
 <div class="row">
 
  <div class="col">
-     <RedisCard 
-        title="Rate Limiting" 
-        description="How to build a Rate Limter using Redis" 
+     <RedisCard
+        title="Rate Limiting"
+        description="How to build a Rate Limter using Redis"
         preview="ratelimiting.png"
         page="/howtos/ratelimiting/"
         />
@@ -23,9 +23,9 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
 
 
  <div class="col">
-    <RedisCard 
-        title="Shopping Cart" 
-        description="Implementing a Shopping Cart using NodeJS & RedisJSON" 
+    <RedisCard
+        title="Shopping Cart"
+        description="Implementing a Shopping Cart using NodeJS & RedisJSON"
         page="/howtos/shoppingcart/"
         />
  </div>
@@ -34,18 +34,18 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
 <div class="row">
 
  <div class="col">
-    <RedisCard 
-        title="Movies Database" 
-        description="How to search and list Movies database using RediSearch" 
+    <RedisCard
+        title="Movies Database"
+        description="How to search and list Movies database using RediSearch"
         page="/howtos/moviesdatabase/getting-started"
         />
  </div>
 
 
  <div class="col">
-    <RedisCard 
-        title="Leaderboard" 
-        description="Building a Real-Time Leaderboard using Reds" 
+    <RedisCard
+        title="Leaderboard"
+        description="Building a Real-Time Leaderboard using Reds"
         page="/howtos/leaderboard"
         />
  </div>
@@ -90,4 +90,3 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
         />
  </div>
 </div>
-
