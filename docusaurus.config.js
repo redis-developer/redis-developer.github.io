@@ -194,6 +194,7 @@ module.exports = {
           'rust',
           'elixir',
           'groovy',
+          'sql'
         ],
       },
 

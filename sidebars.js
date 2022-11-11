@@ -583,5 +583,12 @@ module.exports = {
         'get-involved/devcember/index-devcember',
       ],
     },
+    {
+      type: 'category',
+      label: 'E-books',
+      items: [
+        'ebooks/nosql-data-modeling-patterns'
+      ],
+    },
   ],
 };
