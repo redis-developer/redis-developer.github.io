@@ -14,9 +14,9 @@ RedisInsight profiler analyzes your Redis commands that are being run on the Red
 
 It basically runs the Redis MONITOR command and generates a summarized view. MONITOR is a debugging command that streams back every command processed by the Redis server. It can help in understanding what is happening to the database. This command can both be used via `redis-cli` and via `telnet`.All the commands sent to the redis instance are monitored for the duration of the profiling. The ability to see all the requests processed by the server is useful in order to spot bugs in an application both when using Redis as a database and as a distributed caching system.
 
-:::important
+:::caution
 
-Because MONITOR streams back all commands, its use comes at a cost.Running monitor command is dangerous to the performance of your production server, hence the profiler is run for a maximum time of 5 minutes, if the user has not stopped it in between. This is to avoid overload on the Redis server.
+Because MONITOR streams back all commands, its use comes at a cost. Running monitor command is dangerous to the performance of your production server, hence the profiler is run for a maximum time of 5 minutes, if the user has not stopped it in between. This is to avoid overload on the Redis server.
 
 :::
 
@@ -30,18 +30,23 @@ Visit [https://developer.redis.com/create/rediscloud](https://developer.redis.co
 
 You can use Redis CLI to connect to the remote Redis Enterprise cloud database. You can check memory usage with the Redis `INFO` command.
 
-:::info TIP
+:::tip
+
 RedisInsight allows you to add a Redis Sentinel database too. Refer to the [documentation](https://docs.redis.com/latest/ri/using-redisinsight/add-instance/#add-a-redis-sentinel-database) to learn more.
+
 :::
 
 ## Step 2: Download RedisInsight
 
-:::note TIP
+:::tip
+
 RedisInsight v2.0 is an open source visual tool that lets you do both GUI- and CLI-based interactions with your Redis database.
 It is an open source visual tool that lets you do both GUI- and CLI-based interactions with your Redis database . It is a desktop manager that provides an intuitive and efficient GUI for Redis, allowing you to interact with your databases, monitor, and manage your data.
 
 [Refer to these tutorials](/explore/redisinsightv2/) to learn more about this latest release.
+
 :::
+
 To install RedisInsight on your local system, you need to first download the software from the Redis website.
 
 [Click this link](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.

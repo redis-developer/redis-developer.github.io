@@ -114,7 +114,11 @@ Once you have a `pyproject.toml` file, and assuming you already added FastAPI an
 
     	$ poetry add aioredis@2.0.0
 
-**NOTE**: This tutorial uses aioredis-py 2.0. The 2.0 version of aioredis-py features an API that matches the most popular synchronous Redis client for Python, [redis-py](https://github.com/andymccurdy/redis-py).
+:::note
+
+This tutorial uses aioredis-py 2.0. The 2.0 version of aioredis-py features an API that matches the most popular synchronous Redis client for Python, [redis-py](https://github.com/andymccurdy/redis-py).
+
+:::
 
 The aioredis-py client is now installed. Time to write some code!
 
@@ -132,7 +136,11 @@ Let's look at each of these integration points in more detail.
 
 The data for our app consists of 30-second averages of Bitcoin prices and sentiment ratings for the last 24 hours. We pull these from the [SentiCrypt API](https://senticrypt.com/docs.html).
 
-**NOTE**: We have no affiliation with SentiCrypt or any idea how accurate these numbers are. This example is **just for fun**!
+:::note
+
+We have no affiliation with SentiCrypt or any idea how accurate these numbers are. This example is **just for fun**!
+
+:::
 
 We're going to store price and sentiment averages in a timeseries with RedisTimeSeries, so we want to make sure that when the app starts up, the timeseries exists.
 
@@ -170,7 +178,11 @@ async def make_timeseries(key):
 
 ```
 
-**TIP**: An interesting point to note from this code is that when we create a timeseries, we can use the `DUPLICATE_POLICY` option to specify how to handle duplicate pairs of timestamp and values.
+:::tip
+
+When you create a timeseries, use the `DUPLICATE_POLICY` option to specify how to handle duplicate pairs of timestamp and values.
+
+:::
 
 ### Storing Sentiment and Price Data in RedisTimeSeries
 

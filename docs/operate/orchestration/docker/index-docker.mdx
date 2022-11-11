@@ -29,7 +29,11 @@ If you're new, refer to [Docker's installation guide](https://docs.docker.com/do
 
 To pull and start the Redis Enterprise Software Docker container, run this `docker run` command in the terminal or command-line for your operating system.
 
-Note: On Windows, make sure Docker is configured to run Linux-based containers.
+:::note
+
+On Windows, make sure Docker is configured to run Linux-based containers.
+
+:::
 
 ```
 docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
@@ -135,7 +139,11 @@ Execute the following command to test the Redis server:
 PONG
 ```
 
-Please note: By default, Redis uses 0-15 as indexes for databases, you can change that number in `redis.conf`.
+:::note
+
+By default, Redis uses 0-15 as indexes for databases, you can change that number in `redis.conf`.
+
+:::
 
 ### Step 5: Running Redis container with Persistent Storage
 
