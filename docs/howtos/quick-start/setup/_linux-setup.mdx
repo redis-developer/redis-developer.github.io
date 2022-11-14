@@ -1,0 +1,30 @@
+
+- **Ubuntu** (16.04, 18.04, 20.04)
+
+```sh
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+sudo apt-get update
+sudo apt-get install redis-stack-server
+```
+
+- **RHEL/ CentOS** (7, 8)
+
+Create the file /etc/yum.repos.d/redis.repo with the following contents
+
+```
+[Redis]
+name=Redis
+baseurl=http://packages.redis.io/rpm/rhel7
+enabled=1
+gpgcheck=1
+```
+
+```sh
+curl -fsSL https://packages.redis.io/gpg > /tmp/redis.key
+sudo rpm --import /tmp/redis.key
+sudo yum install epel-release
+sudo yum install redis-stack-server
+```
+
+Detailed Linux instructions can be viewed [here](/create/linux/)
