@@ -6,7 +6,7 @@ slug: /howtos/frauddetection
 authors: [ajeet, sachin]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -138,7 +138,13 @@ Gist: https://gist.github.com/Sachin-Kottarathodi/c3a0647d3fdd0fe8a76425e0594e11
 	RedisConn().redis().xadd(Constants.STREAM_NAME, data, id='*')
 ```
 
-In the above code, Cuckoo Filter is used to find blacklisted IP fraud. Cuckoo Filter is a probabilistic data structure that’s part of the module, RedisBloom. Checking for existence of IP in Cuckoo Filter is done using the cfExists method provided by bloom client. Please note that Cuckoo Filter can return false positives. To configure the error rate, cf.reserve command can be used to create the filter and custom bucket size can be provided.
+In the above code, Cuckoo Filter is used to find blacklisted IP fraud. Cuckoo Filter is a probabilistic data structure that’s part of the module, RedisBloom. Checking for existence of IP in Cuckoo Filter is done using the cfExists method provided by bloom client.
+
+:::tip
+
+The Cuckoo Filter can return false positives. To configure the error rate, the `cf.reserve` command can be used to create the filter, and a custom bucket size can be provided.
+
+:::
 
 To identify click spam, we use the zcount method of sorted sets provided in redis package.
 Using zcount, we find the number of clicks from a device in a certain pre configured window. If the count received is greater than a certain threshold, we identify it as anomalous.

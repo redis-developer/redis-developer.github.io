@@ -1,0 +1,189 @@
+---
+id: nosql-data-modeling-patterns
+title: Learn 8 NoSQL Data Modeling Patterns in Redis
+image: /img/ebooks/nosql-data-modeling-patterns/8-data-modeling-patterns-in-redis.jpg
+sidebar_label: NoSQL Data Modeling Patterns
+slug: /ebooks/8-nosql-data-modeling-patterns
+editUrl: false
+showLastUpdateTime: false
+---
+
+import Excerpt from '@theme/Excerpt';
+
+<Excerpt cta="https://redis.com/docs/8-data-modeling-patterns-in-redis/" image={frontMatter.image} title={frontMatter.title}>
+
+## Introduction
+
+When someone is looking to use NoSQL for an application, the question that most often comes up is, “How do I structure
+my data?” The short answer to this question is, as you might guess, it depends. There are several questions that can
+inform how to structure your data in a NoSQL database.
+Is your application read heavy, or write heavy? What does the user experience of your application look like? How does
+your data need to be presented to the user? How much data will you be storing? What performance considerations do
+you need to account for? How do you anticipate scaling your application?
+
+These questions are only a small subset of what you need to ask yourself when you start working with NoSQL. A common
+misconception with NoSQL databases is that since they are “schemaless” you don’t need to worry about your schema.
+In reality, your schema is incredibly important regardless of what database you choose. You also need to ensure that the
+schema you choose will scale well with the database you plan to use.
+
+In this e-book you will learn how to approach data modeling in NoSQL, specifically within the context of Redis. Redis is a
+great database for demonstrating several NoSQL patterns and practices. Not only is Redis commonly used and loved by
+developers, it also is a multi-model database. This means that while many of the patterns covered in this e-book apply to
+different types of databases (e.g. document, graph, time series, etc.), with Redis you can apply all of the patterns in
+a single database.
+
+:::note
+
+By the end of this, you should have
+
+- A firm understanding of how to approach modeling data in Redis as well as in NoSQL generally.
+- An understanding of several NoSQL data modeling patterns, their pros and cons, as well as use cases for
+  them in practice.
+- A working knowledge of how to actually write code (with examples) to take advantage of NoSQL patterns
+  within Redis.
+
+:::
+
+## SQL versus NoSQL
+
+I’m sure at a certain level you understand the difference between SQL and NoSQL. SQL is a structured query language
+whereas NoSQL can mean several different things depending on the context. However, generally speaking, the approach
+to modeling data is fundamentally different in NoSQL than in SQL. There are also differences in terms of scalability, with
+NoSQL being easier to scale horizontally.
+
+When building applications you are probably using an object-oriented language like JavaScript, Java, C#, or others.
+Your data is represented as strings, lists, sets, hashes, JSON, and so on. However, if you store data in a SQL database
+or a document database, you need to squeeze and transform the data into several tables or collections. You also need
+complex queries (such as SQL queries) to get the data out. This is called **impedance mismatch** and is the fundamental
+reason why NoSQL exists.
+
+A large application might use other systems for data storage such as Neo4J for graph data, MongoDB for document
+data, InfluxDB for time series, etc. Using separate databases turns an impedance mismatch problem into a database
+orchestration problem. You have to juggle multiple connections to different databases, as well as learn the different client
+libraries used.
+
+With Redis, in addition to the basic data structures such as strings, lists, sets, and hashes, you can also store advanced
+data structures such as RedisJSON for documents, RediSearch for secondary indexing, RedisGraph for graph data,
+RedisTimeSeries for time-series data, and RedisBloom for probabilistic data (think leaderboards).
+
+This reduces impedance mismatch because your data is stored in one of 15 structures with little or no transformations.
+You can also use a single connection (or connection pool) and client library to access your data. What you end up with is
+a simplified architecture with purpose-built models that are blazing fast and simple to manage. For this reason, this e-book
+will use Redis to explain several of the NoSQL data modeling patterns.
+
+Most developers have at least a little understanding of SQL and how to model data in it. This is because SQL is widely
+used and there are several incredible books and even full courses devoted to it. NoSQL is quickly growing and becoming
+more popular. But given that when you’re talking about NoSQL you’re talking about more than just a document store, there
+is a lot of ground to cover. That’s why when covering certain NoSQL data modeling patterns in this e-book, you will be
+presented with what it might look like to model the data in SQL as well.
+
+When you approach data modeling in SQL you are typically focused on relationships, as SQL is meant for set-based
+operations on relational data. NoSQL doesn’t have this constraint and is more flexible in the way you model data.
+However, this can lead to schemas that are overly complex. When considering NoSQL schema design, always think about
+performance and try to keep things simple.
+
+So to kick things off, let’s start by looking at something that is very near and dear to a SQL developer’s heart: **relationships**.
+
+## Modeling 1-to-1 Relationships
+
+Imagine that you are creating a retail app that sells electronics. Let’s use **Picture 1** and **Picture 2** as an example of the
+UI for a standard retail e-commerce app. First, you’ll create a list view of all the electronics and then a detailed view
+that shows all the details of each item. There is a 1-to-1 relationship between each item in the list view and the detailed
+view (shown in **Picture 2**) of the item. The detailed view shows all the details such as multiple photos, description,
+manufacturer, dimensions, weight, and so on.
+
+<div className="container">
+  <div className="row">
+    <div className="col col--6">
+      <strong>Picture 1</strong>
+      <img
+        src="/img/ebooks/nosql-data-modeling-patterns/1-to-1-list-view.png"
+        alt="Picture 1 1-to-1 List View"
+        title="Picture 1 1-to-1 List View"
+      />
+    </div>
+    <div className="col col--6">
+      <strong>Picture 2</strong>
+      <img
+        src="/img/ebooks/nosql-data-modeling-patterns/1-to-1-detail-view.png"
+        alt="Picture 2 1-to-1 Detailed View"
+        title="Picture 2 1-to-1 Detailed View"
+      />
+    </div>
+  </div>
+</div>
+
+### 1-to-1 Relationships using SQL
+
+In a relational database, you may create a table called `products` where each row holds just enough data to display the information in the list view. Then, you may create another table called `product_details` where each row holds the rest of the details. You would also need a `product_images` table, where you store all of the images for a product. You can see the entity relationship diagram in **Picture 3**.
+
+<strong>Picture 3</strong>
+<img
+  src="/img/ebooks/nosql-data-modeling-patterns/1-to-1-entity-diagram.png"
+  alt="Picture 3 1-to-1 Entity Diagram"
+  title="Picture 3 1-to-1 Entity Diagram"
+/>
+
+Picture 3 depicts the entity relationships between `products`, `product_details`, and `product_images` and represents a normalized data model with a single denormalized field image in the `products` table. The reason for this is to avoid having to use a SQL JOIN when selecting the products for the list view. Using this model, the SQL query used to get the data needed for the list view might resemble **Code Example 1**.
+
+```sql title="Code Example 1"
+SELECT
+    p.id, p.name, p.image, p.price, pi.url
+FROM
+    products p
+```
+
+### 1-to-1 Relationships using Redis
+
+In Redis, similar to a relational database, you can create a collection called `products` and another called `product_details`. But with RedisJSON you can improve this by simply embedding `product_images` and `product_details` directly into the `Products` collection. Then, when you query the `Products` collection, specify which fields you need based on which view you are trying to create.
+
+This will allow you to easily keep all the data in one place. This is called the **Embedded Pattern** and is one of the most common patterns you will see in NoSQL document databases like RedisJSON. **Code Example 2** uses Python and a client library called Redis OM (an ORM for Redis) to model `Products` and `ProductDetails`. Note that `ProductDetails` is embedded into `Products` directly, so all of the data for a product will be stored within the same document.
+
+```python title="Code Example 2"
+class ProductDetail(EmbeddedJsonModel):
+    description: str
+    manufacturer: str
+    dimensions: str
+    weight: str
+    images: List[str]
+
+class Product(JsonModel):
+    name: str = Field(index=True)
+    image: str = Field(index=True)
+    price: int = Field(index=True)
+    details: Optional[ProductDetail]
+```
+
+**Code Example 2** also shows how you can index fields using Redis OM and RediSearch. Doing this turns Redis into not only a document store but also a search engine since RediSearch enables secondary indexing and searching. When you create models using Redis OM, it will automatically manage secondary indexes with RediSearch on your behalf.
+
+Using Redis OM we can write a function to retrieve our `products` list for the list view, as shown in **Code Example 3**.
+
+```python title="Code Example 3"
+async def get_product_list():
+    results = await connections \
+        .get_redis_connection() \
+        .execute_command(
+            f'FT.SEARCH {Product.Meta.index_name} * LIMIT 0 10 RETURN 3 name image price'
+        )
+    return Product.from_redis(results)
+```
+
+Notice that in **Code Example 3** we are using the `FT.SEARCH` (RediSearch) command, which specifies the index managed on our behalf by Redis OM and returns three fields: name, image, and price. While the documents all have details and images embedded, we don’t want to display them in the list view so we don’t need to query them. When we want the detailed view, we can query an entire Product document. See **Code Example 4** for how to query an entire document.
+
+```python title="Code Example 4"
+async def get_product_details(product_id: str):
+    eturn await Product.get(product_id)
+```
+
+When using Redis, you can use RedisInsight as a GUI tool to visualize and interact with the data in your database. **Picture 4** shows you what a `Products` document looks like.
+
+<strong>Picture 4</strong>
+<img
+  src="/img/ebooks/nosql-data-modeling-patterns/1-to-1-redisinsight.png"
+  alt="Picture 4 1-to-1 RedisInsight"
+  title="Picture 4 1-to-1 RedisInsight"
+/>
+
+## Download the E-book
+
+</Excerpt>

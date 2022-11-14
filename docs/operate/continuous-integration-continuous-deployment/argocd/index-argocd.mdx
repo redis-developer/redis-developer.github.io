@@ -6,7 +6,7 @@ slug: /operate/continuous-integration-continuous-deployment/argocd
 authors: [ajeet, talon]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -22,7 +22,11 @@ Argo CD empowers organizations to declaratively build and run cloud native appli
 
 Built specifically to make the continuous deployment process to a Kubernetes cluster simpler and more efficient, Argo CD solves multiple challenges, such as the need to set up and install additional tools outside of Jenkins for a complete CI/CD process to Kubernetes, the need to configure access control to Kubernetes in and out (including cloud platforms), the need to have visibility of deployment status once a new app gets pushed to a Kubernetes cluster, and more.
 
-Please note that Argo CD isn’t just deployed inside of Kubernetes but should be looked at as an extension of Kubernetes as it uses existing Kubernetes resources and functionalities like etcd and controllers to store data and monitor real-time updates of application state.
+:::note
+
+Argo CD isn’t just deployed inside of Kubernetes but should be looked at as an extension of Kubernetes as it uses existing Kubernetes resources and functionalities like etcd and controllers to store data and monitor real-time updates of application state.
+
+:::
 
 ## How does Argo CD work?
 

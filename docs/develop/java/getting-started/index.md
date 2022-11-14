@@ -8,7 +8,7 @@ slug: /develop/java/getting-started
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RedisCard from '@site/src/theme/RedisCard';
+import RedisCard from '@theme/RedisCard';
 
 Find tutorials, examples and technical articles that will help you to develop with Redis and Java.
 

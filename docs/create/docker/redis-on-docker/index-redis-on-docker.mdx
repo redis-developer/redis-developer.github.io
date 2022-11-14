@@ -8,7 +8,7 @@ authors: [ajeet]
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -29,7 +29,11 @@ If you're new, refer https://docs.docker.com/docker-for-mac/install/ to install 
 
 To pull and start the Redis Enterprise Software Docker container, run this docker run command in the terminal or command-line for your operating system.
 
-Note: On Windows, make sure Docker is configured to run Linux-based containers.
+:::note
+
+On Windows, make sure Docker is configured to run Linux-based containers.
+
+:::
 
 ```
 docker run -d --cap-add sys_resource --name rp -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
@@ -116,7 +120,7 @@ If you don’t have redis-cli installed locally, you can run it from the Docker 
  docker exec -it redis-stack redis-cli
 ```
 
-:::info TIP
+:::tip
 The `docker run` command above also exposes RedisInsight on port 8001. You can use RedisInsight by pointing your browser to http://localhost:8001.
 :::
 

@@ -6,7 +6,7 @@ slug: /explore/redisinsight/autodiscover
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -14,9 +14,10 @@ RedisInsight is a 100% free Redis GUI that allows you to visualise, monitor, and
 
 RedisInsight lets you automatically add Redis Enterprise Software and Redis Enterprise Cloud databases. RedisInsight also allows you to automatically discover Elasticache Redis caches.
 
-:::important
+:::note
 
 ElastiCache Redis caches cannot be accessed from outside the VPC, as they don’t have public IP addresses assigned to them.If you want to work with ElastiCache Redis caches with RedisInsight, you can either setup an SSH tunnel between RedisInsight and your Elasticache instance, in case you're not using Redis Cluster.
+
 :::
 
 This tutorial shows how to:
@@ -123,7 +124,8 @@ To access the RedisInsight GUI, open your preferred browser and access https://l
 
 ### Step 10. Autodiscover Elasticache Instance
 
-:::important
+:::note
+
 In case you encounter the below error message:
 
 This EC2 instance does not have permissions to discover your ElastiCache instances. To grant permission, create an IAM role with the DescribeCacheClusters permission and attach the role to this EC2 instance.

@@ -8,7 +8,7 @@ authors: [ajeet]
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -39,7 +39,7 @@ You can quickly and easily get your apps up and running with Redis Enterprise Cl
 
 Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free)
 
-:::info TIP
+:::tip
 For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
 
 :tada: [Click here to sign up](https://redis.com/try-free)
@@ -96,7 +96,13 @@ Run the commands below to get a functioning Git repository that contains a simpl
 
 #### Step 6. Setting up environment variables
 
-[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database connection as shown below: Go to the Heroku dashboard, click "Settings" and set `REDIS_URL` and `REDIS_PASSWORD` under the Config Vars. (Please note that the Redis URL endpoint is unique and might be different in your case. Please enter the values accordingly)
+[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database connection as shown below: Go to the Heroku dashboard, click "Settings" and set `REDIS_URL` and `REDIS_PASSWORD` under the Config Vars.
+
+:::note
+
+The Redis URL endpoint is unique and might be different in your case. Please enter the values accordingly
+
+:::
 
 Refer to [Step 1](/create/heroku/portal#step-1-create-redis-enterprise-cloud) for the correct values to use.
 
@@ -140,8 +146,10 @@ Check the logs:
 
 #### Using Heroku CLI
 
-:::important
+:::note
+
 Please note that this method won't allow you to choose Redis Modules while creating your Redis database. Also, it doesn't provide you with the flexibility to choose the Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+
 :::
 
 In this section, we will create a Heroku account, use the Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
@@ -248,8 +256,10 @@ Open https://lit-island-48230.herokuapp.com/ and access the rate limiting app.
 
 #### Using Heroku Dashboard
 
-:::important
+:::note
+
 Please note that this method won't allow you to choose Redis Modules while creating a Redis database. Also, it doesn't provide you with the flexibility to choose the Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+
 :::
 
 #### Step 1: Sign up for a Heroku account

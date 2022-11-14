@@ -6,7 +6,7 @@ slug: /howtos/redisjson/jsonind-document
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -145,8 +145,13 @@ In this example, we return the result of the JSON Path expression $.user.hp .
     2) "paul.john@example.com"
 ```
 
-Please Note: It is not possible to index JSON object and JSON arrays.
-To be indexed, a JSONPath expression must return a single scalar value (string or number). If the JSONPath expression returns an object or an array, it will be ignored.
+:::info
+
+It is not possible to index JSON object and JSON arrays. To be indexed, a JSONPath expression must return a single scalar value (string or number). If the JSONPath expression returns an object or an array, it will be ignored.
+
+:::
+
+
 
 Given the following document:
 

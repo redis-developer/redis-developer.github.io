@@ -6,7 +6,7 @@ slug: /develop/python/redis-om
 authors: [andrew]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -75,8 +75,12 @@ features.
 You can also use the official Redis Docker image, which is hosted on [Docker
 Hub](https://hub.docker.com/_/redis).
 
-**NOTE**: We'll talk about how to actually start Redis with Docker when we
-discuss _running_ Redis later in this guide.
+:::note
+
+We'll talk about how to actually start Redis with Docker when we discuss _running_ Redis later in this guide.
+
+:::
+
 
 ## Recommended: RediSearch and RedisJSON
 
@@ -782,8 +786,7 @@ class Customer(HashModel):
 # Before running queries, we need to run migrations to set up the
 # indexes that Redis OM will use. You can also use the `migrate`
 # CLI tool for this!
-redis = get_redis_connection()
-Migrator(redis).run()
+Migrator().run()
 
 
 # Find all customers with the last name "Brookins"

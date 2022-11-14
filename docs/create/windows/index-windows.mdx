@@ -6,7 +6,7 @@ slug: /create/windows
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -43,7 +43,11 @@ Installing Redis is simple and straightforward. The following example works with
  sudo apt-get install redis-server
 ```
 
-Please note that the `sudo` command might or mightn't be required based on the user configuration of your system.
+:::note
+
+The `sudo` command may or may not be required based on the user configuration of your system.
+
+:::
 
 ### Step 4: Restart the Redis server
 
@@ -64,7 +68,11 @@ Use the `redis-cli` command to test connectivity to the Redis database.
 "Jane"
 ```
 
-Please note: By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+:::note
+
+By default, Redis has 0-15 indexes for databases, you can change that number databases NUMBER in redis.conf.
+
+:::
 
 ### Step 6: Stop the Redis Server
 

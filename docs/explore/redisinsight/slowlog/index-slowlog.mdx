@@ -6,13 +6,19 @@ slug: /explore/redisinsight/slowlog
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
 RedisInsight, a free GUI for Redis, allows you to identify and troubleshoot bottlenecks with the Slowlog analysis tool. If you are experiencing high latency and high CPU usage with Redis operations and looking for a tool for debugging and tracing your Redis database, RedisInsight Slow Log is a perfect tool for you.
 
-Redis Slow Log is highly effective at showing the actual processing time of each slow command. The Redis slowlog is a log of all commands which exceed a specified run time. Please note that the network latency is not included in the measurement, just the time taken to actually execute the command. Redis Slow Log is a list of slow operations for your Redis instance.
+Redis Slow Log is highly effective at showing the actual processing time of each slow command. The Redis slowlog is a log of all commands which exceed a specified run time.
+
+:::note
+
+Network latency is not included in the measurement, just the time taken to actually execute the command. Redis Slow Log is a list of slow operations for your Redis instance.
+
+:::
 
 Follow the below steps to see how Slowlog is leveraged to troubleshoot performance issues.
 
@@ -155,15 +161,16 @@ In order to retrieve the slowlog queries, you have to use SLOWLOG GET X. Where X
 
 As shown above, the result displays a unique id, timestamp, time taken to execute the query in microseconds, and the actual command + parameter executed. It is important to note that the Slow log is transient; there's no persistence for it so in the case of failover, the slowlog is lost. If you are looking to rely on a persistent slowlog, you'll be wanting to reconsider your design choices
 
-Please note: If I choose “0” it forces the logging of every command while “-1” disabled the slowlog.
+If I choose “0” it forces the logging of every command while “-1” disabled the slowlog.
 
 ![alt_text](images/image8.png)
 
 ![alt_text](images/image9.png)
 
-:::important
+:::note
 
 In a clustered database, each node can have different values for slowlog. You will need to use the configuration tool in order to configure slowlog for clustered databases.
+
 :::
 
 ## Additional Links

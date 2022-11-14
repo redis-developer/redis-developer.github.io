@@ -8,7 +8,7 @@ authors: [ajeet]
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -47,9 +47,11 @@ Fill out the rest of the form and click “Download.” Please note that the pac
 
 redisinsight-platform-version
 
-:::info TIP
+:::tip
+
 If you're using Redis Stack, you don't really need to install RedisInsight separately.
 Redis Stack includes RedisInsight, a visualization tool for understanding and optimizing Redis data.
+
 :::
 
 #### Step 2. Install RedisInsight
@@ -209,7 +211,11 @@ You can see the output displayed at the top of the screen. If it says “OK,” 
 
 The first step is to install docker for your operating system. Run the docker version command in a terminal window to make sure that docker is installed correctly.
 
-Note - On Windows and Mac, install docker version 18.03 or higher. You can run docker version to find out your docker version.
+:::note
+
+On Windows and Mac, install docker version 18.03 or higher. You can run docker version to find out your docker version.
+
+:::
 
 #### Step 2. Run RedisInsight Docker image
 
@@ -225,7 +231,7 @@ Next, point your browser to http://localhost:8001.
 
 RedisInsight also provides a health check endpoint at http://localhost:8001/healthcheck/ to monitor the health of the running container.
 
-Note: Make sure the directory you pass as a volume to the container has necessary permissions for the container to access it. For example, if the previous command returns a permissions error, run the following command:
+Make sure the directory you pass as a volume to the container has necessary permissions for the container to access it. For example, if the previous command returns a permissions error, run the following command:
 
 ```
  chown -R 1001 redisinsight
@@ -432,7 +438,11 @@ spec:
 kubectl apply -f redisinsight.yaml
 ```
 
-Note - If the deployment will be exposed by a service whose name is ‘redisinsight’, set REDISINSIGHT_HOST and REDISINSIGHT_PORT environment variables to override the environment variables created by the service.
+:::note
+
+If the deployment will be exposed by a service whose name is ‘redisinsight’, set REDISINSIGHT_HOST and REDISINSIGHT_PORT environment variables to override the environment variables created by the service.
+
+:::
 
 Once the deployment has been successfully applied and the deployment complete, access RedisInsight. This can be accomplished by exposing the deployment as a K8s Service or by using port forwarding, as in the example below:
 

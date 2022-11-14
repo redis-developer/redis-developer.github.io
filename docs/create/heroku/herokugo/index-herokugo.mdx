@@ -6,7 +6,7 @@ slug: /create/heroku/herokugo
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -27,7 +27,7 @@ Heroku recognizes an app as being written in Go by the existence of a `go.mod` f
 Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free).
 Creating a Heroku account is free of charge.
 
-:::info TIP
+:::tip
 For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
 
 :tada: [Click here to sign up](https://redis.com/try-free)
@@ -116,7 +116,12 @@ To https://git.heroku.com/stark-island-03510
 ### Step 8. Accessing the application
 
 Open `https://stark-island-03510.herokuapp.com/` to access your web application on the browser.
-Please note that the Web URL is unique, hence it will be different in your case.
+
+:::note
+
+The Web URL is unique, hence it will be different in your case.
+
+:::
 
 ![heroku](heroku_chatapp_go.png)
 
@@ -213,7 +218,13 @@ The data is method-specific information. In the example above it's related to th
 
 Redis is used mainly as a database to keep the user/messages data and for sending messages between connected servers.
 
-The real-time functionality is handled by Socket.IO for server-client messaging. Additionally each server instance subscribes to the `MESSAGES` pub/sub channel and dispatches messages once they arrive. Note that, the server transports pub/sub messages with a separate event stream (handled by Server Sent Events), this is due to the need to run the pub/sub message loop separately from socket.io signals.
+The real-time functionality is handled by Socket.IO for server-client messaging. Additionally each server instance subscribes to the `MESSAGES` pub/sub channel and dispatches messages once they arrive.
+
+:::note
+
+The server transports pub/sub messages with a separate event stream (handled by Server Sent Events), this is due to the need to run the pub/sub message loop separately from socket.io signals.
+
+:::
 
 The chat data is stored in various keys and various data types.
 User data is stored in a hash where each user entry contains the next values:

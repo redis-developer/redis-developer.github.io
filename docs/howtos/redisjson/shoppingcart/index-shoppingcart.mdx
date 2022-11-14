@@ -6,7 +6,7 @@ slug: /howtos/redisjson/shoppingcart
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -581,7 +581,11 @@ REDIS_PASSWORD=demo
 COMPOSE_PROJECT_NAME=redis-shopping-cart
 ```
 
-(Note: In case you’re using Redis Enterprise Cloud instead of localhost, then you need to enter the database endpoint under REDIS_HOST(without port) while rest of the entries like REDIS_PORT and REDIS_PASSWORD are quite obvious)
+:::info
+
+In case you’re using Redis Enterprise Cloud instead of localhost, then you need to enter the database endpoint under REDIS_HOST (without port) while rest of the entries like REDIS_PORT and REDIS_PASSWORD are quite obvious
+
+:::
 
 #### Installing the dependencies
 

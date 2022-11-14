@@ -6,7 +6,7 @@ slug: /howtos/hackernews
 authors: [ajeet]
 ---
 
-import Authors from '@site/src/theme/Authors';
+import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
@@ -173,7 +173,11 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
  // Result - [13,"item:19","item:17","item:16","item:15","item:14","item:13","item:12","item:11","item:8","item:5","item:4","item:3","item:1"]
 ```
 
-Note that 1615652598 is timestamp of 1 week ealier than current timestamp
+:::note
+
+In this case, 1615652598 is a timestamp of 1 week ealier than current timestamp
+
+:::
 
 ```bash
  JSON.MGET item:19 item:17 item:16 item:15 item:14 item:13 item:12 item:11 item:8 item:5 item:4 item:3 item:1 .

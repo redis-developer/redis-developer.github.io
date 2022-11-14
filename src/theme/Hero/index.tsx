@@ -1,7 +1,7 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-import Typed from '@site/src/theme/Typed';
+import Typed from '@theme/Typed';
 
 import SvgHero from '@site/src/svg/Hero';
 import SvgCreate from '@site/src/svg/Create';
