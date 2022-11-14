@@ -1,0 +1,87 @@
+
+```sh
+# install redis in the project
+npm install redis --save
+```
+
+```js
+//create client & connect to redis
+
+import { createClient } from 'redis';
+
+const client = createClient({
+  //redis[s]://[[username][:password]@][host][:port][/db-number]
+  url: 'redis://alice:foobared@awesome.redis.server:6380',
+});
+
+client.on('error', (err) => console.log('Redis Client Error', err));
+
+await client.connect();
+```
+
+```js
+// Check specific keys
+const pattern = '*';
+await client.keys(pattern);
+
+#------------
+// Check number of keys in database
+await client.dbsize();
+
+#------------
+// set key value
+await client.set('key', 'value');
+await client.set('key', 'value', {
+  EX: 10,
+  NX: true,
+});
+
+#------------
+// get value by key
+const value = await client.get('key');
+
+#------------
+//syntax : delete keys
+await client.del('key');
+const keyArr = ['key1', 'key2', 'key3'];
+await client.del(...keyArr);
+
+#------------
+// Check if key exists
+await client.exists('key');
+
+#------------
+// set expiry to key
+const expireInSeconds = 30;
+await client.expire('key', expireInSeconds);
+
+#------------
+// remove expiry from key
+await client.persist('key');
+
+#------------
+// find (remaining) time to live of a key
+await client.ttl('key');
+
+#------------
+// increment a number
+await client.incr('key');
+
+#------------
+// decrement a number
+await client.decr('key');
+
+#------------
+//use below style for unsupported commands by client library
+await client.sendCommand(['SET', 'key', 'value']);
+```
+
+```js
+//graceful disconnecting
+await client.quit();
+
+//forceful disconnecting
+await client.disconnect();
+```
+
+- More details at [Github repo](https://github.com/redis/node-redis) and also check Javascript/ NodeJS apps at [Redis Launchpad](https://launchpad.redis.com/)
