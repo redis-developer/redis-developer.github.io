@@ -217,8 +217,8 @@ module.exports = {
             position: 'right',
           },
           {
-            to: '/howtos/quick-start',
-            //to: '/create/rediscloud',
+            //to: '/howtos/quick-start',
+            to: '/create/rediscloud',
             activeBasePath: 'docs',
             label: 'Get started',
             position: 'right',
