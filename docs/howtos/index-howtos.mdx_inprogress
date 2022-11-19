@@ -26,7 +26,7 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
     <RedisCard
         title="Shopping Cart"
         description="Implementing a Shopping Cart using NodeJS & RedisJSON"
-        page="/howtos/shoppingcart/"
+        page="/howtos/redisjson/shoppingcart/"
         />
  </div>
 </div>
