@@ -209,13 +209,13 @@ var fs = require('fs');
 var ssl = {
   key: fs.readFileSync(
     '../certificates/client_key_app_001.pem',
-    (encoding = 'ascii'),
+    {encoding: 'ascii'},
   ),
   cert: fs.readFileSync(
     '../certificates/client_cert_app_001.pem',
-    (encoding = 'ascii'),
+    {encoding: 'ascii'},
   ),
-  ca: [fs.readFileSync('../certificates/proxy_cert.pem', (encoding = 'ascii'))],
+  ca: [fs.readFileSync('../certificates/proxy_cert.pem', {encoding: 'ascii'})],
   checkServerIdentity: () => {
     return null;
   },
