@@ -1,5 +1,5 @@
 
-The following example uses [Redis OM Node](https://github.com/redis/redis-om-node), but you can also use [Node Redis](https://github.com/redis/node-redis), [IO Redis](https://github.com/luin/ioredis) or any other supported [client](https://redis.io/resources/clients/)
+The following example uses [Redis OM Node](https://github.com/redis/redis-om-node), but you can also use [Node Redis](https://github.com/redis/node-redis), [IO Redis](https://github.com/luin/ioredis), or any other supported [client](https://redis.io/resources/clients/)
 
 ```sh
 # install RedisOM in the project
@@ -57,7 +57,7 @@ import { personRepository } from 'person.js';
 - Insert example
 
 ```js
-let input = {
+const input = {
   firstName: 'Rupert',
   lastName: 'Holmes',
   age: 75,
@@ -70,20 +70,20 @@ let input = {
   skills: ['singing', 'songwriting', 'playwriting'],
   personalStatement: 'I like piña coladas and walks in the rain',
 };
-const person = await personRepository.createAndSave(input);
+let person = await personRepository.createAndSave(input);
 ```
 
 - Read example
 
 ```js
-const id = '01FX8N39YVZRCQNAW0R5T53H5T';
-const person = await personRepository.fetch(id);
+const id = person.entityId;
+person = await personRepository.fetch(id);
 ```
 
 - Update example
 
 ```js
-const person = await personRepository.fetch(req.params.id);
+person = await personRepository.fetch(id);
 
 person.firstName = 'Alex';
 
@@ -96,8 +96,7 @@ await personRepository.save(person);
 - Update location sample
 
 ```js
-const id = '01G79HZ6P3WYWFTY36JF6H3529';
-const longitude = Number('45.678');
+const longitude = 45.678;
 const latitude = 45.678;
 const locationUpdated = new Date();
 
@@ -139,7 +138,7 @@ const people = await queryBuilder.return.all();
 - Delete example
 
 ```js
-await personRepository.remove(req.params.id);
+await personRepository.remove(id);
 ```
 
 ### Useful Resources
