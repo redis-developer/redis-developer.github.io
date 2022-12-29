@@ -1,5 +1,8 @@
 
-- **Ubuntu** (16.04, 18.04, 20.04)
+
+### Using APT with Ubuntu/Debian
+
+Works with Ubuntu 16.04, 18.04, or 20.04 and Debian 11
 
 ```sh
 curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
@@ -8,9 +11,11 @@ sudo apt-get update
 sudo apt-get install redis-stack-server
 ```
 
-- **RHEL/ CentOS** (7, 8)
+### From the official RPM Feed
 
-Create the file /etc/yum.repos.d/redis.repo with the following contents
+Works with RHEL7/CentOS7 or RHEL8/CentOS8
+
+Create the file /etc/yum.repos.d/redis.repo with the following contents:
 
 ```
 [Redis]
@@ -25,6 +30,32 @@ curl -fsSL https://packages.redis.io/gpg > /tmp/redis.key
 sudo rpm --import /tmp/redis.key
 sudo yum install epel-release
 sudo yum install redis-stack-server
+```
+
+### With snap
+
+Download the [latest Redis Stack snap package](https://redis.io/download/#redis-stack-downloads).
+
+To install, run:
+
+```sh
+sudo snap install --dangerous --classic <snapname.snap>
+```
+
+### With AppImage
+
+Download the [latest Redis Stack AppImage package](https://redis.io/download/#redis-stack-downloads).
+
+To enable the install, run:
+
+```sh
+chmod a+x <AppImagefile>
+```
+
+To install run:
+
+```sh
+./<appimagefile>
 ```
 
 Detailed Linux instructions can be viewed [here](/create/linux/)

@@ -1,14 +1,12 @@
 
-Below docker run command exposes RedisServer on 6379 and RedisInsight on port 8001.
-You can use RedisInsight by pointing your browser to localhost:8001.
+The `docker run` command below exposes redis-server on port 6379 and RedisInsight on port 8001. You can use RedisInsight by pointing your browser to http://localhost:8001.
 
 ```sh
 # install
 docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
 ```
 
-You can use redis-cli to connect to the server.
-If you don’t have redis-cli installed locally, you can run it from the Docker container like below:
+You can use `redis-cli` to connect to the server at localhost:6379. If you don’t have `redis-cli` installed locally, you can run it from the Docker container like below:
 
 ```sh
 # connect
