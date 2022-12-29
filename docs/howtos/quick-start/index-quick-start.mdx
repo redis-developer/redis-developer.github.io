@@ -242,25 +242,108 @@ Now, verify whether the JSON is inserted into MongoDB.
 
 ## Probabilistic Data and Queries with Redis
 
-Redis bloom adds probabilistic Datatypes Module for Redis.
+Redis Stack supports probabilistic datatypes and queries. Below you will find a stock leaderboard example:
 
-![RedisBloom](./images/redis-bloom.svg)
+```sh
+# Reserve a new leaderboard filter
+> TOPK.RESERVE trending-stocks 12 50 4 0.9
+"OK"
+
+# Add a new entries to the leaderboard
+> TOPK.ADD trending-stocks AAPL AMD MSFT INTC GOOG FB NFLX GME AMC TSLA
+1) "null" ...
+
+# Get the leaderboard
+> TOPK.LIST trending-stocks
+1) "AAPL"
+2) "AMD"
+2) "MSFT" ...
+
+# Get information about the leaderboard
+> TOPK.INFO trending-stocks
+1) "k"
+2) "12"
+3) "width"
+4) "50"
+5) "depth"
+6) "4"
+7) "decay"
+8) "0.90000000000000002"
+```
 
 More details in [docs](https://redis.io/docs/stack/bloom/)
 
 ## Graph Data and Queries with Redis
 
-RedisGraph is a graph database built on Redis.
+Redis Stack is a NoSQL graph database that translates Cypher queries to matrix operations executed over a GraphBLAS engine. It's useful for social graph operation, fraud detection, and real-time recommendation engines. Below you will find an org chart graph example:
 
-![RedisGraph](./images/redis-graph.svg)
+```shell
+# Create any graph, for example an Org Chart
+> GRAPH.QUERY OrgChart "CREATE (:Employee {name:'Doug'}), (:Employee {name:'Dani'})-[:REPORTS_TO]->(:Employee {name:'Doug'}), (:Employee {name:'Otto'})-[:REPORTS_TO]->(:Employee {name:'Doug'})"
+1) 1) "Labels added: 1"
+   2) "Nodes created: 5"
+   3) "Properties set: 5"
+   4) "Relationships created: 2"
+   5) "Cached execution: 0"
+   6) "Query internal execution time: 0.324600 milliseconds"
+
+# Get a list of employees and who they report to
+> GRAPH.QUERY OrgChart "MATCH (e:Employee)-[:REPORTS_TO]->(m:Employee) RETURN e.name, m.name"
+1) 1) "e.name"
+   2) "m.name"
+2) 1) 1) "Dani"
+      2) "Doug"
+   2) 1) "Otto"
+      2) "Doug"
+3) 1) "Cached execution: 0"
+   2) "Query internal execution time: 0.288619 milliseconds"
+
+# Get a count of how many reports Doug has
+> GRAPH.QUERY OrgChart "MATCH (e:Employee)-[:REPORTS_TO]->(m:Employee {name: 'Doug'}) RETURN COUNT(e.name)"
+1) 1) "COUNT(e.name)"
+2) 1) 1) "2"
+3) 1) "Cached execution: 0"
+   2) "Query internal execution time: 0.340888 milliseconds"
+```
 
 More details in [docs](https://redis.io/docs/stack/graph/)
 
 ## TimeSeries Data and Queries with Redis
 
-RedisTimeSeries is used to ingest and query time series data with Redis
+Redis Stack supports time-series use cases such as IoT, stock prices, and telemetry. You can ingest and query millions of samples and events at the speed of Redis. You can also use a variety of queries for visualization and monitoring with built-in connectors to popular tools like Grafana, Prometheus, and Telegraf.
 
-![RedisTimeSeries](./images/redis-timeseries.svg)
+The following example demonstrates how you might store temperature sensor readings in Redis Stack:
+
+```shell
+# Create new time-series, for example temperature readings
+> TS.CREATE temperature:raw DUPLICATE_POLICY LAST
+"OK"
+
+# Create a bucket for monthly aggregation
+> TS.CREATE temperature:monthly DUPLICATE_POLICY LAST
+"OK"
+
+# Automatically aggregate based on time-weighted average
+> TS.CREATERULE temperature:raw temperature:monthly AGGREGATION twa 2629800000
+"OK"
+
+# Add data to the raw time-series
+> TS.MADD temperature:raw 1621666800000 52 ...
+1) "1621666800000" ...
+
+# View the monthly time-weighted average temperatures
+> TS.RANGE temperature:monthly 0 +
+1) 1) "1621666800000"
+   2) "52" ...
+
+# Delete compaction rule
+> TS.DELETERULE temperature:raw temperature:monthly
+"OK"
+
+# Delete partial time-series
+> TS.DEL temperature:raw 0 1621666800000
+(integer) 1
+```
 
 More details in [docs](https://redis.io/docs/stack/timeseries/)
 
