@@ -4,7 +4,7 @@
 
 Works with Ubuntu 16.04, 18.04, or 20.04 and Debian 11
 
-```sh
+```shell
 curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 sudo apt-get update
@@ -25,7 +25,7 @@ enabled=1
 gpgcheck=1
 ```
 
-```sh
+```shell
 curl -fsSL https://packages.redis.io/gpg > /tmp/redis.key
 sudo rpm --import /tmp/redis.key
 sudo yum install epel-release
@@ -38,8 +38,8 @@ Download the [latest Redis Stack snap package](https://redis.io/download/#redis-
 
 To install, run:
 
-```sh
-sudo snap install --dangerous --classic <snapname.snap>
+```shell
+$ sudo snap install --dangerous --classic <snapname.snap>
 ```
 
 ### With AppImage
@@ -48,14 +48,14 @@ Download the [latest Redis Stack AppImage package](https://redis.io/download/#re
 
 To enable the install, run:
 
-```sh
-chmod a+x <AppImagefile>
+```shell
+$ chmod a+x <AppImagefile>
 ```
 
 To install run:
 
-```sh
-./<appimagefile>
+```shell
+$ ./<appimagefile>
 ```
 
 Detailed Linux instructions can be viewed [here](/create/linux/)

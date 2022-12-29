@@ -219,13 +219,13 @@ The code above demonstrates how you would sync a "movies" collection in MongoDB 
 
 To get this working you first need to load the python file into redis-server:
 
-```sh
-redis-cli rg.pyexecute "`cat write-behind.py`" REQUIREMENTS rgsync pymongo==3.12.0
+```shell
+$ redis-cli rg.pyexecute "`cat write-behind.py`" REQUIREMENTS rgsync pymongo==3.12.0
 ```
 
 Now, insert a JSON item in to Redis starting with the prefix specified in the python file (i.e. "movie"):
 
-```sh
+```shell
 # redis-cli command
 > JSON.SET movie:123 $ '{"movieId":123,"name":"RRR","isActive": true}'
 ```
@@ -244,7 +244,7 @@ Now, verify whether the JSON is inserted into MongoDB.
 
 Redis Stack supports probabilistic datatypes and queries. Below you will find a stock leaderboard example:
 
-```sh
+```shell
 # Reserve a new leaderboard filter
 > TOPK.RESERVE trending-stocks 12 50 4 0.9
 "OK"
