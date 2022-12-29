@@ -3,7 +3,7 @@ id: index-quick-start
 title: Quick Start
 sidebar_label: Quick Start
 slug: /howtos/quick-start
-authors: [prasan]
+authors: [prasan,will]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -48,6 +48,7 @@ Use one of the following ways to set up Redis :
 
 <Tabs
   defaultValue="MAC_OS"
+  groupId="OS"
   values={[
     {label: 'Mac OS', value: 'MAC_OS'},
     {label: 'Linux', value: 'LINUX'},
@@ -84,11 +85,12 @@ Use one of the following ways to set up Redis :
 
 <Tabs
   defaultValue="CLI"
+  groupId="language"
   values={[
-    {label: 'CLI/ Redis GUI', value: 'CLI'},
-    {label: 'NodeJS', value: 'NODEJS'},
-    {label: 'C#.Net', value: 'DOT_NET'},
+    {label: 'CLI', value: 'CLI'},
+    {label: 'JavaScript/Node.js', value: 'JS'},
     {label: 'Python', value: 'PYTHON'},
+    {label: 'C#', value: 'C#'},
     {label: 'Java', value: 'JAVA'},
   ]}>
 
@@ -98,24 +100,27 @@ Use one of the following ways to set up Redis :
 
 </TabItem>
 
-<TabItem value="NODEJS">
+<TabItem value="JS">
 
 <NodeBasicQuerying />
 
 </TabItem>
-<TabItem value="JAVA">
 
-<JavaBasicQuerying />
-
-</TabItem>
 <TabItem value="PYTHON">
 
 <PythonBasicQuerying />
 
 </TabItem>
-<TabItem value="DOT_NET">
+
+<TabItem value="C#">
 
 <CSharpBasicQuerying />
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+<JavaBasicQuerying />
 
 </TabItem>
 </Tabs>
@@ -124,12 +129,13 @@ Use one of the following ways to set up Redis :
 
 <Tabs
   defaultValue="CLI"
+  groupId="language"
   values={[
-    {label: 'CLI/ RedisInsight', value: 'CLI'},
-    {label: 'Javascript', value: 'REDIS_OM_JS'},
-    {label: 'Python', value: 'REDIS_OM_PYTHON'},
-    {label: 'Java', value: 'REDIS_OM_JAVA'},
-    {label: 'C#', value: 'REDIS_OM_DOTNET'},
+    {label: 'CLI', value: 'CLI'},
+    {label: 'JavaScript/Node.js', value: 'JS'},
+    {label: 'Python', value: 'PYTHON'},
+    {label: 'C#', value: 'C#'},
+    {label: 'Java', value: 'JAVA'},
 ]}>
 
 <TabItem value="CLI">
@@ -138,27 +144,27 @@ Use one of the following ways to set up Redis :
 
 </TabItem>
 
-<TabItem value="REDIS_OM_JS">
+<TabItem value="JS">
 
 <NodeSecondaryIndexing />
 
 </TabItem>
 
-<TabItem value="REDIS_OM_PYTHON">
+<TabItem value="PYTHON">
 
 <PythonSecondaryIndexing />
 
 </TabItem>
 
-<TabItem value="REDIS_OM_JAVA">
+<TabItem value="C#">
 
-<JavaSecondaryIndexing />
+<CSharpSecondaryIndexing />
 
 </TabItem>
 
-<TabItem value="REDIS_OM_DOTNET">
+<TabItem value="JAVA">
 
-<CSharpSecondaryIndexing />
+<JavaSecondaryIndexing />
 
 </TabItem>
 </Tabs>

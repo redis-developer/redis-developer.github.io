@@ -6,6 +6,11 @@ module.exports = {
       href: '/',
     },
     {
+        type: 'doc',
+        label: 'Quick Start',
+        id: 'howtos/quick-start/index-quick-start',
+    },
+    {
       type: 'category',
       label: 'Create',
       items: [
@@ -451,7 +456,6 @@ module.exports = {
       label: 'HowTos & Tutorials',
       items: [
         'howtos/index-howtos',
-        // 'howtos/quick-start/index-quick-start',
         'howtos/redisearch/index-redisearch',
         {
           type: 'category',
