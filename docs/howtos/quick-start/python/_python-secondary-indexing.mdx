@@ -5,7 +5,7 @@ The following example uses [Redis OM Python](https://github.com/redis/redis-om-p
 pip install redis-om
 ```
 
-Create an embedded JSON model
+Create a JSON model
 
 ```python
 import datetime
@@ -43,7 +43,7 @@ Migrator().run()
 
 - Insert example
 
-```pythong
+```python
 person = Person(**{
     "first_name": "Rupert",
     "last_name": "Holmes",
@@ -117,7 +117,7 @@ people = Person.find(
 
 - Delete example
 
-```pythong
+```python
 Person.get(id).delete()
 ```
 
