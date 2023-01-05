@@ -95,7 +95,7 @@ module.exports = {
       guyroyse: {
         name: 'Guy Royse',
         link: 'http://guy.dev',
-        title: 'Developer Advocate at Redis',
+        title: 'Senior Developer Advocate at Redis',
         image: 'profile_pic_guy_royse.jpg',
       },
       christian: {
@@ -125,7 +125,7 @@ module.exports = {
       steve: {
         name: 'Steve Lorello',
         link: 'https://twitter.com/slorello',
-        title: '.NET Developer Advocate at Redis',
+        title: 'Senior Field Engineer at Redis',
         image: 'profile_pic_steve_lorello.jpg',
       },
       bsb: {
@@ -148,7 +148,7 @@ module.exports = {
       elena: {
         name: 'Elena Kolevska',
         link: 'https://twitter.com/elena_kolevska',
-        title: 'Technical Enablement Manager at Redis',
+        title: 'Technical Enablement Manager, EMEA at Redis',
         image: 'profile_pic_elena_kolevska.jpg',
       },
       jyotsna: {
