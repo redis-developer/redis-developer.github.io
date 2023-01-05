@@ -1,9 +1,9 @@
 ---
 id: index-quick-start
-title: Quick Start
-sidebar_label: Quick Start
+title: Getting Started
+sidebar_label: Getting Started
 slug: /howtos/quick-start
-authors: [prasan]
+authors: [prasan,will]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -25,10 +25,8 @@ import NodeSecondaryIndexing from './node/_node-secondary-indexing.mdx';
 import PythonBasicQuerying from './python/_python-basic-querying.mdx';
 import PythonSecondaryIndexing from './python/_python-secondary-indexing.mdx';
 
-
 import JavaBasicQuerying from './java/_java-basic-querying.mdx';
 import JavaSecondaryIndexing from './java/_java-secondary-indexing.mdx';
-
 
 import CSharpBasicQuerying from './csharp/_csharp-basic-querying.mdx';
 import CSharpSecondaryIndexing from './csharp/_csharp-secondary-indexing.mdx';
@@ -37,38 +35,43 @@ import CSharpSecondaryIndexing from './csharp/_csharp-secondary-indexing.mdx';
 
 <div class="cst-tabs-page">
 
+Welcome to the getting started for the official Redis Developer Hub!
+
+If you are new to Redis, we recommend starting with [Redis University (RU101)](https://university.redis.com/courses/ru101/). RU101 is an introductory course, perfect for developers new to Redis. In this course, you’ll learn about the data structures in Redis, and you’ll see how to practically apply them in the real world.
+
+If you have questions related to Redis, come join the [Redis Discord server](https://discord.gg/redis). Our Discord server is a place where you can learn, share, and collaborate about anything and everything Redis. Connect with users from the community and Redis University. Get your questions answered and learn cool new tips and tricks! Watch for notifications of the latest content from Redis and the community. And share your own content with the community.
+
 ## Setup Redis
 
-Use one of the following ways to set up Redis :
+There are essentially two ways you can use Redis:
 
-- **Cloud** : Hosted and serverless database-as-a-service (DBaaS). The fastest way to deploy Redis Enterprise via Amazon AWS, Google Cloud Platform or Microsoft Azure.
-  - [Getting Started](/create/rediscloud), [Videos](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K),
-    [Free Signup](https://app.redislabs.com/#/login)
-- **OnPrem/ Desktop** : A self-managed data platform that unlocks the full potential of Redis at enterprise scale on various operating systems like Mac OS, Windows or Linux.
+- **Cloud Redis**: A hosted and serverless Redis database-as-a-service (DBaaS). The fastest way to deploy Redis Enterprise via Amazon AWS, Google Cloud Platform, or Microsoft Azure.
+  - [Getting Started](/create/rediscloud)
+  - [Videos](https://www.youtube.com/playlist?list=PL83Wfqi-zYZG6uGxBagsbqjpsi2XBEj1K),
+  - [Free Sign-up](https://redis.com/try-free)
+- **On-prem/local Redis**: Self-managed Redis using your own server and any operating system (Mac OS, Windows, or Linux).
+
+If you choose to use local Redis we strongly recommend using Docker. If you choose not to use Docker, use the following instructions based on your OS:
 
 <Tabs
-  defaultValue="MAC_OS"
+  defaultValue="DOCKER"
+  groupId="OS"
   values={[
-    {label: 'Mac OS', value: 'MAC_OS'},
-    {label: 'Linux', value: 'LINUX'},
     {label: 'Docker', value: 'DOCKER'},
-    {label: 'Windows', value: 'WINDOWS'}
+    {label: 'Linux', value: 'LINUX'},
+    {label: 'Windows', value: 'WINDOWS'},
+    {label: 'Mac OS', value: 'MAC_OS'}
   ]}>
 
-<TabItem value="MAC_OS">
+<TabItem value="DOCKER">
 
-<MacOsSetup />
+<DockerSetup />
 
 </TabItem>
 
 <TabItem value="LINUX">
 
 <LinuxSetup />
-
-</TabItem>
-<TabItem value="DOCKER">
-
-<DockerSetup />
 
 </TabItem>
 
@@ -78,18 +81,25 @@ Use one of the following ways to set up Redis :
 
 </TabItem>
 
+<TabItem value="MAC_OS">
+
+<MacOsSetup />
+
+</TabItem>
+
 </Tabs>
 
-## Basic Querying
+## Basic Querying with Redis
 
 <Tabs
   defaultValue="CLI"
+  groupId="language"
   values={[
-    {label: 'CLI/ Redis GUI', value: 'CLI'},
-    {label: 'NodeJS', value: 'NODEJS'},
-    {label: 'C#.Net', value: 'DOT_NET'},
+    {label: 'CLI', value: 'CLI'},
+    {label: 'JavaScript', value: 'JS'},
     {label: 'Python', value: 'PYTHON'},
-    {label: 'Java', value: 'JAVA'},
+    {label: 'C#', value: 'C#'},
+    //{label: 'Java', value: 'JAVA'},
   ]}>
 
 <TabItem value="CLI">
@@ -98,38 +108,42 @@ Use one of the following ways to set up Redis :
 
 </TabItem>
 
-<TabItem value="NODEJS">
+<TabItem value="JS">
 
 <NodeBasicQuerying />
 
 </TabItem>
-<TabItem value="JAVA">
 
-<JavaBasicQuerying />
-
-</TabItem>
 <TabItem value="PYTHON">
 
 <PythonBasicQuerying />
 
 </TabItem>
-<TabItem value="DOT_NET">
+
+<TabItem value="C#">
 
 <CSharpBasicQuerying />
 
 </TabItem>
+
+<!-- <TabItem value="JAVA">
+
+<JavaBasicQuerying />
+
+</TabItem> -->
 </Tabs>
 
-## Secondary indexing & searching JSON
+## Secondary Indexing and Searching with Redis
 
 <Tabs
   defaultValue="CLI"
+  groupId="language"
   values={[
-    {label: 'CLI/ RedisInsight', value: 'CLI'},
-    {label: 'Javascript', value: 'REDIS_OM_JS'},
-    {label: 'Python', value: 'REDIS_OM_PYTHON'},
-    {label: 'Java', value: 'REDIS_OM_JAVA'},
-    {label: 'C#', value: 'REDIS_OM_DOTNET'},
+    {label: 'CLI', value: 'CLI'},
+    {label: 'JavaScript', value: 'JS'},
+    {label: 'Python', value: 'PYTHON'},
+    {label: 'C#', value: 'C#'},
+    //{label: 'Java', value: 'JAVA'},
 ]}>
 
 <TabItem value="CLI">
@@ -138,42 +152,40 @@ Use one of the following ways to set up Redis :
 
 </TabItem>
 
-<TabItem value="REDIS_OM_JS">
+<TabItem value="JS">
 
 <NodeSecondaryIndexing />
 
 </TabItem>
 
-<TabItem value="REDIS_OM_PYTHON">
+<TabItem value="PYTHON">
 
 <PythonSecondaryIndexing />
 
 </TabItem>
 
-<TabItem value="REDIS_OM_JAVA">
-
-<JavaSecondaryIndexing />
-
-</TabItem>
-
-<TabItem value="REDIS_OM_DOTNET">
+<TabItem value="C#">
 
 <CSharpSecondaryIndexing />
 
 </TabItem>
+
+<!-- <TabItem value="JAVA">
+
+<JavaSecondaryIndexing />
+
+</TabItem> -->
 </Tabs>
 
-## Sync with other databases
+## Sync Redis with Other Databases
 
-RedisGears adds dynamic execution framework for your Redis data.
+RedisGears adds a dynamic execution framework for your Redis data that enables you to write and execute functions that implement data flows in Redis.
 
 Consider following example to sync data with MongoDB.
 
 - Create the below python file and update the MongoDB connection details, database, collection and primary key name to be synced
 
-```python
-# movies-write-behind.py
-
+```python title="write-behind.py"
 # Gears Recipe for a single write behind
 
 # import redis gears & mongo db libs
@@ -203,50 +215,139 @@ ENV_COLLECTION1_PRIMARY_KEY=movieId
 ENV_COLLECTION1_PREFIX_KEY=movie
 ```
 
-Above code shows keys starting with "movie" in Redis will be synced with "movies" collection of MongoDB
+The code above demonstrates how you would sync a "movies" collection in MongoDB with Redis using the "movie" key prefix.
 
-- Created python file must be loaded in redis server
+To get this working you first need to load the python file into redis-server:
 
-```sh
-redis-cli rg.pyexecute "`cat movies-write-behind.py`" REQUIREMENTS rgsync pymongo==3.12.0
+```shell
+$ redis-cli rg.pyexecute "`cat write-behind.py`" REQUIREMENTS rgsync pymongo==3.12.0
 ```
 
-Now insert a json item in to redis starting with the prefix specified in the python file
+Now, insert a JSON item in to Redis starting with the prefix specified in the python file (i.e. "movie"):
 
-```sh
-# redis cli command
+```shell
+# redis-cli command
 > JSON.SET movie:123 $ '{"movieId":123,"name":"RRR","isActive": true}'
 ```
 
-- Now, verify whether the json is inserted in MongoDB
+Now, verify whether the JSON is inserted into MongoDB.
 
-More resources at [Redis gear sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo),[RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute),[rgsync](https://github.com/RedisGears/rgsync#running-the-recipe),[gears-cli](https://github.com/RedisGears/gears-cli), [RedisGears dynamic script](/howtos/redisgears)
+### Additional Resources For Syncing with Redis and Other Databases
 
-## Probabilistic queries
+1. [Redis gear sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo)
+1. [RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute)
+1. [rgsync](https://github.com/RedisGears/rgsync#running-the-recipe)
+1. [gears-cli](https://github.com/RedisGears/gears-cli)
+1. [RedisGears dynamic script](/howtos/redisgears)
 
-Redis bloom adds probabilistic Datatypes Module for Redis.
+## Probabilistic Data and Queries with Redis
 
-![RedisBloom](./images/redis-bloom.svg)
+Redis Stack supports probabilistic datatypes and queries. Below you will find a stock leaderboard example:
+
+```shell
+# Reserve a new leaderboard filter
+> TOPK.RESERVE trending-stocks 12 50 4 0.9
+"OK"
+
+# Add a new entries to the leaderboard
+> TOPK.ADD trending-stocks AAPL AMD MSFT INTC GOOG FB NFLX GME AMC TSLA
+1) "null" ...
+
+# Get the leaderboard
+> TOPK.LIST trending-stocks
+1) "AAPL"
+2) "AMD"
+2) "MSFT" ...
+
+# Get information about the leaderboard
+> TOPK.INFO trending-stocks
+1) "k"
+2) "12"
+3) "width"
+4) "50"
+5) "depth"
+6) "4"
+7) "decay"
+8) "0.90000000000000002"
+```
 
 More details in [docs](https://redis.io/docs/stack/bloom/)
 
-## Graph queries
+## Graph Data and Queries with Redis
 
-RedisGraph is a graph database built on Redis.
+Redis Stack is a NoSQL graph database that translates Cypher queries to matrix operations executed over a GraphBLAS engine. It's useful for social graph operation, fraud detection, and real-time recommendation engines. Below you will find an org chart graph example:
 
-![RedisGraph](./images/redis-graph.svg)
+```shell
+# Create any graph, for example an Org Chart
+> GRAPH.QUERY OrgChart "CREATE (:Employee {name:'Doug'}), (:Employee {name:'Dani'})-[:REPORTS_TO]->(:Employee {name:'Doug'}), (:Employee {name:'Otto'})-[:REPORTS_TO]->(:Employee {name:'Doug'})"
+1) 1) "Labels added: 1"
+   2) "Nodes created: 5"
+   3) "Properties set: 5"
+   4) "Relationships created: 2"
+   5) "Cached execution: 0"
+   6) "Query internal execution time: 0.324600 milliseconds"
+
+# Get a list of employees and who they report to
+> GRAPH.QUERY OrgChart "MATCH (e:Employee)-[:REPORTS_TO]->(m:Employee) RETURN e.name, m.name"
+1) 1) "e.name"
+   2) "m.name"
+2) 1) 1) "Dani"
+      2) "Doug"
+   2) 1) "Otto"
+      2) "Doug"
+3) 1) "Cached execution: 0"
+   2) "Query internal execution time: 0.288619 milliseconds"
+
+# Get a count of how many reports Doug has
+> GRAPH.QUERY OrgChart "MATCH (e:Employee)-[:REPORTS_TO]->(m:Employee {name: 'Doug'}) RETURN COUNT(e.name)"
+1) 1) "COUNT(e.name)"
+2) 1) 1) "2"
+3) 1) "Cached execution: 0"
+   2) "Query internal execution time: 0.340888 milliseconds"
+```
 
 More details in [docs](https://redis.io/docs/stack/graph/)
 
-## Timeseries queries
+## TimeSeries Data and Queries with Redis
 
-RedisTimeSeries is used to ingest and query time series data with Redis
+Redis Stack supports time-series use cases such as IoT, stock prices, and telemetry. You can ingest and query millions of samples and events at the speed of Redis. You can also use a variety of queries for visualization and monitoring with built-in connectors to popular tools like Grafana, Prometheus, and Telegraf.
 
-![RedisTimeSeries](./images/redis-timeseries.svg)
+The following example demonstrates how you might store temperature sensor readings in Redis Stack:
+
+```shell
+# Create new time-series, for example temperature readings
+> TS.CREATE temperature:raw DUPLICATE_POLICY LAST
+"OK"
+
+# Create a bucket for monthly aggregation
+> TS.CREATE temperature:monthly DUPLICATE_POLICY LAST
+"OK"
+
+# Automatically aggregate based on time-weighted average
+> TS.CREATERULE temperature:raw temperature:monthly AGGREGATION twa 2629800000
+"OK"
+
+# Add data to the raw time-series
+> TS.MADD temperature:raw 1621666800000 52 ...
+1) "1621666800000" ...
+
+# View the monthly time-weighted average temperatures
+> TS.RANGE temperature:monthly 0 +
+1) 1) "1621666800000"
+   2) "52" ...
+
+# Delete compaction rule
+> TS.DELETERULE temperature:raw temperature:monthly
+"OK"
+
+# Delete partial time-series
+> TS.DEL temperature:raw 0 1621666800000
+(integer) 1
+```
 
 More details in [docs](https://redis.io/docs/stack/timeseries/)
 
-## Links
+## Additional Resources
 
 - Join the [community](/community/)
 - [RedisInsight](https://redis.com/redis-enterprise/redis-insight/)

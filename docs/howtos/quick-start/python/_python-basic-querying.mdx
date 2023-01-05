@@ -1,5 +1,4 @@
-
-```sh
+```shell
 # install redis in the project
 pip install redis
 ```
@@ -14,16 +13,16 @@ r = redis.Redis(connection_pool=pool)
 r.keys('*')
 
 #------------
-#  Check number of keys in database
+# Check number of keys in database
 r.dbsize()
 
 #------------
-#  set key value
+# set key value
 r.set('key', 'value')
 r.set('key', 'value', ex=10, nx=True)
 
 #------------
-#  get value by key
+# get value by key
 value = r.get('key')
 
 #------------
@@ -32,31 +31,39 @@ r.delete('key')
 r.delete('key1', 'key2', 'key3')
 
 #------------
-#  Check if key exists
+# Check if key exists
 r.exists('key')
 
 #------------
-#  set expiry to key
+# set expiry to key
 expireInSeconds = 30
 r.expire('key', expireInSeconds)
 
 #------------
-#  remove expiry from key
+# remove expiry from key
 r.persist('key')
 
 #------------
-#  find (remaining) time to live of a key
+# find (remaining) time to live of a key
 r.ttl('key')
 
 #------------
-#  increment a number
+# increment a number
 r.incr('key')
 
 #------------
-#  decrement a number
+# decrement a number
 r.decr('key')
 
 #------------
-# use below style for unsupported commands by client library
+# use the method below to execute commands directly
 r.execute_command('SET', 'key', 'value')
 ```
+
+- For more information, checkout the
+
+### Additional Resources
+
+1. [redis-py Github repo](https://github.com/redis/redis-py)
+1. [Using Redis with Python and FastAPI](/develop/python/fastapi)
+1. Python apps on the [Redis Launchpad](https://launchpad.redis.com/)

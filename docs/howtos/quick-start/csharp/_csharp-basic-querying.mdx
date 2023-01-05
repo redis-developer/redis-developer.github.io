@@ -1,1 +1,78 @@
-TODO: Examples coming soon
+The .NET Community has built many [client libraries](https://redis.io/clients#c-sharp) to help handle requests to Redis Server. In this guide, we'll mostly be concerned with using the [StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis) client library. As the name implies the StackExchange client is developed by StackExchange for use on popular websites like [StackOverflow](https://stackoverflow.com/).
+
+```shell
+# install redis in the project
+dotnet add package StackExchange.Redis
+```
+
+```csharp
+// Impport the required namespace
+using StackExchange.Redis;
+
+// Initialize the connection
+static readonly ConnectionMultiplexer _redis = ConnectionMultiplexer.Connect("localhost:6379");
+```
+
+```csharp
+var redis = _redis.GetDatabase();
+
+// Check specific keys
+var server = _redis.GetServer(_redis.GetEndPoints()[0]);
+server.Keys(pattern: "*");
+
+//------------
+// Check number of keys in database
+server.DatabaseSize();
+
+//------------
+// set key value
+redis.StringSet("key", "value");
+redis.StringSet("key", "value", expiry: TimeSpan.FromSeconds(10), when: When.NotExists);
+
+//------------
+// get value by key
+var value = redis.StringGet("key");
+
+//------------
+// syntax : delete keys
+redis.KeyDelete("key");
+redis.KeyDelete(new RedisKey[] { "key1", "key2", "key3"});
+
+//------------
+// Check if key exists
+redis.KeyExists("key");
+
+//------------
+// set expiry to key
+redis.KeyExpire("key", DateTime.Now.AddSeconds(30));
+
+//------------
+// remove expiry from key
+redis.KeyPersist("key");
+
+
+//------------
+// find (remaining) time to live of a key
+redis.KeyTimeToLive("key");
+
+
+//------------
+// increment a number
+redis.StringIncrement("key");
+
+
+//------------
+// decrement a number
+redis.StringDecrement("key");
+
+
+//------------
+// use the method below to execute commands directly
+redis.Execute("SET", "key", "value");
+```
+
+### Additional Resources
+
+1. [StackExchange.Redis Github repo](https://github.com/StackExchange/StackExchange.Redis)
+1. [Detailed .NET Guide](/develop/dotnet)
+1. C# apps on the [Redis Launchpad](https://launchpad.redis.com/)
