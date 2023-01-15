@@ -130,7 +130,7 @@ module.exports = {
       },
       justin: {
         name: 'Justin Castilla',
-        link: 'https://twitter.com/JustCastilla',
+        link: 'http://www.justincastilla.com',
         title: 'Senior Developer Advocate at Redis',
         image: 'profile_pic_justin_castilla.jpg',
       },
