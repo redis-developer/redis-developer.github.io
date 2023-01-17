@@ -63,12 +63,12 @@ Redis Stack enables a query and indexing engine for Redis, providing secondary i
 
 ```shell
 # syntax
-> FT.CREATE {index_name} ON JSON SCHEMA {json_path} AS {attribute} {type}
-# note : attribute = logical name,  json_path = JSONPath expressions
+> FT.CREATE {index_name} ON JSON PREFIX {count} {prefix} SCHEMA {json_path} AS {attribute} {type}
+# NOTE: attribute = logical name,  json_path = JSONPath expressions
 
 # example
-> FT.CREATE userIdx ON JSON SCHEMA $.user.name AS name TEXT $.user.hobbies AS hobbies TAG $.user.age as age NUMERIC
-# note : Can search by any attribute mentioned in the above index.
+> FT.CREATE userIdx ON JSON PREFIX 1 users: SCHEMA $.user.name AS name TEXT $.user.hobbies AS hobbies TAG $.user.age as age NUMERIC
+# NOTE: You can search by any attribute mentioned in the above index for keys that start with users: (e.g. users:1).
 ```
 
 - More details on Indexing JSON can be found [here](https://redis.io/docs/stack/search/indexing_json/)
