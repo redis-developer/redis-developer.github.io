@@ -6,6 +6,11 @@ module.exports = {
       href: '/',
     },
     {
+        type: 'doc',
+        label: 'Quick Start',
+        id: 'howtos/quick-start/index-quick-start',
+    },
+    {
       type: 'category',
       label: 'Create',
       items: [
@@ -71,6 +76,7 @@ module.exports = {
           ],
         },
         'create/homebrew/index-homebrew',
+        'create/linux/index-linux',
         'create/windows/index-windows',
         'create/from-source/index-from-source',
         'create/jenkins/index-jenkins',

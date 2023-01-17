@@ -1,0 +1,159 @@
+The following example uses [Redis OM .NET](https://github.com/redis/redis-om-dotnet), but you can also use any other supported [client](https://redis.io/resources/clients/). The examples also use the synchronous methods of Redis OM .NET, but it is recommended that you use the asynchronous methods in a production application.
+
+```shell
+# install Redis OM in the project
+dotnet add package Redis.OM
+```
+
+- Create a JSON model
+
+```csharp title="Model.cs"
+using Redis.OM.Modeling;
+
+namespace RedisApp.Model
+{
+    [Document(StorageType = StorageType.Json, Prefixes = new[] { "Person" })]
+    public class Person
+    {
+        [RedisIdField]
+        public string Id { get; set; }
+
+        [Indexed]
+        public string FirstName { get; set; }
+
+        [Indexed]
+        public string? LastName { get; set; }
+
+        [Indexed(Sortable = true)]
+        public int Age { get; set; }
+
+        [Indexed]
+        public bool Verified { get; set; }
+
+        [Indexed]
+        public GeoLoc Location { get; set; }
+
+        [Indexed]
+        public string[] Skills { get; set; } = Array.Empty<string>();
+
+        [Searchable]
+        public string PersonalStatement { get; set; }
+    }
+}
+```
+
+- Setup your main program
+
+```csharp title="Program.cs"
+using System;
+using System.Linq;
+using Redis.OM;
+using Redis.OM.Modeling;
+using RedisApp.Model;
+
+namespace RedisApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+        }
+    }
+}
+```
+
+The rest of the code will be inside of `Main`.
+
+- Create your provider used to call into Redis
+
+```csharp
+var provider = new RedisConnectionProvider("redis://localhost:6379");
+```
+
+- Conditionally create index necessary for searching
+
+```csharp
+var info = provider.Connection.Execute("FT._LIST").ToArray().Select(x => x.ToString());
+
+if (info.All(x => x != "person-idx"))
+{
+    provider.Connection.CreateIndex(typeof(Person));
+}
+```
+
+- Initialize your collection
+
+```csharp
+var people = provider.RedisCollection<Person>();
+```
+
+- Insert example
+
+```csharp
+var person = new Person
+{
+    FirstName = "Rupert",
+    LastName = "Holmes",
+    Age = 75,
+    Verified = false,
+    Location = new GeoLoc { Longitude = 45.678, Latitude = 45.678 },
+    Skills = new string[] { "singing", "songwriting", "playwriting" },
+    PersonalStatement = "I like piña coladas and walks in the rain"
+};
+
+var id = people.Insert(person);
+```
+
+- Read example
+
+```csharp
+person = people.FindById(id);
+```
+
+- Update example
+
+```csharp
+person = people.FindById(id);
+person.FirstName = "Alex";
+person.LastName = null;
+people.Update(person);
+```
+
+- Update location example
+
+```csharp
+person = people.FindById(id);
+person.Location = new GeoLoc { Longitude = 44.678, Latitude = 44.678 };
+people.Update(person);
+```
+
+- Search examples
+
+```csharp
+// Multiple AND conditions example
+people.Where(p => p.Age > 21 && p.FirstName == "Alex").ToList();
+
+// Multiple OR conditions example
+people.Where(p => p.Age > 75 || p.FirstName == "Alex").ToList();
+
+// Multiple AND + OR conditions example
+people.Where(p =>
+            (p.Age > 21 && p.FirstName == "Alex") &&
+            (p.Age > 75 || p.FirstName == "Alex")
+).ToList();
+```
+
+- Delete example
+
+```csharp
+person = people.FindById(id);
+people.Delete(person);
+```
+
+### Useful Resources
+
+1. [Github repo](https://github.com/redis/redis-om-dotnet)
+1. [Getting started docs](https://redis.io/docs/stack/get-started/tutorials/stack-dotnet/)
+1. [Getting started video](https://www.youtube.com/watch?v=ZHPXKrJCYNA)
+   - [Source code](https://github.com/redis-developer/redis-om-dotnet-skeleton-app)

@@ -1,0 +1,100 @@
+
+- Connect to Redis using CLI or **[RedisInsight](https://redis.io/docs/stack/insight/)** (a GUI tool to visualize data & run commands)
+
+**RedisInsight**
+![RedisInsight](../images/redis-insight.svg)
+
+```shell
+# syntax 1 : connect using host & port
+$ redis-cli -h host -p port -a password
+
+# example 1
+$ redis-cli -h redis15.localnet.org -p 6390 -a myUnguessablePassword
+
+# syntax 2 : connect using uri
+$ redis-cli -u redis://user:password@host:port/dbnum
+
+# example 2
+$ redis-cli -u redis://LJenkins:p%40ssw0rd@redis-16379.hosted.com:16379/0
+
+```
+
+- Basic CLI / RedisInsight workbench commands
+
+```shell
+# syntax : Check specific keys
+> keys pattern
+
+# example
+> keys *
+
+#------------
+# syntax : Check number of keys in database
+> dbsize
+
+#------------
+# syntax : set a key value
+> set key value EX expirySeconds
+
+# example
+> set company redis EX 60
+
+#------------
+# syntax : get value by key
+> get key
+
+# example
+> get company
+
+#------------
+# syntax : delete keys
+> del key1 key2 key3 ... keyN
+
+# example
+> del company
+
+#------------
+# syntax : Check if key exists
+> exists key1
+
+# example
+> exists company
+
+#------------
+# syntax : set expiry to key
+> expire key seconds
+
+# example
+> expire lastname 60
+
+#------------
+# syntax : remove expiry from key
+> persist key
+
+# example
+> persist lastname
+
+#------------
+# syntax : find (remaining) time to live of a key
+> ttl key
+
+# example
+> ttl lastname
+
+#------------
+# syntax : increment a number
+> incr key
+
+# example
+> incr counter
+
+#------------
+# syntax : decrement a number
+> decr key
+
+# example
+> decr counter
+```
+
+Detailed CLI instructions can be viewed [here](https://redis.io/docs/manual/cli/) and
+commands can be checked [here](https://redis.io/commands/)
