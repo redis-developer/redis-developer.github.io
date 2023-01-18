@@ -1,0 +1,129 @@
+The following example uses [Redis OM Python](https://github.com/redis/redis-om-python), but you can also use [redis-py](https://github.com/redis/redis-py) or any other supported [client](https://redis.io/resources/clients/)
+
+```shell
+# install Redis OM in the project
+pip install redis-om
+```
+
+Create a JSON model
+
+```python
+import datetime
+import dateutil.parser
+from typing import List, Optional
+
+from redis_om import (
+    EmbeddedJsonModel,
+    JsonModel,
+    Field,
+    Migrator,
+)
+
+class Point(EmbeddedJsonModel):
+    longitude: float = Field(index=True)
+    latitude: float = Field(index=True)
+
+
+class Person(JsonModel):
+    first_name: str = Field(index=True)
+    last_name: Optional[str] = Field(index=True)
+    age: int = Field(index=True)
+    verified: bool
+    location: Point
+    location_updated: datetime.datetime = Field(index=True)
+    skills: List[str]
+    personal_statement: str = Field(index=True, full_text_search=True)
+
+
+# Before running queries, we need to run migrations to set up the
+# indexes that Redis OM will use. You can also use the `migrate`
+# CLI tool for this!
+Migrator().run()
+```
+
+- Insert example
+
+```python
+person = Person(**{
+    "first_name": "Rupert",
+    "last_name": "Holmes",
+    "age": 75,
+    "verified": False,
+    "location": {
+        "longitude": 45.678,
+        "latitude": 45.678
+    },
+    "location_updated": dateutil.parser.isoparse("2022-03-01T12:34:56.123Z"),
+    "skills":  ["singing", "songwriting", "playwriting"],
+    "personal_statement": "I like piña coladas and walks in the rain"
+}).save()
+```
+
+- Read example
+
+```python
+id = person.pk
+person = Person.get(id)
+```
+
+- Update example
+
+```python
+person = Person.get(id)
+person.first_name = "Alex"
+person.last_name = None
+person.save()
+```
+
+- Update embedded JSON example
+
+```python
+person = Person.get(id)
+person.location = Point(longitude=44.678, latitude=44.678)
+person.location_updated = datetime.datetime.now()
+person.save()
+```
+
+- Search examples
+
+```python
+# Get all Person records
+
+all = Person.find().all()
+
+# Multiple AND conditions example
+
+people = Person.find(
+    (Person.age > 21) &
+    (Person.first_name == "Alex")
+).all()
+
+# Multiple OR conditions example
+
+people = Person.find(
+    (Person.age > 75) |
+    (Person.first_name == "Alex")
+).all()
+
+# Multiple AND + OR conditions example
+
+people = Person.find(
+    ((Person.age > 21) &
+     (Person.first_name == "Alex")) &
+    ((Person.age > 75) |
+     (Person.first_name == "Alex"))
+).all()
+```
+
+- Delete example
+
+```python
+Person.get(id).delete()
+```
+
+### Useful Resources
+
+1. [Github repo](https://github.com/redis/redis-om-python)
+1. [Getting started docs](https://redis.io/docs/stack/get-started/tutorials/stack-python/)
+1. [Getting started video](https://www.youtube.com/watch?v=PPT1FElAS84)
+   - [Source code](https://github.com/redis-developer/redis-om-python-flask-skeleton-app)

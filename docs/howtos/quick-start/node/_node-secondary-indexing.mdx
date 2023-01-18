@@ -1,0 +1,149 @@
+
+The following example uses [Redis OM Node](https://github.com/redis/redis-om-node), but you can also use [Node Redis](https://github.com/redis/node-redis), [IO Redis](https://github.com/luin/ioredis), or any other supported [client](https://redis.io/resources/clients/)
+
+```shell
+# install RedisOM in the project
+npm install redis-om --save
+```
+
+- create RedisOM Client & connect to redis
+
+```js
+//client.js file
+
+import { Client } from 'redis-om';
+
+// pulls the Redis URL from .env
+const url = process.env.REDIS_URL;
+
+const client = new Client();
+await client.open(url);
+
+export default client;
+```
+
+- Create Entity, Schema & Repository
+
+```js
+//person.js file
+
+import { Entity, Schema } from 'redis-om';
+import client from './client.js';
+
+class Person extends Entity {}
+
+const personSchema = new Schema(Person, {
+  firstName: { type: 'string' },
+  lastName: { type: 'string' },
+  age: { type: 'number' },
+  verified: { type: 'boolean' },
+  location: { type: 'point' },
+  locationUpdated: { type: 'date' },
+  skills: { type: 'string[]' },
+  personalStatement: { type: 'text' },
+});
+
+export const personRepository = client.fetchRepository(personSchema);
+
+//creating index to make person schema searchable
+await personRepository.createIndex();
+```
+
+```js
+import { Router } from 'express';
+import { personRepository } from 'person.js';
+```
+
+- Insert example
+
+```js
+const input = {
+  firstName: 'Rupert',
+  lastName: 'Holmes',
+  age: 75,
+  verified: false,
+  location: {
+    longitude: 45.678,
+    latitude: 45.678,
+  },
+  locationUpdated: '2022-03-01T12:34:56.123Z',
+  skills: ['singing', 'songwriting', 'playwriting'],
+  personalStatement: 'I like piña coladas and walks in the rain',
+};
+let person = await personRepository.createAndSave(input);
+```
+
+- Read example
+
+```js
+const id = person.entityId;
+person = await personRepository.fetch(id);
+```
+
+- Update example
+
+```js
+person = await personRepository.fetch(id);
+
+person.firstName = 'Alex';
+
+//null to remove that field
+person.lastName = null;
+
+await personRepository.save(person);
+```
+
+- Update location sample
+
+```js
+const longitude = 45.678;
+const latitude = 45.678;
+const locationUpdated = new Date();
+
+const person = await personRepository.fetch(id);
+person.location = { longitude, latitude };
+person.locationUpdated = locationUpdated;
+await personRepository.save(person);
+```
+
+- Search examples
+
+```js
+// Get all person records
+const queryBuilder = personRepository.search();
+const people = await queryBuilder.return.all();
+
+// Multiple AND conditions example
+const queryBuilder = personRepository
+  .search()
+  .where('verified')
+  .eq(true) // ==
+  .and('age')
+  .gte(21) // >=
+  .and('lastName')
+  .eq(lastName);
+//console.log(queryBuilder.query);
+const people = await queryBuilder.return.all();
+
+// Multiple OR conditions example
+const queryBuilder = personRepository
+  .search()
+  .where('verified')
+  .eq(true)
+  .or((search) => search.where('age').gte(21).and('lastName').eq(lastName))
+  .sortAscending('age');
+const people = await queryBuilder.return.all();
+```
+
+- Delete example
+
+```js
+await personRepository.remove(id);
+```
+
+### Useful Resources
+
+1. [Github repo](https://github.com/redis/redis-om-node)
+1. [Getting started docs](https://redis.io/docs/stack/get-started/tutorials/stack-node/)
+1. [Getting started video](https://www.youtube.com/watch?v=KUfufrwpBkM)
+   - [Source code](https://github.com/redis-developer/express-redis-om-workshop)

@@ -1,0 +1,156 @@
+
+Redis Stack enables the JSON data type in Redis.
+
+```shell
+# syntax : set an object value to a key
+> JSON.SET objKey $ value
+
+# example
+> JSON.SET person $ '{"name":"Leonard Cohen","dob":1478476800,"isActive": true, "hobbies":["music", "cricket"]}'
+
+#------------
+# syntax : get object value of a key
+> JSON.GET objKey $
+
+# example
+> JSON.GET person $
+
+#------------
+# syntax : find object key length
+> JSON.OBJLEN objKey $
+
+# example
+> JSON.OBJLEN person $
+
+#------------
+# syntax : find object keys
+> JSON.OBJKEYS objKey $
+
+# example
+> JSON.OBJKEYS person $
+
+#------------
+# syntax : update nested property
+> JSON.SET objKey $.prop value
+
+# example
+> JSON.SET person $.name '"Alex"'
+
+#------------
+# syntax : update nested array
+> JSON.SET objKey $.arrayProp fullValue
+> JSON.SET objKey $.arrayProp[index] value
+
+# example
+> JSON.SET person $.hobbies '["music", "cricket"]'
+> JSON.SET person $.hobbies[1] '"dance"'
+
+#------------
+# syntax : remove nested array item by index
+> JSON.ARRPOP objKey $.arrayProp index
+
+# example
+> JSON.ARRPOP person $.hobbies 1
+```
+
+More details can be found in the [Redis Stack docs](https://redis.io/docs/stack/json/)
+
+---
+
+Redis Stack enables a query and indexing engine for Redis, providing secondary indexing, full-text search and aggregations capabilities.
+
+- We have to create index on schema to be able to search on its data
+
+```shell
+# syntax
+> FT.CREATE {index_name} ON JSON PREFIX {count} {prefix} SCHEMA {json_path} AS {attribute} {type}
+# NOTE: attribute = logical name,  json_path = JSONPath expressions
+
+# example
+> FT.CREATE userIdx ON JSON PREFIX 1 users: SCHEMA $.user.name AS name TEXT $.user.hobbies AS hobbies TAG $.user.age as age NUMERIC
+# NOTE: You can search by any attribute mentioned in the above index for keys that start with users: (e.g. users:1).
+```
+
+- More details on Indexing JSON can be found [here](https://redis.io/docs/stack/search/indexing_json/)
+
+Once index is created, any pre-existing/ new/ modified JSON document is automatically indexed.
+
+```json
+//sample json document
+{
+  "user": {
+    "name": "John Smith",
+    "hobbies": "foo,bar",
+    "age": 23
+  }
+}
+```
+
+```shell
+# adding JSON document
+> JSON.SET myDoc $ '{"user":{"name":"John Smith","hobbies":"foo,bar","age":23}}'
+```
+
+- Search
+
+```shell
+# search all user documents with name 'John'
+> FT.SEARCH userIdx '@name:(John)'
+1) (integer) 1
+2) "myDoc"
+3) 1) "$"
+   2)  {"user":{"name":"John Smith","hobbies":"foo,bar","age":23}}"
+```
+
+- Search & project required fields
+
+```shell
+# search documents with name 'John' & project only age field
+> FT.SEARCH userIdx '@name:(John)' RETURN 1 $.user.age
+1) (integer) 1
+2) "myDoc"
+3) 1) "$.user.age"
+   2) "23"
+```
+
+```shell
+# project multiple fields
+> FT.SEARCH userIdx '@name:(John)' RETURN 2 $.user.age $.user.name
+1) (integer) 1
+2) "myDoc"
+3) 1) "$.user.age"
+   2) "23"
+   3) "$.user.name"
+   4) "John Smith"
+
+#------------
+# project with alias name
+> FT.SEARCH userIdx '@name:(John)' RETURN 3 $.user.age AS userAge
+
+1) (integer) 1
+2) "myDoc"
+3) 1) "userAge"
+   2) "23"
+#------------
+
+# multi field query
+> FT.SEARCH userIdx '@name:(John) @hobbies:{foo | me} @age:[20 30]'
+1) (integer) 1
+2) "myDoc"
+3) 1) "$"
+   2)  {"user":{"name":"John Smith","hobbies":"foo,bar","age":23}}"
+```
+
+More details on [query syntax](https://redis.io/docs/stack/search/reference/query_syntax/)
+
+- Drop index
+
+```shell
+> FT.DROPINDEX userIdx
+```
+
+### Useful Resources
+
+1. [Redis and JSON explained (Revisited in 2022)](https://www.youtube.com/watch?v=I-ohlZXXaxs) video
+1. [Searching with Redis Stack](https://redis.io/docs/stack/search/)
+1. [Redis University 204, Storing, Querying, and Indexing JSON at Speed](https://university.redis.com/courses/ru204/)

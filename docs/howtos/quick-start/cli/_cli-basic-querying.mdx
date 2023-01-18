@@ -1,0 +1,104 @@
+
+- Connect to Redis using CLI or **[RedisInsight](https://redis.io/docs/stack/insight/)** (a GUI tool to visualize data & run commands)
+
+**RedisInsight**
+![RedisInsight](../images/redis-insight.svg)
+
+```shell
+# syntax 1 : connect using host & port, followed by password
+$ redis-cli -h host -p port
+> AUTH password
+OK
+
+# example 1
+$ redis-cli -h redis15.localnet.org -p 6390
+> AUTH myUnguessablePassword
+OK
+
+# syntax 2 : connect using uri
+$ redis-cli -u redis://user:password@host:port/dbnum
+
+# example 2
+$ redis-cli -u redis://LJenkins:p%40ssw0rd@redis-16379.hosted.com:16379/0
+
+```
+
+- Basic CLI / RedisInsight workbench commands
+
+```shell
+# syntax : Check specific keys
+> KEYS pattern
+
+# example
+> KEYS *
+
+#------------
+# syntax : Check number of keys in database
+> DBSIZE
+
+#------------
+# syntax : set a key value
+> SET key value EX expirySeconds
+
+# example
+> SET company redis EX 60
+
+#------------
+# syntax : get value by key
+> GET key
+
+# example
+> GET company
+
+#------------
+# syntax : delete keys
+> DEL key1 key2 key3 ... keyN
+
+# example
+> DEL company
+
+#------------
+# syntax : Check if key exists
+> EXISTS key1
+
+# example
+> EXISTS company
+
+#------------
+# syntax : set expiry to key
+> EXPIRE key seconds
+
+# example
+> EXPIRE lastname 60
+
+#------------
+# syntax : remove expiry from key
+> PERSIST key
+
+# example
+> PERSIST lastname
+
+#------------
+# syntax : find (remaining) time to live of a key
+> TTL key
+
+# example
+> TTL lastname
+
+#------------
+# syntax : increment a number
+> INCR key
+
+# example
+> INCR counter
+
+#------------
+# syntax : decrement a number
+> DECR key
+
+# example
+> DECR counter
+```
+
+Detailed CLI instructions can be viewed [here](https://redis.io/docs/manual/cli/) and
+commands can be checked [here](https://redis.io/commands/)
