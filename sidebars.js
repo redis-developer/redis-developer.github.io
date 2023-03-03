@@ -460,7 +460,10 @@ module.exports = {
         {
           type: 'category',
           label: 'Solutions',
-          items: ['howtos/solutions/cqrs/index-solutions-cqrs'],
+          items: [
+            'howtos/solutions/cqrs/index-solutions-cqrs',
+            'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
+          ],
         },
         {
           type: 'category',
