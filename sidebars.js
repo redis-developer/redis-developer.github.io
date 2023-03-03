@@ -463,6 +463,7 @@ module.exports = {
           items: [
             'howtos/solutions/cqrs/index-solutions-cqrs',
             'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
+            'howtos/solutions/caching/index-solutions-caching',
           ],
         },
         {
