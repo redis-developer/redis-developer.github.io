@@ -1,0 +1,243 @@
+---
+id: index-solutions-cqrs
+title: How to build an e-commerce app using Redis with the CQRS Pattern
+sidebar_label: How to build an e-commerce app using Redis with the CQRS Pattern
+slug: /howtos/solutions/cqrs
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+<!-- TODO: Link to github repo -->
+
+Command and Query Responsibility Segregation, or CQRS, is a common pattern used in event-driven applications in-part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as, "Order this product" from queries such as, "Show me my order history." CQRS applications are often messaging-based and rely on eventual consistency.
+
+## Why you might use CQRS
+
+Consider the following scenario. You have an e-commerce application that allows a customer to populate a shopping cart with products, and has a "Buy Now" button to facilitate ordering the products. When you first start out, you might setup a primary database like MongoDB and populate it with products. Then you might write a backend API to handle creating the order, creating an invoice, processing payment, handling fullfilment, and updating the customer's order history all in one go.
+
+This method of synchronous order processing seems like a good idea, but you quickly find out that your database slows down as you gain more customers and have a higher sales volume. You decide that you need to process orders quickly so the customer doesn't have to wait. Then, when you have time you can create an invoice, process payment, handle fulfillment, etc. So you decide to separate each of these steps and use an event-driven approach with CQRS to allow you to scale your reads and writes separately.
+
+### Using CQRS in an event-driven architecture
+
+You eventually land on the following architecture:
+
+1. `products service` - handles querying products from the database and returning them to the frontend
+1. `orders service` - handles validating and creating orders
+1. `order history service` - handles querying a customer's order history
+1. `payments service` - handles processing orders for payment
+1. `api gateway` - unifies your services under a single endpoint
+1. `mongodb` - serves as the primary database, storing orders, order history, products, etc.
+
+Here is what the architecture diagram looks like so far:
+
+![Initial CQRS architecture](images/initial-cqrs-architecture.png)
+
+However, note that in the current architecture all the services use the same underlying database. Even though we are technically separating reads and writes, we can't scale our database indepdendently. This is where Redis comes in. If we put Redis in front of our primary database, we can use it for reads while writing to the primary database. The benefit of Redis is that it is fast for reads and writes, which is why it is the defacto choice for caching. Our architecture now might look like the following:
+
+![CQRS architecture with Redis](images/cqrs-architecture-with-redis.png)
+
+What is not depicted in the images above is the events happening to coordinate communication between the services. This is covered in the interservice communication guide. For now, let's look at some sample code that helps facilitate the CQRS pattern with Redis and MongoDB.
+
+<!-- TODO: Link to the interservice communication guide -->
+
+## Sample CQRS application with Redis and MongoDB
+
+![Shopping app frontend with Redis and MongoDB](images/frontend-cqrs-app-with-redis-and-mongodb.png)
+
+<!-- TODO: Link to github repo -->
+
+You can find the full source code for the app pictured above here. The frontend is build using Next.js, and the backend is in Node.js.
+
+We're using Redis to store the order history, with it also being store in MongoDB. Let's look at the `order service` to see the `CreateOrder` API.
+
+### Create Order API
+
+Below you will find an example API request and response to create an order.
+
+#### Create Order Request
+
+```json
+// POST http://api-gateway/orders/createOrder
+{
+  "products": [
+    {
+      "productId": 11000,
+      "qty": 2,
+      "productPrice": 3995
+    },
+    {
+      "productId": 11001,
+      "qty": 1,
+      "productPrice": 5450
+    }
+  ]
+}
+```
+
+#### Create Order Response
+
+```json
+{
+  "data": "63f5f8dc3696d145a45775a6", // orderId
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the `orders service`. Ultimately it ends up calling a `createOrder` function which looks as follows:
+
+```typescript
+async function createOrder(order: IOrder) {
+  if (!order) {
+    throw 'Order data is mandatory!';
+  }
+
+  order.orderStatusCode = ORDER_STATUS.CREATED;
+  order.userId = USERS.DEFAULT; // Used as a shortcut, in a real app you would use customer session data
+  order.createdOn = new Date();
+  order.createdBy = order.userId;
+  order.lastUpdatedOn = null;
+  order.lastUpdatedBy = null;
+  order.statusCode = DB_ROW_STATUS.ACTIVE;
+
+  order = await validateOrder(order);
+
+  const orderId = await addOrderToRedis(order);
+  order.orderId = orderId;
+
+  await addOrderToMongoDB(order);
+
+  return orderId;
+}
+```
+
+:::info
+
+You will see that we are first adding the order to Redis, then to MongoDB. While this works, you might also consider using Redis Gears to handle database synchronization in the background. For the purposes of this tutorial we are not going to outline exactly how you might do that, but instead focus on how the data is stored and accessed in Redis.
+
+:::
+
+Note above that we are calling the `addOrderToRedis` function to store our orders in Redis prior to sending them to MongoDB. Below is what that function looks like:
+
+```typescript title="server/src/services/orders"
+import { Entity, Schema } from 'redis-om';
+import { getRedisOmClient } from '../utils/redis/redis-wrapper';
+
+class OrderEntity extends Entity {}
+
+const schema = new Schema(OrderEntity, {
+  orderId: { type: 'string' },
+  userId: { type: 'string' },
+  orderStatusCode: { type: 'number' },
+
+  productsStr: { type: 'string' }, //redis om (node) upcoming version will support nested JSON
+
+  createdOn: { type: 'date' },
+  createdBy: { type: 'string' },
+  lastUpdatedOn: { type: 'date' },
+  lastUpdatedBy: { type: 'string' },
+  statusCode: { type: 'number' },
+});
+
+async function addOrderToRedis(order: IOrder) {
+  let orderId = '';
+
+  if (order) {
+    const redisOmClient = getRedisOmClient();
+    const repository = redisOmClient.fetchRepository(schema);
+    const entity = repository.createEntity(order);
+
+    orderId = entity.entityId;
+    entity.orderId = orderId;
+
+    await repository.save(entity);
+  }
+
+  return orderId;
+}
+```
+
+We're using Redis OM for Node.js to store the order entities in Redis. Then we do something similar in the `order history service` when we want to retrieve the orders.
+
+### Order History API
+
+Below you will find an example API request and response to get a customer's order history.
+
+#### Order History Request
+
+```json
+// GET http://api-gateway/orderHistory/viewOrderHistory
+```
+
+#### Order History Response
+
+```json
+{
+  "data": [
+    {
+      "orderId": "01GTH7JTQWP5QSEY32NNKT6B88",
+      "userId": "ADMIN",
+      "orderStatusCode": 1,
+      "createdOn": "2023-03-02T13:18:31.657Z",
+      "createdBy": "ADMIN",
+      "lastUpdatedOn": null,
+      "lastUpdatedBy": null
+    }
+    //...
+  ],
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the `order history service`. Ultimately it ends up calling a `viewOrderHistory` function which looks as follows:
+
+```typescript title="server/src/services/order-history"
+async function viewOrderHistory(userId: string) {
+  const repository = OrderRepo.getRepository();
+  let orders: IOrder[] = [];
+
+  if (repository) {
+    const result = repository
+      .search()
+      .where('createdBy')
+      .eq(userId)
+      .and('orderStatusCode')
+      .gte(ORDER_STATUS.CREATED) //returns CREATED and PAYMENT_SUCCESS
+      .and('statusCode')
+      .eq(DB_ROW_STATUS.ACTIVE)
+      .return.all();
+
+    orders = result.map((elm) => {
+      return {
+        orderId: elm.orderId,
+        userId: elm.userId,
+        orderStatusCode: elm.orderStatusCode,
+        createdOn: elm.createdOn,
+        createdBy: elm.createdBy,
+        lastUpdatedOn: elm.lastUpdatedOn,
+        lastUpdatedBy: elm.lastUpdatedBy,
+      } as IOrder;
+    });
+  }
+
+  return orders;
+}
+```
+
+:::info
+
+Note that the `order history service` only needs to go to Redis for all orders. This is because we are handling storing and synchronizing between Redis and MongoDB within the `orders service`.
+
+:::
+
+You might be used to using Redis as a cache and both storing and retrieving stringified JSON values or perhaps hashed values. However, if you look closely at the code above we are storing orders as JSON documents, and then using Redis OM to search for the orders belonging to a specific user. So in reality Redis is operating like a database and providing the ability to speed up queries and scale independently from the primary database (MongoDB in this case).
+
+## Conclusion
+
+Hopefully this tutorial has helped you visualize how you might use Redis with the CQRS pattern to help reduce the load on your primary database while still allowing you to store and search JSON documents. See below for some additional resources around this topic.
+
+## Additional Resources
+
+<!-- TODO: Add links to other solutions tutorials here -->

@@ -6,9 +6,9 @@ module.exports = {
       href: '/',
     },
     {
-        type: 'doc',
-        label: 'Quick Start',
-        id: 'howtos/quick-start/index-quick-start',
+      type: 'doc',
+      label: 'Quick Start',
+      id: 'howtos/quick-start/index-quick-start',
     },
     {
       type: 'category',
@@ -459,6 +459,11 @@ module.exports = {
         'howtos/redisearch/index-redisearch',
         {
           type: 'category',
+          label: 'Solutions',
+          items: ['howtos/solutions/cqrs/index-solutions-cqrs'],
+        },
+        {
+          type: 'category',
           label: 'RedisJSON Tutorial',
           items: [
             'howtos/redisjson/index-redisjson',
@@ -592,9 +597,7 @@ module.exports = {
     {
       type: 'category',
       label: 'E-books',
-      items: [
-        'ebooks/nosql-data-modeling-patterns'
-      ],
+      items: ['ebooks/nosql-data-modeling-patterns'],
     },
   ],
 };
