@@ -196,29 +196,27 @@ async function viewOrderHistory(userId: string) {
   const repository = OrderRepo.getRepository();
   let orders: IOrder[] = [];
 
-  if (repository) {
-    const result = repository
-      .search()
-      .where('createdBy')
-      .eq(userId)
-      .and('orderStatusCode')
-      .gte(ORDER_STATUS.CREATED) //returns CREATED and PAYMENT_SUCCESS
-      .and('statusCode')
-      .eq(DB_ROW_STATUS.ACTIVE)
-      .return.all();
+  const result = repository
+    .search()
+    .where('createdBy')
+    .eq(userId)
+    .and('orderStatusCode')
+    .gte(ORDER_STATUS.CREATED) //returns CREATED and PAYMENT_SUCCESS
+    .and('statusCode')
+    .eq(DB_ROW_STATUS.ACTIVE)
+    .return.all();
 
-    orders = result.map((elm) => {
-      return {
-        orderId: elm.orderId,
-        userId: elm.userId,
-        orderStatusCode: elm.orderStatusCode,
-        createdOn: elm.createdOn,
-        createdBy: elm.createdBy,
-        lastUpdatedOn: elm.lastUpdatedOn,
-        lastUpdatedBy: elm.lastUpdatedBy,
-      } as IOrder;
-    });
-  }
+  orders = result.map((elm) => {
+    return {
+      orderId: elm.orderId,
+      userId: elm.userId,
+      orderStatusCode: elm.orderStatusCode,
+      createdOn: elm.createdOn,
+      createdBy: elm.createdBy,
+      lastUpdatedOn: elm.lastUpdatedOn,
+      lastUpdatedBy: elm.lastUpdatedBy,
+    } as IOrder;
+  });
 
   return orders;
 }
