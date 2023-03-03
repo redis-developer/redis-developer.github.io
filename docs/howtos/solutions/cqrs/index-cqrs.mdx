@@ -144,16 +144,14 @@ const schema = new Schema(OrderEntity, {
 async function addOrderToRedis(order: IOrder) {
   let orderId = '';
 
-  if (order) {
-    const redisOmClient = getRedisOmClient();
-    const repository = redisOmClient.fetchRepository(schema);
-    const entity = repository.createEntity(order);
+  const redisOmClient = getRedisOmClient();
+  const repository = redisOmClient.fetchRepository(schema);
+  const entity = repository.createEntity(order);
 
-    orderId = entity.entityId;
-    entity.orderId = orderId;
+  orderId = entity.entityId;
+  entity.orderId = orderId;
 
-    await repository.save(entity);
-  }
+  await repository.save(entity);
 
   return orderId;
 }
