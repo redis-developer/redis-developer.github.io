@@ -99,7 +99,22 @@ The example above is not meant to be the defacto best practice for handling auth
 
 :::
 
-In the code above, we check for the authorization header, else we crreate a new one and store it in Redis. Then we retrieve the session from Redis. Further down the line we attach the session to an `x-session` header prior to calling into the orders service.
+In the code above, we check for the authorization header, else we crreate a new one and store it in Redis. Then we retrieve the session from Redis. Further down the line we attach the session to an `x-session` header prior to calling into the orders service. Now let's see how the orders service receives the session.
+
+```typescript
+router.post(API_NAMES.CREATE_ORDER, async (req: Request, res: Response) => {
+  const body = req.body;
+  const result: IApiResponseBody = {
+    data: null,
+    error: null,
+  };
+  // highlight-next-line
+  const userId = JSON.parse(req.header('x-session') as string).userId as string;
+  ...
+});
+```
+
+The hightlighted line above shows how to pull the session out of the `x-session` header and get the `userId`.
 
 ## Conclusion
 
