@@ -464,6 +464,7 @@ module.exports = {
             'howtos/solutions/cqrs/index-solutions-cqrs',
             'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
             'howtos/solutions/caching/index-solutions-caching',
+            'howtos/solutions/api-gateway-caching/index-solutions-api-gateway-caching',
           ],
         },
         {
