@@ -56,7 +56,10 @@ You can find the full source code for the app pictured above here. The frontend 
 In our sample application, all requests are routed through the API gatway. We are using Express to setup our API gateway and we're using the `Authorization` hearder to pass the authorization token from the frontend to the API. For every request, the API gateway gets the authorization token and looks it up in Redis. Then it passes it along to the correct microservice. Below you will find the code to validate the session:
 
 ```typescript
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import {
+  createProxyMiddleware,
+  responseInterceptor,
+} from 'http-proxy-middleware';
 
 app.use(async (req, res, next) => {
   const authorizationHeader = req.header('Authorization');
@@ -75,7 +78,6 @@ app.use(async (req, res, next) => {
   }
 
   req.session = (await redis.get(sessionId)) as string;
-  res.setHeader('set-authorization', sessionId);
 
   next();
 });
@@ -86,16 +88,40 @@ app.use(
     // http://localhost:3000/orders/bar -> http://localhost:3001/orders/bar
     target: ORDERS_API_URL,
     changeOrigin: true,
+    selfHandleResponse: true,
     onProxyReq(proxyReq, req, res) {
       proxyReq.setHeader('x-session', req.session);
     },
+    onProxyRes: responseInterceptor(
+      async (responseBuffer, proxyRes, req, res) => {
+        const contentType = proxyRes.headers['content-type'];
+
+        // detect json responses
+        if (!!contentType && contentType.includes('application/json')) {
+          let data = JSON.parse(responseBuffer.toString('utf8'));
+
+          // manipulate JSON data here to set auth response
+          if (!!(req as Request).sessionId) {
+            data = Object.assign({}, data, {
+              auth: (req as Request).sessionId,
+            });
+          }
+
+          // return manipulated JSON
+          return JSON.stringify(data);
+        }
+
+        // return other content-types as-is
+        return responseBuffer;
+      },
+    ),
   }),
 );
 ```
 
 :::note
 
-The example above is not meant to be the defacto best practice for handling authentication. It is meant to illustrate what you might do with respect to Redis.
+The example above is not meant to be the defacto best practice for handling authentication. It is meant to illustrate what you might do with respect to Redis. You will likely have a different setup for authentication, but the concept of storing a session in Redis is similar.
 
 :::
 
