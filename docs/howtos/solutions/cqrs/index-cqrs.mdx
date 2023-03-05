@@ -7,20 +7,34 @@ authors: [prasan, will]
 ---
 
 import Authors from '@theme/Authors';
+import cqrsPattern from './images/cqrs-pattern.png';
 
 <Authors frontMatter={frontMatter} />
 
-<!-- TODO: Link to github repo -->
+:::tip GITHUB CODE
 
-Command and Query Responsibility Segregation, or CQRS, is a common pattern used in event-driven applications in-part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as, "Order this product" from queries such as, "Show me my order history." CQRS applications are often messaging-based and rely on eventual consistency.
+Source code for the application used in this tutorial
+
+https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+:::
+
+## CQRS
+
+Command and Query Responsibility Segregation (CQRS) is a common pattern used in event-driven applications in-part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as "Order this product" (update operation) from queries such as "Show me my order history" (write operation). CQRS applications are often messaging-based and rely on eventual consistency.
+
+<!--temp img tag till replaced with dimensions-->
+
+<img src={cqrsPattern} alt="CQRS pattern" width="500" />
 
 ## Why you might use CQRS
 
-Consider the following scenario. You have an e-commerce application that allows a customer to populate a shopping cart with products, and has a "Buy Now" button to facilitate ordering the products. When you first start out, you might setup a primary database like MongoDB and populate it with products. Then you might write a backend API to handle creating the order, creating an invoice, processing payment, handling fullfilment, and updating the customer's order history all in one go.
+> _To improve application performance, scale your read and write operations separately._
 
-This method of synchronous order processing seems like a good idea, but you quickly find out that your database slows down as you gain more customers and have a higher sales volume. You decide that you need to process orders quickly so the customer doesn't have to wait. Then, when you have time you can create an invoice, process payment, handle fulfillment, etc. So you decide to separate each of these steps and use an event-driven approach with CQRS to allow you to scale your reads and writes separately.
+Consider the following scenario. You have an e-commerce application that allows a customer to populate a shopping cart with products, and has a "Buy Now" button to facilitate ordering the products. When you first start out, you might setup a primary database like MongoDB and populate it with products. Then you might write a backend API to handle creating the order, creating an invoice, processing payment, handling fulfillment, and updating the customer's order history all in one go.
 
-### Using CQRS in an event-driven architecture
+This method of synchronous order processing seems like a good idea, but you quickly find out that your database slows down as you gain more customers and have a higher sales volume. You decide that you need to **process orders** quickly so the customer doesn't have to wait. Then, when you have time you can create an invoice, process payment, handle fulfillment, etc. So you decide to separate each of these steps and use an event-driven approach with CQRS to allow you to scale your reads and writes separately.
+
+## Ecommerce (event-driven) architecture
 
 You eventually land on the following architecture:
 
@@ -35,23 +49,45 @@ Here is what the architecture diagram looks like so far:
 
 ![Initial CQRS architecture](images/initial-cqrs-architecture.png)
 
-However, note that in the current architecture all the services use the same underlying database. Even though we are technically separating reads and writes, we can't scale our database indepdendently. This is where Redis comes in. If we put Redis in front of our primary database, we can use it for reads while writing to the primary database. The benefit of Redis is that it is fast for reads and writes, which is why it is the defacto choice for caching. Our architecture now might look like the following:
+## Using CQRS in an event-driven architecture
+
+However, note that in the current architecture all the services use the same underlying database. Even though we are technically separating reads and writes, we can't scale our database independently. This is where Redis comes in. If we put Redis in front of our primary database, we can use it for reads while writing to the primary database. The benefit of Redis is that it is fast for reads and writes, which is why it is the defacto choice for caching. Our architecture now might look like the following:
 
 ![CQRS architecture with Redis](images/cqrs-architecture-with-redis.png)
 
-What is not depicted in the images above is the events happening to coordinate communication between the services. This is covered in the interservice communication guide. For now, let's look at some sample code that helps facilitate the CQRS pattern with Redis and MongoDB.
+What is not depicted in the images above is the events happening to coordinate communication between the services. This is covered in the [interservice communication guide](/howtos/solutions/interservice-communication). For now, let's look at some sample code that helps facilitate the CQRS pattern with Redis and MongoDB.
 
-<!-- TODO: Link to the interservice communication guide -->
+## Ecommerce product
+
+Consider below e-commerce application,
+
+- Dashboard to populate list of products
+
+  [TODO: dashboard image]
+
+- Shopping Cart to view added products
+  ![Shopping app frontend with Redis and MongoDB](images/frontend-cqrs-app-with-redis-and-mongodb.png)
+
+- Order confirmation page
+
+  [TODO: payment confirmation image]
+
+- Order history view (on Orders tab click in the top nav bar)
+
+  [TODO: order history image]
+
+You can find the full source code for the app pictured above here. The frontend is build using **Next.js**, the backend is in **Node.js**, data is stored in **MongoDB** and **Redis**.
+
+:::tip GITHUB CODE
+
+Source code for the application
+
+https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+:::
 
 ## Sample CQRS application with Redis and MongoDB
 
-![Shopping app frontend with Redis and MongoDB](images/frontend-cqrs-app-with-redis-and-mongodb.png)
-
-<!-- TODO: Link to github repo -->
-
-You can find the full source code for the app pictured above here. The frontend is build using Next.js, and the backend is in Node.js.
-
-We're using Redis to store the order history, with it also being store in MongoDB. Let's look at the `order service` to see the `CreateOrder` API.
+Let's consider sample code for `order service` to see the `CreateOrder` API (a write operation) and 'order history service' to see the `viewOrderHistory` API (a read operation)
 
 ### Create Order API
 
@@ -95,7 +131,7 @@ async function createOrder(order: IOrder) {
   }
 
   order.orderStatusCode = ORDER_STATUS.CREATED;
-  order.userId = USERS.DEFAULT; // Used as a shortcut, in a real app you would use customer session data
+  order.userId = USERS.DEFAULT; // Used as a shortcut, in a real app you would use customer session data to fetch user details
   order.createdOn = new Date();
   order.createdBy = order.userId;
   order.lastUpdatedOn = null;
@@ -114,12 +150,13 @@ async function createOrder(order: IOrder) {
 ```
 
 :::info
+For simplicity, we are adding data to both MongoDB & Redis in same service. Instead we can add data to any one store and use synchronization technique to sync with other.
+For eg: You might consider using **RedisGears** to handle sync between Redis and mongodb in the background.
 
-You will see that we are first adding the order to Redis, then to MongoDB. While this works, you might also consider using RedisGears to handle database synchronization in the background. For the purposes of this tutorial we are not going to outline exactly how you might do that, but instead focus on how the data is stored and accessed in Redis.
-
+For the purposes of this tutorial we are not going to outline exactly how you might do synchronization, but instead focus on how the data is stored and accessed in Redis.
 :::
 
-Note above that we are calling the `addOrderToRedis` function to store our orders in Redis prior to sending them to MongoDB. Below is what that function looks like:
+Note above that we are calling the `addOrderToRedis` function to store our orders in Redis. Below is what that function looks like:
 
 ```typescript title="server/src/services/orders"
 import { Entity, Schema } from 'redis-om';
@@ -132,7 +169,7 @@ const schema = new Schema(OrderEntity, {
   userId: { type: 'string' },
   orderStatusCode: { type: 'number' },
 
-  productsStr: { type: 'string' }, //redis om (node) upcoming version will support nested JSON
+  productsStr: { type: 'string' },
 
   createdOn: { type: 'date' },
   createdBy: { type: 'string' },
@@ -157,7 +194,7 @@ async function addOrderToRedis(order: IOrder) {
 }
 ```
 
-We're using Redis OM for Node.js to store the order entities in Redis. Then we do something similar in the `order history service` when we want to retrieve the orders.
+We're using Redis OM for Node.js to store the order entities in Redis.
 
 ### Order History API
 
@@ -178,6 +215,58 @@ Below you will find an example API request and response to get a customer's orde
       "orderId": "01GTH7JTQWP5QSEY32NNKT6B88",
       "userId": "ADMIN",
       "orderStatusCode": 1,
+      "products": [
+        {
+          "productId": 11000,
+          "qty": 10,
+          "productPrice": 3995,
+          "productData": {
+            "id": 11000,
+            "price": 3995,
+            "productDisplayName": "Puma Men Slick 3HD Yellow Black Watches",
+            "variantName": "Slick 3HD Yellow",
+            "brandName": "Puma",
+            "ageGroup": "Adults-Men",
+            "gender": "Men",
+            "displayCategories": "Accessories",
+            "styleImages": {
+              "default": {
+                "imageURL": "http://cdn_service/images/11000.jpg"
+              }
+            },
+            "productDescriptors": {
+              "description": {
+                "value": "Stylish and comfortable, this motor sport inspired wrist watch from puma is designed with a plastic case and ..."
+              }
+            }
+          }
+        },
+        {
+          "productId": 11001,
+          "qty": 19,
+          "productPrice": 5450,
+          "productData": {
+            "id": 11001,
+            "price": 5450,
+            "productDisplayName": "Puma Men Top Fluctuation Red Black Watches",
+            "variantName": "Top Fluctuation Red",
+            "brandName": "Puma",
+            "ageGroup": "Adults-Men",
+            "gender": "Men",
+            "displayCategories": "Accessories",
+            "styleImages": {
+              "default": {
+                "imageURL": "http://cdn_service/images/11001.jpg"
+              }
+            },
+            "productDescriptors": {
+              "description": {
+                "value": "This watch from puma comes in a clean sleek design. This active watch is perfect for urban wear and ..."
+              }
+            }
+          }
+        }
+      ],
       "createdOn": "2023-03-02T13:18:31.657Z",
       "createdBy": "ADMIN",
       "lastUpdatedOn": null,
@@ -201,7 +290,7 @@ async function viewOrderHistory(userId: string) {
     .where('createdBy')
     .eq(userId)
     .and('orderStatusCode')
-    .gte(ORDER_STATUS.CREATED) //returns CREATED and PAYMENT_SUCCESS
+    .gte(ORDER_STATUS.CREATED) //gte returns CREATED and PAYMENT_SUCCESS
     .and('statusCode')
     .eq(DB_ROW_STATUS.ACTIVE)
     .return.all();
@@ -234,6 +323,8 @@ You might be used to using Redis as a cache and both storing and retrieving stri
 
 Hopefully this tutorial has helped you visualize how you might use Redis with the CQRS pattern to help reduce the load on your primary database while still allowing you to store and search JSON documents. See below for some additional resources around this topic.
 
-## Additional Resources
+### Additional Resources
 
-<!-- TODO: Add links to other solutions tutorials here -->
+- [Interservice communication](/howtos/solutions/interservice-communication)
+- [Query caching](/howtos/solutions/caching)
+- [API gateway caching](/howtos/solutions/api-gateway-caching)
