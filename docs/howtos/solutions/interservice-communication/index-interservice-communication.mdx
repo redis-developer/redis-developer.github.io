@@ -1,7 +1,7 @@
 ---
 id: index-solutions-interservice-communication
-title: Interservice Communication with Redis and MongoDB
-sidebar_label: Interservice Communication with Redis and MongoDB
+title: Microservices Communication with Redis streams
+sidebar_label: Microservices Communication with Redis streams
 slug: /howtos/solutions/interservice-communication
 authors: [prasan, will]
 ---
@@ -10,17 +10,37 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-<!-- TODO: Link to github repo -->
+:::tip GITHUB CODE
 
-When building a microservices application you have a couple different options for communicating between your services. Most people decide to use an event streaming solution for interservice communication because of it's inherent replayability as well as how it helps you separate concerns. In an event-driven architecture you might have some services that publish an API, and other services that are simply producers and consumers of events with no external API.
+Source code for the application used in this tutorial
+
+https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+:::
+
+## Interservice Communication
+
+When building a microservices application, people use different options for communication between services like
+
+1. **Publish Subscribe** model : In pub sub model (fire & forget model), publisher just produces the messages & **active** subscribers at that time can consume those messages. Subscribers which are down cannot receive the messages at later point of time.
+1. **Streams** : Most people decide to use an event **streaming** solution because of
+
+- **Messages persistence** : Unlike pub sub model, messages are stored in streams. So Subscriber can always read messages at later point of time even if it is down for a while.
+
+- **Inherent re-playability** : Even if subscriber crashes during the message processing, it can re-read exactly same unacknowledged message from stream. Say, crashed subscriber never came up - then consumer group feature allows consumers to process unacknowledged messages of other consumers after a specified time.
+
+- **Separation of concerns** : Producers can produce messages to stream at **high speed** separately and consumers can process messages at their own speed separately. So separation of concerns solves both "fast producer -> slow consumer" or "slow producer -> fast consumer" problem by allowing to scale those services independently.
+
+In an event-driven architecture you might have some services that publish an API, and other services that are simply producers and consumers of events with no external API.
 
 ## Why you should use Redis for Interservice Communication
 
-Consider the following scenario. You have an e-commerce application that allows a customer to populate a shopping cart with products, and has a "Buy Now" button to facilitate ordering the products. When you first start out, you might setup a primary database like MongoDB and populate it with products. Then you might write a backend API to handle creating the order, creating an invoice, processing payment, handling fullfilment, and updating the customer's order history all in one go.
+Consider the following scenario.
 
-This method of synchronous order processing seems like a good idea, but you quickly find out that your database slows down as you gain more customers and have a higher sales volume. You decide that you need to process orders quickly so the customer doesn't have to wait. Then, when you have time you can create an invoice, process payment, handle fulfillment, etc. So you decide to separate each of these steps into microservices and use an event-driven approach that allows you to scale each service independently. You might initially consider using a product like Kafka for streaming, but the setup for it is rather complicated. What many people don't know about Redis is that it supports streams similar to Kafka. Given that you are likely to use Redis for caching already, it makes sense to also use it for stream processing. This makes Redis a great option for interservice communication. Keep reading for a break down of how to use Redis with streams for interservice communication.
+You have an e-commerce application which is broken down in to different microservices like create an orders, create an invoice, process payment, handle fulfillment, etc. Microservices will allow each service to scale independently so now more customers can process their orders at less time simultaneously resulting in better user experience and higher sales volume.
 
-### Using Redis for Interservice Communication in an Event-driven Architecture
+When there are microservices, you obviously need some way of communication between them. You might initially consider using a product like **Kafka** for streaming, but the setup for it is rather complicated. What many people don't know about Redis is that it supports streams similar to Kafka. Given that you are likely to use Redis for caching already, it makes sense to also use it for stream processing. To reduce complexity of application architecture and maintenance, **Redis** is a great option for interservice communication. Keep reading for a break down of how to use Redis with streams for interservice communication.
+
+## Ecommerce micro services architecture
 
 Thinking about the e-commerce application, consider the following architecture:
 
@@ -32,46 +52,176 @@ Thinking about the e-commerce application, consider the following architecture:
 1. `mongodb` - serves as the primary database, storing orders, order history, products, etc.
 1. `redis` - serves as the stream processor and caching database
 
-Here is what the architecture diagram looks like:
+Here is what the architecture diagram looks like so far:
 
-![Microservices streaming architecture with Redis](images/microservices-streaming-architecture-with-redis.png)
+![Microservices streaming architecture with Redis](images/microservices-inter-services.png)
 
-What is not depicted in the images above is the events happening to coordinate communication between the services. Let's outline the streams and events used below:
+## Using Redis for Interservice Communication in an Event-driven Architecture
 
-1. `ORDERS_STREAM` - Used to signal new orders
-1. Producer - `orders service`
-1. Consumers - `products service`
-1. `PAYMENTS_STREAM` - Used to signal fullfilled payments
-1. Producer - `products service`
-1. Consumers - `orders service`
-
-Below is an event flow diagram that outlines how the services communicate through Redis with streams.
+Below is an event flow diagram that outlines how the `orders` & `payments` services communicate through Redis with streams.
 
 ![Microservices streaming with Redis event flow diagram](images/interservice-communication-event-flow-diagram.png)
 
+Let's outline the streams and events used below:
+
+1. "orders service" inserts full "order" data to database
+
+   ```json
+   {
+     "orderId": "01GTP3K2TZQQCQ0T2G43DSSMTD",
+     "products": [
+       {
+         "productId": 11000,
+         "qty": 3,
+         "productPrice": 3995,
+         "productData": {
+           "productDisplayName": "Puma Men Slick 3HD Yellow Black Watches",
+           "variantName": "Slick 3HD Yellow",
+           "brandName": "Puma",
+           "ageGroup": "Adults-Men",
+           "gender": "Men"
+           //...
+         }
+       },
+       {
+         "productId": 11001,
+         "qty": 2,
+         "productPrice": 5450,
+         "productData": {
+           "productDisplayName": "Puma Men Top Fluctuation Red Black Watches",
+           "variantName": "Top Fluctuation Red",
+           "brandName": "Puma",
+           "ageGroup": "Adults-Men",
+           "gender": "Men"
+           //...
+         }
+       }
+     ],
+     "userId": "USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3",
+     "orderStatusCode": 1, //order created
+     "createdOn": {
+       "$date": {
+         "$numberLong": "1677926697801"
+       }
+     },
+     "createdBy": "USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3",
+     "statusCode": 1
+   }
+   ```
+
+2. "orders service" also enters minimal data (orderId, orderAmount & userId) to `ORDERS_STREAM` to signal new order creation (acts as "PRODUCER" of "ORDERS_STREAM")
+
+   ![orders-stream](./images/02-orders-stream.png)
+
+3. "payments service" listens to `ORDERS_STREAM`, process payment for new orderId and insert "payments" data to database (acts as "CONSUMER" of "ORDERS_STREAM")
+
+   ```json
+   {
+     "paymentId": "6403212956a976300afbaac1",
+     "orderId": "01GTP3K2TZQQCQ0T2G43DSSMTD",
+     "orderAmount": 22885,
+     "paidAmount": 22885,
+     "orderStatusCode": 3, //payment successful
+     "userId": "USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3",
+     "createdOn": {
+       "$date": {
+         "$numberLong": "1677926697841"
+       }
+     },
+     "createdBy": "USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3",
+     "statusCode": 1
+   }
+   ```
+
+4. "payments service" also enters minimal data (orderId,paymentId, orderStatusCode & userId) to `PAYMENTS_STREAM` - to signal new payment fulfillment (acts as "PRODUCER" of "PAYMENTS_STREAM")
+   ![payments-stream](./images/04-payments-stream.png)
+
+5. "orders service" now listens to `PAYMENTS_STREAM`, updates orderStatus and paymentId in database accordingly for the order which has fulfilled payment (acts as "CONSUMER" of "PAYMENTS_STREAM")
+
+```json
+{
+  //order collection update
+  "orderId": "01GTP3K2TZQQCQ0T2G43DSSMTD",
+  "paymentId": "6403212956a976300afbaac1",
+  "orderStatusCode": 3 //payment success
+  //...
+}
+```
+
+## Ecommerce product
+
+Consider below e-commerce application,
+
+- Dashboard to populate list of products
+
+  [TODO: dashboard image]
+
+- Shopping Cart to view added products
+  ![Shopping app frontend with Redis and MongoDB](images/frontend-cqrs-app-with-redis-and-mongodb.png)
+
+- Order confirmation page
+
+  [TODO: payment confirmation image]
+
+- Order history view (on Orders tab click in the top nav bar)
+
+  [TODO: order history image]
+
+You can find the full source code for the app pictured above here. The frontend is build using **Next.js**, the backend is in **Node.js**, data is stored in **MongoDB** and **Redis**.
+
+:::tip GITHUB CODE
+
+Source code for the application
+
+https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+:::
+
 ## Sample Interservice Communication Application with Redis and MongoDB
 
-![Shopping app frontend with Redis and MongoDB](images/frontend-streaming-app-with-redis-and-mongodb.png)
+We're using Redis to broker the events sent between the orders service and the payments service.
 
-<!-- TODO: Link to github repo -->
+### Producer 1 (Orders Service)
 
-You can find the full source code for the app pictured above here. The frontend is build using Next.js, and the backend is in Node.js.
+Let's look at some of the code in the orders service to understand how it works.
 
-We're using Redis to broker the events sent between the orders service and the payments service. Let's look at some of the code in the orders service to understand how it works.
-
-### Orders Service Event Consumer Setup
-
-The first thing the orders service does is listen to the `PAYMENTS_STREAM` for `PAYMENT_PROCESSED` events. When a new event comes through, the orders service will update the status of an existing order. Below is some code for how you would use Redis to listen for the stream events:
+(step 1) After order creation , (step 2) "orders service" enters minimal data to ORDERS_STREAM to signal new order creation (acts as "PRODUCER" of "ORDERS_STREAM")
 
 ```typescript
+const addOrderIdToStream = async (
+  orderId: string,
+  orderAmount: number,
+  userId: string,
+) => {
+  const nodeRedisClient = getNodeRedisClient();
+  if (orderId && nodeRedisClient) {
+    const streamKeyName = 'ORDERS_STREAM';
+    const entry = {
+      orderId: orderId,
+      orderAmount: orderAmount.toFixed(2),
+      userId: userId,
+    };
+    const id = '*'; //* = auto generate
+    //xAdd adds entry to specified stream
+    await nodeRedisClient.xAdd(streamKeyName, id, entry);
+  }
+};
+```
+
+### consumer 1 (payments Service)
+
+(step 3)"payments service" listens to `ORDERS_STREAM` (acts as "CONSUMER" of "ORDERS_STREAM")
+
+```typescript
+//Below is some code for how you would use Redis to listen for the stream events:
+
 async function listenToStream(
   onMessage: (message: any, messageId: string) => Promise<void>,
 ) {
   // using node-redis
   const redis = getNodeRedisClient();
-  const streamKeyName = 'PAYMENTS_STREAM';
-  const groupName = 'PAYMENTS_CON_GROUP';
-  const consumerName = 'ORDERS_CON';
+  const streamKeyName = 'ORDERS_STREAM'; //stream name
+  const groupName = 'ORDERS_CON_GROUP'; //listening consumer group name (custom)
+  const consumerName = 'PAYMENTS_CON'; //listening consumer name (custom)
   const readMaxCount = 100;
 
   // Check if the stream group already exists
@@ -106,6 +256,7 @@ async function listenToStream(
 
     for (let data of dataArr) {
       for (let messageItem of data.messages) {
+        //process the message received (in our case, perform payment)
         await onMessage(messageItem.message, messageItem.id);
 
         // acknowledge individual messages after processing
@@ -114,37 +265,137 @@ async function listenToStream(
     }
   }
 }
+
+//"listenToStream" listens for events and calls the `onMessage` callback to further handle the events.
+listenToStream({
+  onMessage: processPaymentForNewOrders,
+});
+
+const processPaymentForNewOrders: IMessageHandler = async (
+  message,
+  messageId,
+) => {
+  /*
+   message = {
+      orderId: "",
+      orderAmount: "",
+      userId: "",
+    }
+    */
+  //process payment for new orderId and insert "payments" data to database
+};
 ```
 
 There are a few important things to note here:
 
 1. Make sure the stream group doesn't exist prior to creating it.
 1. Use `isolated: true,` in order to use the blocking version of `XREADGROUP` in [isolated execution](https://github.com/redis/node-redis/blob/master/docs/isolated-execution.md) mode.
-1. Acknowledge individual messages after they have been processed to remove them from the queue and avoid processing them more than once.
+1. Acknowledge individual messages after they have been processed to remove them from the queue (Pending entries list ) and avoid processing them more than once.
 
-The code above simply listens for events and calls the `onMessage` callback to further handle the events. In the case of the orders service, the callback goes to a function to update the order status. Let's see what that looks like below.
+### producer 2 (payments Service)
+
+(step 4) "payments service" also enters minimal data to `PAYMENTS_STREAM` - to signal new payment fulfillment (acts as "PRODUCER" of "PAYMENTS_STREAM")
 
 ```typescript
-async function updateOrderStatus(message: any, messageId: string) {
-  if (
-    message &&
-    message.orderId &&
-    message.paymentId &&
-    message.orderStatusCode
-  ) {
-    updateOrderStatusInRedis(
-      message.orderId,
-      message.paymentId,
-      parseInt(message.orderStatusCode),
+const addPaymentIdToStream = async (
+  orderId: string,
+  paymentId: string,
+  orderStatus: number,
+  userId: string,
+) => {
+  const nodeRedisClient = getNodeRedisClient();
+  if (orderId && nodeRedisClient) {
+    const streamKeyName = 'PAYMENTS_STREAM';
+    const entry = {
+      orderId: orderId,
+      paymentId: paymentId,
+      orderStatusCode: orderStatus.toString(),
+      userId: userId,
+    };
+    const id = '*'; //* = auto generate
+    //xAdd adds entry to specified stream
+    await nodeRedisClient.xAdd(streamKeyName, id, entry);
+  }
+};
+```
+
+### consumer 2 (orders Service)
+
+(step 5) "orders service" now listens to `PAYMENTS_STREAM` (acts as "CONSUMER" of "PAYMENTS_STREAM")
+
+```typescript
+//Below is some code for how you would use Redis to listen for the stream events:
+
+async function listenToStream(
+  onMessage: (message: any, messageId: string) => Promise<void>,
+) {
+  // using node-redis
+  const redis = getNodeRedisClient();
+  const streamKeyName = 'PAYMENTS_STREAM'; //stream name
+  const groupName = 'PAYMENTS_CON_GROUP'; //listening consumer group name (custom)
+  const consumerName = 'ORDERS_CON'; //listening consumer name (custom)
+  const readMaxCount = 100;
+
+  // Check if the stream group already exists
+  if (!(await redis.exists(streamKeyName))) {
+    const idPosition = '0'; //0 = start, $ = end or any specific id
+    await nodeRedisClient.xGroupCreate(streamKeyName, groupName, idPosition, {
+      MKSTREAM: true,
+    });
+  }
+
+  // setup a loop to listen for stream events
+  while (true) {
+    // read set of messages from different streams
+    const dataArr = await nodeRedisClient.xReadGroup(
+      commandOptions({
+        isolated: true,
+      }),
+      groupName,
+      consumerName,
+      [
+        {
+          // you can specify multiple streams in array
+          key: streamKeyName,
+          id: '>', // Next entry ID that no consumer in this group has read
+        },
+      ],
+      {
+        COUNT: readMaxCount, // Read n entries at a time
+        BLOCK: 0, // block for 0 (infinite) seconds if there are none.
+      },
     );
 
-    updateOrderStatusInMongoDB(
-      message.orderId,
-      message.paymentId,
-      parseInt(message.orderStatusCode),
-    );
+    for (let data of dataArr) {
+      for (let messageItem of data.messages) {
+        //process the message received (in our case, updateOrderStatus)
+        await onMessage(messageItem.message, messageItem.id);
+
+        // acknowledge individual messages after processing
+        nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
+      }
+    }
   }
 }
+
+//"listenToStream" listens for events and calls the `onMessage` callback to further handle the events.
+listenToStream({
+  onMessage: updateOrderStatus,
+});
+
+const updateOrderStatus: IMessageHandler = async (message, messageId) => {
+  /*
+   message = {
+      orderId: "",
+      paymentId: "",
+      orderStatusCode:"",
+      userId: "",
+    }
+    */
+  //updates orderStatus and paymentId in database accordingly for the order which has fulfilled payment
+  //updateOrderStatusInRedis(orderId,paymentId,orderStatusCode,userId)
+  //updateOrderStatusInMongoDB(orderId,paymentId,orderStatusCode,userId)
+};
 ```
 
 :::tip
@@ -153,62 +404,16 @@ It's best practice to validate the incoming messages to make sure you can work w
 
 :::
 
-For the purposes of our application we are making a call to update the order status in Redis and MongoDB. An alternative option is to use something like RedisGears to synchronoize the data between Redis and MongoDB. Doing so would allow you to simply write to Redis, which would then trigger RedisGears to subsequently write to MongoDB. It's a small difference, but many people choose to go this route because of the cleaner implementation and separation of concerns.
-
-### Orders Service Event Producer Setup
-
-Now that you've seen how to listen to a Redis stream and respond to events, it's time to learn how to publish events to a stream. The orders service sends events to signal when an order has been created and is ready for further processing. Let's look at the `createOrder` function to see what that looks like.
-
-```typescript
-async function createOrder(order: IOrder) {
-  if (!order) {
-    throw 'Order data is mandatory!';
-  }
-
-  order.orderStatusCode = ORDER_STATUS.CREATED;
-  order.userId = USERS.DEFAULT; // Used as a shortcut, in a real app you would use customer session data
-  order.createdOn = new Date();
-  order.createdBy = order.userId;
-  order.lastUpdatedOn = null;
-  order.lastUpdatedBy = null;
-  order.statusCode = DB_ROW_STATUS.ACTIVE;
-
-  order = await validateOrder(order);
-
-  const orderId = await addOrderToRedis(order);
-  order.orderId = orderId;
-
-  await addOrderToMongoDB(order);
-  await addOrderIdToStream(orderId, orderAmount);
-
-  return orderId;
-}
-```
-
-THe `createOrder` function simply validates the order, and inserts it into Redis and MongoDB. Then it calls to `addOrderIdToStream`. Below you will find the contents of `addOrderIdToStream`.
-
-```typescript
-async function addOrderIdToStream(orderId: string, orderAmount: number) {
-  // using node-redis
-  const redis = getNodeRedisClient();
-  const streamKeyName = 'ORDERS_STREAM';
-  const entry = {
-    orderId: orderId,
-    orderAmount: orderAmount.toFixed(2),
-  };
-  const id = '*'; //* = auto generate
-
-  await redis.xAdd(streamKeyName, id, entry);
-}
-```
+For the purposes of our application we are making a call to update the order status in Redis and MongoDB. An alternative option is to use something like RedisGears to synchronize the data between Redis and MongoDB. Doing so would allow you to simply write to Redis, which would then trigger RedisGears to subsequently write to MongoDB. It's a small difference, but many people choose to go this route because of the cleaner implementation and separation of concerns.
 
 ## Conclusion
 
-That's all there is to it! You've now seen how to use Redis for streaming as both a consumer and a producer. Hopefully you can draw some inspiration from this tutorial and apply it to your own event streaming application. See below for some additional resources around this topic.
+That's all there is to it! You've now seen how to use Redis for streaming as both a producer and a consumer. Hopefully you can draw some inspiration from this tutorial and apply it to your own event streaming application. See below for some additional resources around this topic.
 
-## Additional Resources
+### Additional Resources
 
-<!-- TODO: Add links to other solutions tutorials here -->
-
-1. Check out our e-book on [Understanding Streams in Redis and Kafka – A Visual Guide](https://redis.com/docs/understanding-streams-in-redis-and-kafka-a-visual-guide/)
-1. Explore streams in detail in the [Redis University course on Redis Streams](https://university.redis.com/courses/ru202/)
+- Explore streams in detail in the [Redis University course on Redis Streams](https://university.redis.com/courses/ru202/)
+- Check out our e-book on [Understanding Streams in Redis and Kafka – A Visual Guide](https://redis.com/docs/understanding-streams-in-redis-and-kafka-a-visual-guide/)
+- [CQRS](/howtos/solutions/cqrs)
+- [Query caching](/howtos/solutions/caching)
+- [API gateway caching](/howtos/solutions/api-gateway-caching)
