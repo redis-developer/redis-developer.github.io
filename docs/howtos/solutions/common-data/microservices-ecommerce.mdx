@@ -1,21 +1,16 @@
-Consider below screenshots of sample e-commerce application
+import SourceCode from './microservices-source-code-tip.mdx';
 
-- Dashboard screen : To populate list of products with quick search functionality
+The e-commerce microservices application consists of a frontend, built using [Next.js](https://nextjs.org/) with [TailwindCSS](https://tailwindcss.com/). The application backend uses [Node.js](https://nodejs.org). The data is stored in [MongoDB](https://www.mongodb.com/) and [Redis](https://redis.com/try-free/). Below you will find screenshots of the frontend of the e-commerce app:
 
-  ![dashboard ](images/design-dashboard.png)
+- `Dashboard`: Shows the list of products with search functionality
 
-- Shopping Cart view : To view added products in the cart
-  ![cart](images/design-cart-2.png)
+  ![redis microservices e-commerce app frontend products page](images/design-dashboard.png)
 
-- Order history view : On `Orders` tab click in the top nav bar, you can see all the orders for the user
+- `Shopping Cart`: Add products to the cart, then checkout using the "Buy Now" button.
+  ![redis microservices e-commerce app frontend shopping cart](images/design-cart-2.png)
 
-  ![order history](images/design-order-history.png)
+- `Order history`: Once an order is placed, the `Orders` link in the top navigation bar will show you the order status and history
 
-You can find the full source code for the app pictured above here. The frontend is build using **Next.js**, the backend is in **Node.js**, data is stored in **MongoDB** and **Redis**.
+  ![redis microservices e-commerce app frontend order history page](images/design-order-history.png)
 
-:::tip GITHUB CODE
-
-Source code for the application
-
-https://github.com/redis-developer/redis-microservices-ecommerce-solutions
-:::
+<SourceCode />
