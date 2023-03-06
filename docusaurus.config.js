@@ -200,7 +200,8 @@ module.exports = {
           'rust',
           'elixir',
           'groovy',
-          'sql'
+          'sql',
+          'typescript'
         ],
       },
 

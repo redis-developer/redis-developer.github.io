@@ -1,0 +1,12 @@
+You eventually land on the following architecture:
+
+1. `products service` - handles querying products from the database and returning them to the frontend
+1. `orders service` - handles validating and creating orders
+1. `order history service` - handles querying a customer's order history
+1. `payments service` - handles processing orders for payment
+1. `api gateway` - unifies your services under a single endpoint
+1. `mongodb` - serves as the primary database, storing orders, order history, products, etc.
+
+Here is what the architecture diagram looks like so far:
+
+![Initial CQRS architecture](images/initial-microservices-arch.png)

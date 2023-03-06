@@ -6,9 +6,9 @@ module.exports = {
       href: '/',
     },
     {
-        type: 'doc',
-        label: 'Quick Start',
-        id: 'howtos/quick-start/index-quick-start',
+      type: 'doc',
+      label: 'Quick Start',
+      id: 'howtos/quick-start/index-quick-start',
     },
     {
       type: 'category',
@@ -457,6 +457,16 @@ module.exports = {
       items: [
         'howtos/index-howtos',
         'howtos/redisearch/index-redisearch',
+        // {
+        //   type: 'category',
+        //   label: 'Solutions',
+        //   items: [
+        //     'howtos/solutions/cqrs/index-solutions-cqrs',
+        //     'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
+        //     'howtos/solutions/caching/index-solutions-caching',
+        //     'howtos/solutions/api-gateway-caching/index-solutions-api-gateway-caching',
+        //   ],
+        // },
         {
           type: 'category',
           label: 'RedisJSON Tutorial',
@@ -592,9 +602,7 @@ module.exports = {
     {
       type: 'category',
       label: 'E-books',
-      items: [
-        'ebooks/nosql-data-modeling-patterns'
-      ],
+      items: ['ebooks/nosql-data-modeling-patterns'],
     },
   ],
 };

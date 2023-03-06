@@ -1,0 +1,256 @@
+---
+id: index-solutions-caching
+title: How to use Redis as a Query Caching
+sidebar_label: How to use Redis as a Query Caching
+slug: /howtos/solutions/caching
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce.mdx';
+import MicroservicesArchitectureWithRedis from '../common-data/microservices-arch-with-redis.mdx';
+
+<Authors frontMatter={frontMatter} />
+
+:::tip GITHUB CODE
+
+Source code for the application used in tutorial
+
+https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+
+:::
+
+## Query caching
+
+Have you ever been in a situation where your database queries are slowing down, and you need to speed them up while keeping costs down? Imagine that you've built an e-commerce application that started small and is growing fast.
+
+You're at the point where you have an extensive product catalog and millions of customers. Your queries to MongoDB are beginning to slow down, and you've already attempted to optimize them. Even though you were able to squeak out a little extra performance, it wasn't enough to satisfy your customers.
+
+## Why you should use Redis for Query Caching
+
+Redis is an in-memory datastore, making it perfect for caching. It allows you to reduce the load on your primary database while speeding up database reads.
+For example, in an e-commerce application you might be able to guess what query is requested most often... If you guessed the query for searching products you would be correct!
+
+To improve product search in ecommerce app, we can implement one of following caching patterns
+
+- **Lookup** pattern : Entire products can be pre cached in redis and application can perform any product query on Redis similar to primary database
+- **Cache aside** pattern : Only searched/ frequent product queries need to be cached for faster results.
+
+This tutorial focuses on **cache-aside** pattern specifically :
+
+![cache-aside](images/cache-aside.jpg)
+
+The goal of this design pattern is to set up **optimal** caching (load it as you go) for better read operations.
+
+To see how the cache aside pattern functions
+
+1. An application requests data from the backend
+2. The backend checks to find out if the data is available in Redis
+   1. If the data isn’t available (a cache miss):
+      - The MongoDB database fetches the data
+      - Redis stores a copy of the data
+      - The backend serves the data to the application
+   2. If the data is already available in Redis (a cache hit):
+      - The backend serves the cached data directly to the application
+
+Consider using it when you need to:
+
+1. **Query data frequently** - When you have a large volume of reads (as is the case in an e-commerce app), the cache-aside pattern will give you an immediate performance gain for subsequent data requests.
+1. **Fill the cache on-demand** - The cache-aside pattern will fill the cache as data is requested rather pre caching,thus saving on space and cost. Useful when kind of data to be cached is unclear upfront.
+1. **Be cost conscious** - Since cache size is directly related to the cost of cache in the cloud, the smaller the size, the less you pay.
+
+## Ecommerce micro services architecture
+
+<MicroservicesArchitectureWithRedis />
+
+## Ecommerce product
+
+<MicroservicesEcommerceDesign />
+
+## Sample Caching Application with Redis and MongoDB
+
+In our sample application, the products service publishes an API for filtering products. Here is what a call to the API looks like:
+
+### Get Products by Filter Request
+
+```json
+// POST http://localhost:3000/products/getProductsByFilter
+{
+  "productDisplayName": "puma"
+}
+```
+
+### Get Products by Filter Response
+
+```json
+{
+  "data": [
+    {
+      "_id": 11000,
+      "data": {
+        "id": 11000,
+        "price": 3995,
+        "productDisplayName": "Puma Men Slick 3HD Yellow Black Watches",
+        "variantName": "Slick 3HD Yellow",
+        "brandName": "Puma",
+        "ageGroup": "Adults-Men",
+        "gender": "Men",
+        "displayCategories": "Accessories",
+        "styleImages": {
+          "default": {
+            "imageURL": "http://host.docker.internal:8080/images/11000.jpg"
+          }
+        },
+        "productDescriptors": {
+          "description": {
+            "value": "Stylish and comfortable, this motor sport inspired wrist watch from puma is designed with a plastic case and ..."
+          }
+        }
+      },
+      "productId": 11000
+    }
+    //...
+  ],
+  "error": null,
+  "isFromCache": false
+}
+```
+
+### Get Products by Filter Response (subsequent times)
+
+```json
+{
+  "data": [
+    //...same data as above
+  ],
+  "error": null,
+  "isFromCache": true //now the data comes from cache rather DB
+}
+```
+
+### Implementing Cache-aside with Redis and MongoDB
+
+Below you will find the function used to search for products in MongoDB.
+
+```typescript
+async function getProductsByFilter(productFilter: IProductFilter) {
+  const mongo = getMongodb();
+  const filter: Document = {
+    statusCode: {
+      $eq: DB_ROW_STATUS.ACTIVE,
+    },
+  };
+
+  if (productFilter && productFilter.productDisplayName) {
+    filter['data.productDisplayName'] = {
+      $regex: productFilter.productDisplayName,
+      $options: 'i',
+    };
+  }
+
+  const projection: IProduct = {
+    productId: 1,
+    data: {
+      id: 1,
+      price: 1,
+      productDisplayName: 1,
+      variantName: 1,
+      brandName: 1,
+      ageGroup: 1,
+      gender: 1,
+      displayCategories: 1,
+      styleImages: {
+        default: {
+          imageURL: 1,
+        },
+      },
+      productDescriptors: {
+        description: {
+          value: 1,
+        },
+      },
+    },
+  };
+
+  const limit = 100;
+  const sort = {};
+  const products = await mongo.find(
+    COLLECTIONS.PRODUCTS.collectionName,
+    filter,
+    projection,
+    limit,
+    sort,
+  );
+  return products;
+}
+```
+
+If you're familiar with MongoDB, the code above should be pretty straightforward. We simply make a call to MongoDB to find products based on a filter on the `displayName` property of the product. We also define a projection object to specify which properties to get out of MongoDB. You can setup multiple columns for better fuzzy searching, but for the purposes of this tutorial it is simplified.
+
+Now, using MongoDB directly worked for awhile and eventually started to slow down. That's why Redis was brought in to speed things up. The cache-aside pattern was chosen in order to balance performance with cost. The basic decision tree for cache-aside is as follows.
+
+When the frontend requests products:
+
+1. Form a hash with the contents of the request (i.e. the search parameters)
+1. Check Redis to see if a value exists for the hash
+1. Is there a cache hit? If data is found for the hash it is returned; the process stops here.
+1. Is there a cache miss? When data is not found, it is read out of MongoDB and subsequently stored in Redis prior to being returned.
+
+Below you will find the code used to implement the decision tree.
+
+```typescript
+const getHashKey = (_filter: Document) => {
+  let retKey = '';
+  if (_filter) {
+    const text = JSON.stringify(_filter);
+    retKey = crypto.createHash('sha256').update(text).digest('hex');
+  }
+  return 'CACHE_ASIDE_' + retKey;
+};
+
+router.post(API.GET_PRODUCTS_BY_FILTER, async (req: Request, res: Response) => {
+  const body = req.body;
+  // using node-redis
+  const redis = getNodeRedisClient();
+
+  //get data from redis
+  const hashKey = getHashKey(req.body);
+  const cachedData = await redis.get(hashKey);
+  const docArr = cachedData ? JSON.parse(cachedData) : [];
+
+  if (docArr && docArr.length) {
+    result.data = docArr;
+    result.isFromCache = true;
+  } else {
+    //get data from mongodb
+    const dbData = await getProductsByFilter(body); //method shown earlier
+
+    if (body && body.productDisplayName && dbData.length) {
+      //set data to redis (async)
+      redis.set(hashKey, JSON.stringify(dbData), {
+        EX: 60, //cache expiry in seconds
+      });
+    }
+
+    result.data = dbData;
+  }
+
+  res.send(result);
+});
+```
+
+:::tip
+
+You will need to decide what expiry or time to live (TTL) works best for your particular use-case.
+
+:::
+
+## Conclusion
+
+That's all there is to it! You've now seen how to use Redis for caching with one of the pattern (cache-aside). It's possible to incrementally adopt Redis where ever needed with different strategies/ patterns. See below for some additional resources around microservices topic.
+
+### Additional Resources
+
+- [CQRS](/howtos/solutions/cqrs)
+- [Interservice communication](/howtos/solutions/interservice-communication)
+- [API gateway caching](/howtos/solutions/api-gateway-caching)
