@@ -7,6 +7,9 @@ authors: [prasan, will]
 ---
 
 import Authors from '@theme/Authors';
+import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce.mdx';
+import InitialMicroservicesArchitecture from '../common-data/microservices-arch.mdx';
+
 import cqrsPattern from './images/cqrs-pattern.png';
 
 <Authors frontMatter={frontMatter} />
@@ -22,7 +25,7 @@ https://github.com/redis-developer/redis-microservices-ecommerce-solutions
 
 Command and Query Responsibility Segregation (CQRS) is a common pattern used in event-driven applications in-part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as "Order this product" (update operation) from queries such as "Show me my order history" (write operation). CQRS applications are often messaging-based and rely on eventual consistency.
 
-<!--temp img tag till replaced with dimensions-->
+<!--temp img tag till image resized with specific dimensions-->
 
 <img src={cqrsPattern} alt="CQRS pattern" width="500" />
 
@@ -36,18 +39,7 @@ This method of synchronous order processing seems like a good idea, but you quic
 
 ## Ecommerce (event-driven) architecture
 
-You eventually land on the following architecture:
-
-1. `products service` - handles querying products from the database and returning them to the frontend
-1. `orders service` - handles validating and creating orders
-1. `order history service` - handles querying a customer's order history
-1. `payments service` - handles processing orders for payment
-1. `api gateway` - unifies your services under a single endpoint
-1. `mongodb` - serves as the primary database, storing orders, order history, products, etc.
-
-Here is what the architecture diagram looks like so far:
-
-![Initial CQRS architecture](images/initial-cqrs-architecture.png)
+<InitialMicroservicesArchitecture />
 
 ## Using CQRS in an event-driven architecture
 
@@ -59,31 +51,7 @@ What is not depicted in the images above is the events happening to coordinate c
 
 ## Ecommerce product
 
-Consider below e-commerce application,
-
-- Dashboard to populate list of products
-
-  [TODO: dashboard image]
-
-- Shopping Cart to view added products
-  ![Shopping app frontend with Redis and MongoDB](images/frontend-cqrs-app-with-redis-and-mongodb.png)
-
-- Order confirmation page
-
-  [TODO: payment confirmation image]
-
-- Order history view (on Orders tab click in the top nav bar)
-
-  [TODO: order history image]
-
-You can find the full source code for the app pictured above here. The frontend is build using **Next.js**, the backend is in **Node.js**, data is stored in **MongoDB** and **Redis**.
-
-:::tip GITHUB CODE
-
-Source code for the application
-
-https://github.com/redis-developer/redis-microservices-ecommerce-solutions
-:::
+<MicroservicesEcommerceDesign />
 
 ## Sample CQRS application with Redis and MongoDB
 
