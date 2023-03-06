@@ -9,55 +9,52 @@ authors: [prasan, will]
 import Authors from '@theme/Authors';
 import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce.mdx';
 import InitialMicroservicesArchitecture from '../common-data/microservices-arch.mdx';
+import SourceCode from '../common-data/microservices-source-code-tip.mdx';
+import RedisEnterprise from '../common-data/redis-enterprise.mdx';
 
 import cqrsPattern from './images/cqrs-pattern.png';
 
 <Authors frontMatter={frontMatter} />
 
-:::tip GITHUB CODE
+<SourceCode />
 
-Source code for the application used in this tutorial
+## What is Command and Query Responsibility Segregation (CQRS)?
 
-https://github.com/redis-developer/redis-microservices-ecommerce-solutions
-:::
-
-## CQRS
-
-Command and Query Responsibility Segregation (CQRS) is a common pattern used in event-driven applications in-part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as "Order this product" (update operation) from queries such as "Show me my order history" (write operation). CQRS applications are often messaging-based and rely on eventual consistency.
+CQRS is a common pattern used in microservices applications in part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as "Order this product" (write operation) from queries such as "Show me my order history" (read operation). CQRS applications are often messaging-based and rely on eventual consistency. Below you will find a sample data architecture that demonstrates how Redis is used with CQRS.
 
 <!--temp img tag till image resized with specific dimensions-->
 
 <img src={cqrsPattern} alt="CQRS pattern" width="500" />
 
-## Why you might use CQRS
+## Why You Might Use CQRS
 
 > _To improve application performance, scale your read and write operations separately._
 
-Consider the following scenario. You have an e-commerce application that allows a customer to populate a shopping cart with products, and has a "Buy Now" button to facilitate ordering the products. When you first start out, you might setup a primary database like MongoDB and populate it with products. Then you might write a backend API to handle creating the order, creating an invoice, processing payment, handling fulfillment, and updating the customer's order history all in one go.
+Consider the following scenario. You have an e-commerce application that allows a customer to populate a shopping cart with products, and has a "Buy Now" button to facilitate ordering the products. When you first start out, you might set up a primary database like MongoDB and populate it with products. Then you might write a backend API to handle creating the order, creating an invoice, processing payment, handling fulfillment, and updating the customer's order history all in one go.
 
-This method of synchronous order processing seems like a good idea, but you quickly find out that your database slows down as you gain more customers and have a higher sales volume. You decide that you need to **process orders** quickly so the customer doesn't have to wait. Then, when you have time you can create an invoice, process payment, handle fulfillment, etc. So you decide to separate each of these steps and use an event-driven approach with CQRS to allow you to scale your reads and writes separately.
+This method of synchronous order processing seems like a good idea, but you quickly find out that your database slows down as you gain more customers and have a higher sales volume. The reality is, most applications have significantly more reads than writes, and you want to be able to scale those operations separately. You decide that you need to process orders quickly so the customer doesn't have to wait. Then, when you have time you can create an invoice, process payment, handle fulfillment, etc. So you decide to separate each of these steps and use a microservices approach with CQRS to allow you to scale your reads and writes independently.
 
-## Ecommerce (event-driven) architecture
+## Microservices Architecture for an E-commerce Application
 
 <InitialMicroservicesArchitecture />
 
-## Using CQRS in an event-driven architecture
+## Using CQRS in a Microservices Architecture
 
-However, note that in the current architecture all the services use the same underlying database. Even though we are technically separating reads and writes, we can't scale our database independently. This is where Redis comes in. If we put Redis in front of our primary database, we can use it for reads while writing to the primary database. The benefit of Redis is that it is fast for reads and writes, which is why it is the defacto choice for caching. Our architecture now might look like the following:
+Note that in the current architecture all the services use the same underlying database. Even though we are technically separating reads and writes, we can't scale our primary database independently. This is where Redis comes in. If we put Redis in front of our primary database, we can use it for reads while writing to the primary database. The benefit of Redis is that it is fast for reads and writes, which is why it is the de facto choice for caching and CQRS. Our new architecture looks as follows:
 
 ![CQRS architecture with Redis](images/cqrs-architecture-with-redis.png)
 
 What is not depicted in the images above is the events happening to coordinate communication between the services. This is covered in the [interservice communication guide](/howtos/solutions/interservice-communication). For now, let's look at some sample code that helps facilitate the CQRS pattern with Redis and MongoDB.
 
-## Ecommerce product
+## E-commerce Application Frontend using Next.js and Tailwind
 
 <MicroservicesEcommerceDesign />
 
-## Sample CQRS application with Redis and MongoDB
+## Building a CQRS Microservices Application with Redis and MongoDB
 
-Let's consider sample code for `order service` to see the `CreateOrder` API (a write operation) and 'order history service' to see the `viewOrderHistory` API (a read operation)
+Let's look at the sample code for the `order service` and see the `CreateOrder` command (a write operation). Then we'll look at the `order history service` to see the `ViewOrderHistory` command (a read operation).
 
-### Create Order API
+### Create Order Command API
 
 Below you will find an example API request and response to create an order.
 
@@ -118,13 +115,12 @@ async function createOrder(order: IOrder) {
 ```
 
 :::info
-For simplicity, we are adding data to both MongoDB & Redis in same service. Instead we can add data to any one store and use synchronization technique to sync with other.
-For eg: You might consider using **RedisGears** to handle sync between Redis and mongodb in the background.
 
-For the purposes of this tutorial we are not going to outline exactly how you might do synchronization, but instead focus on how the data is stored and accessed in Redis.
+For simplicity, we are adding data to both MongoDB and Redis in the same service. Another common pattern is to have your API interact with one database, and then separately use a synchronization mechanism to update the other database. For example, you could write directly to Redis, then use **RedisGears** to handle synchronizing Redis and MongoDB in the background. For the purposes of this tutorial we are not going to outline exactly how you might handle synchronization, but instead focus on how the data is stored and accessed in Redis.
+
 :::
 
-Note above that we are calling the `addOrderToRedis` function to store our orders in Redis. Below is what that function looks like:
+Note above that we are calling the `addOrderToRedis` function to store orders in Redis. We're using [Redis OM for Node.js](https://github.com/redis/redis-om-node) to store the order entities in Redis. Below is what that function looks like:
 
 ```typescript title="server/src/services/orders"
 import { Entity, Schema } from 'redis-om';
@@ -161,8 +157,6 @@ async function addOrderToRedis(order: IOrder) {
   return orderId;
 }
 ```
-
-We're using Redis OM for Node.js to store the order entities in Redis.
 
 ### Order History API
 
@@ -281,11 +275,11 @@ async function viewOrderHistory(userId: string) {
 
 :::info
 
-Note that the `order history service` only needs to go to Redis for all orders. This is because we are handling storing and synchronizing between Redis and MongoDB within the `orders service`.
+Note that the `order history service` only needs to go to Redis for all orders. This is because we are handling storage and synchronization between Redis and MongoDB within the `orders service`.
 
 :::
 
-You might be used to using Redis as a cache and both storing and retrieving stringified JSON values or perhaps hashed values. However, if you look closely at the code above we are storing orders as JSON documents, and then using Redis OM to search for the orders belonging to a specific user. So in reality Redis is operating like a database and providing the ability to speed up queries and scale independently from the primary database (MongoDB in this case).
+You might be used to using Redis as a cache and both storing and retrieving stringified JSON values or perhaps hashed values. However, if you look closely at the code above we are storing orders as JSON documents, and then using [Redis OM](https://github.com/redis/redis-om-node) to search for the orders belonging to a specific user. So in reality Redis is operating like a search engine and providing the ability to speed up queries and scale independently from the primary database (MongoDB in this case).
 
 ## Conclusion
 
@@ -296,3 +290,9 @@ Hopefully this tutorial has helped you visualize how you might use Redis with th
 - [Interservice communication](/howtos/solutions/interservice-communication)
 - [Query caching](/howtos/solutions/caching)
 - [API gateway caching](/howtos/solutions/api-gateway-caching)
+- [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
+- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+
+## Learn More
+
+<RedisEnterprise />

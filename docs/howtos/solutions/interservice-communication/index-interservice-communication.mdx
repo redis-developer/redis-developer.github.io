@@ -9,52 +9,46 @@ authors: [prasan, will]
 import Authors from '@theme/Authors';
 import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce.mdx';
 import MicroservicesArchitectureWithRedis from '../common-data/microservices-arch-with-redis.mdx';
+import SourceCode from '../common-data/microservices-source-code-tip.mdx';
+import RedisEnterprise from '../common-data/redis-enterprise.mdx';
 
 <Authors frontMatter={frontMatter} />
 
-:::tip GITHUB CODE
+<SourceCode />
 
-Source code for the application used in this tutorial
+## What is Interservice Communication?
 
-https://github.com/redis-developer/redis-microservices-ecommerce-solutions
-:::
+When building a microservices application, people use a variety of options for communication between services, such as:
 
-## Interservice Communication
+1. **Publish/Subscribe** model: In pub/sub (fire and forget) model, a publisher produces messages and subscribers that are _active at the time_ consume those messages. Inactive subscribers cannot receive the messages at a later point in time.
+1. **Streaming** : Most microservices applications use an event streaming solution because of:
+   - **Message persistence** : Unlike the pub/sub model, messages stored in streams are able to be read by multiple consumers (fan out) at any time. So consumers can always read messages at a later point of time even if they were not active when the message was originally appended to the stream.
+   - **Inherent replayability** : Even if a subscriber crashes during the message processing, it can re-read the exact same unacknowledged message from stream. Say the crashed subscriber never comes back online, then the consumer group feature allows consumers to process unacknowledged messages of other consumers after a specified time.
+   - **Separation of concerns** : Producers can produce messages to stream at **high speed** separately and consumers can process messages at their own speed separately. This separation of concerns solves both the "fast producer -> slow consumer" and "slow producer -> fast consumer" problem, allowing the scaling of those services independently.
 
-When building a microservices application, people use different options for communication between services like
+In an event-driven microservices architecture you might have some services that publish an API, and other services that are simply producers and consumers of events with no external API.
 
-1. **Publish Subscribe** model : In pub sub model (fire & forget model), publisher just produces the messages & **active** subscribers at that time can consume those messages. Subscribers which are down cannot receive the messages at later point of time.
-1. **Streams** : Most people decide to use an event **streaming** solution because of
-
-- **Messages persistence** : Unlike pub sub model, messages are stored in streams. So Subscriber can always read messages at later point of time even if it is down for a while.
-
-- **Inherent re-playability** : Even if subscriber crashes during the message processing, it can re-read exactly same unacknowledged message from stream. Say, crashed subscriber never came up - then consumer group feature allows consumers to process unacknowledged messages of other consumers after a specified time.
-
-- **Separation of concerns** : Producers can produce messages to stream at **high speed** separately and consumers can process messages at their own speed separately. So separation of concerns solves both "fast producer -> slow consumer" or "slow producer -> fast consumer" problem by allowing to scale those services independently.
-
-In an event-driven architecture you might have some services that publish an API, and other services that are simply producers and consumers of events with no external API.
-
-## Why you should use Redis for Interservice Communication
+## Why You Should Use Redis for Interservice Communication
 
 Consider the following scenario.
 
-You have an e-commerce application which is broken down in to different microservices like create an orders, create an invoice, process payment, handle fulfillment, etc. Microservices will allow each service to scale independently so now more customers can process their orders at less time simultaneously resulting in better user experience and higher sales volume.
+You have an e-commerce application which is broken down into different microservices like `create an order`, `create an invoice`, `process a payment`, `fulfill and order`, etc. Microservices will allow separating these commands into different services to scale independently, allowing more customers to process their orders quickly and simultaneously resulting in a better user experience and higher sales volume.
 
-When there are microservices, you obviously need some way of communication between them. You might initially consider using a product like **Kafka** for streaming, but the setup for it is rather complicated. What many people don't know about Redis is that it supports streams similar to Kafka. Given that you are likely to use Redis for caching already, it makes sense to also use it for stream processing. To reduce complexity of application architecture and maintenance, **Redis** is a great option for interservice communication. Keep reading for a break down of how to use Redis with streams for interservice communication.
+When using microservices, you obviously need some way of communication between them. You might initially consider using a product like **Kafka** for streaming, but the setup for it is rather complicated. What many people don't know about Redis is that it supports streams similar to Kafka. Given that you are likely to use Redis for caching already, it makes sense to also use it for stream processing. To reduce complexity of application architecture and maintenance, **Redis** is a great option for interservice communication. Keep reading for a breakdown of how to use Redis with streams for interservice communication.
 
-## Ecommerce micro services architecture
+## Microservices Architecture for an E-commerce Application
 
 <MicroservicesArchitectureWithRedis />
 
 ## Using Redis for Interservice Communication in an Event-driven Architecture
 
-Below is an event flow diagram that outlines how the `orders` & `payments` services communicate through Redis with streams.
+Below is an event flow diagram that outlines how the `orders service` and `payments service` communicate through Redis with streams.
 
 ![Microservices streaming with Redis event flow diagram](images/interservice-communication-event-flow-diagram.png)
 
 Let's outline the streams and events used below:
 
-1. "orders service" inserts full "order" data to database
+1. The `orders service` inserts order data into the database
 
    ```json
    {
@@ -99,11 +93,11 @@ Let's outline the streams and events used below:
    }
    ```
 
-2. "orders service" also enters minimal data (orderId, orderAmount & userId) to `ORDERS_STREAM` to signal new order creation (acts as "PRODUCER" of "ORDERS_STREAM")
+2. The `orders service` also appends minimal data (orderId, orderAmount & userId) to the `ORDERS_STREAM` to signal new order creation (i.e. it acts as `PRODUCER` of the `ORDERS_STREAM`)
 
    ![orders-stream](./images/02-orders-stream.png)
 
-3. "payments service" listens to `ORDERS_STREAM`, process payment for new orderId and insert "payments" data to database (acts as "CONSUMER" of "ORDERS_STREAM")
+3. The `payments service` listens to the `ORDERS_STREAM` and processes payments for new orders, then inserts payment data into the database (i.e it acts as the `CONSUMER` of the `ORDERS_STREAM`)
 
    ```json
    {
@@ -123,10 +117,10 @@ Let's outline the streams and events used below:
    }
    ```
 
-4. "payments service" also enters minimal data (orderId,paymentId, orderStatusCode & userId) to `PAYMENTS_STREAM` - to signal new payment fulfillment (acts as "PRODUCER" of "PAYMENTS_STREAM")
+4. The `payments service` appends minimal data (orderId,paymentId, orderStatusCode & userId) to the `PAYMENTS_STREAM` to signal a new payment (i.e. it acts as the `PRODUCER` of the `PAYMENTS_STREAM`)
    ![payments-stream](./images/04-payments-stream.png)
 
-5. "orders service" now listens to `PAYMENTS_STREAM`, updates orderStatus and paymentId in database accordingly for the order which has fulfilled payment (acts as "CONSUMER" of "PAYMENTS_STREAM")
+5. The `orders service` listens to the `PAYMENTS_STREAM` and updates the orderStatus and paymentId for orders in the database accordingly as the order payment is fulfilled (i.e. it acts as the `CONSUMER` of the `PAYMENTS_STREAM`)
 
 ```json
 {
@@ -138,19 +132,20 @@ Let's outline the streams and events used below:
 }
 ```
 
-## Ecommerce product
+## E-commerce Application Frontend using Next.js and Tailwind
 
 <MicroservicesEcommerceDesign />
 
-## Sample Interservice Communication Application with Redis and MongoDB
+## Building an Interservice Communication Application with Redis and MongoDB
 
-We're using Redis to broker the events sent between the orders service and the payments service.
+We're using Redis to broker the events sent between the `orders service` and the `payments service`.
 
 ### Producer 1 (Orders Service)
 
 Let's look at some of the code in the orders service to understand how it works.
 
-(step 1) After order creation , (step 2) "orders service" enters minimal data to ORDERS_STREAM to signal new order creation (acts as "PRODUCER" of "ORDERS_STREAM")
+1. Orders are created
+2. After order creation, the `orders service` appends minimal data to the `ORDERS_STREAM` to signal new order creation
 
 ```typescript
 const addOrderIdToStream = async (
@@ -173,12 +168,12 @@ const addOrderIdToStream = async (
 };
 ```
 
-### consumer 1 (payments Service)
+### Consumer 1 (Payments Service)
 
-(step 3)"payments service" listens to `ORDERS_STREAM` (acts as "CONSUMER" of "ORDERS_STREAM")
+3. The `payments service` is listening to the `ORDERS_STREAM`
 
 ```typescript
-//Below is some code for how you would use Redis to listen for the stream events:
+// Below is some code for how you would use Redis to listen for the stream events:
 
 async function listenToStream(
   onMessage: (message: any, messageId: string) => Promise<void>,
@@ -186,8 +181,8 @@ async function listenToStream(
   // using node-redis
   const redis = getNodeRedisClient();
   const streamKeyName = 'ORDERS_STREAM'; //stream name
-  const groupName = 'ORDERS_CON_GROUP'; //listening consumer group name (custom)
-  const consumerName = 'PAYMENTS_CON'; //listening consumer name (custom)
+  const groupName = 'ORDERS_CON_GROUP'; // listening consumer group name (custom)
+  const consumerName = 'PAYMENTS_CON'; // listening consumer name (custom)
   const readMaxCount = 100;
 
   // Check if the stream group already exists
@@ -222,7 +217,7 @@ async function listenToStream(
 
     for (let data of dataArr) {
       for (let messageItem of data.messages) {
-        //process the message received (in our case, perform payment)
+        // process the message received (in our case, perform payment)
         await onMessage(messageItem.message, messageItem.id);
 
         // acknowledge individual messages after processing
@@ -232,7 +227,7 @@ async function listenToStream(
   }
 }
 
-//"listenToStream" listens for events and calls the `onMessage` callback to further handle the events.
+// `listenToStream` listens for events and calls the `onMessage` callback to further handle the events.
 listenToStream({
   onMessage: processPaymentForNewOrders,
 });
@@ -248,19 +243,23 @@ const processPaymentForNewOrders: IMessageHandler = async (
       userId: "",
     }
     */
-  //process payment for new orderId and insert "payments" data to database
+  // process payment for new orderId and insert "payments" data to database
 };
 ```
+
+:::note
 
 There are a few important things to note here:
 
 1. Make sure the stream group doesn't exist prior to creating it.
 1. Use `isolated: true,` in order to use the blocking version of `XREADGROUP` in [isolated execution](https://github.com/redis/node-redis/blob/master/docs/isolated-execution.md) mode.
-1. Acknowledge individual messages after they have been processed to remove them from the queue (Pending entries list ) and avoid processing them more than once.
+1. Acknowledge individual messages after they have been processed to remove them from the pending orders queue and avoid processing them more than once.
 
-### producer 2 (payments Service)
+:::
 
-(step 4) "payments service" also enters minimal data to `PAYMENTS_STREAM` - to signal new payment fulfillment (acts as "PRODUCER" of "PAYMENTS_STREAM")
+### Producer 2 (Payments Service)
+
+4. The `payments service` appends minimal data to `PAYMENTS_STREAM` to signal that a payment has been fulfilled.
 
 ```typescript
 const addPaymentIdToStream = async (
@@ -285,9 +284,9 @@ const addPaymentIdToStream = async (
 };
 ```
 
-### consumer 2 (orders Service)
+### Consumer 2 (Orders Service)
 
-(step 5) "orders service" now listens to `PAYMENTS_STREAM` (acts as "CONSUMER" of "PAYMENTS_STREAM")
+5. The `orders service` listens to the `PAYMENTS_STREAM` and updates the order when payments are fulfilled.
 
 ```typescript
 //Below is some code for how you would use Redis to listen for the stream events:
@@ -344,7 +343,7 @@ async function listenToStream(
   }
 }
 
-//"listenToStream" listens for events and calls the `onMessage` callback to further handle the events.
+// `listenToStream` listens for events and calls the `onMessage` callback to further handle the events.
 listenToStream({
   onMessage: updateOrderStatus,
 });
@@ -358,15 +357,15 @@ const updateOrderStatus: IMessageHandler = async (message, messageId) => {
       userId: "",
     }
     */
-  //updates orderStatus and paymentId in database accordingly for the order which has fulfilled payment
-  //updateOrderStatusInRedis(orderId,paymentId,orderStatusCode,userId)
-  //updateOrderStatusInMongoDB(orderId,paymentId,orderStatusCode,userId)
+  // updates orderStatus and paymentId in database accordingly for the order which has fulfilled payment
+  // updateOrderStatusInRedis(orderId,paymentId,orderStatusCode,userId)
+  // updateOrderStatusInMongoDB(orderId,paymentId,orderStatusCode,userId)
 };
 ```
 
 :::tip
 
-It's best practice to validate the incoming messages to make sure you can work with them.
+It's best practice to validate all incoming messages to make sure you can work with them.
 
 :::
 
@@ -383,3 +382,9 @@ That's all there is to it! You've now seen how to use Redis for streaming as bot
 - [CQRS](/howtos/solutions/cqrs)
 - [Query caching](/howtos/solutions/caching)
 - [API gateway caching](/howtos/solutions/api-gateway-caching)
+- [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
+- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+
+## Learn More
+
+<RedisEnterprise />

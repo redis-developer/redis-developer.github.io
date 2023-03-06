@@ -1,4 +1,4 @@
-Thinking about the e-commerce application, consider the following architecture:
+The e-commerce microservices application uses the following architecture:
 
 1. `products service` - handles querying products from the database and returning them to the frontend
 1. `orders service` - handles validating and creating orders
@@ -12,4 +12,4 @@ Here is what the architecture diagram looks like so far:
 
 ![Microservices architecture with Redis](images/redis-microservices-arch.png)
 
-What's nice about this architecture is each service is setup so it can scale independently. What this also means is you can incrementally adopt Redis where needed.
+What's nice about this architecture is each service is set up so it can scale independently. What this also means is you can incrementally adopt Redis where needed.
