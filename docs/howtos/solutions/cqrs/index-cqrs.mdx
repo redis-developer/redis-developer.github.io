@@ -139,7 +139,7 @@ async function createOrder(order: IOrder) {
 
 :::info
 
-For simplicity, we are adding data to both MongoDB and Redis in the same service (double-write). As mentioned earlier, a common pattern is to have your API interact with one database, and then separately use a CDC mechanism to update the other database. For example, you could write directly to Redis, then use **RedisGears** to handle synchronizing Redis and MongoDB in the background. For the purposes of this tutorial we are not going to outline exactly how you might handle synchronization, but instead focus on how the data is stored and accessed in Redis.
+For simplicity, we are adding data to both MongoDB and Redis in the same service (double-write). As mentioned earlier, a common pattern is to have your services write to one database, and then separately use a CDC mechanism to update the other database. For example, you could write directly to Redis, then use **RedisGears** to handle synchronizing Redis and MongoDB in the background. For the purposes of this tutorial we are not going to outline exactly how you might handle synchronization, but instead focus on how the data is stored and accessed in Redis.
 
 :::
 
