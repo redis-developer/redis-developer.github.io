@@ -38,6 +38,16 @@ Redis is an in-memory datastore, making it perfect for caching session data. It 
 
 <MicroservicesArchitectureWithRedis />
 
+Below you will find a diagram depicting how the API gateway uses Redis as a cache for session information. It gets the session from Redis and then passes it on to each microservice. This provides an easy way to handle sessions in a single place, and permeate them throughout the rest of the application.
+
+![API gateway caching with Redis architecture diagram](./images/api-gateway-caching-with-redis-architecture.png)
+
+:::tip
+
+If you're using a **Redis Enterprise Cluster**, you get the benefit of linear scaling to ensure API calls perform under peak loads. You also get 99.999% uptime and Active-Active geo-distribution to prevent loss of critical authentication and session data.
+
+:::
+
 ## E-commerce Application Frontend using Next.js and Tailwind
 
 <MicroservicesEcommerceDesign />
@@ -190,7 +200,3 @@ That's all there is to it! You've now seen how to use Redis for API gateway cach
 - [Query caching](/howtos/solutions/caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
-
-## Learn More
-
-<RedisEnterprise />
