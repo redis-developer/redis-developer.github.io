@@ -21,12 +21,19 @@ import cqrsArchitectureWithCdc from './images/cqrs-architecture-with-cdc.png';
 
 ## What is Command and Query Responsibility Segregation (CQRS)?
 
-CQRS is a common pattern used in microservices applications in part to allow for scaling read and write workloads independently. The idea is simple: you separate commands such as "Order this product" (write operation) from queries such as "Show me my order history" (read operation). CQRS applications are often messaging-based and rely on eventual consistency. Below you will find a sample data architecture that demonstrates how Redis is used with CQRS.
+Command Query Responsibility Segregation (CQRS) is a critical pattern within a microservice architecture that decouple reads (queries) and writes (commands). CQRS allows for scaling read and write workloads independently.
+Commands are focused on higher durability and consistency, while queries are focused on performance. This enables a microservice to write data to a slower system of record disk-based database, while pre-fetching and caching that data in a cache for realtime reads.
 
-<img src={cqrsArchitectureWithCdc} alt="CQRS architecture with Redis" width="500" className="margin-bottom--md" />
+The idea is simple: you separate commands such as "Order this product" (write operation) from queries such as "Show me my order history" (read operation). CQRS applications are often messaging-based and rely on eventual consistency. Below you will find a sample data architecture that demonstrates how Redis is used with CQRS.
+
+<img
+  src={cqrsArchitectureWithCdc}
+  alt="CQRS architecture with Redis"
+  width="500"
+  className="margin-bottom--md"
+/>
 
 The architecture above uses the Change Data Capture (noted as "Integrated CDC") pattern to track the changed state on the command database and replicate it to the query database (Redis). This is a common pattern used with CQRS, and implementing CDC requires:
-
 
 1. Taking the data snapshot from the system of record
 1. Performing an ETL operation finalized to load the data on the target cache database
@@ -37,7 +44,6 @@ The architecture above uses the Change Data Capture (noted as "Integrated CDC") 
 While you can implement your own CDC mechanism with Redis using RedisGears, Redis Enterprise comes with its own integrated CDC mechanism to solve this problem for you.
 
 :::
-
 
 ## Why You Might Use CQRS
 
