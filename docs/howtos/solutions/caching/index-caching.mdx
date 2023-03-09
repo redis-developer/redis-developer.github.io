@@ -1,7 +1,7 @@
 ---
 id: index-solutions-caching
-title: How to use Redis as a Query Caching
-sidebar_label: How to use Redis as a Query Caching
+title: How to use Redis for Query Caching
+sidebar_label: How to use Redis for Query Caching
 slug: /howtos/solutions/caching
 authors: [prasan, will]
 ---
@@ -11,6 +11,9 @@ import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce
 import MicroservicesArchitectureWithRedis from '../common-data/microservices-arch-with-redis.mdx';
 import SourceCode from '../common-data/microservices-source-code-tip.mdx';
 import RedisEnterprise from '../common-data/redis-enterprise.mdx';
+
+import cacheMissImage from './images/redis-cache-aside-cache-miss.png';
+import cacheHitImage from './images/redis-cache-aside-cache-hit.png';
 
 <Authors frontMatter={frontMatter} />
 
@@ -30,31 +33,50 @@ For example, in an e-commerce application you might be able to guess what query 
 
 To improve product search in ecommerce app, we can implement one of following caching patterns
 
-- **Lookup pattern**: Entire products can be pre-cached in Redis and the application can perform any product query on Redis similar to primary database
+- **Cache prefetching**: An entire product catalog can be pre-cached in Redis and the application can perform any product query on Redis similar to the primary database
 - **Cache-aside** pattern: Redis is filled on-demand based on whatever search parameters are requested by the frontend.
 
-This tutorial focuses on the **cache-aside** pattern, which operates as follows:
+:::tip
 
-![cache-aside with Redis and MongoDB](images/cache-aside.jpg)
+If you're using **Redis Enterprise** cache prefetching is made easier with support for JSON and search. You also get additional features such as real-time performance, infinite scalability, resiliency and fault tolerance, and high-availability features such as Active-Active geo-redundancy.
 
-The goal of this design pattern is to set up **optimal** caching (load as you go) for better read operations.
+:::
 
-To understand how the cache-aside pattern functions, consider the following process:
+This tutorial focuses on the **cache-aside** pattern. The goal of this design pattern is to set up **optimal** caching (load as you go) for better read operations. With caching, you might be familiar with "cache miss," where you do not find data in the cache, and a "cache hit," where you are able to find data in the cache. Let's look at how the cache aside pattern works with Redis for both a "cache miss" and a "cache hit."
+
+### Cache-aside with Redis (cache miss)
+
+<img src={cacheMissImage} alt="Cache miss when using the cache-aside pattern with Redis" width="500" className="margin-bottom--md" />
+
+The image above depicts the steps taken in the cache-aside pattern when there is a "cache miss." To understand how this functions, consider the following process:
 
 1. An application requests data from the backend
-2. The backend checks to find out if the data is available in Redis
-   1. If the data isn’t available (a cache miss):
-      - The MongoDB database fetches the data
-      - Redis stores a copy of the data
-      - The backend serves the data to the application
-   2. If the data is already available in Redis (a cache hit):
-      - The backend serves the cached data directly to the application
+1. The backend checks to find out if the data is available in Redis
+1. Data is not found (a cache miss), so the data is fetched from the database
+1. The data returned from the database is subsequently stored in Redis
+1. The data is then returned to the application
+
+### Cache-aside with Redis (cache hit)
+
+Now that you have seen what a "cache miss" looks like, let's cover a "cache hit." Below is the same diagram, with the "cache hit" steps highlighted in green.
+
+<img src={cacheHitImage} alt="Cache hit when using the cache-aside pattern with Redis" width="500" className="margin-bottom--md" />
+
+1. An application requests data from the backend
+1. The backend checks to find out if the data is available in Redis
+1. The data is then returned to the application
 
 The cache-aside pattern is useful when you need to:
 
 1. **Query data frequently** - When you have a large volume of reads (as is the case in an e-commerce app), the cache-aside pattern will give you an immediate performance gain for subsequent data requests.
 1. **Fill the cache on-demand** - The cache-aside pattern will fill the cache as data is requested rather than pre-caching, thus saving on space and cost. Useful when it isn't clear what data will need to be cached.
 1. **Be cost conscious** - Since cache size is directly related to the cost of cache storage in the cloud, the smaller the size, the less you pay.
+
+:::tip
+
+If you're using **Redis Enterprise** and a database that uses a JDBC driver, you can take advantage of [**Redis Smart Cache**](https://github.com/redis-field-engineering/redis-smart-cache), which let's you add caching to your application without changing the code. [**Click here to learn more!**](https://github.com/redis-field-engineering/redis-smart-cache)
+
+:::
 
 ## Microservices Architecture for an E-commerce Application
 
@@ -253,7 +275,3 @@ That's all there is to it! You've now seen how to use Redis for caching with one
 - [API gateway caching](/howtos/solutions/api-gateway-caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
-
-## Learn More
-
-<RedisEnterprise />

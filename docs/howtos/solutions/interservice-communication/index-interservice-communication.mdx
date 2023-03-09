@@ -20,7 +20,7 @@ import RedisEnterprise from '../common-data/redis-enterprise.mdx';
 
 When building a microservices application, people use a variety of options for communication between services, such as:
 
-1. **Publish/Subscribe** model: In pub/sub (fire and forget) model, a publisher produces messages and subscribers that are _active at the time_ consume those messages. Inactive subscribers cannot receive the messages at a later point in time.
+1. **Publish/Subscribe** model: In the pub/sub (fire and forget) model, a publisher produces messages and subscribers that are _active at the time_ consume those messages. Inactive subscribers cannot receive the messages at a later point in time.
 1. **Streaming** : Most microservices applications use an event streaming solution because of:
    - **Message persistence** : Unlike the pub/sub model, messages stored in streams are able to be read by multiple consumers (fan out) at any time. So consumers can always read messages at a later point of time even if they were not active when the message was originally appended to the stream.
    - **Inherent replayability** : Even if a subscriber crashes during the message processing, it can re-read the exact same unacknowledged message from stream. Say the crashed subscriber never comes back online, then the consumer group feature allows consumers to process unacknowledged messages of other consumers after a specified time.
@@ -39,6 +39,17 @@ When using microservices, you obviously need some way of communication between t
 ## Microservices Architecture for an E-commerce Application
 
 <MicroservicesArchitectureWithRedis />
+
+The diagram below illustrates how Redis Streams is used as the message broker between the `orders service` and the `payments service`.
+
+![Microservices interservice communication with Redis streams message broker](images/interservice-communication-redis-streams.png)
+
+:::tip
+
+Redis Streams offers simplicity in both development and operations, especially when using Redis for other purposes such as caching. With sub-millisecond latency and a lightweight Streams log data structure that is easier to deploy, develop, and operate and is also more cost-effective than using Kafka or other similar technologies.
+
+:::
+
 
 ## Using Redis for Interservice Communication in an Event-driven Architecture
 
@@ -369,7 +380,13 @@ It's best practice to validate all incoming messages to make sure you can work w
 
 :::
 
-For the purposes of our application we are making a call to update the order status in Redis and MongoDB. An alternative option is to use something like RedisGears to synchronize the data between Redis and MongoDB. Doing so would allow you to simply write to Redis, which would then trigger RedisGears to subsequently write to MongoDB. It's a small difference, but many people choose to go this route because of the cleaner implementation and separation of concerns.
+For the purposes of our application we are making a call to update the order status in Redis and MongoDB. Another common pattern is to have your services write to one database, and then separately use a CDC mechanism to update the other database. For example, you could write directly to Redis, then use **RedisGears** to handle synchronizing Redis and MongoDB in the background. For the purposes of this tutorial we are not going to outline exactly how you might handle synchronization, but instead focus on how the data is stored and accessed in Redis.
+
+:::tip
+
+If you're using **Redis Enterprise**, you will find that Redis Streams is available on the same multi-tenant data platform you are already using for caching. It also has high availability, message persistence, support for multiple clients, and resiliency with primary/secondary data replication built-in.
+
+:::
 
 ## Conclusion
 
@@ -384,7 +401,3 @@ That's all there is to it! You've now seen how to use Redis for streaming as bot
 - [API gateway caching](/howtos/solutions/api-gateway-caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
-
-## Learn More
-
-<RedisEnterprise />

@@ -1,4 +1,4 @@
-The e-commerce microservices application uses the following architecture:
+The e-commerce microservices application discussed in the rest of this tutorial uses the following architecture:
 
 1. `products service` - handles querying products from the database and returning them to the frontend
 1. `orders service` - handles validating and creating orders
@@ -7,9 +7,3 @@ The e-commerce microservices application uses the following architecture:
 1. `api gateway` - unifies your services under a single endpoint
 1. `mongodb` - serves as the primary database, storing orders, order history, products, etc.
 1. `redis` - serves as the stream processor and caching database
-
-Here is what the architecture diagram looks like so far:
-
-![Microservices architecture with Redis](images/redis-microservices-arch.png)
-
-What's nice about this architecture is each service is set up so it can scale independently. What this also means is you can incrementally adopt Redis where needed.

@@ -457,16 +457,16 @@ module.exports = {
       items: [
         'howtos/index-howtos',
         'howtos/redisearch/index-redisearch',
-        // {
-        //   type: 'category',
-        //   label: 'Solutions',
-        //   items: [
-        //     'howtos/solutions/cqrs/index-solutions-cqrs',
-        //     'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
-        //     'howtos/solutions/caching/index-solutions-caching',
-        //     'howtos/solutions/api-gateway-caching/index-solutions-api-gateway-caching',
-        //   ],
-        // },
+        {
+          type: 'category',
+          label: 'Solutions',
+          items: [
+            'howtos/solutions/cqrs/index-solutions-cqrs',
+            'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
+            'howtos/solutions/caching/index-solutions-caching',
+            'howtos/solutions/api-gateway-caching/index-solutions-api-gateway-caching',
+          ],
+        },
         {
           type: 'category',
           label: 'RedisJSON Tutorial',
