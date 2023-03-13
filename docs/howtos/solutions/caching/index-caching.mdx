@@ -46,7 +46,12 @@ This tutorial focuses on the **cache-aside** pattern. The goal of this design pa
 
 ### Cache-aside with Redis (cache miss)
 
-<img src={cacheMissImage} alt="Cache miss when using the cache-aside pattern with Redis" width="500" className="margin-bottom--md" />
+<img
+  src={cacheMissImage}
+  alt="Cache miss when using the cache-aside pattern with Redis"
+  width="500"
+  className="margin-bottom--md"
+/>
 
 The image above depicts the steps taken in the cache-aside pattern when there is a "cache miss." To understand how this functions, consider the following process:
 
@@ -60,7 +65,12 @@ The image above depicts the steps taken in the cache-aside pattern when there is
 
 Now that you have seen what a "cache miss" looks like, let's cover a "cache hit." Below is the same diagram, with the "cache hit" steps highlighted in green.
 
-<img src={cacheHitImage} alt="Cache hit when using the cache-aside pattern with Redis" width="500" className="margin-bottom--md" />
+<img
+  src={cacheHitImage}
+  alt="Cache hit when using the cache-aside pattern with Redis"
+  width="500"
+  className="margin-bottom--md"
+/>
 
 1. An application requests data from the backend
 1. The backend checks to find out if the data is available in Redis
@@ -275,3 +285,4 @@ That's all there is to it! You've now seen how to use Redis for caching with one
 - [API gateway caching](/howtos/solutions/api-gateway-caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench

@@ -1,0 +1,74 @@
+---
+id: index-digital-identity-validation
+title: How to perform Digital Identity Validation using Redis in an e-commerce app
+sidebar_label: How to use Redis for Digital Identity Validation
+slug: /howtos/solutions/digital-identity-validation
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+import digitalIdentityImg from './images/digital-identity.png';
+
+<Authors frontMatter={frontMatter} />
+
+## Know Your Customer (KYC)
+
+"Know Your Customer" (KYC) regulations refer to a set of policies and procedures that financial institutions and other regulated businesses must follow to verify the identity of their customers.
+KYC regulations are intended to prevent money laundering, terrorist financing, and other illicit activities.
+Customer details can be like name, address, date of birth, and other government-issued identification/ documents.
+Financial services companies are combating the use of stolen identity information by reducing reliance on static methods for verifying identity (Knowledge-Based Authentication - KBA) and instead moving to Digital Identities.
+
+## Digital identities
+
+Digital identity refers to a set of attributes, credentials, and data that uniquely identify an individual or entity in the digital world, merging the physical and the online aspects of their identity.
+
+<img
+  src={digitalIdentityImg}
+  alt="Digital Identity attributes"
+  width="500"
+  className="margin-bottom--md"
+/>
+
+Digital identities consist of two parts:
+
+- **Static** data: personally identifiable information (PII) such as name, address, and biometrics
+- **Dynamic** data: behavioural and contextual information such as browsing history, device type, and location data.Dynamic digital identities are constantly updated based on the information available from each digital transaction.
+
+Companies must monitor customer's every transaction and behaviour, use stored digital identities to score the **risk** (**possible suspicious activity**) of the transaction.
+
+## Why You Should Use Redis for Digital Identity Validation
+
+Main requirements of a storage layer for digital identities:
+
+- Must maintain **real-time read latency** to fit within transaction SLA.
+- Must have a **flexible data model** to store multiple unstructured data types such as behavioural, transactional, location, social/mobile and more.
+
+These two factors are limiting for using RDBMS (Relation Database Management Systems) to manage and validate digital identities in real time.
+
+**Redis Enterprise**, on the other hand, is optimized for high throughput, low latency, and real-time query performance, easily satisfying the first criterion. With **sub-millisecond latency** and hundreds of millions of operations per second across both read and write operations, it is well-suited for managing dynamic digital identity data. As the volume of data grows, we can expect near-linear scalability and 99.999% of uptime with **Active-Active geo-replication**.
+
+Redis Enterprise's flexible data model has native support for multiple data types, including **JSON, hashes, streams, graphs and more**. Additionally, it can process complex searches on structured and unstructured data, as well as filtering by numeric properties and geographical distances, making it easier to manage and query large datasets of digital identities.
+
+## Microservice E-commerce Application
+
+In an E-commerce Application, Digital identity must be verified when ever user adds a particular item for purchase in to the cart.
+
+Consider below architecture flow during the item addition to cart
+
+![Flow](./images/flow.svg)
+
+- Purchase : Item is selected for purchase
+- Check Digital Identity : Confirm the user characteristics
+- Check User Profile : Confirm the user behavior
+- AI (Artificial Intelligence) : Score overall purchase patterns and calculate the **fraud score**
+- Add to cart : Add the selected item in to the cart
+
+Based on the fraud score, can prevent transaction or trigger alerts (as per business requirement)
+
+## Ref
+
+- https://github.com/redis-field-engineering/demo-microservices-fraud/
+
+- https://redislabs.moodlecloud.com/course/view.php?id=101
+
+- https://github.com/redis-field-engineering/demo-microservices-fraud/blob/master/docs/Presentation.md
