@@ -1,0 +1,45 @@
+---
+id: index-transaction-risk-scoring
+title: How to use Redis for Transaction risk scoring
+sidebar_label: How to use Redis for Transaction risk scoring
+slug: /howtos/solutions/transaction-risk-scoring
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+**TEMPORARY DRAFT**
+
+## Transaction Risk scoring
+
+"Transaction Risk scoring" is a method of leveraging data science, machine learning, and statistical analysis to continuously monitor transactions and assess the relative risk associated with each transaction. By comparing transactional data to models of known fraud, the risk score can be calculated, and the closer a transaction matches fraudulent behaviour, the higher the risk score.
+
+If the risk score suggests possible fraud, the customer is sent through a challenge flow to provide additional authentication. Challenges typically include a one-time password sent via text, email, or biometric scan.
+
+<!-- TODO: digital identity reference links -->
+
+## Why You Should Use Redis for Transaction Risk scoring
+
+This risk-based approach must be designed to create as frictionless flow as possible to **avoid slowing down** the transaction experience for legitimate customers while simultaneously preventing fraud.
+
+- **Rules-based engines** and false positives : Rules-based automated fraud detection systems that operate on simple yes/no logic to determine whether a given transaction is likely to be fraudulent. An example of a rule would be "block all transactions over $500 from a risky region". With a simple binary decision like this, the system is likely to block a lot of genuine customers. Sophisticated fraudsters easily fool such systems, and the complex nature of fraud means that simple yes/no rules may not be enough to assess the risk of each transaction accurately.
+- More accurate risk scoring with **AI/ML** : To address these issues, modern fraud detection systems use machine learning models trained on large volumes of different data sets (user profiles, transaction patterns, behavioural attributes and more) to accurately identify fraudulent transactions.
+  These models have been designed to be flexible, so they can adapt to new types of fraud.
+  For example, a neural network can examine suspicious activities like how many pages a customer browses before making an order, whether they are copying and pasting information or typing it in manually and flag the customer for further review.
+
+  - The models use historical as well as most recent data to create a risk profile for each customer. By analyzing past behaviour it is possible to create a profile of what is normal for each customer. Any transactions that deviate from this profile can be flagged as suspicious, reducing the likelihood of false positives. The models are very fast to adapt to changes in normal behaviour too, and can quickly identify patterns of fraud transactions.
+
+This is exactly where **Redis Enterprise** fits in transaction risk scoring
+
+1. it can be used as the **in-memory** online store for online and **real-time access** to feature data as part of a transaction risk scoring system.By serving online features with low latency, Redis Enterprise enables the risk-scoring models to return results in real-time, thereby allowing the whole system to achieve high accuracy and **instant response** on approving legitimate online transactions.
+
+1. Another very common use for Redis Enterprise in transaction risk scoring is for **transaction filters**. A transaction filter can be implemented as a **Redis Bloom** filter that stores information about user behaviours. It can answer questions like "Have we seen this user purchase at this merchant before"? Or, "Have we seen this user purchase at this merchant in the X to Y price range before"? Being a probabilistic data structure, Redis Bloom filters do, indeed, sacrifice some accuracy, but in return, they get a very low memory footprint and response time.
+
+Finally, both of the use cases above can be deployed in an Active-Active set-up, allowing for 99.999% uptime.
+
+## Demo
+
+- [loan prediction - github](https://github.com/RedisVentures/loan-prediction-microservice)
+- [AWS fraud detection - github](https://github.com/Redislabs-Solution-Architects/aws-fraud-detection)

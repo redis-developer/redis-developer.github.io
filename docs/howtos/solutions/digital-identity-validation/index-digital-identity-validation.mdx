@@ -8,8 +8,13 @@ authors: [prasan, will]
 
 import Authors from '@theme/Authors';
 import digitalIdentityImg from './images/digital-identity.png';
+import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce.mdx';
+import MicroservicesArchitectureWithRedis from '../common-data/microservices-arch-with-redis.mdx';
+import SourceCode from '../common-data/microservices-source-code-tip.mdx';
 
 <Authors frontMatter={frontMatter} />
+
+<SourceCode />
 
 ## Know Your Customer (KYC)
 
@@ -49,11 +54,11 @@ These two factors are limiting for using RDBMS (Relation Database Management Sys
 
 Redis Enterprise's flexible data model has native support for multiple data types, including **JSON, hashes, streams, graphs and more**. Additionally, it can process complex searches on structured and unstructured data, as well as filtering by numeric properties and geographical distances, making it easier to manage and query large datasets of digital identities.
 
-## Microservice E-commerce Application
+## Microservices Architecture for an E-commerce Application
 
-In an E-commerce Application, Digital identity can be typically verified before checkout or payment of an order.
+<MicroservicesArchitectureWithRedis />
 
-Consider below architecture flow before an order checkout
+Consider below architecture flow before order checkout/ payment where Digital identity is validated
 
 ![Flow](./images/flow.svg)
 
@@ -66,9 +71,15 @@ Consider below architecture flow before an order checkout
 Calculate the transaction fraud/ risk score from above identity score, profile score and AI score.
 If the **fraud/ risk score is high**, the customer is sent through a **challenge flow** to provide additional authentication. Challenges typically include a one-time password sent via text, email, or biometric scan.
 
+## E-commerce Application Frontend using Next.js and Tailwind
+
+<MicroservicesEcommerceDesign />
+
 ## Building a Digital Identity Validation Microservice with Redis
 
 For this tutorial, we will be focusing on verifying "digital identity" and calculating "digital identity" score with Redis. Let's consider only few user characteristics of Digital Identity for the demo like IP address, browser fingerprint and session.
+
+### Storing identity
 
 - On login, create "LOGIN_DIGITAL_IDENTITY" for a user in redis.
   Let LOGIN_DIGITAL_IDENTITY consists of user session, transaction IP address and browser fingerprint
@@ -153,6 +164,8 @@ elif  msg['value']['action'] == "update" and msg['value']['user'] != "Guest":
                 )
 
 ```
+
+### Validating identity (calculating identity score)
 
 - Compare the PURCHASE_DIGITAL_IDENTITY with previously stored LOGIN_DIGITAL_IDENTITY and determine the identity score
 
