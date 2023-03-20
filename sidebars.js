@@ -461,10 +461,17 @@ module.exports = {
           type: 'category',
           label: 'Solutions',
           items: [
-            'howtos/solutions/cqrs/index-solutions-cqrs',
-            'howtos/solutions/interservice-communication/index-solutions-interservice-communication',
-            'howtos/solutions/caching/index-solutions-caching',
-            'howtos/solutions/api-gateway-caching/index-solutions-api-gateway-caching',
+            'howtos/solutions/index-solutions',
+            {
+              type: 'category',
+              label: 'Microservices',
+              items: [
+                'howtos/solutions/microservices/cqrs/index-solutions-cqrs',
+                'howtos/solutions/microservices/interservice-communication/index-solutions-interservice-communication',
+                'howtos/solutions/microservices/caching/index-solutions-caching',
+                'howtos/solutions/microservices/api-gateway-caching/index-solutions-api-gateway-caching',
+              ]
+            },
           ],
         },
         {

@@ -2,7 +2,7 @@
 id: index-solutions-cqrs
 title: How to build an e-commerce app using Redis with the CQRS Pattern
 sidebar_label: How to build an e-commerce app using Redis with the CQRS Pattern
-slug: /howtos/solutions/cqrs
+slug: /howtos/solutions/microservices/cqrs
 authors: [prasan, will]
 ---
 
@@ -63,7 +63,7 @@ Note that in the current architecture all the services use the same underlying d
 
 :::info
 
-For the purposes of this tutorial we are not highlighting how communication is coordinated between our services, such as how new orders are processed for payment. This is handled using Redis Streams, and is outlined further in our [interservice communication guide](/howtos/solutions/interservice-communication).
+For the purposes of this tutorial we are not highlighting how communication is coordinated between our services, such as how new orders are processed for payment. This is handled using Redis Streams, and is outlined further in our [interservice communication guide](/howtos/solutions/microservices/interservice-communication).
 
 :::
 
@@ -322,9 +322,9 @@ Hopefully this tutorial has helped you visualize how you might use Redis with th
 
 ### Additional Resources
 
-- [Interservice communication](/howtos/solutions/interservice-communication)
-- [Query caching](/howtos/solutions/caching)
-- [API gateway caching](/howtos/solutions/api-gateway-caching)
+- [Interservice communication](/howtos/solutions/microservices/interservice-communication)
+- [Query caching](/howtos/solutions/microservices/caching)
+- [API gateway caching](/howtos/solutions/microservices/api-gateway-caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
 - [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
