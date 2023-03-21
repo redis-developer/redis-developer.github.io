@@ -1,0 +1,219 @@
+---
+id: index-digital-identity-validation
+title: How to perform Digital Identity Validation using Redis in an e-commerce app
+sidebar_label: How to use Redis for Digital Identity Validation
+slug: /howtos/solutions/fraud-detection/digital-identity-validation
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+import digitalIdentityImg from './images/digital-identity.png';
+
+import MicroservicesEcommerceDesign from '../../microservices/common-data/microservices-ecommerce.mdx';
+import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
+import SourceCode from '../../microservices/common-data/microservices-source-code-tip.mdx';
+
+<Authors frontMatter={frontMatter} />
+
+<SourceCode />
+
+## Know Your Customer (KYC)
+
+"Know Your Customer" (KYC) regulations refer to a set of policies and procedures that financial institutions and other regulated businesses must follow to verify the identity of their customers. Customer details can be like name, address, date of birth, and other government-issued identification/ documents.
+
+KYC regulations are intended to prevent money laundering, terrorist financing, and other illicit activities.
+Financial services companies are combating the use of stolen identity information by reducing reliance on static methods for verifying identity (Knowledge-Based Authentication - KBA) and instead moving to Digital Identities.
+
+## What is Digital identity?
+
+Digital identity refers to a set of attributes, credentials, and data that uniquely identify an individual or entity in the digital world, merging the physical and the online aspects of their identity.
+
+<img
+  src={digitalIdentityImg}
+  alt="Digital Identity attributes"
+  width="500"
+  className="margin-bottom--md"
+/>
+
+Digital identities consist of two parts:
+
+- **Static** data: personally identifiable information (PII) such as name, address, and biometrics
+- **Dynamic** data: behavioural and contextual information such as browsing history, device type, and location data. Dynamic digital identities are constantly updated based on the information available from each digital transaction.
+
+Companies must monitor customer's every transaction and behaviour, then use stored digital identities to score the **risk** (**possible suspicious activity**) of that transaction.
+
+## Why You Should Use Redis for Digital Identity Validation
+
+Main requirements of a storage layer for digital identities:
+
+- Must maintain **real-time read latency** to fit within transaction SLA.
+- Must have a **flexible data model** to store multiple unstructured data types such as behavioural, transactional, location, social/mobile and more.
+
+These two factors are limiting for using RDBMS (Relation Database Management Systems) to manage and validate digital identities in real time.
+
+**Redis Enterprise**, on the other hand, is optimized for high throughput, low latency, and real-time query performance, easily satisfying the first criterion. With **sub-millisecond latency** and hundreds of millions of operations per second across both read and write operations, it is well-suited for managing dynamic digital identity data. As the volume of data grows, we can expect near-linear scalability and 99.999% of uptime with **Active-Active geo-replication**.
+
+Redis Enterprise's flexible data model has native support for multiple data types, including **JSON, hashes, streams, graphs and more**. Additionally, it can process complex searches on structured and unstructured data, as well as filtering by numeric properties and geographical distances, making it easier to manage and query large datasets of digital identities.
+
+## Microservices Architecture for an E-commerce Application
+
+<MicroservicesArchitectureWithRedis />
+
+Consider below architecture flow before order checkout/ payment where Digital identity is validated
+
+![Flow](./images/flow.svg)
+
+- Purchase : Item is selected for purchase
+- **Check Digital Identity** : Confirm the user characteristics (like **user session/ cookie, IP address, Browser fingerprint, location, device type**..etc) and calculate **Identity score** from 0.0-1.0
+- Check User Profile : Confirm the user behavior (like purchased from this category and level before?) and calculate **Profile score** from 0.0-1.0
+- AI (Artificial Intelligence) : Score overall purchase patterns ( say basket comparison) and calculate **AI score** from 0.0-1.0
+- Add to cart : Add the selected item in to the cart
+
+Calculate the transaction fraud/ risk score from above identity score, profile score and AI score.
+If the **fraud/ risk score is high**, the customer is sent through a **challenge flow** to provide additional authentication. Challenges typically include a one-time password sent via text, email, or biometric scan.
+
+## E-commerce Application Frontend using Next.js and Tailwind
+
+<MicroservicesEcommerceDesign />
+
+## Building a Digital Identity Validation Microservice with Redis
+
+For this tutorial, we will be focusing on verifying "digital identity" and calculating "digital identity" score with Redis. Let's consider only few user characteristics of Digital Identity for the demo like IP address, browser fingerprint and session.
+
+### Storing identity
+
+- On login, create "LOGIN_DIGITAL_IDENTITY" for a user in redis.
+  Let LOGIN_DIGITAL_IDENTITY consists of user session, transaction IP address and browser fingerprint
+
+<!-- TODO: All python snippets to be replaced with node js (Microservice Ecommerce app) code -->
+
+```python
+# msg = {
+#   'microservice': 'login',
+#   'action': 'insert',
+#   'fingerprint':'',
+#   'ipaddr':'',
+#   'user':'', # ?? , session id or user id
+#   'session':''
+# }
+if 'browser' in form or 'ipaddr' in form:
+         msg = {'action': 'update', 'user': form['user']} # trigger update check
+         if 'browser' in form:
+            msg['fingerprint'] = hashlib.md5(request.headers.get('User-Agent').encode('utf-8')).hexdigest()
+         if 'ipaddr' in form:
+            msg['ipaddr'] = request.remote_addr
+         redis.xadd('CHECK-IDENTITY', msg)
+         redis.xadd(log_stream, {"microservice": "login", "user": form['user'], "message": "%s has updated identity" %(form['user'])})
+
+
+```
+
+- Before checkout/ payment, create PURCHASE_DIGITAL_IDENTITY for the same user in redis.
+  Let PURCHASE_DIGITAL_IDENTITY also consists of user session, transaction IP address and browser fingerprint along with other purchase data.
+
+```python
+# msg = {
+#   'microservice': 'catalog',
+#   'action': 'verify',
+#   'fingerprint':'',
+#   'ipaddr':'',
+#   'user':'', # ?? , session id or user id
+#   'session':'',
+#   ... other fields
+# }
+
+@app.route('/purchase', methods=['POST'])
+def purchase():
+   fm = request.form.to_dict()
+   item = client.search(Query('*').add_filter(NumericFilter('product_id', int(fm['item']), int(fm['item'])))).docs[0].__dict__
+   msg = {
+      "quantity": fm['quantity'],
+      "product_id": item['product_id'],
+      "product_name": item['product'],
+      "category": item['category'],
+      "level": item['level'],
+      "unit_price": item['price'],
+      "user": session.get('username'),
+      "action": "enhance", # trigger enhance check
+      "ipaddr": request.remote_addr,
+      "fingerprint": hashlib.md5(request.headers.get('User-Agent').encode('utf-8')).hexdigest(),
+      "session": session.sid.replace("-", ""),
+   }
+   redis.xadd(log_stream,
+   {
+      "microservice": "catalog",
+      "user": session.get('username'),
+      "message": "added to cart $%.2f" %(float(item['price'])*int(fm['quantity']))
+   })
+   redis.xadd(next_stream, msg)
+```
+
+- code snippet for insertion of identity data (we can use JSON)
+
+```python
+# update identity details
+elif  msg['value']['action'] == "update" and msg['value']['user'] != "Guest":
+        if 'ipaddr' in msg['value']:
+            execute('SADD', "Identity:%s:IPS" % msg['value']['user'], msg['value']['ipaddr'])
+        if 'fingerprint' in msg['value']:
+            execute('SADD', "Identity:%s:BrowserFingerprint" % msg['value']['user'], msg['value']['fingerprint'])
+        execute(
+                'XADD', 'microservice-logs', '*',
+                'microservice', 'identity',
+                'user', 'system',
+                'message', "Updated identity for user: %s" %( msg['value']['user'] )
+                )
+
+```
+
+### Validating identity (calculating identity score)
+
+- Compare the PURCHASE_DIGITAL_IDENTITY with previously stored LOGIN_DIGITAL_IDENTITY and determine the identity score
+
+```python
+# if any one of identity matches then calculate score , also log details
+
+if msg['value']['action'] == "enhance" and msg['value']['user'] != "Guest":
+        score = 0.0
+
+        if execute('EXISTS', "Identity:%s:IPS" % msg['value']['user']) > 0 or execute('EXISTS', "Identity:%s:BrowserFingerprint" % msg['value']['user']) > 0:
+            score += execute('SISMEMBER', "Identity:%s:IPS" % msg['value']['user'], msg['value']['ipaddr'])
+            score += execute('SISMEMBER', "Identity:%s:BrowserFingerprint" % msg['value']['user'], msg['value']['fingerprint'])
+
+        msg['value']['identity_score'] = "%.2f" %(score/2.0)
+        if not 'cart_id' in msg['value']:
+            msg['value']['cart_id'] =  msg['id']
+        del msg['value']['action']
+        newmsg= [ 'XADD', 'CHECK-PROFILE', '*' ]
+        [newmsg.extend([k,v]) for k,v in msg['value'].items()]
+        execute(*newmsg)
+        execute(
+                'XADD', 'microservice-logs', '*',
+                'microservice', 'identity',
+                'user', 'system',
+                'message', "Check identity for user: %s , result: %f" %( msg['value']['user'], score/2.0 )
+                )
+
+```
+
+<!--
+Referred application :
+[Github Link](https://github.com/redis-field-engineering/demo-microservices-fraud/)
+[About app](https://github.com/redis-field-engineering/demo-microservices-fraud/blob/master/docs/Presentation.md)
+-->
+
+## Conclusion
+
+Digital Identity's extra characteristics helps in securing transaction better rather than just session validation.
+Digital identity score along with user profile score and AI (Artificial Intelligence) score can greatly enhance the transaction security. Check out additional resources below for learning more about Redis.
+
+### Additional Resources
+
+- [Transaction Risk Scoring](/howtos/solutions/fraud-detection/transaction-risk-scoring)
+- [CQRS](/howtos/solutions/microservices/cqrs)
+- [Interservice communication](/howtos/solutions/microservices/interservice-communication)
+- [Query caching](/howtos/solutions/microservices/caching)
+- [API gateway caching](/howtos/solutions/microservices/api-gateway-caching)
+- [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
+- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
