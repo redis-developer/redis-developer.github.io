@@ -456,7 +456,6 @@ module.exports = {
       label: 'HowTos & Tutorials',
       items: [
         'howtos/index-howtos',
-        'howtos/redisearch/index-redisearch',
         {
           type: 'category',
           label: 'Solutions',
@@ -474,6 +473,7 @@ module.exports = {
             },
           ],
         },
+        'howtos/redisearch/index-redisearch',
         {
           type: 'category',
           label: 'RedisJSON Tutorial',
