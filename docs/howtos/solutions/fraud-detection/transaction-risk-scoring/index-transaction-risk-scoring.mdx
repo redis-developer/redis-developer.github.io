@@ -7,6 +7,7 @@ authors: [prasan, will]
 ---
 
 import Authors from '@theme/Authors';
+import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
 
 <Authors frontMatter={frontMatter} />
 
@@ -38,6 +39,23 @@ This is exactly where **Redis Enterprise** fits in transaction risk scoring
 1. Another very common use for Redis Enterprise in transaction risk scoring is for **transaction filters**. A transaction filter can be implemented as a **Redis Bloom** filter that stores information about user behaviours. It can answer questions like "Have we seen this user purchase at this merchant before"? Or, "Have we seen this user purchase at this merchant in the X to Y price range before"? Being a probabilistic data structure, Redis Bloom filters do, indeed, sacrifice some accuracy, but in return, they get a very low memory footprint and response time.
 
 Finally, both of the use cases above can be deployed in an Active-Active set-up, allowing for 99.999% uptime.
+
+## Microservices Architecture for an E-commerce Application
+
+<MicroservicesArchitectureWithRedis />
+
+Consider below fraud detection flow where Digital identity is validated before order checkout/ payment.
+
+![Flow](./images/flow.svg)
+
+- Purchase : Item is selected for purchase
+- **Check Digital Identity** : Confirm the user characteristics (like **user session/ cookie, IP address, Browser fingerprint, location, device type**..etc) and calculate **Identity score** from 0.0-1.0
+- Check User Profile : Confirm the user behavior (like purchased from this category and level before?) and calculate **Profile score** from 0.0-1.0
+- AI (Artificial Intelligence) : Score overall purchase patterns ( say basket comparison) and calculate **AI score** from 0.0-1.0
+- Add to cart : Add the selected item in to the cart
+
+Calculate the transaction fraud/ risk score from above identity score, profile score and AI score.
+If the **fraud/ risk score is high**, the customer is sent through a **challenge flow** to provide additional authentication. Challenges typically include a one-time password sent via text, email, or biometric scan.
 
 ## Demo
 

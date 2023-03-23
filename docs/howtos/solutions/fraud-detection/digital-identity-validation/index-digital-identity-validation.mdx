@@ -59,18 +59,32 @@ Redis Enterprise's flexible data model has native support for multiple data type
 
 <MicroservicesArchitectureWithRedis />
 
-Consider below architecture flow before order checkout/ payment where Digital identity is validated
+### Storing Digital identity
 
-![Flow](./images/flow.svg)
+![digital-identity-code-flow-01](./images/digital-identity-code-flow-1.png)
 
-- Purchase : Item is selected for purchase
-- **Check Digital Identity** : Confirm the user characteristics (like **user session/ cookie, IP address, Browser fingerprint, location, device type**..etc) and calculate **Identity score** from 0.0-1.0
-- Check User Profile : Confirm the user behavior (like purchased from this category and level before?) and calculate **Profile score** from 0.0-1.0
-- AI (Artificial Intelligence) : Score overall purchase patterns ( say basket comparison) and calculate **AI score** from 0.0-1.0
-- Add to cart : Add the selected item in to the cart
+Note : Our demo (github) app doesn't have a `login service`, all user sessions are currently authenticated in `apigateway` service. so `login service` is equal to `apigateway` service as per demo app context.
 
-Calculate the transaction fraud/ risk score from above identity score, profile score and AI score.
-If the **fraud/ risk score is high**, the customer is sent through a **challenge flow** to provide additional authentication. Challenges typically include a one-time password sent via text, email, or biometric scan.
+1. `Login service` stores the (user) digital identity as stream entry to Redis
+   ![Login Identity in Transaction Stream](./images/code-flow-1-1.png)
+
+2. `Digital identity service` reads the identity from Redis stream
+
+3. `Digital identity service` stores identity as JSON to Redis
+   ![Login Identity as JSON](./images/code-flow-1-3.png)
+
+### Validating Digital identity
+
+![digital-identity-code-flow-02](./images/digital-identity-code-flow-2.png)
+
+1. `Orders service` stores the digital identity to Redis stream to calculate it's identity score
+   ![Validation Identity in Transaction Stream](./images/code-flow-2-1.png)
+
+2. `Digital identity service` reads the identity from Redis stream
+3. `Digital identity service` calculates the identity score and stores to Redis stream
+   ![Identity score in Transaction Stream](./images/code-flow-2-3.png)
+4. `Digital identity service` stores identity with score as Redis JSON
+   ![Validation Identity as JSON](./images/code-flow-2-4.png)
 
 ## E-commerce Application Frontend using Next.js and Tailwind
 
@@ -78,122 +92,358 @@ If the **fraud/ risk score is high**, the customer is sent through a **challenge
 
 ## Building a Digital Identity Validation Microservice with Redis
 
-For this tutorial, we will be focusing on verifying "digital identity" and calculating "digital identity" score with Redis. Let's consider only few user characteristics of Digital Identity for the demo like IP address, browser fingerprint and session.
+In this tutorial, we will be verifying "digital identity" by calculating "digital identity" score using Redis. Let's consider only few characteristics of user's Digital Identity for the demo like IP address, browser fingerprint and session (but you can always store more characteristics like location, device type..etc in a real application).
 
-### Storing identity
+### Storing Digital identity
 
-- On login, create "LOGIN_DIGITAL_IDENTITY" for a user in redis.
-  Let LOGIN_DIGITAL_IDENTITY consists of user session, transaction IP address and browser fingerprint
+1. `Login service` stores the (user) digital identity as stream entry to Redis
 
-<!-- TODO: All python snippets to be replaced with node js (Microservice Ecommerce app) code -->
+```ts
+//addLoginToTransactionStream
+const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3';
+const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e';
 
-```python
-# msg = {
-#   'microservice': 'login',
-#   'action': 'insert',
-#   'fingerprint':'',
-#   'ipaddr':'',
-#   'user':'', # ?? , session id or user id
-#   'session':''
-# }
-if 'browser' in form or 'ipaddr' in form:
-         msg = {'action': 'update', 'user': form['user']} # trigger update check
-         if 'browser' in form:
-            msg['fingerprint'] = hashlib.md5(request.headers.get('User-Agent').encode('utf-8')).hexdigest()
-         if 'ipaddr' in form:
-            msg['ipaddr'] = request.remote_addr
-         redis.xadd('CHECK-IDENTITY', msg)
-         redis.xadd(log_stream, {"microservice": "login", "user": form['user'], "message": "%s has updated identity" %(form['user'])})
+const entry: ITransactionStreamMessage = {
+  action: 'INSERT_LOGIN_IDENTITY',
+  logMessage: `Digital identity to be stored for the user ${userId}`,
+  userId: userId,
+  sessionId: sessionId,
 
+  identityBrowserAgent: req.headers['user-agent'],
+  identityIpAddress:
+    req.headers['x-forwarded-for']?.toString() || req.socket.remoteAddress,
+};
 
+const nodeRedisClient = getNodeRedisClient();
+const streamKeyName = 'TRANSACTION_STREAM';
+const id = '*'; //* = auto generate
+await nodeRedisClient.xAdd(streamKeyName, id, entry);
 ```
 
-- Before checkout/ payment, create PURCHASE_DIGITAL_IDENTITY for the same user in redis.
-  Let PURCHASE_DIGITAL_IDENTITY also consists of user session, transaction IP address and browser fingerprint along with other purchase data.
+2. `Digital identity service` reads the identity from Redis stream
 
-```python
-# msg = {
-#   'microservice': 'catalog',
-#   'action': 'verify',
-#   'fingerprint':'',
-#   'ipaddr':'',
-#   'user':'', # ?? , session id or user id
-#   'session':'',
-#   ... other fields
-# }
+```ts
+// Below is some code for how you would use Redis to listen for the stream events:
 
-@app.route('/purchase', methods=['POST'])
-def purchase():
-   fm = request.form.to_dict()
-   item = client.search(Query('*').add_filter(NumericFilter('product_id', int(fm['item']), int(fm['item'])))).docs[0].__dict__
-   msg = {
-      "quantity": fm['quantity'],
-      "product_id": item['product_id'],
-      "product_name": item['product'],
-      "category": item['category'],
-      "level": item['level'],
-      "unit_price": item['price'],
-      "user": session.get('username'),
-      "action": "enhance", # trigger enhance check
-      "ipaddr": request.remote_addr,
-      "fingerprint": hashlib.md5(request.headers.get('User-Agent').encode('utf-8')).hexdigest(),
-      "session": session.sid.replace("-", ""),
-   }
-   redis.xadd(log_stream,
-   {
-      "microservice": "catalog",
-      "user": session.get('username'),
-      "message": "added to cart $%.2f" %(float(item['price'])*int(fm['quantity']))
-   })
-   redis.xadd(next_stream, msg)
+async function listenToStream(
+  onMessage: (message: any, messageId: string) => Promise<void>,
+) {
+  // using node-redis
+  const redis = getNodeRedisClient();
+  const streamKeyName = 'TRANSACTION_STREAM'; //stream name
+  const groupName = 'TRANSACTION_CON_GROUP'; // listening consumer group name (custom)
+  const consumerName = 'IDENTITY_CON'; // listening consumer name (custom)
+  const readMaxCount = 100;
+
+  // Check if the stream group already exists
+  if (!(await redis.exists(streamKeyName))) {
+    const idPosition = '0'; //0 = start, $ = end or any specific id
+    await nodeRedisClient.xGroupCreate(streamKeyName, groupName, idPosition, {
+      MKSTREAM: true,
+    });
+  }
+
+  // setup a loop to listen for stream events
+  while (true) {
+    // read set of messages from different streams
+    const dataArr = await nodeRedisClient.xReadGroup(
+      commandOptions({
+        isolated: true,
+      }),
+      groupName,
+      consumerName,
+      [
+        {
+          // you can specify multiple streams in array
+          key: streamKeyName,
+          id: '>', // Next entry ID that no consumer in this group has read
+        },
+      ],
+      {
+        COUNT: readMaxCount, // Read n entries at a time
+        BLOCK: 0, // block for 0 (infinite) seconds if there are none.
+      },
+    );
+
+    for (let data of dataArr) {
+      for (let messageItem of data.messages) {
+        // process the message received (in our case, perform payment)
+        await onMessage(messageItem.message, messageItem.id);
+
+        // acknowledge individual messages after processing
+        nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
+      }
+    }
+  }
+}
+
+// `listenToStream` listens for events and calls the `onMessage` callback to further handle the events.
+listenToStream({
+  onMessage: processTransactionStream,
+});
 ```
 
-- code snippet for insertion of identity data (we can use JSON)
+3. `Digital identity service` stores identity as JSON to Redis
 
-```python
-# update identity details
-elif  msg['value']['action'] == "update" and msg['value']['user'] != "Guest":
-        if 'ipaddr' in msg['value']:
-            execute('SADD', "Identity:%s:IPS" % msg['value']['user'], msg['value']['ipaddr'])
-        if 'fingerprint' in msg['value']:
-            execute('SADD', "Identity:%s:BrowserFingerprint" % msg['value']['user'], msg['value']['fingerprint'])
-        execute(
-                'XADD', 'microservice-logs', '*',
-                'microservice', 'identity',
-                'user', 'system',
-                'message', "Updated identity for user: %s" %( msg['value']['user'] )
-                )
+```ts
+const processTransactionStream: IMessageHandler = async (
+  message: ITransactionStreamMessage,
+  messageId,
+) => {
+  if (message) {
+    if (message.action == 'INSERT_LOGIN_IDENTITY') {
+      const insertedKey = await addDigitalIdentityToRedis(message);
+    } else if (message.action == 'CALCULATE_IDENTITY_SCORE') {
+      //...
+    }
+  }
+};
 
+const addDigitalIdentityToRedis = async (
+  message: ITransactionStreamMessage,
+) => {
+  let insertedKey = '';
+
+  const userId = message.userId;
+  const digitalIdentity: IDigitalIdentity = {
+    action: message.action,
+    userId: userId,
+    sessionId: message.sessionId,
+
+    ipAddress: message.identityIpAddress,
+    browserFingerprint: crypto
+      .createHash('sha256')
+      .update(message.identityBrowserAgent)
+      .digest('hex'),
+    identityScore: message.identityScore ? message.identityScore : '',
+
+    createdOn: new Date(),
+    createdBy: userId,
+    statusCode: DB_ROW_STATUS.ACTIVE, //1
+  };
+
+  const repository = digitalIdentityRepo.getRepository();
+  if (repository) {
+    const entity = repository.createEntity(digitalIdentity);
+    insertedKey = await repository.save(entity);
+  }
+
+  return insertedKey;
+};
 ```
 
-### Validating identity (calculating identity score)
+### Validating Digital identity
 
-- Compare the PURCHASE_DIGITAL_IDENTITY with previously stored LOGIN_DIGITAL_IDENTITY and determine the identity score
+1. `Orders service` stores the digital identity to be validated in Redis stream
 
-```python
-# if any one of identity matches then calculate score , also log details
+```ts
+//adding Identity To TransactionStream
+const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3';
+const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e';
+let orderDetails = {
+  orderId: '63f5f8dc3696d145a45775a6',
+  orderAmount: '1000',
+  userId: userId,
+};
 
-if msg['value']['action'] == "enhance" and msg['value']['user'] != "Guest":
-        score = 0.0
+const entry: ITransactionStreamMessage = {
+  action: 'CALCULATE_IDENTITY_SCORE',
+  logMessage: `Digital identity to be validated/ scored for the user ${userId}`,
+  userId: userId,
+  sessionId: sessionId,
 
-        if execute('EXISTS', "Identity:%s:IPS" % msg['value']['user']) > 0 or execute('EXISTS', "Identity:%s:BrowserFingerprint" % msg['value']['user']) > 0:
-            score += execute('SISMEMBER', "Identity:%s:IPS" % msg['value']['user'], msg['value']['ipaddr'])
-            score += execute('SISMEMBER', "Identity:%s:BrowserFingerprint" % msg['value']['user'], msg['value']['fingerprint'])
+  identityBrowserAgent: req.headers['user-agent'],
+  identityIpAddress:
+    req.headers['x-forwarded-for']?.toString() || req.socket.remoteAddress,
+  identityTransactionDetails: orderDetails ? JSON.stringify(orderDetails) : '',
+};
 
-        msg['value']['identity_score'] = "%.2f" %(score/2.0)
-        if not 'cart_id' in msg['value']:
-            msg['value']['cart_id'] =  msg['id']
-        del msg['value']['action']
-        newmsg= [ 'XADD', 'CHECK-PROFILE', '*' ]
-        [newmsg.extend([k,v]) for k,v in msg['value'].items()]
-        execute(*newmsg)
-        execute(
-                'XADD', 'microservice-logs', '*',
-                'microservice', 'identity',
-                'user', 'system',
-                'message', "Check identity for user: %s , result: %f" %( msg['value']['user'], score/2.0 )
-                )
+const nodeRedisClient = getNodeRedisClient();
+const streamKeyName = 'TRANSACTION_STREAM';
+const id = '*'; //* = auto generate
+await nodeRedisClient.xAdd(streamKeyName, id, entry);
+```
 
+2. `Digital identity service` reads the identity from Redis stream
+
+```ts
+// Below is some code for how you would use Redis to listen for the stream events:
+
+async function listenToStream(
+  onMessage: (message: any, messageId: string) => Promise<void>,
+) {
+  // using node-redis
+  const redis = getNodeRedisClient();
+  const streamKeyName = 'TRANSACTION_STREAM'; //stream name
+  const groupName = 'TRANSACTION_CON_GROUP'; // listening consumer group name (custom)
+  const consumerName = 'IDENTITY_CON'; // listening consumer name (custom)
+  const readMaxCount = 100;
+
+  // Check if the stream group already exists
+  if (!(await redis.exists(streamKeyName))) {
+    const idPosition = '0'; //0 = start, $ = end or any specific id
+    await nodeRedisClient.xGroupCreate(streamKeyName, groupName, idPosition, {
+      MKSTREAM: true,
+    });
+  }
+
+  // setup a loop to listen for stream events
+  while (true) {
+    // read set of messages from different streams
+    const dataArr = await nodeRedisClient.xReadGroup(
+      commandOptions({
+        isolated: true,
+      }),
+      groupName,
+      consumerName,
+      [
+        {
+          // you can specify multiple streams in array
+          key: streamKeyName,
+          id: '>', // Next entry ID that no consumer in this group has read
+        },
+      ],
+      {
+        COUNT: readMaxCount, // Read n entries at a time
+        BLOCK: 0, // block for 0 (infinite) seconds if there are none.
+      },
+    );
+
+    for (let data of dataArr) {
+      for (let messageItem of data.messages) {
+        // process the message received (in our case, perform payment)
+        await onMessage(messageItem.message, messageItem.id);
+
+        // acknowledge individual messages after processing
+        nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
+      }
+    }
+  }
+}
+
+// `listenToStream` listens for events and calls the `onMessage` callback to further handle the events.
+listenToStream({
+  onMessage: processTransactionStream,
+});
+```
+
+3. `Digital identity service` calculates the identity score and stores to Redis stream
+
+```ts
+const processTransactionStream: IMessageHandler = async (
+  message: ITransactionStreamMessage,
+  messageId,
+) => {
+  if (message) {
+    if (message.action == 'INSERT_LOGIN_IDENTITY') {
+      //...
+    } else if (message.action == 'CALCULATE_IDENTITY_SCORE') {
+      // calculate identity score
+      const identityScore = await calculateIdentityScore(message);
+      message.identityScore = identityScore.toString();
+
+      //point 3 - store identity score to stream
+      const entry = {
+        action: 'LOG_IDENTITY_SCORE',
+        logMessage: `${identityScore} is the digital identity score for the user ${message.userId}`,
+        userId: message.userId,
+        sessionId: message.sessionId,
+        identityScore: identityScore.toString(),
+      };
+      const nodeRedisClient = getNodeRedisClient();
+      const streamKeyName = 'TRANSACTION_STREAM';
+      const id = '*'; //* = auto generate
+      await nodeRedisClient.xAdd(streamKeyName, id, entry);
+
+      // point 4
+      const insertedKey = await addDigitalIdentityToRedis(message);
+    }
+  }
+};
+
+const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
+  //Compare the "digital identity" with previously stored "login identities" and determine the identity score
+
+  let identityScore = 0;
+  const repository = digitalIdentityRepo.getRepository();
+
+  if (message && message.userId && repository) {
+    let queryBuilder = repository
+      .search()
+      .where('userId')
+      .eq(message.userId)
+      .and('action')
+      .eq('INSERT_LOGIN_IDENTITY')
+      .and('statusCode')
+      .eq(DB_ROW_STATUS.ACTIVE);
+
+    //console.log(queryBuilder.query);
+    const digitalIdentities = await queryBuilder.return.all();
+
+    if (digitalIdentities && digitalIdentities.length) {
+      //if browser details matches -> +1 score
+      const matchBrowserItems = digitalIdentities.filter((_digIdent) => {
+        let identityBrowserAgentHash = crypto
+          .createHash('sha256')
+          .update(message.identityBrowserAgent)
+          .digest('hex');
+        return _digIdent.browserFingerprint == identityBrowserAgentHash;
+      });
+      if (matchBrowserItems.length > 0) {
+        identityScore += 1;
+      }
+
+      //if IP address  matches -> +1 score
+      const matchIpAddressItems = digitalIdentities.filter((_digIdent) => {
+        return _digIdent.ipAddress == message.identityIpAddress;
+      });
+      if (matchIpAddressItems.length > 0) {
+        identityScore += 1;
+      }
+    }
+  }
+
+  //calculate average score
+  const noOfIdentityCharacteristics = 2; //2 == browserFingerprint, ipAddress
+  identityScore = identityScore / noOfIdentityCharacteristics;
+  return identityScore; // identityScore final value ranges between 0 (no match) and 1 (full match)
+};
+```
+
+4. `Digital identity service` stores identity with score as Redis JSON
+
+```ts
+const addDigitalIdentityToRedis = async (
+  message: ITransactionStreamMessage,
+) => {
+  let insertedKey = '';
+
+  const userId = message.userId;
+  const digitalIdentity: IDigitalIdentity = {
+    action: message.action,
+    userId: userId,
+    sessionId: message.sessionId,
+
+    ipAddress: message.identityIpAddress,
+    browserFingerprint: crypto
+      .createHash('sha256')
+      .update(message.identityBrowserAgent)
+      .digest('hex'),
+    identityScore: message.identityScore ? message.identityScore : '',
+
+    createdOn: new Date(),
+    createdBy: userId,
+    statusCode: DB_ROW_STATUS.ACTIVE, //1
+  };
+
+  const repository = digitalIdentityRepo.getRepository();
+  if (repository) {
+    const entity = repository.createEntity(digitalIdentity);
+    insertedKey = await repository.save(entity);
+  }
+
+  return insertedKey;
+};
 ```
 
 <!--
