@@ -187,6 +187,7 @@ module.exports = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      image: '/img/redis-hero-image.jpg',
       // ...
       googleTagManager: {
         trackingID: 'GTM-W8Z6BLQ',
