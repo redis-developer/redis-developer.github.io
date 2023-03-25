@@ -16,47 +16,55 @@ import RedisEnterprise from '../common-data/redis-enterprise.mdx';
 
 <SourceCode />
 
-## What is API Gateway Caching?
+## What is API gateway caching?
 
-So you are building a microservices application, but you're struggling with how to handle authentication in a way that lets you reuse code and maximize performance. Typically for authentication you might use sessions, OAuth, authorization tokens, etc. For the purposes of this tutorial, let's say we're using an authorization token. In a monolithic application authentication is pretty straightforward:
+So you're building a microservices application. But you find yourself struggling with ways to handle authentication that let you reuse code and maximize performance. Typically for authentication you might use sessions, OAuth, authorization tokens, etc. For the purposes of this tutorial, let's assume we're using an authorization token. In a monolithic application, authentication is pretty straightforward:
 
-When a request comes in...
+When a request comes in:
 
-1. Decode the `Authorization` header
-1. Validate the credentials
-1. Store the session information on the request for further use down the line
+1. Decode the `Authorization` header.
+1. Validate the credentials.
+1. Store the session information on the request object or cache for further use down the line by the application.
 
-However, you might be left puzzled by how to accomplish something similar with microservices. Typically in a microservices application you have an API gateway that serves as the single entrypoint for clients, and routes traffic to the appropriate services. Depending on the nature of the request, those services may or may not require a user to be authenticated. Because of this, you might think it is a good idea to handle authentication in each respective service. While this works, you end up with a fair amount of duplicated code. It's also more difficult to understand where slowdowns are happening and scale services appropriately because you repeat some of the same work in each service. A more effective way of handling authentication is to handle it at the API gateway layer, and then pass the session information down to each service.
+However, you might be puzzled by how to do this with microservices. Ordinarily, in a microservices application an API gateway serves as the single entry point for clients, which routes traffic to the appropriate services. Depending on the nature of the request, those services may or may not require a user to be authenticated. You might think it's a good idea to handle authentication in each respective service.
 
-Great, you've decided to handle authentication at the API gateway layer. Now you have to decide where to store sessions. Imagine you're building an e-commerce app that uses MongoDB as the primary data store. You could store sessions in MongoDB, but think about how many times you will be hitting MongoDB to retrieve session information. If you have millions of customers, you don't want to be going to MongoDB for every single request made to the API. This is where Redis comes in.
+While this works, you end up with a fair amount of duplicated code. Plus, it's difficult to understand when and where slowdowns happen and to scale services appropriately, because you repeat some of the same work in each service. A more effective way to handle authentication is to deal with it at the API gateway layer, and then pass the session information down to each service.
 
-## Why You Should Use Redis for API Gateway Caching
+Once you decide to handle authentication at the API gateway layer, you must decide where to store sessions.
 
-Redis is an in-memory datastore, making it perfect for caching session data. It allows you to reduce the load on your primary database while speeding up database reads. The rest of this tutorial covers how to do this in the context of an e-commerce application.
+Imagine you're building an e-commerce application that uses MongoDB as the primary data store. You could store sessions in MongoDB, but think about how many times the application needs to hit MongoDB to retrieve session information. If you have millions of customers, you don't want to go to MongoDB for every single request made to the API.
 
-## Microservices Architecture for an E-commerce Application
+This is where Redis comes in.
+
+## Why you should use Redis for API gateway caching
+
+Redis is an in-memory datastore, which – among other things – makes it a perfect tool for caching session data. Redis allows you to reduce the load on a primary database while speeding up database reads. The rest of this tutorial covers how to accomplish this in the context of an e-commerce application.
+
+## Microservices architecture for an e-commerce application
 
 <MicroservicesArchitectureWithRedis />
 
-Below you will find a diagram depicting how the API gateway uses Redis as a cache for session information. It gets the session from Redis and then passes it on to each microservice. This provides an easy way to handle sessions in a single place, and permeate them throughout the rest of the application.
+The diagram illustrates how the API gateway uses Redis as a cache for session information. The API gateway gets the session from Redis and then passes it on to each microservice. This provides an easy way to handle sessions in a single place, and to permeate them throughout the rest of the microservices.
 
 ![API gateway caching with Redis architecture diagram](./images/api-gateway-caching-with-redis-architecture.png)
 
 :::tip
 
-If you're using a **Redis Enterprise Cluster**, you get the benefit of linear scaling to ensure API calls perform under peak loads. You also get 99.999% uptime and Active-Active geo-distribution to prevent loss of critical authentication and session data.
+Use a **Redis Enterprise Cluster** to get the benefit of linear scaling to ensure API calls perform under peak loads. That also provides 99.999% uptime and Active-Active geo-distribution, which prevents loss of authentication and session data.
 
 :::
 
-## E-commerce Application Frontend using Next.js and Tailwind
+## E-commerce application frontend using Next.js and Tailwind
 
 <MicroservicesEcommerceDesign />
 
-## API Gateway Caching in a Microservices Application with Redis and MongoDB
+## API gateway caching in a microservices application with Redis and MongoDB
 
-What's nice about a microservice architecture is each service is set up so it can scale independently. Now, seeing as how each service might require authentication, you will likely want to obtain session information for most requests. Therefore, it makes a lot of sense to use the API gateway to cache and retrieve session information and subsequently pass the information on to each service. Let's see how you might accomplish this.
+What's nice about a microservice architecture is that each service is set up so it can scale independently. Now, seeing as how each service might require authentication, you likely want to obtain session information for most requests. Therefore, it makes sense to use the API gateway to cache and retrieve session information and to subsequently pass the information on to each service. Let's see how you might accomplish this.
 
-In our sample application, all requests are routed through the API gateway. We are using [Express](https://expressjs.com/) to set up our API gateway and we're using the `Authorization` header to pass the authorization token from the frontend to the API. For every request, the API gateway gets the authorization token and looks it up in Redis. Then it passes it along to the correct microservice. Below you will find the code to validate the session:
+In our sample application, all requests are routed through the API gateway. We use [Express](https://expressjs.com/) to set up the API gateway, and the `Authorization` header to pass the authorization token from the frontend to the API. For every request, the API gateway gets the authorization token and looks it up in Redis. Then it passes it along to the correct microservice.
+
+This code validates the session:
 
 ```typescript
 import {
@@ -140,7 +148,7 @@ const getSessionInfo = async (authHeader?: string) => {
 };
 
 const applyAuthToResponse = responseInterceptor(
-  // adding sessionId to the response so that front end can store it for future requests
+  // adding sessionId to the response so that frontend can store it for future requests
 
   async (responseBuffer, proxyRes, req, res) => {
     // detect json responses
@@ -167,11 +175,13 @@ const applyAuthToResponse = responseInterceptor(
 
 :::info
 
-The example above is not meant to be the de facto best practice for handling authentication. It is meant to illustrate what you might do with respect to Redis. You will likely have a different setup for authentication, but the concept of storing a session in Redis is similar.
+This example is not meant to represent the best way to handle authentication. Instead, it illustrates what you might do with respect to Redis. You will likely have a different setup for authentication, but the concept of storing a session in Redis is similar.
 
 :::
 
-In the code above, we check for the `Authorization` header, else we create a new one and store it in Redis. Then we retrieve the session from Redis. Further down the line we attach the session to the `x-session` header prior to calling the orders service. Now let's see how the orders service receives the session.
+In the code above, we check for the `Authorization` header, otherwise we create a new one and store it in Redis. Then we retrieve the session from Redis. Further down the line we attach the session to the `x-session` header prior to calling the orders service.
+
+Now let's see how the orders service receives the session.
 
 ```typescript {9}
 router.post(API_NAMES.CREATE_ORDER, async (req: Request, res: Response) => {
@@ -189,11 +199,13 @@ router.post(API_NAMES.CREATE_ORDER, async (req: Request, res: Response) => {
 
 The highlighted line above shows how to pull the session out of the `x-session` header and get the `userId`.
 
-## Conclusion
+## Ready to use Redis for API gateway caching ?
 
-That's all there is to it! You've now seen how to use Redis for API gateway caching. It is not too complicated to get started, but it will help you scale as you build out microservices. Check out additional resources below for learning more about Redis.
+That's all there is to it! You now know how to use Redis for API gateway caching. It's not complicated to get started, but this simple practice can help you scale as you build out microservices.
 
-### Additional Resources
+To learn more about Redis, check out the additional resources below:
+
+### Additional resources
 
 - [CQRS](/howtos/solutions/microservices/cqrs)
 - [Interservice communication](/howtos/solutions/microservices/interservice-communication)
