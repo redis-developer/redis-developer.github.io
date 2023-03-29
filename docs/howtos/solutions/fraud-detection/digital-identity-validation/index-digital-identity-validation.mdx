@@ -1,7 +1,7 @@
 ---
 id: index-digital-identity-validation
-title: How to perform Digital Identity Validation using Redis in an e-commerce app
-sidebar_label: How to use Redis for Digital Identity Validation
+title: How to Handle Digital Identity Validation Using Redis
+sidebar_label: Redis for Digital Identity Validation
 slug: /howtos/solutions/fraud-detection/digital-identity-validation
 authors: [prasan, will]
 ---
@@ -17,16 +17,23 @@ import SourceCode from '../../microservices/common-data/microservices-source-cod
 
 <SourceCode />
 
+## Digital identity validation for fraud detection introduction
+
+As the digital landscape continues to evolve, the need for robust security measures to protect users and organizations becomes ever more critical. Digital identity validation and fraud detection are essential components of any comprehensive security plan. This article will explore the significance of digital identity validation, the challenges faced in this area, and a solution to digital identity validation using redis.
+
 ## Know Your Customer (KYC)
 
-"Know Your Customer" (KYC) regulations refer to a set of policies and procedures that financial institutions and other regulated businesses must follow to verify the identity of their customers. Customer details can be like name, address, date of birth, and other government-issued identification/ documents.
+"Know Your Customer" (KYC) regulations refer to a set of policies and procedures that financial institutions and other regulated businesses must follow to verify the identity of their customers. Customer details can be like name, address, date of birth, and other government-issued identification documents.
 
-KYC regulations are intended to prevent money laundering, terrorist financing, and other illicit activities.
-Financial services companies are combating the use of stolen identity information by reducing reliance on static methods for verifying identity (Knowledge-Based Authentication - KBA) and instead moving to Digital Identities.
+As part of KYC, businesses must assess the potential risk posed by each customer and conduct **ongoing monitoring** of their transactions and behaviour to detect any suspicious activity. KYC regulations are enforced by regulatory authorities, and failure to comply can result in financial penalties and reputational damage.
 
-## What is Digital identity?
+KYC regulations are intended to prevent money laundering, terrorist financing, and other illicit activities. Financial services companies are combating the use of stolen identity information by reducing reliance on static methods for verifying identity (Knowledge-Based Authentication, or KBA) and instead moving to digital identities.
 
-Digital identity refers to a set of attributes, credentials, and data that uniquely identify an individual or entity in the digital world, merging the physical and the online aspects of their identity.
+## What is digital identity?
+
+Digital identity refers to the collection of attributes and identifiers that represent an individual online. These may include names, email addresses, phone numbers, usernames, and biometrics, among others. Digital identity validation is the process of verifying that these attributes are accurate and belong to the entity they claim to represent.
+
+Identity validation is crucial because it helps establish trust in digital environments, where face-to-face interaction is often not possible. It ensures that the parties involved in a transaction are who they claim to be, minimizing the risk of fraud, identity theft, and other cybercrimes.
 
 <img
   src={digitalIdentityImg}
@@ -40,63 +47,66 @@ Digital identities consist of two parts:
 - **Static** data: personally identifiable information (PII) such as name, address, and biometrics
 - **Dynamic** data: behavioural and contextual information such as browsing history, device type, and location data. Dynamic digital identities are constantly updated based on the information available from each digital transaction.
 
-Companies must monitor customer's every transaction and behaviour, then use stored digital identities to score the **risk** (**possible suspicious activity**) of that transaction.
+Companies must monitor customer's every transaction and behaviour, then use stored digital identities to score the **risk**, identifying **possible suspicious activity** for a given transaction.
 
-## Why You Should Use Redis for Digital Identity Validation
+## Why you should use redis for digital identity validation
 
-Main requirements of a storage layer for digital identities:
+The following are the primary requirements of a storage layer for digital identities:
 
 - Must maintain **real-time read latency** to fit within transaction SLA.
 - Must have a **flexible data model** to store multiple unstructured data types such as behavioural, transactional, location, social/mobile and more.
 
-These two factors are limiting for using RDBMS (Relation Database Management Systems) to manage and validate digital identities in real time.
+These two factors are limiting for using traditional Relation Database Management Systems (RDBMS) to manage and validate digital identities in real time. While it is possible to use RDBMS to store digital identities, it is not the best choice for real-time validation of a flexible data model.
 
-**Redis Enterprise**, on the other hand, is optimized for high throughput, low latency, and real-time query performance, easily satisfying the first criterion. With **sub-millisecond latency** and hundreds of millions of operations per second across both read and write operations, it is well-suited for managing dynamic digital identity data. As the volume of data grows, we can expect near-linear scalability and 99.999% of uptime with **Active-Active geo-replication**.
+**Redis Enterprise**, on the other hand, is optimized for high throughput, low latency, data flexibility, and real-time query performance, easily satisfying the first criterion. With **sub-millisecond latency** and hundreds of millions of operations per second across both read and write operations, it is well-suited for managing dynamic digital identity data. As the volume of data grows, we can expect near-linear scalability and 99.999% of uptime with **Active-Active geo-replication**.
 
 Redis Enterprise's flexible data model has native support for multiple data types, including **JSON, hashes, streams, graphs and more**. Additionally, it can process complex searches on structured and unstructured data, as well as filtering by numeric properties and geographical distances, making it easier to manage and query large datasets of digital identities.
 
-## Microservices Architecture for an E-commerce Application
+## Microservices architecture for an E-commerce Application
 
 <MicroservicesArchitectureWithRedis />
 
-### Storing Digital identity
+### Storing digital identities
+
+Given we're discussing a microservices application, it makes sense to use a microservice for managing digital identities. Consider the following workflow outlining how digital identities are stored and retreived from redis:
 
 ![digital-identity-code-flow-01](./images/digital-identity-code-flow-1.png)
 
-Note : Our demo (github) app doesn't have a `login service`, all user sessions are currently authenticated in `apigateway` service. so `login service` is equal to `apigateway` service as per demo app context.
+:::note
 
-1. `Login service` stores the (user) digital identity as stream entry to Redis
+The demo application doesn't have a `login service`. All user sessions are currently authenticated in the `api gateway` service. So `login service` is synonymous with the `api gateway` with respect to the demo app.
+
+:::
+
+The demo application uses redis streams for interservice communication. The following outlines the workflow, and the responsibilties of each service:
+
+1. `login service`: stores the (user) digital identity as a `INSERT_LOGIN_IDENTITY` stream entry to redis
    ![Login Identity in Transaction Stream](./images/code-flow-1-1.png)
-
-2. `Digital identity service` reads the identity from Redis stream
-
-3. `Digital identity service` stores identity as JSON to Redis
+2. `digital identity service`: reads the identity from the `INSERT_LOGIN_IDENTITY` stream
+3. `digital identity service`: stores the identity as JSON to redis
    ![Login Identity as JSON](./images/code-flow-1-3.png)
 
-### Validating Digital identity
+### Validating digital identities
+
+In an e-commerce application, validating digital identities happens at checkout time. You want to make sure the customer is who they say they are before you attempt to process their order. To validate digital identites, we need to calculate the digital identity score, starting in the `orders service`. The following outlines the workflow, and the responsibilties of each service:
 
 ![digital-identity-code-flow-02](./images/digital-identity-code-flow-2.png)
 
-1. `Orders service` stores the digital identity to Redis stream to calculate it's identity score
+1. `orders service`: stores the digital identity in a `CALCULATE_IDENTITY_SCORE` redis stream to calculate it's identity score
    ![Validation Identity in Transaction Stream](./images/code-flow-2-1.png)
-
-2. `Digital identity service` reads the identity from Redis stream
-3. `Digital identity service` calculates the identity score and stores to Redis stream
+2. `digital identity service`: reads the identity from the `CALCULATE_IDENTITY_SCORE` stream
+3. `digital identity service`: calculates the identity score and stores the result to a `LOG_IDENTITY_SCORE` stream
    ![Identity score in Transaction Stream](./images/code-flow-2-3.png)
-4. `Digital identity service` stores identity with score as Redis JSON
+4. `digital identity service`: stores the identity with its calculated score as JSON
    ![Validation Identity as JSON](./images/code-flow-2-4.png)
 
-## E-commerce Application Frontend using Next.js and Tailwind
+## Building a digital identity validation microservice with redis
 
-<MicroservicesEcommerceDesign />
+Now, let's go step-by-step through the process of storing, scoring, and validating digital identities using redis with some example code. For demo purposes, we are only using a few characteristics of a user's digital identity like IP address, browser fingerprint, and session. In a real-world application you should store more characteristics like location, device type, and prior actions taken for better risk assessment and identity completeness.
 
-## Building a Digital Identity Validation Microservice with Redis
+### Storing digital identities in redis in a microservices architecture
 
-In this tutorial, we will be verifying "digital identity" by calculating "digital identity" score using Redis. Let's consider only few characteristics of user's Digital Identity for the demo like IP address, browser fingerprint and session (but you can always store more characteristics like location, device type..etc in a real application).
-
-### Storing Digital identity
-
-1. `Login service` stores the (user) digital identity as stream entry to Redis
+1. `login service`: stores the (user) digital identity as a `INSERT_LOGIN_IDENTITY` stream entry to redis
 
 ```ts
 //addLoginToTransactionStream
@@ -120,16 +130,15 @@ const id = '*'; //* = auto generate
 await nodeRedisClient.xAdd(streamKeyName, id, entry);
 ```
 
-2. `Digital identity service` reads the identity from Redis stream
+2. `digital identity service`: reads the identity from the `INSERT_LOGIN_IDENTITY` stream
 
 ```ts
-// Below is some code for how you would use Redis to listen for the stream events:
-
+// Below is some code for how you would use redis to listen for the stream events:
 async function listenToStream(
   onMessage: (message: any, messageId: string) => Promise<void>,
 ) {
   // using node-redis
-  const redis = getNodeRedisClient();
+  const redis = getNodeClient();
   const streamKeyName = 'TRANSACTION_STREAM'; //stream name
   const groupName = 'TRANSACTION_CON_GROUP'; // listening consumer group name (custom)
   const consumerName = 'IDENTITY_CON'; // listening consumer name (custom)
@@ -138,7 +147,7 @@ async function listenToStream(
   // Check if the stream group already exists
   if (!(await redis.exists(streamKeyName))) {
     const idPosition = '0'; //0 = start, $ = end or any specific id
-    await nodeRedisClient.xGroupCreate(streamKeyName, groupName, idPosition, {
+    await nodeClient.xGroupCreate(streamKeyName, groupName, idPosition, {
       MKSTREAM: true,
     });
   }
@@ -183,7 +192,7 @@ listenToStream({
 });
 ```
 
-3. `Digital identity service` stores identity as JSON to Redis
+3. `digital identity service`: stores the identity as JSON to redis
 
 ```ts
 const processTransactionStream: IMessageHandler = async (
@@ -232,9 +241,9 @@ const addDigitalIdentityToRedis = async (
 };
 ```
 
-### Validating Digital identity
+### Validating digital identities using redis in a microservices architecture
 
-1. `Orders service` stores the digital identity to be validated in Redis stream
+1. `orders service`: stores the digital identity to be validated in a `CALCULATE_IDENTITY_SCORE` redis stream
 
 ```ts
 //adding Identity To TransactionStream
@@ -264,10 +273,10 @@ const id = '*'; //* = auto generate
 await nodeRedisClient.xAdd(streamKeyName, id, entry);
 ```
 
-2. `Digital identity service` reads the identity from Redis stream
+2. `Digital identity service` reads the identity from the `CALCULATE_IDENTITY_SCORE` stream
 
 ```ts
-// Below is some code for how you would use Redis to listen for the stream events:
+// Below is some code for how you would use redis to listen for the stream events:
 
 async function listenToStream(
   onMessage: (message: any, messageId: string) => Promise<void>,
@@ -327,7 +336,7 @@ listenToStream({
 });
 ```
 
-3. `Digital identity service` calculates the identity score and stores to Redis stream
+3. `digital identity service`: calculates the identity score and stores it in the `LOG_IDENTITY_SCORE` stream
 
 ```ts
 const processTransactionStream: IMessageHandler = async (
@@ -342,7 +351,7 @@ const processTransactionStream: IMessageHandler = async (
       const identityScore = await calculateIdentityScore(message);
       message.identityScore = identityScore.toString();
 
-      //point 3 - store identity score to stream
+      // point 3 - store identity score to stream
       const entry = {
         action: 'LOG_IDENTITY_SCORE',
         logMessage: `${identityScore} is the digital identity score for the user ${message.userId}`,
@@ -362,7 +371,7 @@ const processTransactionStream: IMessageHandler = async (
 };
 
 const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
-  //Compare the "digital identity" with previously stored "login identities" and determine the identity score
+  // Compare the "digital identity" with previously stored "login identities" and determine the identity score
 
   let identityScore = 0;
   const repository = digitalIdentityRepo.getRepository();
@@ -410,7 +419,7 @@ const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
 };
 ```
 
-4. `Digital identity service` stores identity with score as Redis JSON
+4. `digital identity service`: stores the identity with score as JSON in redis
 
 ```ts
 const addDigitalIdentityToRedis = async (
@@ -454,8 +463,11 @@ Referred application :
 
 ## Conclusion
 
-Digital Identity's extra characteristics helps in securing transaction better rather than just session validation.
-Digital identity score along with user profile score and AI (Artificial Intelligence) score can greatly enhance the transaction security. Check out additional resources below for learning more about Redis.
+Now you have learned how to use redis to setup ongoing digital identity monitoring and scoring in a microservices application. This is also called "dynamic digital identity monitoring." Dynamic digital identities are constantly updated based on the information available from each digital transaction. By analyzing these transactions, businesses can build a comprehensive and up-to-date digital identity that includes both static and dynamic elements. These identities can then be scored to determine the risk that they pose to the business.
+
+In addition to increasing security, digital identities can also improve the customer experience. By using the digital footprint left by a user, businesses can offer more personalized services and reduce friction in the authentication process.
+
+Digital identity systems are typically designed to be interoperable and scalable, allowing for seamless integration with various applications and platforms.
 
 ### Additional Resources
 
