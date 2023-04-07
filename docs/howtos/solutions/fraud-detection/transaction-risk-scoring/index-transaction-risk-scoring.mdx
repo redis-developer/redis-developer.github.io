@@ -22,15 +22,13 @@ The score is typically based on a statistical analysis of historical transaction
 
 :::tip
 
-Transaction risk scoring is often combined in a single system with other fraud detection methods, such as [**digital identity validation**](/howtos/solutions/fraud-detection/digital-identity-validation).
+Transaction risk scoring is often combined in a single system with other fraud detection methods, such as <u>[**digital identity validation**](/howtos/solutions/fraud-detection/digital-identity-validation)</u>.
 
 :::
 
-<!-- TODO: digital identity reference links -->
-
 ## Why you should use redis for transaction risk scoring
 
-A risk-based approach must be designed to create as frictionless a flow as possible to **avoid slowing down** the transaction experience for legitimate customers while simultaneously preventing fraud. If your risk-based approach is too strict, it will **block legitimate transactions** and frustrate customers. If it is too lenient, it will **allow fraudulent transactions** to go through.
+A risk-based approach must be designed to create a frictionless flow as possible to **avoid slowing down** the transaction experience for legitimate customers while simultaneously preventing fraud. If your risk-based approach is too strict, it will **block legitimate transactions** and frustrate customers. If it is too lenient, it will **allow fraudulent transactions** to go through.
 
 ### How to avoid false positives with rules engines
 
@@ -513,8 +511,6 @@ These filters are prepopulated in the demo application based on a feature store.
 ## Conclusion
 
 In this post, you learned how to use Redis Streams to build a transaction risk scoring pipeline. You also learned how to use Redis Enterprise as a feature store and Redis Bloom filters to calculate a profile score. Every application is unique, so this tutorial is meant to be a starting point for you to build your own transaction risk scoring pipeline.
-
-<SourceCode />
 
 ### Additional resources
 

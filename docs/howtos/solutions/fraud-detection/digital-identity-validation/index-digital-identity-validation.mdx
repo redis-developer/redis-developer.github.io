@@ -11,11 +11,16 @@ import digitalIdentityImg from './images/digital-identity.png';
 
 import MicroservicesEcommerceDesign from '../../microservices/common-data/microservices-ecommerce.mdx';
 import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
-import SourceCode from '../../microservices/common-data/microservices-source-code-tip.mdx';
 
 <Authors frontMatter={frontMatter} />
 
-<SourceCode />
+:::tip GITHUB CODE
+
+Below is a command to the clone the source code for the application used in this tutorial
+
+git clone --branch v2.0.0 https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+
+:::
 
 ## Digital identity validation for fraud detection introduction
 
@@ -454,12 +459,6 @@ const addDigitalIdentityToRedis = async (
   return insertedKey;
 };
 ```
-
-<!--
-Referred application :
-[Github Link](https://github.com/redis-field-engineering/demo-microservices-fraud/)
-[About app](https://github.com/redis-field-engineering/demo-microservices-fraud/blob/master/docs/Presentation.md)
--->
 
 ## Conclusion
 
