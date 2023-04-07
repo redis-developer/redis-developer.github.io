@@ -9,6 +9,7 @@ authors: [prasan, will]
 import Authors from '@theme/Authors';
 import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
 import SourceCode from '../../microservices/common-data/microservices-source-code-tip.mdx';
+import RedisInsightTransactionStreamImage from './images/redisinsight-transaction-stream.png';
 
 <Authors frontMatter={frontMatter} />
 
@@ -498,7 +499,12 @@ RedisInsight is the free redis GUI for viewing data in redis. [Click here to dow
 
 Now that you understand some of the code involved in processing transactions, let's take a look at the data in RedisInsight. First let's look at the `TRANSACTION_STREAM` key, which is where the stream data is held for the checkout transaction:
 
-![RedisInsight transaction risk scoring transaction stream](./images/redisinsight-transaction-stream.png)
+<img
+  src={RedisInsightTransactionStreamImage}
+  alt="RedisInsight transaction risk scoring transaction stream"
+  width="500"
+  className="margin-bottom--md"
+/>
 
 You can see the `action` column shows the transaction pipeline discussed earlier. Another thing to look at in RedisInsight is the Bloom filters:
 
