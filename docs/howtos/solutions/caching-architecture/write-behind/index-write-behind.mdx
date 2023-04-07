@@ -1,0 +1,200 @@
+---
+id: index-write-behind
+title: How to use Redis for Write Behind caching strategy
+sidebar_label: How to use Redis for Write Behind caching strategy
+slug: /howtos/solutions/caching-architecture/write-behind
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+import RedisGears from '../common-caching/redis-gears.mdx';
+
+import mongoCompassImage from './images/mongo-compass.png';
+
+<Authors frontMatter={frontMatter} />
+
+## What is write behind caching?
+
+With the **Write-behind** caching pattern, every time an application writes data to the cache, it also asynchronously updates the records in the persistent database.
+
+Since the write-behind pattern adds the system of record to a queue, this permits the application thread to move on more quickly, but it does mean that there is a **short time** when the data between the cache and the system of record is **inconsistent**.
+
+![pattern](./images/pattern.jpg)
+
+The pattern works as presented :
+
+1. The application reads and writes data to Redis.
+1. Next, Redis syncs any changed data to the MongoDB database asynchronously.
+
+## Why you should use Redis for write behind caching
+
+Consider Redis with this pattern when you need to
+
+- **Flatten peaks in demand** : Under stress, an application may need to write data quickly. If your application needs to perform a large number of write operations at high speed, consider Redis. The RedisGears modules make sure the data stored in the cache is synced with the database.
+
+- **Batch multiple writes**: Sometimes it's expensive to write to a database frequently (for example, logging). In those cases, it can be cost-effective to batch the database writes with Redis so that data syncs at intervals.
+
+- **Offload the primary database** : Database load is reduced when heavy writes operate on Redis, So we can spread writes to improve performance during the peak time of application usage.
+
+## RedisGears brief
+
+(You can skip reading this section, if you are aware of Redis Gears)
+
+<RedisGears />
+
+## Write behind caching in a NodeJS application with Redis and MongoDB
+
+### Demo application
+
+The demonstration application showcases a movie application that uses basic create, read, update, and delete (CRUD) operations.
+![demo-01](./images/demo-01.png)
+
+The movie application dashboard contains a search section at the top and a list of movie cards in the middle. The floating plus icon displays a pop-up when the user selects it, permitting the user to enter new movie details. The search section has a text search bar and a toggle link between text search and basic (that is, form-based) search. Each movie card has edit and delete icons, which are displayed when a mouse hovers over the card.
+
+You can follow along with the details using the code on GitHub.
+:::tip GITHUB CODE
+Below are the commands to clone the source code (frontend and backend) for the application used in this tutorial
+
+git clone https://github.com/redis-developer/ebook-speed-mern-frontend.git
+
+git clone https://github.com/redis-developer/ebook-speed-mern-backend.git
+
+:::
+
+To demonstrate this pattern using the movie application, imagine that the user opens the pop-up to add a new movie.
+
+![demo-02](./images/demo-02.png)
+
+Instead of the application immediately storing the data in MongoDB, the application writes the changes to Redis. In the background, RedisGears automatically synchronizes the data with the MongoDB database.
+
+### Gears code
+
+Developers need to load some code (say python in our example) to the Redis server before using the write-behind pattern (which syncs data from Redis to MongoDB). The Redis server has a RedisGears module that interprets the python code and syncs the data from Redis to MongoDB.
+
+Loading the Python code is easier than it sounds. Simply replace database details in the Python file and then load the file to the Redis server.
+
+Create the Python file (shown below, and [available online](https://github.com/redis-developer/ebook-speed-mern-backend/blob/main/data/write-behind/movies-write-behind.py)). Then update the MongoDB connection details, database, collection, and primary key name to sync.
+
+```python
+movies-write-behind.py
+
+# Gears Recipe for a single write behind
+
+# import redis gears & mongo db libs
+from rgsync import RGJSONWriteBehind, RGJSONWriteThrough
+from rgsync.Connectors import MongoConnector, MongoConnection
+
+# change mongodb connection (admin)
+# mongodb://usrAdmin:passwordAdmin@10.10.20.2:27017/dbSpeedMernDemo?authSource=admin
+mongoUrl = 'mongodb://usrAdmin:passwordAdmin@10.10.20.2:27017/admin'
+
+# MongoConnection(user, password, host, authSource?, fullConnectionUrl?)
+connection = MongoConnection('', '', '', '', mongoUrl)
+
+# change MongoDB database
+db = 'dbSpeedMernDemo'
+
+# change MongoDB collection & it's primary key
+movieConnector = MongoConnector(connection, db, 'movies', 'movieId')
+
+# change redis keys with prefix that must be synced with mongodb collection
+RGJSONWriteBehind(GB,  keysPrefix='MovieEntity',
+                  connector=movieConnector, name='MoviesWriteBehind',
+                  version='99.99.99')
+```
+
+:::tip What is RedisGears recipe?
+
+A collection of RedisGears functions and any dependencies they may have that implement a high-level functional purpose is called a `recipe`.
+Example : "RGJSONWriteBehind" function in above python code
+
+:::
+
+There are two ways to load that Python file into the Redis server:
+
+1. using the gears command-line interface (CLI)
+
+Find more information about the Gears CLI at [gears-cli](https://github.com/RedisGears/gears-cli) and [rgsync](https://github.com/RedisGears/rgsync#running-the-recipe).
+
+```sh
+# install
+pip install gears-cli
+```
+
+```sh
+# If python file is located at “/users/tom/movies-write-behind.py”
+gears-cli --host <redisHost> --port <redisPort> --password <redisPassword> run /users/tom/movies-write-behind.py REQUIREMENTS rgsync pymongo==3.12.0
+```
+
+2. using the RG.PYEXECUTE from the Redis command line.
+
+Find more information at [RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute).
+
+```sh
+# Via redis cli
+RG.PYEXECUTE 'pythonCode' REQUIREMENTS rgsync pymongo==3.12.0
+```
+
+The RG.PYEXECUTE command can also be executed from the Node.js code
+(Consult [the sample Node file](https://github.com/redis-developer/ebook-speed-mern-backend/blob/main/data/write-behind/wb-main.js) for more details)
+
+Find more examples at [Redis Gears sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo).
+
+### Verify sync
+
+The next step is to verify that RedisGears is syncing data between Redis and MongoDB.
+
+Insert a key starting with the prefix (that's specified in the Python file) using the Redis CLI
+
+![redis-insight](./images/redis-insight.png)
+
+Next, confirm that the JSON is inserted in MongoDB too.
+
+<img
+  src={mongoCompassImage}
+  alt="mongo-compass"
+  width="500"
+  className="margin-bottom--md"
+/>
+
+You also can check [Redis Insight](https://redis.com/redis-enterprise/redis-insight/) to verify that the data is piped in via Streams for its consumers (like RedisGears).
+
+![redis-insight-stream](./images/redis-insight-stream.png)
+
+How does all that work with the demo application? Consider using snippets to insert a movie. Once data is written to Redis, Redis Gears automatically synchronizes it to MongoDB.
+
+```js
+*** BEFORE (MongoDB)***
+...
+//(Node mongo query)
+if (movie) {
+  //insert movie to MongoDB
+  await db.collection("movies")
+           .insertOne(movie);
+}
+...
+```
+
+```js
+*** AFTER (Redis)***
+...
+//(Redis OM Node query)
+if (movie) {
+  const entity = repository.createEntity(movie);
+  //insert movie to Redis
+  await moviesRepository.save(entity);
+}
+...
+```
+
+## Ready to use Redis for Write behind caching?
+
+You now know how to use Redis for Write behind caching. It's possible to incrementally adopt Redis wherever needed with different strategies/patterns. For more resources on the topic of caching, check out the links below:
+
+## Additional resources
+
+- [Write through caching](/howtos/solutions/caching-architecture/write-through)
+- [Query caching](/howtos/solutions/microservices/caching)
+- [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
+- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench

@@ -11,11 +11,16 @@ import digitalIdentityImg from './images/digital-identity.png';
 
 import MicroservicesEcommerceDesign from '../../microservices/common-data/microservices-ecommerce.mdx';
 import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
-import SourceCode from '../../microservices/common-data/microservices-source-code-tip.mdx';
 
 <Authors frontMatter={frontMatter} />
 
-<SourceCode />
+:::tip GITHUB CODE
+
+Below is a command to the clone the source code for the application used in this tutorial
+
+git clone --branch v2.0.0 https://github.com/redis-developer/redis-microservices-ecommerce-solutions
+
+:::
 
 ## Digital identity validation for fraud detection introduction
 
@@ -108,7 +113,7 @@ Now, let's go step-by-step through the process of storing, scoring, and validati
 
 1. `login service`: stores the (user) digital identity as a `INSERT_LOGIN_IDENTITY` stream entry to redis
 
-```ts
+```typescript
 //addLoginToTransactionStream
 const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3';
 const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e';
@@ -132,7 +137,7 @@ await nodeRedisClient.xAdd(streamKeyName, id, entry);
 
 2. `digital identity service`: reads the identity from the `INSERT_LOGIN_IDENTITY` stream
 
-```ts
+```typescript
 // Below is some code for how you would use redis to listen for the stream events:
 async function listenToStream(
   onMessage: (message: any, messageId: string) => Promise<void>,
@@ -194,7 +199,7 @@ listenToStream({
 
 3. `digital identity service`: stores the identity as JSON to redis
 
-```ts
+```typescript
 const processTransactionStream: IMessageHandler = async (
   message: ITransactionStreamMessage,
   messageId,
@@ -245,7 +250,7 @@ const addDigitalIdentityToRedis = async (
 
 1. `orders service`: stores the digital identity to be validated in a `CALCULATE_IDENTITY_SCORE` redis stream
 
-```ts
+```typescript
 //adding Identity To TransactionStream
 const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3';
 const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e';
@@ -275,7 +280,7 @@ await nodeRedisClient.xAdd(streamKeyName, id, entry);
 
 2. `Digital identity service` reads the identity from the `CALCULATE_IDENTITY_SCORE` stream
 
-```ts
+```typescript
 // Below is some code for how you would use redis to listen for the stream events:
 
 async function listenToStream(
@@ -338,7 +343,7 @@ listenToStream({
 
 3. `digital identity service`: calculates the identity score and stores it in the `LOG_IDENTITY_SCORE` stream
 
-```ts
+```typescript
 const processTransactionStream: IMessageHandler = async (
   message: ITransactionStreamMessage,
   messageId,
@@ -421,7 +426,7 @@ const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
 
 4. `digital identity service`: stores the identity with score as JSON in redis
 
-```ts
+```typescript
 const addDigitalIdentityToRedis = async (
   message: ITransactionStreamMessage,
 ) => {
@@ -454,12 +459,6 @@ const addDigitalIdentityToRedis = async (
   return insertedKey;
 };
 ```
-
-<!--
-Referred application :
-[Github Link](https://github.com/redis-field-engineering/demo-microservices-fraud/)
-[About app](https://github.com/redis-field-engineering/demo-microservices-fraud/blob/master/docs/Presentation.md)
--->
 
 ## Conclusion
 
