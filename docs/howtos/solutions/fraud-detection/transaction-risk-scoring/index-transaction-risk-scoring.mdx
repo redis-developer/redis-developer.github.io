@@ -75,8 +75,8 @@ The following steps are performed in the checkout procedure:
 1. The `identity service` [calculates the identity score](/howtos/solutions/fraud-detection/digital-identity-validation) for the user and publishes a `CALCULATE_PROFILE_SCORE` event to the `TRANSACTIONS` Redis stream.
 1. The `profile service` subscribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_PROFILE_SCORE` event.
 1. The `profile service` calculates the profile score by checking the products in the shopping cart against a known profile for the customer.
-1. The `profile service` publishes a `PROCESS_ORDER` event to the `TRANSACTIONS` Redis stream.
-1. The `order service` subscribes to the `TRANSACTIONS` Redis stream and receives the `PROCESS_ORDER` event.
+1. The `profile service` publishes a `ASSESS_RISK` event to the `TRANSACTIONS` Redis stream.
+1. The `order service` subscribes to the `TRANSACTIONS` Redis stream and receives the `ASSESS_RISK` event.
 1. The `order service` determines if there is a likelihood of fraud based on the identity and profile scores. If there is a likelihood of fraud, the `order service` triggers additional authentication steps. If there is no likelihood of fraud, the `order service` approves the order and proceeds to process payments.
 
 ### Coding example for transaction risk scoring with redis
@@ -100,7 +100,9 @@ const TransactionPipelines = {
   CHECKOUT: [
     TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
     TransactionStreamActions.CALCULATE_PROFILE_SCORE,
-    TransactionStreamActions.PROCESS_ORDER,
+    TransactionStreamActions.ASSESS_RISK,
+    TransactionStreamActions.PROCESS_PAYMENT,
+    TransactionStreamActions.PAYMENT_PROCESSED,
   ],
 };
 
@@ -139,7 +141,8 @@ async function createOrder(
     orderAmount: orderAmount.toFixed(2),
     userId: userId,
     sessionId: sessionId,
-    order,
+    orderStatus: order.orderStatusCode,
+    products: order.products,
   };
 
   // Initiate the transaction by adding the order details to the transaction stream and sending the first event
@@ -188,15 +191,18 @@ async function addMessageToTransactionStream(
 
 #### Checking an order against a known profile in the profile service
 
-So you can see above, the transaction pipeline follows `CALCULATE_IDENTITY_SCORE` -> `CALCULATE_PROFILE_SCORE` -> `PROCESS_ORDER`. Let's now look at how the `profile service` subcribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_PROFILE_SCORE` event. When the `profile service` starts, it subscribes to the `TRANSACTIONS` Redis stream and listens for events.
+So you can see above, the transaction pipeline follows `CALCULATE_IDENTITY_SCORE` -> `CALCULATE_PROFILE_SCORE` -> `ASSESS_RISK`. Let's now look at how the `profile service` subcribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_PROFILE_SCORE` event. When the `profile service` starts, it subscribes to the `TRANSACTIONS` Redis stream and listens for events.
 
 ```typescript
-function listenToTransactionStream() {
+function listen() {
   listenToStreams({
     streams: [
       {
         streamKeyName: REDIS_STREAMS.STREAMS.TRANSACTIONS,
-        processMessageCallback: processTransactionStream,
+        eventHandlers: {
+          [TransactionStreamActions.CALCULATE_PROFILE_SCORE]:
+            calculateProfileScore,
+        },
       },
     ],
     groupName: REDIS_STREAMS.GROUPS.PROFILE,
@@ -205,7 +211,7 @@ function listenToTransactionStream() {
 }
 ```
 
-A highly simplified version of the `listenToStreams` method looks as follows. It takes in a list of stream keys (events) with a callback to process the events, a stream group, and a consumer name. Then it handles the subscription to the stream and calling on the appropriate method when an event comes in:
+A highly simplified version of the `listenToStreams` method looks as follows. It takes in a list of streams with an associated object that maps events on the stream to a callback for processing the events. It also takes a stream group and a consumer name. Then it handles the subscription to the stream and calling on the appropriate method when an event comes in:
 
 ```typescript
 async function listenToStreams(options: ListenStreamOptions) {
@@ -281,10 +287,15 @@ async function listenToStreams(options: ListenStreamOptions) {
               continue;
             }
 
-            await stream.processMessageCallback(
-              messageItem.message,
-              messageItem.id,
-            );
+            const streamEventHandlers = stream.eventHandlers;
+            const action = messageItem.message.action;
+            const handler = streamEventHandlers[action];
+
+            if (!handler) {
+              continue;
+            }
+
+            await handler(messageItem.message, messageItem.id);
 
             //acknowledge individual messages after processing
             nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
@@ -300,23 +311,16 @@ async function listenToStreams(options: ListenStreamOptions) {
 
 The `processTransactionStream` method is called when a new event comes in. It validates the event, making sure it is the `CALCULATE_PROFILE_SCORE` event, and if it is then it calculates the profile score. It uses a Redis Bloom filter to check if the user has ordered a similar set of products before. It uses a pre-defined persona for the purposes of this demo, but in reality you would build a profile of the user over time. In the demo application, each product has a "master category" and "subcategory". Bloom filters are setup for the master categories as well as the master+subcategories. The scoring logic is highlighted below:
 
-```typescript {55-69}
-async function processTransactionStream(
+```typescript {48-62}
+async function calculateProfileScore(
   message: ITransactionStreamMessage,
   messageId,
 ) {
   LoggerCls.info(`Incomming message in Profile Service ${messageId}`);
-  if (
-    !(
-      message.action === TransactionStreamActions.CALCULATE_PROFILE_SCORE &&
-      message.orderDetails &&
-      message.persona
-    )
-  ) {
+  if (!(message.orderDetails && message.persona)) {
     return false;
   }
 
-  // Log the event to the LOGS stream
   await streamLog({
     action: TransactionStreamActions.CALCULATE_PROFILE_SCORE,
     message: `[${REDIS_STREAMS.CONSUMERS.PROFILE}] Calculating profile score for the user ${message.userId}`,
@@ -324,7 +328,7 @@ async function processTransactionStream(
   });
 
   // check profile score
-  const { order }: IOrderDetails = JSON.parse(message.orderDetails);
+  const { products }: IOrderDetails = JSON.parse(message.orderDetails);
   const persona = message.persona.toLowerCase();
   let score = 0;
   const nodeRedisClient = getNodeRedisClient();
@@ -333,7 +337,7 @@ async function processTransactionStream(
     return false;
   }
 
-  const categories = (order.products ?? []).reduce((cat, product) => {
+  const categories = products.reduce((cat, product) => {
     const masterCategory = product.productData?.masterCategory?.typeName;
     const subCategory = product.productData?.subCategory?.typeName;
 
@@ -387,7 +391,7 @@ async function processTransactionStream(
 }
 ```
 
-The `nextTransactionStep` method is called after the profile score has been calculated. It uses the `transactionPipeline` setup in the `order service` to publish the `PROCESS_ORDER` event. The logic for this is below:
+The `nextTransactionStep` method is called after the profile score has been calculated. It uses the `transactionPipeline` setup in the `order service` to publish the `ASSESS_RISK` event. The logic for this is below:
 
 ```typescript
 async function nextTransactionStep(message: ITransactionStreamMessage) {
@@ -412,11 +416,11 @@ async function nextTransactionStep(message: ITransactionStreamMessage) {
 }
 ```
 
-In short, the `nextTransactionStep` method pops the current event off of the `transactionPipeline`, then it publishes the next event in the pipeline, which in this case is the `PROCESS_ORDER` event.
+In short, the `nextTransactionStep` method pops the current event off of the `transactionPipeline`, then it publishes the next event in the pipeline, which in this case is the `ASSESS_RISK` event.
 
 #### Finalizing the order with transaction risk scoring in the order service
 
-The `order service` is responsible for finalizing the order prior to payment. It listens to the `PROCESS_ORDER` event, and then checks the calculated scores to determine if there is potential fraud.
+The `order service` is responsible for finalizing the order prior to payment. It listens to the `ASSESS_RISK` event, and then checks the calculated scores to determine if there is potential fraud.
 
 :::note
 
@@ -426,22 +430,18 @@ The demo application keeps things very simple, and it only sets a "potentialFrau
 
 The logic to process and finalize orders in the `order service` is below:
 
-```typescript
-async function checkOrderRiskScore(
-  message: ITransactionStreamMessage,
-  messageId,
-) {
+```typescript {17-34}
+async function checkOrderRiskScore(message: ITransactionStreamMessage) {
   LoggerCls.info(`Incomming message in Order Service`);
-  if (
-    !(
-      message.action === TransactionStreamActions.PROCESS_ORDER &&
-      message.orderDetails
-    )
-  ) {
+  if (!message.orderDetails) {
     return false;
   }
 
   const orderDetails: IOrderDetails = JSON.parse(message.orderDetails);
+
+  if (!(orderDetails.orderId && orderDetails.userId)) {
+    return false;
+  }
 
   LoggerCls.info(
     `Transaction risk scoring for user ${message.userId} and order ${orderDetails.orderId}`,
@@ -458,7 +458,7 @@ async function checkOrderRiskScore(
     );
 
     await streamLog({
-      action: TransactionStreamActions.PROCESS_ORDER,
+      action: TransactionStreamActions.ASSESS_RISK,
       message: `[${REDIS_STREAMS.CONSUMERS.ORDERS}] Order failed fraud checks for orderId ${orderDetails.orderId} and user ${message.userId}`,
       metadata: message,
     });
@@ -466,34 +466,25 @@ async function checkOrderRiskScore(
     potentialFraud = true;
   }
 
-  const update = {
-    orderId: orderDetails.orderId,
-    orderStatus: ORDER_STATUS.PENDING,
-    potentialFraud,
-    userId: orderDetails.userId,
-  };
+  orderDetails.orderStatus = ORDER_STATUS.PENDING;
+  orderDetails.potentialFraud = potentialFraud;
 
-  updateOrderStatusInRedis(update);
-  updateOrderStatusInMongoDB(update);
+  updateOrderStatusInRedis(orderDetails);
+  /**
+   * In real world scenario : can use RDI/ redis gears/ any other database to database sync strategy for REDIS-> MongoDB  data transfer.
+   * To keep it simple, adding  data to MongoDB manually in the same service
+   */
+  updateOrderStatusInMongoDB(orderDetails);
 
-  // Log the order status update
+  message.orderDetails = JSON.stringify(orderDetails);
+
   await streamLog({
-    action: TransactionStreamActions.PROCESS_ORDER,
+    action: TransactionStreamActions.ASSESS_RISK,
     message: `[${REDIS_STREAMS.CONSUMERS.ORDERS}] Order status updated after fraud checks for orderId ${orderDetails.orderId} and user ${message.userId}`,
     metadata: message,
   });
 
-  // Send the event with order details to the payment service
-  await addOrderDetailsToStream({
-    ...orderDetails,
-    order: JSON.stringify(orderDetails.order),
-  });
-
-  await streamLog({
-    action: TransactionStreamActions.PROCESS_ORDER,
-    message: `[${REDIS_STREAMS.CONSUMERS.ORDERS}] To process payment, order details are added to ${REDIS_STREAMS.STREAMS.ORDERS} for the user ${message.userId}`,
-    metadata: message,
-  });
+  await nextTransactionStep(message);
 
   return true;
 }
