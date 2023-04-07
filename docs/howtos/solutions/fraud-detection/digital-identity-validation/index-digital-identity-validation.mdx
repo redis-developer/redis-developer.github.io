@@ -97,12 +97,10 @@ In an e-commerce application, validating digital identities happens at checkout 
 
 ![digital-identity-code-flow-02](./images/digital-identity-code-flow-2.png)
 
-1. `orders service`: stores the digital identity in a `CALCULATE_IDENTITY_SCORE` redis stream to calculate it's identity score
+1. `orders service`: stores the digital identity in a `CALCULATE_IDENTITY_SCORE` redis stream event to calculate it's identity score
    ![Validation Identity in Transaction Stream](./images/code-flow-2-1.png)
-2. `digital identity service`: reads the identity from the `CALCULATE_IDENTITY_SCORE` stream
-3. `digital identity service`: calculates the identity score and stores the result to a `LOG_IDENTITY_SCORE` stream
-   ![Identity score in Transaction Stream](./images/code-flow-2-3.png)
-4. `digital identity service`: stores the identity with its calculated score as JSON
+1. `digital identity service`: reads the identity from the `CALCULATE_IDENTITY_SCORE` stream event
+1. `digital identity service`: stores the identity with its calculated score as JSON
    ![Validation Identity as JSON](./images/code-flow-2-4.png)
 
 ## Building a digital identity validation microservice with redis
@@ -119,14 +117,16 @@ const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3';
 const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e';
 
 const entry: ITransactionStreamMessage = {
-  action: 'INSERT_LOGIN_IDENTITY',
-  logMessage: `Digital identity to be stored for the user ${userId}`,
-  userId: userId,
-  sessionId: sessionId,
+  action: TransactionStreamActions.INSERT_LOGIN_IDENTITY,
+  logMessage: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Digital identity to be stored for the user ${userId}`,
+  userId,
+  persona,
+  sessionId,
 
   identityBrowserAgent: req.headers['user-agent'],
   identityIpAddress:
     req.headers['x-forwarded-for']?.toString() || req.socket.remoteAddress,
+  transactionPipeline: JSON.stringify(TransactionPipelines.LOGIN),
 };
 
 const nodeRedisClient = getNodeRedisClient();
@@ -139,78 +139,113 @@ await nodeRedisClient.xAdd(streamKeyName, id, entry);
 
 ```typescript
 // Below is some code for how you would use redis to listen for the stream events:
-async function listenToStream(
+async function listenToStreams(
   onMessage: (message: any, messageId: string) => Promise<void>,
 ) {
-  // using node-redis
-  const redis = getNodeClient();
-  const streamKeyName = 'TRANSACTION_STREAM'; //stream name
-  const groupName = 'TRANSACTION_CON_GROUP'; // listening consumer group name (custom)
-  const consumerName = 'IDENTITY_CON'; // listening consumer name (custom)
-  const readMaxCount = 100;
+  const redis = getNodeRedisClient();
+  const streams = options.streams;
+  const groupName = options.groupName;
+  const consumerName = options.consumerName;
+  const readMaxCount = options.maxNoOfEntriesToReadAtTime || 100;
 
-  // Check if the stream group already exists
-  if (!(await redis.exists(streamKeyName))) {
+  try {
     const idPosition = '0'; //0 = start, $ = end or any specific id
-    await nodeClient.xGroupCreate(streamKeyName, groupName, idPosition, {
-      MKSTREAM: true,
-    });
+    await Promise.all(
+      streams.map((stream) => {
+        return redis.xGroupCreate(stream.streamKeyName, groupName, idPosition, {
+          MKSTREAM: true,
+        });
+      }),
+    );
+    LoggerCls.info(`Created consumer group ${groupName}`);
+  } catch (err) {
+    LoggerCls.error('Consumer group already exists !'); //, err
   }
 
-  // setup a loop to listen for stream events
+  LoggerCls.info(`Starting consumer ${consumerName}.`);
+
   while (true) {
-    // read set of messages from different streams
-    const dataArr = await nodeRedisClient.xReadGroup(
+    //read set of messages from different streams
+    const dataArr = await redis.xReadGroup(
       commandOptions({
         isolated: true,
       }),
       groupName,
       consumerName,
-      [
-        {
-          // you can specify multiple streams in array
-          key: streamKeyName,
-          id: '>', // Next entry ID that no consumer in this group has read
-        },
-      ],
+      streams.map((stream) => ({ key: stream.streamKeyName, id: '>' })),
       {
         COUNT: readMaxCount, // Read n entries at a time
-        BLOCK: 0, // block for 0 (infinite) seconds if there are none.
+        BLOCK: 5, //block for 0 (infinite) seconds if there are none.
       },
     );
 
-    for (let data of dataArr) {
-      for (let messageItem of data.messages) {
-        // process the message received (in our case, perform payment)
-        await onMessage(messageItem.message, messageItem.id);
+    if (dataArr && dataArr.length) {
+      for (let data of dataArr) {
+        for (let messageItem of data.messages) {
+          const streamKeyName = data.name;
 
-        // acknowledge individual messages after processing
-        nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
+          const stream = streams.find((s) => s.streamKeyName == streamKeyName);
+
+          if (!stream || !messageItem.message) {
+            continue;
+          }
+
+          const streamEventHandlers = stream.eventHandlers;
+          const action = messageItem.message.action;
+          const handler = streamEventHandlers[action];
+
+          if (!handler) {
+            continue;
+          }
+
+          await handler(messageItem.message, messageItem.id);
+
+          //acknowledge individual messages after processing
+          redis.xAck(streamKeyName, groupName, messageItem.id);
+        }
       }
     }
   }
 }
 
-// `listenToStream` listens for events and calls the `onMessage` callback to further handle the events.
-listenToStream({
-  onMessage: processTransactionStream,
+// `listenToStreams` listens for events and calls the appropriate callback to further handle the events.
+listenToStreams({
+  streams: [
+    {
+      streamKeyName: REDIS_STREAMS.STREAMS.TRANSACTIONS,
+      eventHandlers: {
+        [TransactionStreamActions.INSERT_LOGIN_IDENTITY]: insertLoginIdentity,
+        [TransactionStreamActions.CALCULATE_IDENTITY_SCORE]:
+          scoreDigitalIdentity,
+      },
+    },
+  ],
+  groupName: REDIS_STREAMS.GROUPS.IDENTITY,
+  consumerName: REDIS_STREAMS.CONSUMERS.IDENTITY,
 });
 ```
 
 3. `digital identity service`: stores the identity as JSON to redis
 
 ```typescript
-const processTransactionStream: IMessageHandler = async (
+const insertLoginIdentity: IMessageHandler = async (
   message: ITransactionStreamMessage,
   messageId,
 ) => {
-  if (message) {
-    if (message.action == 'INSERT_LOGIN_IDENTITY') {
-      const insertedKey = await addDigitalIdentityToRedis(message);
-    } else if (message.action == 'CALCULATE_IDENTITY_SCORE') {
-      //...
-    }
-  }
+  LoggerCls.info(`Adding digital identity to redis for ${message.userId}`);
+
+  //step 1 - add login digital identity to redis
+  const insertedKey = await addDigitalIdentityToRedis(message);
+
+  await streamLog({
+    action: TransactionStreamActions.INSERT_LOGIN_IDENTITY,
+    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] New Login Digital Identity added to Redis (JSON) at key ${insertedKey} for the user ${message.userId}`,
+    metadata: message,
+  });
+
+  await nextTransactionStep(message);
+
+  return true;
 };
 
 const addDigitalIdentityToRedis = async (
@@ -281,98 +316,49 @@ await nodeRedisClient.xAdd(streamKeyName, id, entry);
 2. `Digital identity service` reads the identity from the `CALCULATE_IDENTITY_SCORE` stream
 
 ```typescript
-// Below is some code for how you would use redis to listen for the stream events:
-
-async function listenToStream(
-  onMessage: (message: any, messageId: string) => Promise<void>,
-) {
-  // using node-redis
-  const redis = getNodeRedisClient();
-  const streamKeyName = 'TRANSACTION_STREAM'; //stream name
-  const groupName = 'TRANSACTION_CON_GROUP'; // listening consumer group name (custom)
-  const consumerName = 'IDENTITY_CON'; // listening consumer name (custom)
-  const readMaxCount = 100;
-
-  // Check if the stream group already exists
-  if (!(await redis.exists(streamKeyName))) {
-    const idPosition = '0'; //0 = start, $ = end or any specific id
-    await nodeRedisClient.xGroupCreate(streamKeyName, groupName, idPosition, {
-      MKSTREAM: true,
-    });
-  }
-
-  // setup a loop to listen for stream events
-  while (true) {
-    // read set of messages from different streams
-    const dataArr = await nodeRedisClient.xReadGroup(
-      commandOptions({
-        isolated: true,
-      }),
-      groupName,
-      consumerName,
-      [
-        {
-          // you can specify multiple streams in array
-          key: streamKeyName,
-          id: '>', // Next entry ID that no consumer in this group has read
-        },
-      ],
-      {
-        COUNT: readMaxCount, // Read n entries at a time
-        BLOCK: 0, // block for 0 (infinite) seconds if there are none.
-      },
-    );
-
-    for (let data of dataArr) {
-      for (let messageItem of data.messages) {
-        // process the message received (in our case, perform payment)
-        await onMessage(messageItem.message, messageItem.id);
-
-        // acknowledge individual messages after processing
-        nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
-      }
-    }
-  }
-}
-
-// `listenToStream` listens for events and calls the `onMessage` callback to further handle the events.
-listenToStream({
-  onMessage: processTransactionStream,
-});
-```
-
-3. `digital identity service`: calculates the identity score and stores it in the `LOG_IDENTITY_SCORE` stream
-
-```typescript
-const processTransactionStream: IMessageHandler = async (
+const scoreDigitalIdentity: IMessageHandler = async (
   message: ITransactionStreamMessage,
   messageId,
 ) => {
-  if (message) {
-    if (message.action == 'INSERT_LOGIN_IDENTITY') {
-      //...
-    } else if (message.action == 'CALCULATE_IDENTITY_SCORE') {
-      // calculate identity score
-      const identityScore = await calculateIdentityScore(message);
-      message.identityScore = identityScore.toString();
+  LoggerCls.info(`Scoring digital identity for ${message.userId}`);
 
-      // point 3 - store identity score to stream
-      const entry = {
-        action: 'LOG_IDENTITY_SCORE',
-        logMessage: `${identityScore} is the digital identity score for the user ${message.userId}`,
-        userId: message.userId,
-        sessionId: message.sessionId,
-        identityScore: identityScore.toString(),
-      };
-      const nodeRedisClient = getNodeRedisClient();
-      const streamKeyName = 'TRANSACTION_STREAM';
-      const id = '*'; //* = auto generate
-      await nodeRedisClient.xAdd(streamKeyName, id, entry);
+  await streamLog({
+    action: TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
+    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Calculating digital identity score for the user ${message.userId}`,
+    metadata: message,
+  });
 
-      // point 4
-      const insertedKey = await addDigitalIdentityToRedis(message);
-    }
-  }
+  //step 1 - calculate score for validation digital identity
+  const identityScore = await calculateIdentityScore(message);
+  message.identityScore = identityScore.toString();
+
+  await streamLog({
+    action: TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
+    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Digital identity score for the user ${message.userId} is ${identityScore}`,
+    metadata: message,
+  });
+
+  LoggerCls.info(`Adding digital identity to redis for ${message.userId}`);
+  //step 2 - add validation digital identity to redis
+  const insertedKey = await addDigitalIdentityToRedis(message);
+
+  await streamLog({
+    action: TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
+    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Digital Identity score added to Redis [${insertedKey}] for the user ${message.userId}`,
+    metadata: {
+      ...message,
+      identityScore: identityScore.toString(),
+    },
+  });
+
+  await nextTransactionStep({
+    ...message,
+    logMessage: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Requesting next step in transaction risk scoring for the user ${message.userId}`,
+
+    identityScore: identityScore.toString(),
+  });
+
+  return true;
 };
 
 const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
@@ -424,7 +410,7 @@ const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
 };
 ```
 
-4. `digital identity service`: stores the identity with score as JSON in redis
+3. `digital identity service`: stores the identity with score as JSON in redis
 
 ```typescript
 const addDigitalIdentityToRedis = async (
