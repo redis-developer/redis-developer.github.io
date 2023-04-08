@@ -7,12 +7,14 @@ authors: [prasan, will]
 ---
 
 import Authors from '@theme/Authors';
+import MicroservicesEcommerceDesign from '../../microservices/common-data/microservices-ecommerce.mdx';
 import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
-import SourceCode from '../../microservices/common-data/microservices-source-code-tip.mdx';
+import SourceCodeFraudDetection from '../common-fraud/source-code-tip.mdx';
+import RedisInsightTransactionStreamImage from './images/redisinsight-transaction-stream.png';
 
 <Authors frontMatter={frontMatter} />
 
-<SourceCode />
+<SourceCodeFraudDetection />
 
 ## What is transaction risk scoring
 
@@ -28,7 +30,7 @@ Transaction risk scoring is often combined in a single system with other fraud d
 
 ## Why you should use redis for transaction risk scoring
 
-A risk-based approach must be designed to create a frictionless flow as possible to **avoid slowing down** the transaction experience for legitimate customers while simultaneously preventing fraud. If your risk-based approach is too strict, it will **block legitimate transactions** and frustrate customers. If it is too lenient, it will **allow fraudulent transactions** to go through.
+A risk-based approach must be designed to create a frictionless flow and **avoid slowing down** the transaction experience for legitimate customers while simultaneously preventing fraud. If your risk-based approach is too strict, it will **block legitimate transactions** and frustrate customers. If it is too lenient, it will **allow fraudulent transactions** to go through.
 
 ### How to avoid false positives with rules engines
 
@@ -67,29 +69,33 @@ When a user goes to checkout, the system needs to check the user's digital ident
 The following steps are performed in the checkout procedure:
 
 1. The customer adds an item to the cart and proceeds to checkout.
-1. The `order service` recives the checkout request and creates an order in the database.
+1. The `order service` receives the checkout request and creates an order in the database.
 1. The `order services` publishes a `CALCULATE_IDENTITY_SCORE` event to the `TRANSACTIONS` Redis stream.
 1. The `identity service` subscribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_IDENTITY_SCORE` event.
 1. The `identity service` [calculates the identity score](/howtos/solutions/fraud-detection/digital-identity-validation) for the user and publishes a `CALCULATE_PROFILE_SCORE` event to the `TRANSACTIONS` Redis stream.
 1. The `profile service` subscribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_PROFILE_SCORE` event.
 1. The `profile service` calculates the profile score by checking the products in the shopping cart against a known profile for the customer.
-1. The `profile service` publishes a `PROCESS_ORDER` event to the `TRANSACTIONS` Redis stream.
-1. The `order service` subscribes to the `TRANSACTIONS` Redis stream and receives the `PROCESS_ORDER` event.
+1. The `profile service` publishes a `ASSESS_RISK` event to the `TRANSACTIONS` Redis stream.
+1. The `order service` subscribes to the `TRANSACTIONS` Redis stream and receives the `ASSESS_RISK` event.
 1. The `order service` determines if there is a likelihood of fraud based on the identity and profile scores. If there is a likelihood of fraud, the `order service` triggers additional authentication steps. If there is no likelihood of fraud, the `order service` approves the order and proceeds to process payments.
 
-### Coding example for transaction risk scoring with redis
+## E-commerce application frontend using Next.js and Tailwind
 
-<SourceCode />
+<MicroservicesEcommerceDesign />
+
+<SourceCodeFraudDetection />
+
+## Coding example for transaction risk scoring with redis
 
 Now that you understand the steps involved in the checkout process for transaction risk scoring, let's look at the code for the `order service` and `profile service` to facilitate this process:
 
 :::note
 
-To see the code for the `identity service` check out the [digital identity validation](/howtos/solutions/fraud-detection/digital-identity-validation) solution.
+To see the code for the `identity service` check out the <u>[digital identity validation](/howtos/solutions/fraud-detection/digital-identity-validation)</u> solution.
 
 :::
 
-#### Initiating the checkout process in the order service
+### Initiating the checkout process in the order service
 
 When the `order service` receives a checkout request, it creates an order in the database and publishes a `CALCULATE_IDENTITY_SCORE` event to the `TRANSACTIONS` Redis stream. The event contains information about the order as well as the customer, such as the browser fingerprint, IP address, and persona (profile). This data will be used during the transaction by the `identity service` and `profile service` to calculate the identity and profile scores. The `order service` also specifies the transaction pipeline, meaning it determines the order of events called so that the `identity service` and `profile service` do not need to be aware of each other. The `order service` ultimately owns the transaction. The sample code below shows the `createOrder` function in the `order service`. The code example below is highly simplified. For more detail please see the source code linked above:
 
@@ -98,7 +104,9 @@ const TransactionPipelines = {
   CHECKOUT: [
     TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
     TransactionStreamActions.CALCULATE_PROFILE_SCORE,
-    TransactionStreamActions.PROCESS_ORDER,
+    TransactionStreamActions.ASSESS_RISK,
+    TransactionStreamActions.PROCESS_PAYMENT,
+    TransactionStreamActions.PAYMENT_PROCESSED,
   ],
 };
 
@@ -137,7 +145,8 @@ async function createOrder(
     orderAmount: orderAmount.toFixed(2),
     userId: userId,
     sessionId: sessionId,
-    order,
+    orderStatus: order.orderStatusCode,
+    products: order.products,
   };
 
   // Initiate the transaction by adding the order details to the transaction stream and sending the first event
@@ -184,17 +193,20 @@ async function addMessageToTransactionStream(
 }
 ```
 
-#### Checking an order against a known profile in the profile service
+### Checking an order against a known profile in the profile service
 
-So you can see above, the transaction pipeline follows `CALCULATE_IDENTITY_SCORE` -> `CALCULATE_PROFILE_SCORE` -> `PROCESS_ORDER`. Let's now look at how the `profile service` subcribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_PROFILE_SCORE` event. When the `profile service` starts, it subscribes to the `TRANSACTIONS` Redis stream and listens for events.
+So you can see above, the transaction pipeline follows `CALCULATE_IDENTITY_SCORE` -> `CALCULATE_PROFILE_SCORE` -> `ASSESS_RISK`. Let's now look at how the `profile service` subscribes to the `TRANSACTIONS` Redis stream and receives the `CALCULATE_PROFILE_SCORE` event. When the `profile service` starts, it subscribes to the `TRANSACTIONS` Redis stream and listens for events.
 
 ```typescript
-function listenToTransactionStream() {
+function listen() {
   listenToStreams({
     streams: [
       {
         streamKeyName: REDIS_STREAMS.STREAMS.TRANSACTIONS,
-        processMessageCallback: processTransactionStream,
+        eventHandlers: {
+          [TransactionStreamActions.CALCULATE_PROFILE_SCORE]:
+            calculateProfileScore,
+        },
       },
     ],
     groupName: REDIS_STREAMS.GROUPS.PROFILE,
@@ -203,118 +215,149 @@ function listenToTransactionStream() {
 }
 ```
 
-A highly simplified version of the `listenToStreams` method looks as follows. It takes in a list of stream keys (events) with a callback to process the events, a stream group, and a consumer name. Then it handles the subscription to the stream and calling on the appropriate method when an event comes in:
+A highly simplified version of the `listenToStreams` method looks as follows. It takes in a list of streams with an associated object that maps events on the stream to a callback for processing the events. It also takes a stream group and a consumer name. Then it handles the subscription to the stream and calling on the appropriate method when an event comes in:
 
 ```typescript
-async function listenToStreams(options: ListenStreamOptions) {
+interface ListenStreamOptions {
+  streams: {
+    streamKeyName: string;
+    eventHandlers: {
+      [messageAction: string]: IMessageHandler;
+    };
+  }[];
+  groupName: string;
+  consumerName: string;
+  maxNoOfEntriesToReadAtTime?: number;
+}
+
+const listenToStreams = async (options: ListenStreamOptions) => {
+  /*
+   (A) create consumer group for the stream
+   (B) read set of messages from the stream
+   (C) process all messages received
+   (D) trigger appropriate action callback for each message
+   (E) acknowledge individual messages after processing
+  */
+
   const nodeRedisClient = getNodeRedisClient();
-  const streams = options.streams;
-  const groupName = options.groupName;
-  const consumerName = options.consumerName;
+  if (nodeRedisClient) {
+    const streams = options.streams;
+    const groupName = options.groupName;
+    const consumerName = options.consumerName;
+    const readMaxCount = options.maxNoOfEntriesToReadAtTime || 100;
+    const idInitialPosition = '0'; //0 = start, $ = end or any specific id
+    const streamKeyIdArr: {
+      key: string;
+      id: string;
+    }[] = [];
 
-  try {
-    const idPosition = '0'; //0 = start, $ = end or any specific id
+    streams.map(async (stream) => {
+      LoggerCls.info(
+        `Creating consumer group ${groupName} in stream ${stream.streamKeyName}`,
+      );
 
-    // Create a consumer group for each stream if not exists
-    await Promise.all(
-      streams.map((stream) => {
-        return nodeRedisClient.xGroupCreate(
+      try {
+        // (A) create consumer group for the stream
+        await nodeRedisClient.xGroupCreate(
           stream.streamKeyName,
           groupName,
-          idPosition,
+          idInitialPosition,
           {
             MKSTREAM: true,
           },
         );
-      }),
-    );
-    LoggerCls.info(`Created consumer group ${groupName}`);
-  } catch (err) {
-    LoggerCls.error('Consumer group already exists !'); //, err
-  }
-
-  LoggerCls.info(`Starting consumer ${consumerName}.`);
-
-  // wait for new messages indefinitely
-  while (true) {
-    try {
-      //read set of messages from different streams
-      const dataArr = await nodeRedisClient.xReadGroup(
-        commandOptions({
-          isolated: true,
-        }),
-        groupName,
-        consumerName,
-        streams.map((stream) => ({ key: stream.streamKeyName, id: '>' })),
-        {
-          COUNT: readMaxCount,
-          BLOCK: 5, //block for 0 (infinite) seconds if there are none.
-        },
-      );
-
-      // data coming in looks as follows
-      // dataArr = [
-      //   {
-      //     name: 'streamName',
-      //     messages: [
-      //       {
-      //         id: '1642088708425-0',
-      //         message: {
-      //           key1: 'value1',
-      //         },
-      //       },
-      //     ],
-      //   },
-      // ];
-      if (dataArr && dataArr.length) {
-        for (let data of dataArr) {
-          for (let messageItem of data.messages) {
-            const streamKeyName = data.name;
-
-            const stream = streams.find(
-              (s) => s.streamKeyName == streamKeyName,
-            );
-
-            if (!stream || !messageItem.message) {
-              continue;
-            }
-
-            await stream.processMessageCallback(
-              messageItem.message,
-              messageItem.id,
-            );
-
-            //acknowledge individual messages after processing
-            nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
-          }
-        }
+      } catch (err) {
+        LoggerCls.error(
+          `Consumer group ${groupName} already exists in stream ${stream.streamKeyName}!`,
+        ); //, err
       }
-    } catch (err) {
-      LoggerCls.error('xReadGroup error !', err);
+
+      streamKeyIdArr.push({
+        key: stream.streamKeyName,
+        id: '>', // Next entry ID that no consumer in this group has read
+      });
+    });
+
+    LoggerCls.info(`Starting consumer ${consumerName}.`);
+
+    while (true) {
+      try {
+        // (B) read set of messages from different streams
+        const dataArr = await nodeRedisClient.xReadGroup(
+          commandOptions({
+            isolated: true,
+          }),
+          groupName,
+          consumerName,
+          //can specify multiple streams in array [{key, id}]
+          streamKeyIdArr,
+          {
+            COUNT: readMaxCount, // Read n entries at a time
+            BLOCK: 5, //block for 0 (infinite) seconds if there are none.
+          },
+        );
+
+        // dataArr = [
+        //   {
+        //     name: 'streamName',
+        //     messages: [
+        //       {
+        //         id: '1642088708425-0',
+        //         message: {
+        //           key1: 'value1',
+        //         },
+        //       },
+        //     ],
+        //   },
+        // ];
+
+        //(C) process all messages received
+        if (dataArr && dataArr.length) {
+          for (let data of dataArr) {
+            for (let messageItem of data.messages) {
+              const streamKeyName = data.name;
+
+              const stream = streams.find(
+                (s) => s.streamKeyName == streamKeyName,
+              );
+
+              if (stream && messageItem.message) {
+                const streamEventHandlers = stream.eventHandlers;
+                const messageAction = messageItem.message.action;
+                const messageHandler = streamEventHandlers[messageAction];
+
+                if (messageHandler) {
+                  // (D) trigger appropriate action callback for each message
+                  await messageHandler(messageItem.message, messageItem.id);
+                }
+                //(E) acknowledge individual messages after processing
+                nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
+              }
+            }
+          }
+        } else {
+          // LoggerCls.info('No new stream entries.');
+        }
+      } catch (err) {
+        LoggerCls.error('xReadGroup error !', err);
+      }
     }
   }
-}
+};
 ```
 
 The `processTransactionStream` method is called when a new event comes in. It validates the event, making sure it is the `CALCULATE_PROFILE_SCORE` event, and if it is then it calculates the profile score. It uses a Redis Bloom filter to check if the user has ordered a similar set of products before. It uses a pre-defined persona for the purposes of this demo, but in reality you would build a profile of the user over time. In the demo application, each product has a "master category" and "subcategory". Bloom filters are setup for the master categories as well as the master+subcategories. The scoring logic is highlighted below:
 
-```typescript {55-69}
-async function processTransactionStream(
+```typescript {48-62}
+async function calculateProfileScore(
   message: ITransactionStreamMessage,
   messageId,
 ) {
-  LoggerCls.info(`Incomming message in Profile Service ${messageId}`);
-  if (
-    !(
-      message.action === TransactionStreamActions.CALCULATE_PROFILE_SCORE &&
-      message.orderDetails &&
-      message.persona
-    )
-  ) {
+  LoggerCls.info(`Incoming message in Profile Service ${messageId}`);
+  if (!(message.orderDetails && message.persona)) {
     return false;
   }
 
-  // Log the event to the LOGS stream
   await streamLog({
     action: TransactionStreamActions.CALCULATE_PROFILE_SCORE,
     message: `[${REDIS_STREAMS.CONSUMERS.PROFILE}] Calculating profile score for the user ${message.userId}`,
@@ -322,7 +365,7 @@ async function processTransactionStream(
   });
 
   // check profile score
-  const { order }: IOrderDetails = JSON.parse(message.orderDetails);
+  const { products }: IOrderDetails = JSON.parse(message.orderDetails);
   const persona = message.persona.toLowerCase();
   let score = 0;
   const nodeRedisClient = getNodeRedisClient();
@@ -331,7 +374,7 @@ async function processTransactionStream(
     return false;
   }
 
-  const categories = (order.products ?? []).reduce((cat, product) => {
+  const categories = products.reduce((cat, product) => {
     const masterCategory = product.productData?.masterCategory?.typeName;
     const subCategory = product.productData?.subCategory?.typeName;
 
@@ -385,7 +428,7 @@ async function processTransactionStream(
 }
 ```
 
-The `nextTransactionStep` method is called after the profile score has been calculated. It uses the `transactionPipeline` setup in the `order service` to publish the `PROCESS_ORDER` event. The logic for this is below:
+The `nextTransactionStep` method is called after the profile score has been calculated. It uses the `transactionPipeline` setup in the `order service` to publish the `ASSESS_RISK` event. The logic for this is below:
 
 ```typescript
 async function nextTransactionStep(message: ITransactionStreamMessage) {
@@ -410,11 +453,11 @@ async function nextTransactionStep(message: ITransactionStreamMessage) {
 }
 ```
 
-In short, the `nextTransactionStep` method pops the current event off of the `transactionPipeline`, then it publishes the next event in the pipeline, which in this case is the `PROCESS_ORDER` event.
+In short, the `nextTransactionStep` method pops the current event off of the `transactionPipeline`, then it publishes the next event in the pipeline, which in this case is the `ASSESS_RISK` event.
 
-#### Finalizing the order with transaction risk scoring in the order service
+### Finalizing the order with transaction risk scoring in the order service
 
-The `order service` is responsible for finalizing the order prior to payment. It listens to the `PROCESS_ORDER` event, and then checks the calculated scores to determine if there is potential fraud.
+The `order service` is responsible for finalizing the order prior to payment. It listens to the `ASSESS_RISK` event, and then checks the calculated scores to determine if there is potential fraud.
 
 :::note
 
@@ -424,22 +467,18 @@ The demo application keeps things very simple, and it only sets a "potentialFrau
 
 The logic to process and finalize orders in the `order service` is below:
 
-```typescript
-async function checkOrderRiskScore(
-  message: ITransactionStreamMessage,
-  messageId,
-) {
-  LoggerCls.info(`Incomming message in Order Service`);
-  if (
-    !(
-      message.action === TransactionStreamActions.PROCESS_ORDER &&
-      message.orderDetails
-    )
-  ) {
+```typescript {17-34}
+async function checkOrderRiskScore(message: ITransactionStreamMessage) {
+  LoggerCls.info(`Incoming message in Order Service`);
+  if (!message.orderDetails) {
     return false;
   }
 
   const orderDetails: IOrderDetails = JSON.parse(message.orderDetails);
+
+  if (!(orderDetails.orderId && orderDetails.userId)) {
+    return false;
+  }
 
   LoggerCls.info(
     `Transaction risk scoring for user ${message.userId} and order ${orderDetails.orderId}`,
@@ -456,7 +495,7 @@ async function checkOrderRiskScore(
     );
 
     await streamLog({
-      action: TransactionStreamActions.PROCESS_ORDER,
+      action: TransactionStreamActions.ASSESS_RISK,
       message: `[${REDIS_STREAMS.CONSUMERS.ORDERS}] Order failed fraud checks for orderId ${orderDetails.orderId} and user ${message.userId}`,
       metadata: message,
     });
@@ -464,34 +503,25 @@ async function checkOrderRiskScore(
     potentialFraud = true;
   }
 
-  const update = {
-    orderId: orderDetails.orderId,
-    orderStatus: ORDER_STATUS.PENDING,
-    potentialFraud,
-    userId: orderDetails.userId,
-  };
+  orderDetails.orderStatus = ORDER_STATUS.PENDING;
+  orderDetails.potentialFraud = potentialFraud;
 
-  updateOrderStatusInRedis(update);
-  updateOrderStatusInMongoDB(update);
+  updateOrderStatusInRedis(orderDetails);
+  /**
+   * In real world scenario : can use RDI/ redis gears/ any other database to database sync strategy for REDIS-> MongoDB  data transfer.
+   * To keep it simple, adding  data to MongoDB manually in the same service
+   */
+  updateOrderStatusInMongoDB(orderDetails);
 
-  // Log the order status update
+  message.orderDetails = JSON.stringify(orderDetails);
+
   await streamLog({
-    action: TransactionStreamActions.PROCESS_ORDER,
+    action: TransactionStreamActions.ASSESS_RISK,
     message: `[${REDIS_STREAMS.CONSUMERS.ORDERS}] Order status updated after fraud checks for orderId ${orderDetails.orderId} and user ${message.userId}`,
     metadata: message,
   });
 
-  // Send the event with order details to the payment service
-  await addOrderDetailsToStream({
-    ...orderDetails,
-    order: JSON.stringify(orderDetails.order),
-  });
-
-  await streamLog({
-    action: TransactionStreamActions.PROCESS_ORDER,
-    message: `[${REDIS_STREAMS.CONSUMERS.ORDERS}] To process payment, order details are added to ${REDIS_STREAMS.STREAMS.ORDERS} for the user ${message.userId}`,
-    metadata: message,
-  });
+  await nextTransactionStep(message);
 
   return true;
 }
@@ -501,19 +531,24 @@ async function checkOrderRiskScore(
 
 :::tip
 
-RedisInsight is the free redis GUI for viewing data in redis. [Click here to download.](https://redis.com/redis-enterprise/redis-insight/)
+RedisInsight is the free redis GUI for viewing data in redis. <u>[Click here to download.](https://redis.com/redis-enterprise/redis-insight/)</u>
 
 :::
 
 Now that you understand some of the code involved in processing transactions, let's take a look at the data in RedisInsight. First let's look at the `TRANSACTION_STREAM` key, which is where the stream data is held for the checkout transaction:
 
-![RedisInsight transaction risk scoring transaction stream](./images/redisinsight-transaction-stream.png)
+<img
+  src={RedisInsightTransactionStreamImage}
+  alt="RedisInsight transaction risk scoring transaction stream"
+  width="500"
+  className="margin-bottom--md"
+/>
 
 You can see the `action` column shows the transaction pipeline discussed earlier. Another thing to look at in RedisInsight is the Bloom filters:
 
 ![RedisInsight transaction risk scoring bloom filters](./images/redisinsight-bloom-filters.png)
 
-These filters are prepopulated in the demo application based on a feature store. Redis is also storing the features, which in this case is the profiles of each of the personas. Below is an example of one of the profile features:
+These filters are pre-populated in the demo application based on a feature store. Redis is also storing the features, which in this case is the profiles of each of the personas. Below is an example of one of the profile features:
 
 ![RedisInsight transaction risk scoring feature store](./images/redisinsight-profile-feature.png)
 
@@ -523,12 +558,13 @@ In this post, you learned how to use Redis Streams to build a transaction risk s
 
 ### Additional resources
 
-- Microservices with Redis
-  - [CQRS](/howtos/solutions/microservices/cqrs)
-  - [Interservice communication](/howtos/solutions/microservices/interservice-communication)
-  - [Query caching](/howtos/solutions/microservices/caching)
-  - [Event sourcing](/howtos/solutions/microservices/api-gateway-caching)
+- Redis Streams
+  - Explore streams in detail in the [Redis University course on Redis Streams](https://university.redis.com/courses/ru202/)
+  - Check out our e-book on [Understanding Streams in Redis and Kafka: A Visual Guide](https://redis.com/docs/understanding-streams-in-redis-and-kafka-a-visual-guide/)
 - Fraud detection with Redis
   - [Digital identity validation](/howtos/solutions/fraud-detection/digital-identity-validation)
+- [Microservices with Redis](/howtos/solutions#microservices)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
+- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
 - [Try Redis Enterprise for free](https://redis.com/try-free/)
