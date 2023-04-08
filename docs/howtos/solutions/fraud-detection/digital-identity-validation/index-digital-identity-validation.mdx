@@ -8,19 +8,14 @@ authors: [prasan, will]
 
 import Authors from '@theme/Authors';
 import digitalIdentityImg from './images/digital-identity.png';
+import SourceCodeFraudDetection from '../common-fraud/source-code-tip.mdx';
 
 import MicroservicesEcommerceDesign from '../../microservices/common-data/microservices-ecommerce.mdx';
 import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
 
 <Authors frontMatter={frontMatter} />
 
-:::tip GITHUB CODE
-
-Below is a command to the clone the source code for the application used in this tutorial
-
-git clone --branch v2.0.0 https://github.com/redis-developer/redis-microservices-ecommerce-solutions
-
-:::
+<SourceCodeFraudDetection />
 
 ## Digital identity validation for fraud detection introduction
 
@@ -30,7 +25,7 @@ As the digital landscape continues to evolve, the need for robust security measu
 
 "Know Your Customer" (KYC) regulations refer to a set of policies and procedures that financial institutions and other regulated businesses must follow to verify the identity of their customers. Customer details can be like name, address, date of birth, and other government-issued identification documents.
 
-As part of KYC, businesses must assess the potential risk posed by each customer and conduct **ongoing monitoring** of their transactions and behaviour to detect any suspicious activity. KYC regulations are enforced by regulatory authorities, and failure to comply can result in financial penalties and reputational damage.
+As part of KYC, businesses must assess the potential risk posed by each customer and conduct **ongoing monitoring** of their transactions and behaviour to detect any suspicious activity. KYC regulations are enforced by regulatory authorities, and failure to comply can result in financial penalties and reputation damage.
 
 KYC regulations are intended to prevent money laundering, terrorist financing, and other illicit activities. Financial services companies are combating the use of stolen identity information by reducing reliance on static methods for verifying identity (Knowledge-Based Authentication, or KBA) and instead moving to digital identities.
 
@@ -38,7 +33,7 @@ KYC regulations are intended to prevent money laundering, terrorist financing, a
 
 Digital identity refers to the collection of attributes and identifiers that represent an individual online. These may include names, email addresses, phone numbers, usernames, and biometrics, among others. Digital identity validation is the process of verifying that these attributes are accurate and belong to the entity they claim to represent.
 
-Identity validation is crucial because it helps establish trust in digital environments, where face-to-face interaction is often not possible. It ensures that the parties involved in a transaction are who they claim to be, minimizing the risk of fraud, identity theft, and other cybercrimes.
+Identity validation is crucial because it helps establish trust in digital environments, where face-to-face interaction is often not possible. It ensures that the parties involved in a transaction are who they claim to be, minimizing the risk of fraud, identity theft, and other cyber crimes.
 
 <img
   src={digitalIdentityImg}
@@ -73,7 +68,7 @@ Redis Enterprise's flexible data model has native support for multiple data type
 
 ### Storing digital identities
 
-Given we're discussing a microservices application, it makes sense to use a microservice for managing digital identities. Consider the following workflow outlining how digital identities are stored and retreived from redis:
+Given we're discussing a microservices application, it makes sense to use a microservice for managing digital identities. Consider the following workflow outlining how digital identities are stored and retrieved from redis:
 
 ![digital-identity-code-flow-01](./images/digital-identity-code-flow-1.png)
 
@@ -83,7 +78,7 @@ The demo application doesn't have a `login service`. All user sessions are curre
 
 :::
 
-The demo application uses redis streams for interservice communication. The following outlines the workflow, and the responsibilties of each service:
+The demo application uses redis streams for interservice communication. The following outlines the workflow, and the responsibilities of each service:
 
 1. `login service`: stores the (user) digital identity as a `INSERT_LOGIN_IDENTITY` stream entry to redis
    ![Login Identity in Transaction Stream](./images/code-flow-1-1.png)
@@ -93,7 +88,7 @@ The demo application uses redis streams for interservice communication. The foll
 
 ### Validating digital identities
 
-In an e-commerce application, validating digital identities happens at checkout time. You want to make sure the customer is who they say they are before you attempt to process their order. To validate digital identites, we need to calculate the digital identity score, starting in the `orders service`. The following outlines the workflow, and the responsibilties of each service:
+In an e-commerce application, validating digital identities happens at checkout time. You want to make sure the customer is who they say they are before you attempt to process their order. To validate digital identities, we need to calculate the digital identity score, starting in the `orders service`. The following outlines the workflow, and the responsibilities of each service:
 
 ![digital-identity-code-flow-02](./images/digital-identity-code-flow-2.png)
 
@@ -102,6 +97,12 @@ In an e-commerce application, validating digital identities happens at checkout 
 1. `digital identity service`: reads the identity from the `CALCULATE_IDENTITY_SCORE` stream event
 1. `digital identity service`: stores the identity with its calculated score as JSON
    ![Validation Identity as JSON](./images/code-flow-2-4.png)
+
+## E-commerce application frontend using Next.js and Tailwind
+
+<MicroservicesEcommerceDesign />
+
+<SourceCodeFraudDetection />
 
 ## Building a digital identity validation microservice with redis
 
@@ -113,8 +114,9 @@ Now, let's go step-by-step through the process of storing, scoring, and validati
 
 ```typescript
 //addLoginToTransactionStream
-const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3';
-const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e';
+const userId = 'USR_4e7acc44-e91e-4c5c-9112-bdd99d799dd3'; //from session
+const sessionId = 'SES_94ff24a8-65b5-4795-9227-99906a43884e'; //from session
+const persona = 'GRANDFATHER'; //from session
 
 const entry: ITransactionStreamMessage = {
   action: TransactionStreamActions.INSERT_LOGIN_IDENTITY,
@@ -138,75 +140,133 @@ await nodeRedisClient.xAdd(streamKeyName, id, entry);
 2. `digital identity service`: reads the identity from the `INSERT_LOGIN_IDENTITY` stream
 
 ```typescript
+interface ListenStreamOptions {
+  streams: {
+    streamKeyName: string;
+    eventHandlers: {
+      [messageAction: string]: IMessageHandler;
+    };
+  }[];
+  groupName: string;
+  consumerName: string;
+  maxNoOfEntriesToReadAtTime?: number;
+}
+
 // Below is some code for how you would use redis to listen for the stream events:
-async function listenToStreams(
-  onMessage: (message: any, messageId: string) => Promise<void>,
-) {
-  const redis = getNodeRedisClient();
-  const streams = options.streams;
-  const groupName = options.groupName;
-  const consumerName = options.consumerName;
-  const readMaxCount = options.maxNoOfEntriesToReadAtTime || 100;
 
-  try {
-    const idPosition = '0'; //0 = start, $ = end or any specific id
-    await Promise.all(
-      streams.map((stream) => {
-        return redis.xGroupCreate(stream.streamKeyName, groupName, idPosition, {
-          MKSTREAM: true,
-        });
-      }),
-    );
-    LoggerCls.info(`Created consumer group ${groupName}`);
-  } catch (err) {
-    LoggerCls.error('Consumer group already exists !'); //, err
-  }
+const listenToStreams = async (options: ListenStreamOptions) => {
+  /*
+   (A) create consumer group for the stream
+   (B) read set of messages from the stream
+   (C) process all messages received
+   (D) trigger appropriate action callback for each message
+   (E) acknowledge individual messages after processing
+  */
+  const nodeRedisClient = getNodeRedisClient();
+  if (nodeRedisClient) {
+    const streams = options.streams;
+    const groupName = options.groupName;
+    const consumerName = options.consumerName;
+    const readMaxCount = options.maxNoOfEntriesToReadAtTime || 100;
+    const idInitialPosition = '0'; //0 = start, $ = end or any specific id
+    const streamKeyIdArr: {
+      key: string;
+      id: string;
+    }[] = [];
 
-  LoggerCls.info(`Starting consumer ${consumerName}.`);
+    streams.map(async (stream) => {
+      LoggerCls.info(
+        `Creating consumer group ${groupName} in stream ${stream.streamKeyName}`,
+      );
 
-  while (true) {
-    //read set of messages from different streams
-    const dataArr = await redis.xReadGroup(
-      commandOptions({
-        isolated: true,
-      }),
-      groupName,
-      consumerName,
-      streams.map((stream) => ({ key: stream.streamKeyName, id: '>' })),
-      {
-        COUNT: readMaxCount, // Read n entries at a time
-        BLOCK: 5, //block for 0 (infinite) seconds if there are none.
-      },
-    );
+      try {
+        // (A) create consumer group for the stream
+        await nodeRedisClient.xGroupCreate(
+          stream.streamKeyName,
+          groupName,
+          idInitialPosition,
+          {
+            MKSTREAM: true,
+          },
+        );
+      } catch (err) {
+        LoggerCls.error(
+          `Consumer group ${groupName} already exists in stream ${stream.streamKeyName}!`,
+        );
+      }
 
-    if (dataArr && dataArr.length) {
-      for (let data of dataArr) {
-        for (let messageItem of data.messages) {
-          const streamKeyName = data.name;
+      streamKeyIdArr.push({
+        key: stream.streamKeyName,
+        id: '>', // Next entry ID that no consumer in this group has read
+      });
+    });
 
-          const stream = streams.find((s) => s.streamKeyName == streamKeyName);
+    LoggerCls.info(`Starting consumer ${consumerName}.`);
 
-          if (!stream || !messageItem.message) {
-            continue;
+    while (true) {
+      try {
+        // (B) read set of messages from different streams
+        const dataArr = await nodeRedisClient.xReadGroup(
+          commandOptions({
+            isolated: true,
+          }),
+          groupName,
+          consumerName,
+          //can specify multiple streams in array [{key, id}]
+          streamKeyIdArr,
+          {
+            COUNT: readMaxCount, // Read n entries at a time
+            BLOCK: 5, //block for 0 (infinite) seconds if there are none.
+          },
+        );
+
+        // dataArr = [
+        //   {
+        //     name: 'streamName',
+        //     messages: [
+        //       {
+        //         id: '1642088708425-0',
+        //         message: {
+        //           key1: 'value1',
+        //         },
+        //       },
+        //     ],
+        //   },
+        // ];
+
+        //(C) process all messages received
+        if (dataArr && dataArr.length) {
+          for (let data of dataArr) {
+            for (let messageItem of data.messages) {
+              const streamKeyName = data.name;
+
+              const stream = streams.find(
+                (s) => s.streamKeyName == streamKeyName,
+              );
+
+              if (stream && messageItem.message) {
+                const streamEventHandlers = stream.eventHandlers;
+                const messageAction = messageItem.message.action;
+                const messageHandler = streamEventHandlers[messageAction];
+
+                if (messageHandler) {
+                  // (D) trigger appropriate action callback for each message
+                  await messageHandler(messageItem.message, messageItem.id);
+                }
+                //(E) acknowledge individual messages after processing
+                nodeRedisClient.xAck(streamKeyName, groupName, messageItem.id);
+              }
+            }
           }
-
-          const streamEventHandlers = stream.eventHandlers;
-          const action = messageItem.message.action;
-          const handler = streamEventHandlers[action];
-
-          if (!handler) {
-            continue;
-          }
-
-          await handler(messageItem.message, messageItem.id);
-
-          //acknowledge individual messages after processing
-          redis.xAck(streamKeyName, groupName, messageItem.id);
+        } else {
+          // LoggerCls.info('No new stream entries.');
         }
+      } catch (err) {
+        LoggerCls.error('xReadGroup error !', err);
       }
     }
   }
-}
+};
 
 // `listenToStreams` listens for events and calls the appropriate callback to further handle the events.
 listenToStreams({
@@ -215,8 +275,7 @@ listenToStreams({
       streamKeyName: REDIS_STREAMS.STREAMS.TRANSACTIONS,
       eventHandlers: {
         [TransactionStreamActions.INSERT_LOGIN_IDENTITY]: insertLoginIdentity,
-        [TransactionStreamActions.CALCULATE_IDENTITY_SCORE]:
-          scoreDigitalIdentity,
+        //...
       },
     },
   ],
@@ -234,18 +293,10 @@ const insertLoginIdentity: IMessageHandler = async (
 ) => {
   LoggerCls.info(`Adding digital identity to redis for ${message.userId}`);
 
-  //step 1 - add login digital identity to redis
+  // add login digital identity to redis
   const insertedKey = await addDigitalIdentityToRedis(message);
 
-  await streamLog({
-    action: TransactionStreamActions.INSERT_LOGIN_IDENTITY,
-    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] New Login Digital Identity added to Redis (JSON) at key ${insertedKey} for the user ${message.userId}`,
-    metadata: message,
-  });
-
-  await nextTransactionStep(message);
-
-  return true;
+  //...
 };
 
 const addDigitalIdentityToRedis = async (
@@ -268,7 +319,7 @@ const addDigitalIdentityToRedis = async (
 
     createdOn: new Date(),
     createdBy: userId,
-    statusCode: DB_ROW_STATUS.ACTIVE, //1
+    statusCode: DB_ROW_STATUS.ACTIVE,
   };
 
   const repository = digitalIdentityRepo.getRepository();
@@ -293,6 +344,9 @@ let orderDetails = {
   orderId: '63f5f8dc3696d145a45775a6',
   orderAmount: '1000',
   userId: userId,
+  sessionId: sessionId,
+  orderStatus: 1,
+  products: order.products, //array of product details
 };
 
 const entry: ITransactionStreamMessage = {
@@ -300,11 +354,12 @@ const entry: ITransactionStreamMessage = {
   logMessage: `Digital identity to be validated/ scored for the user ${userId}`,
   userId: userId,
   sessionId: sessionId,
+  orderDetails: orderDetails ? JSON.stringify(orderDetails) : '',
+  transactionPipeline: JSON.stringify(TransactionPipelines.CHECKOUT),
 
   identityBrowserAgent: req.headers['user-agent'],
   identityIpAddress:
     req.headers['x-forwarded-for']?.toString() || req.socket.remoteAddress,
-  identityTransactionDetails: orderDetails ? JSON.stringify(orderDetails) : '',
 };
 
 const nodeRedisClient = getNodeRedisClient();
@@ -316,49 +371,36 @@ await nodeRedisClient.xAdd(streamKeyName, id, entry);
 2. `Digital identity service` reads the identity from the `CALCULATE_IDENTITY_SCORE` stream
 
 ```typescript
+listenToStreams({
+  streams: [
+    {
+      streamKeyName: REDIS_STREAMS.STREAMS.TRANSACTIONS,
+      eventHandlers: {
+        // ...
+        [TransactionStreamActions.CALCULATE_IDENTITY_SCORE]:
+          scoreDigitalIdentity,
+      },
+    },
+  ],
+  groupName: REDIS_STREAMS.GROUPS.IDENTITY,
+  consumerName: REDIS_STREAMS.CONSUMERS.IDENTITY,
+});
+
 const scoreDigitalIdentity: IMessageHandler = async (
   message: ITransactionStreamMessage,
   messageId,
 ) => {
   LoggerCls.info(`Scoring digital identity for ${message.userId}`);
 
-  await streamLog({
-    action: TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
-    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Calculating digital identity score for the user ${message.userId}`,
-    metadata: message,
-  });
-
   //step 1 - calculate score for validation digital identity
   const identityScore = await calculateIdentityScore(message);
   message.identityScore = identityScore.toString();
-
-  await streamLog({
-    action: TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
-    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Digital identity score for the user ${message.userId} is ${identityScore}`,
-    metadata: message,
-  });
 
   LoggerCls.info(`Adding digital identity to redis for ${message.userId}`);
   //step 2 - add validation digital identity to redis
   const insertedKey = await addDigitalIdentityToRedis(message);
 
-  await streamLog({
-    action: TransactionStreamActions.CALCULATE_IDENTITY_SCORE,
-    message: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Digital Identity score added to Redis [${insertedKey}] for the user ${message.userId}`,
-    metadata: {
-      ...message,
-      identityScore: identityScore.toString(),
-    },
-  });
-
-  await nextTransactionStep({
-    ...message,
-    logMessage: `[${REDIS_STREAMS.CONSUMERS.IDENTITY}] Requesting next step in transaction risk scoring for the user ${message.userId}`,
-
-    identityScore: identityScore.toString(),
-  });
-
-  return true;
+  // ...
 };
 
 const calculateIdentityScore = async (message: ITransactionStreamMessage) => {
@@ -456,11 +498,13 @@ Digital identity systems are typically designed to be interoperable and scalable
 
 ### Additional Resources
 
-- [Transaction Risk Scoring](/howtos/solutions/fraud-detection/transaction-risk-scoring)
-- [CQRS](/howtos/solutions/microservices/cqrs)
-- [Interservice communication](/howtos/solutions/microservices/interservice-communication)
-- [Query caching](/howtos/solutions/microservices/caching)
-- [API gateway caching](/howtos/solutions/microservices/api-gateway-caching)
+- Redis Streams
+  - Explore streams in detail in the [Redis University course on Redis Streams](https://university.redis.com/courses/ru202/)
+  - Check out our e-book on [Understanding Streams in Redis and Kafka: A Visual Guide](https://redis.com/docs/understanding-streams-in-redis-and-kafka-a-visual-guide/)
+- Fraud detection with Redis
+  - [Transaction Risk Scoring](/howtos/solutions/fraud-detection/transaction-risk-scoring)
+- [Microservices with Redis](/howtos/solutions#microservices)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
 - [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
+- [Try Redis Enterprise for free](https://redis.com/try-free/)
