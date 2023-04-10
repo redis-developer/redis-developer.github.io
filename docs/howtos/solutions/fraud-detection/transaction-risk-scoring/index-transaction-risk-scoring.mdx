@@ -11,6 +11,8 @@ import MicroservicesEcommerceDesign from '../../microservices/common-data/micros
 import MicroservicesArchitectureWithRedis from '../../microservices/common-data/microservices-arch-with-redis.mdx';
 import SourceCodeFraudDetection from '../common-fraud/source-code-tip.mdx';
 import RedisInsightTransactionStreamImage from './images/redisinsight-transaction-stream.png';
+import RedisInsightBloomFiltersImage from './images/redisinsight-bloom-filters.png';
+import RedisInsightProfileFeatureImage from './images/redisinsight-profile-feature.png';
 
 <Authors frontMatter={frontMatter} />
 
@@ -546,11 +548,21 @@ Now that you understand some of the code involved in processing transactions, le
 
 You can see the `action` column shows the transaction pipeline discussed earlier. Another thing to look at in RedisInsight is the Bloom filters:
 
-![RedisInsight transaction risk scoring bloom filters](./images/redisinsight-bloom-filters.png)
+<img
+  src={RedisInsightBloomFiltersImage}
+  alt="RedisInsight transaction risk scoring bloom filters"
+  width="600"
+  className="margin-bottom--md"
+/>
 
 These filters are pre-populated in the demo application based on a feature store. Redis is also storing the features, which in this case is the profiles of each of the personas. Below is an example of one of the profile features:
 
-![RedisInsight transaction risk scoring feature store](./images/redisinsight-profile-feature.png)
+<img
+  src={RedisInsightProfileFeatureImage}
+  alt="RedisInsight transaction risk scoring feature store"
+  width="500"
+  className="margin-bottom--md"
+/>
 
 ## Conclusion
 
