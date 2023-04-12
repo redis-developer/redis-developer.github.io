@@ -1,0 +1,153 @@
+---
+id: index-cache-prefetching
+title: How to use Redis for Cache Prefetching Strategy
+sidebar_label: How to use Redis for Cache Prefetching Strategy
+slug: /howtos/solutions/caching-architecture/cache-prefetching
+authors: [prasan, will]
+---
+
+import Authors from '@theme/Authors';
+import CachingMovieAppDesign from '../common-caching/caching-movie-app.mdx';
+import SourceCodeMovieApp from '../common-caching/source-code-movie-app.mdx';
+import redisInsightLanguageJson from './images/redis-json-01.png';
+import redisInsightCountryJson from './images/redis-json-02.png';
+
+<Authors frontMatter={frontMatter} />
+
+## What is cache prefetching?
+
+As the name implies, required data is fetched in to the cache from the database before it is actually needed.
+So cache serves the data faster to the application when needed rather retrieval of data from database every time.
+
+Let's consider **Master data lookup** example to illustrate cache prefetching strategy.
+Cache prefetching is not just limited to master data, you can consider any data as per your business/ application requirements.
+
+One ongoing developer challenge is to (swiftly) create, read, update, and (possibly) delete data that lives long, changes infrequently, and is regularly referenced by other data, directly or indirectly. That's a working definition of **master data**, especially when it also represents the organization's core data that is considered essential for its operations.
+
+Master data generally changes infrequently - (say in Movie application) country lists, genre, and movie languages usually stay the same. That presents an opportunity to speed things up. You can address access and manipulation operations so that data consistency is preserved and data access happens quickly.
+
+From a developer's point of view, master data lookup refers to the process by which master data is accessed in business transactions, in application setup, and any other way that software retrieves the information. Examples of master data lookup include fetching data for user interface (UI) elements (such as drop-down dialogs, select values, multi-language labels), fetching constants, user access control, theme, and other product configuration. And you can do that even when you rely primarily on MongoDB as a persistent data store.
+
+![pattern](./images/pattern.jpg)
+
+Let's see how the **cache prefetching** functions in "Master data lookup" example:
+
+1. Read the master data from MongoDB on application startup and store a copy of the data in Redis. This pre-caches the data for fast retrieval. Use a script or a cron job to regularly copy latest master data to Redis.
+2. The application requests Master data.
+3. Instead of MongoDB serving the data, the master data will be served from Redis.
+
+## Why you should use Redis for cache prefetching
+
+- **Serve prefetched data at speed**: By definition, nearly every application requires access to master or other common data. Pre-caching such frequent data with Redis delivers it to users at high speed.
+
+- **Support massive tables**: Master tables often have millions of records. Searching through them can cause performance bottlenecks. Use Redis to perform real-time search on the large tables to increase performance with sub-millisecond response.
+
+- **Postpone expensive hardware and software investments**: Defer costly infrastructure enhancements by using Redis. Get the performance and scaling benefits without asking the CFO to write a check.
+
+:::tip
+
+If you use **Redis Enterprise**, cache prefetching is easier due to its support for JSON and search. You also get additional features such as real-time performance, High scalability, resiliency, and fault tolerance. You can also call upon high-availability features such as Active-Active geo-redundancy.
+
+:::
+
+## Cache prefetching in a NodeJS application with Redis and MongoDB
+
+### Demo application
+
+<CachingMovieAppDesign />
+
+<SourceCodeMovieApp />
+
+The developer responsible for this movie application would treat certain fields as master data, including movie language, country, genre, and ratings, because they are required for common application transactions.
+
+Consider the pop-up dialog that appears when a user who wants to add a new movie clicks the movie application plus the icon. The pop-up includes drop-down menus for both country and language. In this demonstration, Redis loads the values.
+
+![demo-03](../common-caching/images/demo-03.png)
+
+### Prefetching data
+
+The code snippet to save MongoDB JSON documents in to Redis (as JSON) using [Redis om Node](https://github.com/redis/redis-om-node) library.
+
+```js
+async function insertMasterCategoriesToRedis() {
+  ...
+  const _dataArr = await getMasterCategories(); //from MongoDb
+  const repository = MasterCategoryRepo.getRepository();
+
+  if (repository && _dataArr && _dataArr.length) {
+    for (const record of _dataArr) {
+      const entity = repository.createEntity(record);
+      entity.categoryTag = [entity.category]; //for tag search
+      //adds JSON to Redis
+      await repository.save(entity);
+    }
+  }
+  ...
+}
+
+async function getMasterCategories() {
+  //fetching data from MongoDb
+  ...
+  db.collection("masterCategories").find({
+    statusCode: {
+      $gt: 0,
+    },
+    category: {
+      $in: ["COUNTRY", "LANGUAGE"],
+    },
+  });
+  ...
+}
+```
+
+You can also check [Redis Insight](https://redis.com/redis-enterprise/redis-insight/) to verify that JSON data is inserted
+
+<img
+  src={redisInsightLanguageJson}
+  alt="redis-json"
+  width="500"
+  className="margin-bottom--md"
+/>
+<img
+  src={redisInsightCountryJson}
+  alt="redis-json"
+  width="500"
+  className="margin-bottom--md"
+/>
+
+### Querying data
+
+Previously, if the application used MongoDB, it searched the static database to retrieve the movie's country and language values. That can be time consuming if it's read from persistent storage - and is inefficient if the information is static.
+Instead, now the master data can be accessed with few lines of code - and much faster response times.
+
+The code snippet display a fetch query of master data from Redis that loads the country and language dropdown values.
+
+```js
+*** With Redis ***
+*** Redis OM Node query ***
+function getMasterCategories() {
+  ...
+  masterCategoriesRepository
+    .search()
+    .where("statusCode")
+    .gt(0)
+    .and("categoryTag")
+    .containOneOf("COUNTRY", "LANGUAGE");
+  ...
+}
+```
+
+## Ready to use Redis for cache prefetching?
+
+You have learnt how to use Redis for cache prefetching with "master data lookup" example. It's possible to incrementally adopt Redis wherever needed with other caching strategies/patterns. For more resources on the topic of caching, check out the links below:
+
+## Additional resources
+
+- Caching with Redis
+  - [Write behind caching](/howtos/solutions/caching-architecture/write-behind)
+  - [Write through caching](/howtos/solutions/caching-architecture/write-through)
+  - [Query caching](/howtos/solutions/microservices/caching)
+- [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
+- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
+- [Try Redis Enterprise for free](https://redis.com/try-free/)

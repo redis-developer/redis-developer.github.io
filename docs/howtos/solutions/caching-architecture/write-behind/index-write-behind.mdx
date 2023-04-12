@@ -8,6 +8,8 @@ authors: [prasan, will]
 
 import Authors from '@theme/Authors';
 import RedisGears from '../common-caching/redis-gears.mdx';
+import CachingMovieAppDesign from '../common-caching/caching-movie-app.mdx';
+import SourceCodeMovieApp from '../common-caching/source-code-movie-app.mdx';
 
 import mongoCompassImage from './images/mongo-compass.png';
 
@@ -46,24 +48,13 @@ Consider Redis with this pattern when you need to
 
 ### Demo application
 
-The demonstration application showcases a movie application that uses basic create, read, update, and delete (CRUD) operations.
-![demo-01](./images/demo-01.png)
+<CachingMovieAppDesign />
 
-The movie application dashboard contains a search section at the top and a list of movie cards in the middle. The floating plus icon displays a pop-up when the user selects it, permitting the user to enter new movie details. The search section has a text search bar and a toggle link between text search and basic (that is, form-based) search. Each movie card has edit and delete icons, which are displayed when a mouse hovers over the card.
-
-You can follow along with the details using the code on GitHub.
-:::tip GITHUB CODE
-Below are the commands to clone the source code (frontend and backend) for the application used in this tutorial
-
-git clone https://github.com/redis-developer/ebook-speed-mern-frontend.git
-
-git clone https://github.com/redis-developer/ebook-speed-mern-backend.git
-
-:::
+<SourceCodeMovieApp />
 
 To demonstrate this pattern using the movie application, imagine that the user opens the pop-up to add a new movie.
 
-![demo-02](./images/demo-02.png)
+![demo-02](../common-caching/images/demo-02.png)
 
 Instead of the application immediately storing the data in MongoDB, the application writes the changes to Redis. In the background, RedisGears automatically synchronizes the data with the MongoDB database.
 
@@ -157,7 +148,7 @@ Next, confirm that the JSON is inserted in MongoDB too.
   className="margin-bottom--md"
 />
 
-You also can check [Redis Insight](https://redis.com/redis-enterprise/redis-insight/) to verify that the data is piped in via Streams for its consumers (like RedisGears).
+You can also check [Redis Insight](https://redis.com/redis-enterprise/redis-insight/) to verify that the data is piped in via Streams for its consumers (like RedisGears).
 
 ![redis-insight-stream](./images/redis-insight-stream.png)
 
@@ -187,14 +178,17 @@ if (movie) {
 ...
 ```
 
-## Ready to use Redis for Write behind caching?
+## Ready to use Redis for write behind caching?
 
 You now know how to use Redis for Write behind caching. It's possible to incrementally adopt Redis wherever needed with different strategies/patterns. For more resources on the topic of caching, check out the links below:
 
 ## Additional resources
 
-- [Write through caching](/howtos/solutions/caching-architecture/write-through)
-- [Query caching](/howtos/solutions/microservices/caching)
+- Caching with Redis
+  - [Write through caching](/howtos/solutions/caching-architecture/write-through)
+  - [Cache prefetching](/howtos/solutions/caching-architecture/cache-prefetching)
+  - [Query caching](/howtos/solutions/microservices/caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
 - [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
+- [Try Redis Enterprise for free](https://redis.com/try-free/)
