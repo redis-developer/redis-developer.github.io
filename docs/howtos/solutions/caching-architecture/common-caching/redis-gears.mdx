@@ -1,31 +1,31 @@
 ### What is RedisGears?
 
-RedisGears is a serverless engine for transaction, batch and event-driven data processing allowing users to write and run their own functions on data stored in Redis.
+RedisGears is a programmable serverless engine for transaction, batch, and event-driven data processing allowing users to write and run their own functions on data stored in Redis.
 
-Functions can be implemented in different languages, including Python and C APIs and can be executed by the RedisGears engine in one of two ways:
+Functions can be implemented in different languages, including Python and C, and can be executed by the RedisGears engine in one of two ways:
 
-1. **Batch** : triggered by the [Run](https://oss.redislabs.com/redisgears/functions.html#run) action, execution is immediate and on existing data
-2. **Event** : triggered by the [Register](https://oss.redislabs.com/redisgears/functions.html#register) action, execution is triggered by new events and on their data
+1. **Batch**: triggered by the [Run](https://oss.redislabs.com/redisgears/functions.html#run) action, execution is immediate and on existing data
+2. **Event**: triggered by the [Register](https://oss.redislabs.com/redisgears/functions.html#register) action, execution is triggered by new events and on their data
 
-- Some **batch** type operations RedisGears can do:
+Some **batch** type operations RedisGears can do:
 
-  - Run an operation on all keys in the KeySpace or keys matching a certain pattern like :
-    - Prefix all KeyNames with `person:`
-    - Delete all keys whose value is smaller than zero
-    - Write all the KeyNames starting with `person:` to a set
-  - Run a set of operations on all(or matched) keys where the output of one operation is the input of another like
-    - Find all keys with a prefix `person:` (assume all of them are of type hash)
-    - Increase user's days_old by 1, then sum them by age group (10-20, 20-30 etc.)
-    - Add today's stats to the sorted set of every client, calculate last 7 days average and save the computed result in a string
+- Run an operation on all keys in the KeySpace or keys matching a certain pattern like :
+  - Prefix all KeyNames with `person:`
+  - Delete all keys whose value is smaller than zero
+  - Write all the KeyNames starting with `person:` to a set
+- Run a set of operations on all(or matched) keys where the output of one operation is the input of another like
+  - Find all keys with a prefix `person:` (assume all of them are of type hash)
+  - Increase user's days_old by 1, then sum them by age group (10-20, 20-30 etc.)
+  - Add today's stats to the sorted set of every client, calculate last 7 days average and save the computed result in a string
 
-- Some **event** type operations RedisGears can do:
+Some **event** type operations RedisGears can do:
 
-  - RedisGears can also register event listeners that will trigger a function execution every time a watched key is changed like
-    - Listen for all operations on all keys and keep a list of all KeyNames in the KeySpace
-    - Listen for DEL operations on keys with a prefix `I-AM-IMPORTANT:` and asynchronously dump them in a "deleted keys" log file
-    - Listen for all HINCRBY operations on the element score of keys with a prefix `player:` and synchronously update a user's level when the score reaches 1000
+- RedisGears can also register event listeners that will trigger a function execution every time a watched key is changed like
+  - Listen for all operations on all keys and keep a list of all KeyNames in the KeySpace
+  - Listen for DEL operations on keys with a prefix `I-AM-IMPORTANT:` and asynchronously dump them in a "deleted keys" log file
+  - Listen for all HINCRBY operations on the element score of keys with a prefix `player:` and synchronously update a user's level when the score reaches 1000
 
-### How can i try RedisGears?
+### How do I use RedisGears?
 
 Run the Docker container:
 
@@ -45,11 +45,11 @@ Execute your function:
 docker exec -i redisgears redis-cli RG.PYEXECUTE "`cat hello_gears.py`"
 ```
 
-### Gears cli
+### Using gears-cli
 
 The gears-cli tool provides an easier way to execute RedisGears functions, specially if you need to pass some parameters too.
 
-It's written in Python and can be installed with `pip` :
+It's written in Python and can be installed with `pip`:
 
 ```sh
 pip install gears-cli

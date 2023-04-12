@@ -9,44 +9,56 @@ authors: [prasan, will]
 import Authors from '@theme/Authors';
 import CachingMovieAppDesign from '../common-caching/caching-movie-app.mdx';
 import SourceCodeMovieApp from '../common-caching/source-code-movie-app.mdx';
-import redisInsightLanguageJson from './images/redis-json-01.png';
-import redisInsightCountryJson from './images/redis-json-02.png';
+import RedisInsightLanguageJson from './images/Redis-json-01.png';
+import RedisInsightCountryJson from './images/Redis-json-02.png';
 
 <Authors frontMatter={frontMatter} />
 
+<SourceCodeMovieApp />
+
 ## What is cache prefetching?
 
-As the name implies, required data is fetched in to the cache from the database before it is actually needed.
-So cache serves the data faster to the application when needed rather retrieval of data from database every time.
+Cache prefetching is a technique used in database management systems (DBMS) to improve query performance by anticipating and fetching data from the storage subsystem before it is explicitly requested by a query.
 
-Let's consider **Master data lookup** example to illustrate cache prefetching strategy.
-Cache prefetching is not just limited to master data, you can consider any data as per your business/ application requirements.
+There are three main strategies for cache prefetching:
 
-One ongoing developer challenge is to (swiftly) create, read, update, and (possibly) delete data that lives long, changes infrequently, and is regularly referenced by other data, directly or indirectly. That's a working definition of **master data**, especially when it also represents the organization's core data that is considered essential for its operations.
+1. Sequential prefetching: This approach anticipates that data will be accessed in a sequential manner, such as when scanning a table or index. It prefetches the next set of data blocks or pages in the sequence to ensure they are available in cache when needed.
+1. Prefetching based on query patterns: Some database systems can analyze past query patterns to predict which data is likely to be accessed in the future. By analyzing these patterns, the DBMS can prefetch relevant data and have it available in cache when a similar query is executed.
+1. Prefetching based on data access patterns: In some cases, data access patterns can be derived from the application logic or schema design. By understanding these patterns, the database system can prefetch data that is likely to be accessed soon.
 
-Master data generally changes infrequently - (say in Movie application) country lists, genre, and movie languages usually stay the same. That presents an opportunity to speed things up. You can address access and manipulation operations so that data consistency is preserved and data access happens quickly.
+This tutorial will cover the third strategy, **prefetching based on data access patterns**.
 
-From a developer's point of view, master data lookup refers to the process by which master data is accessed in business transactions, in application setup, and any other way that software retrieves the information. Examples of master data lookup include fetching data for user interface (UI) elements (such as drop-down dialogs, select values, multi-language labels), fetching constants, user access control, theme, and other product configuration. And you can do that even when you rely primarily on MongoDB as a persistent data store.
+Imagine you're building a movie streaming platform. You need to be able to provide your users with a dashboard that allows them to quickly find the movies they want to watch. You have an extensive database filled with movies, and you have them categorized by things like country of origin, genre, language, etc. This data changes infrequently, and is regularly referenced all over your app and by other data. This kind of data that is long-lived and changes infrequently is called "master data."
+
+One ongoing developer challenge is to swiftly create, read, update, and delete master data. You might store your master data in a system of record like a SQL database or document database, and then use Redis as a cache to speed up lookups for that data. Then, when an application requests master data, instead of coming from the system of record, the master data is served from Redis. This is called the "master data-lookup" pattern.
+
+Consider this pattern when you need to:
+
+1. Serve master data at speed and scale
+1. Support massive master tables
+1. Postpone expensive hardware and software investments
+
+From a developer's point of view, "master data lookup" refers to the process by which master data is accessed in business transactions, in application setup, and any other way that software retrieves the information. Examples of master data lookup include fetching data for user interface (UI) elements (such as drop-down dialogs, select values, multi-language labels), fetching constants, user access control, theme, and other product configuration.
+
+Below you will find a diagram of the data flow for prefetching master data using Redis with MongoDB as the system of record.
 
 ![pattern](./images/pattern.jpg)
 
-Let's see how the **cache prefetching** functions in "Master data lookup" example:
+The steps involved in fetching data are as follows:
 
 1. Read the master data from MongoDB on application startup and store a copy of the data in Redis. This pre-caches the data for fast retrieval. Use a script or a cron job to regularly copy latest master data to Redis.
-2. The application requests Master data.
+2. The application requests master data.
 3. Instead of MongoDB serving the data, the master data will be served from Redis.
 
 ## Why you should use Redis for cache prefetching
 
-- **Serve prefetched data at speed**: By definition, nearly every application requires access to master or other common data. Pre-caching such frequent data with Redis delivers it to users at high speed.
-
-- **Support massive tables**: Master tables often have millions of records. Searching through them can cause performance bottlenecks. Use Redis to perform real-time search on the large tables to increase performance with sub-millisecond response.
-
-- **Postpone expensive hardware and software investments**: Defer costly infrastructure enhancements by using Redis. Get the performance and scaling benefits without asking the CFO to write a check.
+1. **Serve prefetched data at speed**: By definition, nearly every application requires access to master or other common data. Pre-caching such frequent data with Redis delivers it to users at high speed.
+1. **Support massive tables**: Master tables often have millions of records. Searching through them can cause performance bottlenecks. Use Redis to perform real-time search on the large tables to increase performance with sub-millisecond response.
+1. **Postpone expensive hardware and software investments**: Defer costly infrastructure enhancements by using Redis. Get the performance and scaling benefits without asking the CFO to write a check.
 
 :::tip
 
-If you use **Redis Enterprise**, cache prefetching is easier due to its support for JSON and search. You also get additional features such as real-time performance, High scalability, resiliency, and fault tolerance. You can also call upon high-availability features such as Active-Active geo-redundancy.
+If you use **Redis Enterprise**, cache prefetching is easier due to its support for JSON and search. You also get additional features such as real-time performance, high scalability, resiliency, and fault tolerance. You can also call upon high-availability features such as Active-Active geo-redundancy.
 
 :::
 
@@ -58,15 +70,13 @@ If you use **Redis Enterprise**, cache prefetching is easier due to its support 
 
 <SourceCodeMovieApp />
 
-The developer responsible for this movie application would treat certain fields as master data, including movie language, country, genre, and ratings, because they are required for common application transactions.
-
-Consider the pop-up dialog that appears when a user who wants to add a new movie clicks the movie application plus the icon. The pop-up includes drop-down menus for both country and language. In this demonstration, Redis loads the values.
+Certain fields used in the demo application serve as master data, including movie language, country, genre, and ratings. They are master data because they are required for almost every application transaction. For example, the pop-up dialog (seen below) that appears when a user who wants to add a new movie clicks the movie application plus the icon. The pop-up includes drop-down menus for both country and language. In this case, Redis stores and provides the values.
 
 ![demo-03](../common-caching/images/demo-03.png)
 
-### Prefetching data
+### Prefetching data with Redis and MongoDB
 
-The code snippet to save MongoDB JSON documents in to Redis (as JSON) using [Redis om Node](https://github.com/redis/redis-om-node) library.
+The code snippet below is used to prefetch MongoDB JSON documents and store them in Redis (as JSON) using the [Redis OM for Node.js](https://github.com/Redis/Redis-om-node) library.
 
 ```js
 async function insertMasterCategoriesToRedis() {
@@ -100,27 +110,30 @@ async function getMasterCategories() {
 }
 ```
 
-You can also check [Redis Insight](https://redis.com/redis-enterprise/redis-insight/) to verify that JSON data is inserted
+You can also check [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) to verify that JSON data is inserted, as seen below:
 
 <img
-  src={redisInsightLanguageJson}
-  alt="redis-json"
+  src={RedisInsightLanguageJson}
+  alt="Redis-json"
   width="500"
   className="margin-bottom--md"
 />
 <img
-  src={redisInsightCountryJson}
-  alt="redis-json"
+  src={RedisInsightCountryJson}
+  alt="Redis-json"
   width="500"
   className="margin-bottom--md"
 />
 
-### Querying data
+:::tip
 
-Previously, if the application used MongoDB, it searched the static database to retrieve the movie's country and language values. That can be time consuming if it's read from persistent storage - and is inefficient if the information is static.
-Instead, now the master data can be accessed with few lines of code - and much faster response times.
+RedisInsight is the free redis GUI for viewing data in redis. <u>[Click here to download.](https://redis.com/redis-enterprise/redis-insight/)</u>
 
-The code snippet display a fetch query of master data from Redis that loads the country and language dropdown values.
+:::
+
+### Querying prefetched data from Redis
+
+Prior to prefetching with Redis, the application searched the static database (MongoDB) to retrieve the movie's country and language values. As more people started using the application, the database became overloaded with queries. The application was slow and unresponsive. To solve this problem, the application was modified to use Redis to store the master data. The code snippet below shows how the application queries Redis for the master data, specifically the country and language values for the dropdown menus:
 
 ```js
 *** With Redis ***
@@ -139,15 +152,15 @@ function getMasterCategories() {
 
 ## Ready to use Redis for cache prefetching?
 
-You have learnt how to use Redis for cache prefetching with "master data lookup" example. It's possible to incrementally adopt Redis wherever needed with other caching strategies/patterns. For more resources on the topic of caching, check out the links below:
+In this tutorial you learned how to use Redis for cache prefetching with a "master data lookup" example. While this is one way Redis is used in an application, it's possible to incrementally adopt Redis wherever needed with other caching strategies/patterns. For more resources on the topic of caching, check out the links below:
 
 ## Additional resources
 
 - Caching with Redis
   - [Write behind caching](/howtos/solutions/caching-architecture/write-behind)
   - [Write through caching](/howtos/solutions/caching-architecture/write-through)
-  - [Query caching](/howtos/solutions/microservices/caching)
+  - [Query caching in a microservices application](/howtos/solutions/microservices/caching)
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
-- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
-- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
+- Clients like [node-redis](https://github.com/redis/node-redis) and [Redis OM for Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
+- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/): To view your Redis data or to play with raw Redis commands in the workbench
 - [Try Redis Enterprise for free](https://redis.com/try-free/)
