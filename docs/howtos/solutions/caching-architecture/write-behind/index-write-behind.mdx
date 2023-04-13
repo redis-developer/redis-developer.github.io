@@ -1,7 +1,7 @@
 ---
 id: index-write-behind
-title: How to use Redis for Write Behind caching strategy
-sidebar_label: How to use Redis for Write Behind caching strategy
+title: How to use Redis for Write-behind Caching
+sidebar_label: How to use Redis for Write-behind Caching
 slug: /howtos/solutions/caching-architecture/write-behind
 authors: [prasan, will]
 ---
@@ -15,32 +15,40 @@ import mongoCompassImage from './images/mongo-compass.png';
 
 <Authors frontMatter={frontMatter} />
 
-## What is write behind caching?
+## What is write-behind caching?
 
-With the **Write-behind** caching pattern, every time an application writes data to the cache, it also asynchronously updates the records in the persistent database.
+Imagine you've built a movie streaming app. You used MongoDB as your data store, and as you needed to scale you implemented caching using Redis. This allows you to drastically speed up reads. However, now you are experiencing slowness when writing to MongoDB.
 
-Since the write-behind pattern adds the system of record to a queue, this permits the application thread to move on more quickly, but it does mean that there is a **short time** when the data between the cache and the system of record is **inconsistent**.
+For example, maybe you want to allow users to continue watching movies where they last left off. This requires you to store the timestamp of where a user is when they decide to pause the movie. With millions of users, this is starting to cause MongoDB to slow down when you have peaks in demand.
 
-![pattern](./images/pattern.jpg)
+You need a way of flattening the peaks in demand, allowing you to write data quickly and then persist it to MongoDB when the demand dies down. What you need is called the "write-behind pattern."
 
-The pattern works as presented :
+The pattern is simple, your application writes data to Redis and then asynchronously data gets written to MongoDB. Write operations are queued up so that the application can move on quickly and the cache can catch up over time. However, this does mean there is a short time when the data between the cache and the system of record is inconsistent.
+
+Below is a diagram of the write-behind pattern for the application:
+
+![write-pattern using Redis in a movie streaming application](./images/pattern.jpg)
+
+The pattern works as follows:
 
 1. The application reads and writes data to Redis.
-1. Next, Redis syncs any changed data to the MongoDB database asynchronously.
+1. Redis syncs any changed data to the MongoDB database asynchronously.
 
-## Why you should use Redis for write behind caching
+## Why you should use Redis for write-behind caching
 
 Consider Redis with this pattern when you need to
 
-- **Flatten peaks in demand** : Under stress, an application may need to write data quickly. If your application needs to perform a large number of write operations at high speed, consider Redis. The RedisGears modules make sure the data stored in the cache is synced with the database.
+1. **Flatten peaks in demand**: Under stress, an application may need to write data quickly. If your application needs to perform a large number of write operations at high speed, consider Redis. The programmability capabilities of Redis make sure the data stored in the cache is synced with the database.
+1. **Batch multiple writes**: Sometimes it's expensive to write to a database frequently (for example, logging). In those cases, it can be cost-effective to batch the database writes with Redis so that data syncs at intervals.
+1. **Offload the primary database**: Database load is reduced when heavy writes operate on Redis, So we can spread writes to improve performance during the peak time of application usage.
 
-- **Batch multiple writes**: Sometimes it's expensive to write to a database frequently (for example, logging). In those cases, it can be cost-effective to batch the database writes with Redis so that data syncs at intervals.
+## Redis programmability for write-behind caching using RedisGears
 
-- **Offload the primary database** : Database load is reduced when heavy writes operate on Redis, So we can spread writes to improve performance during the peak time of application usage.
+:::tip
 
-## RedisGears brief
+You can skip reading this section if you are already familiar with RedisGears)
 
-(You can skip reading this section, if you are aware of Redis Gears)
+:::
 
 <RedisGears />
 
@@ -58,7 +66,7 @@ To demonstrate this pattern using the movie application, imagine that the user o
 
 Instead of the application immediately storing the data in MongoDB, the application writes the changes to Redis. In the background, RedisGears automatically synchronizes the data with the MongoDB database.
 
-### Gears code
+### Programming Redis using the write-behind pattern
 
 Developers need to load some code (say python in our example) to the Redis server before using the write-behind pattern (which syncs data from Redis to MongoDB). The Redis server has a RedisGears module that interprets the python code and syncs the data from Redis to MongoDB.
 
@@ -66,9 +74,7 @@ Loading the Python code is easier than it sounds. Simply replace database detail
 
 Create the Python file (shown below, and [available online](https://github.com/redis-developer/ebook-speed-mern-backend/blob/main/data/write-behind/movies-write-behind.py)). Then update the MongoDB connection details, database, collection, and primary key name to sync.
 
-```python
-movies-write-behind.py
-
+```python title="movies-write-behind.py"
 # Gears Recipe for a single write behind
 
 # import redis gears & mongo db libs
@@ -94,7 +100,7 @@ RGJSONWriteBehind(GB,  keysPrefix='MovieEntity',
                   version='99.99.99')
 ```
 
-:::tip What is RedisGears recipe?
+:::tip What is a RedisGears recipe?
 
 A collection of RedisGears functions and any dependencies they may have that implement a high-level functional purpose is called a `recipe`.
 Example : "RGJSONWriteBehind" function in above python code
@@ -103,7 +109,7 @@ Example : "RGJSONWriteBehind" function in above python code
 
 There are two ways to load that Python file into the Redis server:
 
-1. using the gears command-line interface (CLI)
+1. Using the gears command-line interface (CLI)
 
 Find more information about the Gears CLI at [gears-cli](https://github.com/RedisGears/gears-cli) and [rgsync](https://github.com/RedisGears/rgsync#running-the-recipe).
 
@@ -117,7 +123,7 @@ pip install gears-cli
 gears-cli --host <redisHost> --port <redisPort> --password <redisPassword> run /users/tom/movies-write-behind.py REQUIREMENTS rgsync pymongo==3.12.0
 ```
 
-2. using the RG.PYEXECUTE from the Redis command line.
+2. Using the RG.PYEXECUTE from the Redis command line.
 
 Find more information at [RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute).
 
@@ -131,7 +137,13 @@ The RG.PYEXECUTE command can also be executed from the Node.js code
 
 Find more examples at [Redis Gears sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo).
 
-### Verify sync
+### Verifying the write-behind pattern using RedisInsight
+
+:::tip
+
+RedisInsight is the free redis GUI for viewing data in redis. <u>[Click here to download.](https://redis.com/redis-enterprise/redis-insight/)</u>
+
+:::
 
 The next step is to verify that RedisGears is syncing data between Redis and MongoDB.
 
@@ -148,14 +160,13 @@ Next, confirm that the JSON is inserted in MongoDB too.
   className="margin-bottom--md"
 />
 
-You can also check [Redis Insight](https://redis.com/redis-enterprise/redis-insight/) to verify that the data is piped in via Streams for its consumers (like RedisGears).
+You can also check [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) to verify that the data is piped in via Streams for its consumers (like RedisGears).
 
 ![redis-insight-stream](./images/redis-insight-stream.png)
 
-How does all that work with the demo application? Consider using snippets to insert a movie. Once data is written to Redis, Redis Gears automatically synchronizes it to MongoDB.
+How does all that work with the demo application? Below is a code snipped to insert a movie. Once data is written to Redis, RedisGears automatically synchronizes it to MongoDB.
 
-```js
-*** BEFORE (MongoDB)***
+```js title="BEFORE (using MongoDB)"
 ...
 //(Node mongo query)
 if (movie) {
@@ -166,8 +177,7 @@ if (movie) {
 ...
 ```
 
-```js
-*** AFTER (Redis)***
+```js title="AFTER (using Redis)"
 ...
 //(Redis OM Node query)
 if (movie) {
@@ -178,9 +188,9 @@ if (movie) {
 ...
 ```
 
-## Ready to use Redis for write behind caching?
+## Ready to use Redis for write-behind caching?
 
-You now know how to use Redis for Write behind caching. It's possible to incrementally adopt Redis wherever needed with different strategies/patterns. For more resources on the topic of caching, check out the links below:
+You now know how to use Redis for write-behind caching. It's possible to incrementally adopt Redis wherever needed with different strategies/patterns. For more resources on the topic of caching, check out the links below:
 
 ## Additional resources
 
