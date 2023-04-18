@@ -10,6 +10,7 @@ import Authors from '@theme/Authors';
 import RedisGears from '../common-caching/redis-gears.mdx';
 import CachingMovieAppDesign from '../common-caching/caching-movie-app.mdx';
 import SourceCodeMovieApp from '../common-caching/source-code-movie-app.mdx';
+import WritePatternDifferences from '../common-caching/write-behind-vs-write-through.mdx';
 
 import mongoCompassImage from './images/mongo-compass.png';
 
@@ -27,12 +28,16 @@ The pattern is simple, your application writes data to Redis and then asynchrono
 
 Below is a diagram of the write-behind pattern for the application:
 
-![write-pattern using Redis in a movie streaming application](./images/pattern.jpg)
+![write-behind-pattern using Redis in a movie streaming application](./images/pattern.jpg)
 
 The pattern works as follows:
 
 1. The application reads and writes data to Redis.
 1. Redis syncs any changed data to the MongoDB database asynchronously.
+
+<WritePatternDifferences />
+
+Learn more about [Write through pattern](/howtos/solutions/caching-architecture/write-through)
 
 ## Why you should use Redis for write-behind caching
 

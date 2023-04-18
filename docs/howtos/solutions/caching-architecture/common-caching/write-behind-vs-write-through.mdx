@@ -1,0 +1,6 @@
+There are two related write patterns, and the main differences between them are as follows
+
+| Write Behind                                                                                    | Write through                                                                       |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Syncs data asynchronously                                                                       | Syncs data synchronously/ immediately                                               |
+| Data between the cache and the system of record (database) is **inconsistent for a short time** | Data between the cache and the system of record (database) is always **consistent** |
