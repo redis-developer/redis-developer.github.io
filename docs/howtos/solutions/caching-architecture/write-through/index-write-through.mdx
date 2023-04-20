@@ -237,6 +237,14 @@ Next, confirm that the user is inserted in PostgreSQL too by opening up the [sel
 
 You can also check [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) to verify that the hash value made it into Redis. After RedisGears is done processing the `__{users:1}` key, it will be deleted from Redis and replaced by the `users:1` key. Check RedisInsight to verify that the `users:1` key is in Redis.
 
+This is how you can use RedisGears to write through to PostgreSQL, and so far we have only added a hash key. You can also update specific hash fields and it will be reflected in your PostgreSQL database. Run the following command to update the `username` field:
+
+```shell
+> hset __{users:1} username bar
+```
+
+Now go into Adminer and check the `username` field. You should see that it has been updated to `bar`.
+
 ## Ready to use Redis for write-through caching?
 
 You now know how to use Redis for write-through caching. It's possible to incrementally adopt Redis wherever needed with different strategies/patterns. For more resources on the topic of caching, check out the links below:
