@@ -48,12 +48,42 @@ Use the following commands to setup a Redis server locally:
 Redis Stack unifies and simplifies the developer experience of the leading Redis data store, modules and the capabilities they provide. Redis Stack bundles five Redis modules: RedisJSON, RedisSearch, RedisGraph, RedisTimeSeries, and RedisBloom.
 [Learn more](/create/redis-stack)
 :::
+    
+Before we start the CLI, let's start up the Redis server: `redis-server`. It should result in an output similar to the following:
 
-Ensure that you are able to use the following Redis command to connect to the Redis instance.
+```bash
+90856:C 20 Apr 2023 07:05:50.412 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+90856:C 20 Apr 2023 07:05:50.412 # Redis version=6.2.11, bits=64, commit=720ea82e, modified=0, pid=90856, just started
+90856:C 20 Apr 2023 07:05:50.412 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+90856:M 20 Apr 2023 07:05:50.412 * Increased maximum number of open files to 10032 (it was originally set to 256).
+90856:M 20 Apr 2023 07:05:50.412 * monotonic clock: POSIX clock_gettime
+                _._
+           _.-``__ ''-._
+      _.-``    `.  `_.  ''-._           Redis 6.2.11 (720ea82e/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+ |    `-._   `._    /     _.-'    |     PID: 90856
+  `-._    `-._  `-./  _.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |           https://redis.io
+  `-._    `-._`-.__.-'_.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |
+  `-._    `-._`-.__.-'_.-'    _.-'
+      `-._    `-.__.-'    _.-'
+          `-._        _.-'
+              `-.__.-'
+
+90856:M 20 Apr 2023 07:05:50.413 # Server initialized
+90856:M 20 Apr 2023 07:05:50.414 * Ready to accept connections
+```
+
+Now, in a **separate terminal instance (we need to leave the Redis server running),** ensure that you are able to use the following Redis command to connect to the Redis instance.
 
 ```bash
  redis-cli
- localhost>
+127.0.0.1:6379>
 ```
 
 Now you should be able to perform CRUD operations with Redis keys.
