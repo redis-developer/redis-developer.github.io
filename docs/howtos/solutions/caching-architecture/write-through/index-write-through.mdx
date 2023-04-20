@@ -157,7 +157,7 @@ RGWriteThrough(GB, keysPrefix='__',     mappings=usersMappings,
                connector=usersConnector, name='UsersWriteThrough', version='99.99.99')
 ```
 
-For the purpose of this example we are showing how to map Redis hash fields to PostgreSQL table columns. The `RGWriteThrough` function takes in the `usersMapping`, where the keys are the Redis hash keys and the values are the PostgreSQL table columns.
+Make sure you create the file "write-through.py" because the next instructions will use it. For the purpose of this example we are showing how to map Redis hash fields to PostgreSQL table columns. The `RGWriteThrough` function takes in the `usersMapping`, where the keys are the Redis hash keys and the values are the PostgreSQL table columns.
 
 :::tip What is a RedisGears recipe?
 
@@ -166,7 +166,7 @@ Example : "RGJSONWriteThrough" function in above python code
 
 :::
 
-The python file has a few dependencies in order to work. Below is the requirements.txt file that contains the dependencies:
+The python file has a few dependencies in order to work. Below is the requirements.txt file that contains the dependencies, create it alongside the "write-through.py" file:
 
 ```text title="requirements.txt"
 rgsync
