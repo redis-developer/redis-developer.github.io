@@ -609,7 +609,10 @@ module.exports = {
     {
       type: 'category',
       label: 'E-books',
-      items: ['ebooks/nosql-data-modeling-patterns'],
+      items: [
+        'ebooks/nosql-data-modeling-patterns',
+        'ebooks/three-caching-design-patterns'
+      ],
     },
   ],
 };

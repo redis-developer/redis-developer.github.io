@@ -32,12 +32,6 @@ Imagine you're building a movie streaming platform. You need to be able to provi
 
 One ongoing developer challenge is to swiftly create, read, update, and delete master data. You might store your master data in a system of record like a SQL database or document database, and then use Redis as a cache to speed up lookups for that data. Then, when an application requests master data, instead of coming from the system of record, the master data is served from Redis. This is called the "master data-lookup" pattern.
 
-Consider this pattern when you need to:
-
-1. Serve master data at speed and scale
-1. Support massive master tables
-1. Postpone expensive hardware and software investments
-
 From a developer's point of view, "master data lookup" refers to the process by which master data is accessed in business transactions, in application setup, and any other way that software retrieves the information. Examples of master data lookup include fetching data for user interface (UI) elements (such as drop-down dialogs, select values, multi-language labels), fetching constants, user access control, theme, and other product configuration.
 
 Below you will find a diagram of the data flow for prefetching master data using Redis with MongoDB as the system of record.
