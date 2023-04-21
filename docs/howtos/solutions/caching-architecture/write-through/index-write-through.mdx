@@ -13,12 +13,14 @@ import SourceCodeMovieApp from '../common-caching/source-code-movie-app.mdx';
 import WritePatternDifferences from '../common-caching/write-behind-vs-write-through.mdx';
 
 import mongoCompassImage from './images/mongo-compass.png';
+import redisHashView from './images/04-redis-hash-view.png';
+import redisHashUpdatedView from './images/07-redis-hash-updated-view.png';
 
 <Authors frontMatter={frontMatter} />
 
 ## What is write-through caching?
 
-Imagine you've built a movie streaming app. You used MongoDB as your data store, and as you needed to scale you implemented caching using Redis. However, now you are experiencing slowness in reflecting of updated user profile or subscription.
+Imagine you've built a movie streaming app. You used PostgreSQL as your data store, and as you needed to scale you implemented caching using Redis. However, now you are experiencing slowness in reflecting of updated user profile or subscription.
 
 For example, When a user purchases or modifies subscription, user expects the changes to be reflected immediately on his account so that the desired movie/ show of new subscription is enabled for watching.
 So you need a way of quickly providing strong consistency of user data. In such situation, What you need is called the "write-through pattern."
@@ -27,12 +29,12 @@ With the **Write-through** pattern, every time an application writes data to the
 
 Below is a diagram of the write-through pattern for the application:
 
-![write-through-pattern using Redis in a movie streaming application](./images/pattern-wt.jpg)
+![write-through-pattern using Redis in a movie streaming application](./images/pattern-wt.png)
 
 The pattern works as follows:
 
 1. The application reads and writes data to Redis.
-1. Redis syncs any changed data to the MongoDB database **synchronously/ immediately**.
+1. Redis syncs any changed data to the PostgreSQL database **synchronously/ immediately**.
 
 Note : the **Redis server is blocked** until a response from the main database is received.
 
@@ -68,50 +70,100 @@ You can skip reading this section if you are already familiar with RedisGears)
 
 <RedisGears />
 
-### Demo application
-
-<CachingMovieAppDesign />
-
-<SourceCodeMovieApp />
-
-To demonstrate this pattern using the movie application, imagine that the user opens the pop-up to add a new movie.
-
-![demo-02](../common-caching/images/demo-02.png)
-
-Instead of the application directly storing the data in MongoDB, the application writes the changes to Redis. In the background, RedisGears automatically synchronizes the data with the MongoDB database **immediately**.
-
 ### Programming Redis using the write-through pattern
 
-Developers need to load some code (say python in our example) to the Redis server before using the write-through pattern (which syncs data from Redis to MongoDB). The Redis server has a RedisGears module that interprets the python code and syncs the data from Redis to MongoDB.
+For our sample code, we will demonstrate writing `users` to Redis and then writing through to PostgreSQL. Use the docker-compose.yml file below to setup required environment:
 
-Loading the Python code is easier than it sounds. Simply replace database details in the Python file and then load the file to the Redis server.
-
-Create the Python file (shown below, and [available online](https://github.com/redis-developer/ebook-speed-mern-backend/blob/main/data/write-through/movies-write-through.py)). Then update the MongoDB connection details, database, collection, and primary key name to sync.
-
-```python title="movies-write-through.py"
-# Gears Recipe for a single write through
-
-# import redis gears & mongo db libs
-from rgsync import RGJSONWriteBehind, RGJSONWriteThrough
-from rgsync.Connectors import MongoConnector, MongoConnection
-
-# change mongodb connection
-# MongoConnection(user, password, host, authSource (optional), fullConnectionUrl (optional) )
-# connection = MongoConnection('ADMIN_USER','ADMIN_PASSWORD','ADMIN_HOST', "admin")
-connection = MongoConnection("", "", "", "", "MONGODB_CONNECTION_URL")
-
-# change MongoDB database
-db = 'dbSpeedMernDemo'
-
-# change MongoDB collection & it's primary key
-movieConnector = MongoConnector(connection, db, 'movies', 'movieId')
-
-# change redis keys with prefix that must be synced with mongodb collection
-RGJSONWriteThrough(GB,  keysPrefix='MovieEntity',
-                  connector=movieConnector, name='MoviesWriteThrough',
-                  version='99.99.99')
-
+```yaml title="docker-compose.yml"
+version: '3.9'
+services:
+  redis:
+    container_name: redis
+    image: 'redislabs/redismod:latest'
+    ports:
+      - 6379:6379
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: example
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 ```
+
+To run the docker-compose file, run the following command:
+
+```shell
+$ docker compose up -d
+```
+
+This will create a `Redis` server, a `PostgreSQL` server, and an `Adminer` server. Adminer is a web-based database management tool that allows you to view and edit data in your database.
+
+Next, open your browser to [http://localhost:8080/?pgsql=postgres&username=root&db=example&ns=public&sql=](http://localhost:8080/?pgsql=postgres&username=root&db=example&ns=public&sql=). You will have to input the password (which is `password` in the example above),
+
+![adminer-login](./images/01-adminer-login.png)
+
+then you will be taken to a SQL command page. Run the following SQL command to create a table:
+
+```sql title="users.sql"
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    date_of_birth DATE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+![adminer-table-creation](./images/02-adminer-table-creation.png)
+
+Developers need to load some code (say python in our example) to the Redis server before using the write-through pattern (which syncs data from Redis to the system of record). Redis server has a RedisGears module that interprets the python code and syncs the data from Redis to the system of record.
+
+Now, we need to create a RedisGears recipe that will write through to the PostgreSQL database. The following Python code will write through to the PostgreSQL database:
+
+```python title="write-through.py"
+from rgsync import RGWriteThrough
+from rgsync.Connectors import PostgresConnector, PostgresConnection
+
+'''
+Create Postgres connection object
+'''
+connection = PostgresConnection('root', 'password', 'postgres:5432/example')
+
+'''
+Create Postgres users connector
+'''
+usersConnector = PostgresConnector(connection, 'users', 'id')
+
+usersMappings = {
+    'username': 'username',
+    'email': 'email',
+    'pwhash': 'password_hash',
+    'first': 'first_name',
+    'last': 'last_name',
+    'dob': 'date_of_birth',
+    'created_at': 'created_at',
+    'updated_at': 'updated_at',
+}
+
+RGWriteThrough(GB, keysPrefix='__',     mappings=usersMappings,
+               connector=usersConnector, name='UsersWriteThrough', version='99.99.99')
+```
+
+Make sure you create the file "write-through.py" because the next instructions will use it. For the purpose of this example we are showing how to map Redis hash fields to PostgreSQL table columns. The `RGWriteThrough` function takes in the `usersMapping`, where the keys are the Redis hash keys and the values are the PostgreSQL table columns.
 
 :::tip What is a RedisGears recipe?
 
@@ -120,35 +172,58 @@ Example : "RGJSONWriteThrough" function in above python code
 
 :::
 
-There are two ways to load that Python file into the Redis server:
+The python file has a few dependencies in order to work. Below is the requirements.txt file that contains the dependencies, create it alongside the "write-through.py" file:
+
+```text title="requirements.txt"
+rgsync
+psycopg2-binary
+cryptography
+```
+
+There are two ways (gears CLI and RG.PYEXECUTE) to load that Python file into the Redis server:
 
 1. Using the gears command-line interface (CLI)
 
 Find more information about the Gears CLI at [gears-cli](https://github.com/RedisGears/gears-cli) and [rgsync](https://github.com/RedisGears/rgsync#running-the-recipe).
 
-```sh
+```shell
 # install
 pip install gears-cli
 ```
 
-```sh
-# If python file is located at “/users/tom/movies-write-through.py”
-gears-cli --host <redisHost> --port <redisPort> --password <redisPassword> run /users/tom/movies-write-through.py REQUIREMENTS rgsync pymongo==3.12.0
+To run our write-through recipe using `gears-cli`, we need to run the following command:
+
+```shell
+$ gears-cli run --host localhost --port 6379 write-through.py --requirements requirements.txt
 ```
+
+You should get a response that says "OK". That is how you know you have successfully loaded the Python file into the Redis server.
+
+:::tip
+
+If you are on Windows, we recommend you use WSL to install and use gears-cli.
+
+:::
 
 2. Using the RG.PYEXECUTE from the Redis command line.
 
-Find more information at [RG.PYEXECUTE](https://oss.redis.com/redisgears/commands.html#rgpyexecute).
-
-```sh
+```shell
 # Via redis cli
-RG.PYEXECUTE 'pythonCode' REQUIREMENTS rgsync pymongo==3.12.0
+RG.PYEXECUTE 'pythonCode' REQUIREMENTS rgsync psycopg2-binary cryptography
 ```
 
-The RG.PYEXECUTE command can also be executed from the Node.js code
-(Consult [the sample Node file](https://github.com/redis-developer/ebook-speed-mern-backend/blob/main/data/write-through/wt-main.js) for more details)
+:::tip
 
-Find more examples at [Redis Gears sync with MongoDB](https://github.com/RedisGears/rgsync/tree/master/examples/mongo).
+The RG.PYEXECUTE command can also be executed from the Node.js code
+(Consult <u>[the sample Node file](https://github.com/redis-developer/ebook-speed-mern-backend/blob/main/data/write-through/wt-main.js)</u> for more details)
+
+:::
+
+:::tip
+
+Find more examples in the <u>[Redis Gears GitHub repository](https://github.com/RedisGears/rgsync/tree/master/examples/)</u>.
+
+:::
 
 ### Verifying the write-through pattern using RedisInsight
 
@@ -158,48 +233,47 @@ RedisInsight is the free redis GUI for viewing data in redis. <u>[Click here to 
 
 :::
 
-The next step is to verify that RedisGears is syncing data between Redis and MongoDB.
+The next step is to verify that RedisGears is syncing data between Redis and PostgreSQL. Note that in our Python file we specified a prefix for the keys. In this case, we specified `__` as the prefix, `users` as the table, and `id` as the unique identifier. This instructs RedisGears to look for the following key format: `__{users:<id>}`. Try running the following command in the Redis command line:
 
-Insert a key starting with the prefix (that's specified in the Python file) using the Redis CLI
+```
+hset __{users:1} username john email john@gmail.com pwhash d1e8a70b5ccab1dc2f56bbf7e99f064a660c08e361a35751b9c483c88943d082 first John last Doe dob 1990-01-01 created_at 2023-04-20 updated_at 2023-04-20
+```
 
-![redis-insight](./images/redis-insight.png)
+![redis-hash-insert](./images/03-redis-hash-insert.png)
 
-Next, confirm that the JSON is inserted in MongoDB too.
+Check [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) to verify that the hash value made it into Redis. After RedisGears is done processing the `__{users:1}` key, it will be deleted from Redis and replaced by the `users:1` key. Check RedisInsight to verify that the `users:1` key is in Redis.
 
 <img
-  src={mongoCompassImage}
-  alt="mongo-compass"
+  src={redisHashView}
+  alt="redis-hash-view"
   width="500"
   className="margin-bottom--md"
 />
 
-You can also check [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) to verify that the data is piped in via Streams for its consumers (like RedisGears).
+Next, confirm that the user is inserted in PostgreSQL too by opening up the [select page in Adminer](http://localhost:8080/?pgsql=postgres&username=root&db=example&ns=public&select=users). You should see the user inserted in the table.
 
-![redis-insight-stream](./images/redis-insight-stream.png)
+![adminer-hash-view](./images/05-adminer-hash-view.png)
 
-How does all that work with the demo application? Below is a code snipped to insert a movie. Once data is written to Redis, RedisGears automatically synchronizes it to MongoDB.
+This is how you can use RedisGears to write through to PostgreSQL, and so far we have only added a hash key. You can also update specific hash fields and it will be reflected in your PostgreSQL database. Run the following command to update the `username` field:
 
-```js title="BEFORE (using MongoDB)"
-...
-//(Node mongo query)
-if (movie) {
-  //insert movie to MongoDB
-  await db.collection("movies")
-           .insertOne(movie);
-}
-...
+```
+> hset __{users:1} username bar
 ```
 
-```js title="AFTER (using Redis)"
-...
-//(Redis OM Node query)
-if (movie) {
-  const entity = repository.createEntity(movie);
-  //insert movie to Redis
-  await moviesRepository.save(entity);
-}
-...
-```
+![redis-hash-update](./images/06-redis-hash-update.png)
+
+In RedisInsight, verify that the `username` field is updated
+
+<img
+  src={redisHashUpdatedView}
+  alt="redis-hash-updated-view"
+  width="500"
+  className="margin-bottom--md"
+/>
+
+Now go into Adminer and check the `username` field. You should see that it has been updated to `bar`.
+
+![adminer-updated-hash-view](./images/08-adminer-updated-hash-view.png)
 
 ## Ready to use Redis for write-through caching?
 
