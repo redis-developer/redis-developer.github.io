@@ -172,7 +172,7 @@ Notice that in **Code Example 3** we are using the `FT.SEARCH` (RediSearch) comm
 
 ```python title="Code Example 4"
 async def get_product_details(product_id: str):
-    eturn await Product.get(product_id)
+    return await Product.get(product_id)
 ```
 
 When using Redis, you can use RedisInsight as a GUI tool to visualize and interact with the data in your database. **Picture 4** shows you what a `Products` document looks like.
