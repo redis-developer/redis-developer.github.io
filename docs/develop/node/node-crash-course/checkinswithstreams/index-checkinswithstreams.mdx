@@ -22,7 +22,7 @@ import Authors from '@theme/Authors';
 
 The most common action that users perform with our system is checking in at a location. This part of the system needs to quickly capture checkins and scale independently of other components.
 
-We decided to build a separate Express application just to receive checkin POST requests from users. This allows us to scale it separately from other API endpoints that deal with GET requests. To make our Checkin Receiver as fast as possible, we decided to do the actual work of processing checkins in a separate service. The Checkin Processor service reads checkins frmo the stream and updates the user and location Hashes in Redis.
+We decided to build a separate Express application just to receive checkin POST requests from users. This allows us to scale it separately from other API endpoints that deal with GET requests. To make our Checkin Receiver as fast as possible, we decided to do the actual work of processing checkins in a separate service. The Checkin Processor service reads checkins from the stream and updates the user and location Hashes in Redis.
 
 Checkins are transient data in our system - as long as we process them all, we don't need to keep them around forever. It also makes sense to store them in the order that they arrive in the system.
 
