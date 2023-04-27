@@ -86,6 +86,12 @@ The demo application uses redis streams for interservice communication. The foll
 3. `digital identity service`: stores the identity as JSON to redis
    ![Login Identity as JSON](./images/code-flow-1-3.png)
 
+:::note
+
+For demo purposes, we are only using a few characteristics of a user's digital identity like IP address, browser fingerprint, and session. In a real-world application you should store more characteristics like location, device type, and prior actions taken for better risk assessment and identity completeness.
+
+:::
+
 ### Validating digital identities
 
 In an e-commerce application, validating digital identities happens at checkout time. You want to make sure the customer is who they say they are before you attempt to process their order. To validate digital identities, we need to calculate the digital identity score, starting in the `orders service`. The following outlines the workflow, and the responsibilities of each service:
@@ -97,6 +103,12 @@ In an e-commerce application, validating digital identities happens at checkout 
 1. `digital identity service`: reads the identity from the `CALCULATE_IDENTITY_SCORE` stream event
 1. `digital identity service`: stores the identity with its calculated score as JSON
    ![Validation Identity as JSON](./images/code-flow-2-4.png)
+
+:::tip Caveat
+
+Even though you may receive a score of “1” this only means the score has matched 100% against the measured properties only. We are only measuring digital aspects of the identity, which can be compromised. In a real-world scenario you would want to measure more characteristics like location, device type, session, etc. This is in addition to other contextual information for a complete <u>[transaction risk score](/howtos/solutions/fraud-detection/transaction-risk-scoring)</u>.
+
+:::
 
 ## E-commerce application frontend using Next.js and Tailwind
 
