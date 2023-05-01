@@ -471,6 +471,24 @@ module.exports = {
                 'howtos/solutions/microservices/api-gateway-caching/index-solutions-api-gateway-caching',
               ]
             },
+            {
+              type: 'category',
+              label: 'Fraud detection',
+              items: [
+                'howtos/solutions/fraud-detection/digital-identity-validation/index-digital-identity-validation',
+                'howtos/solutions/fraud-detection/transaction-risk-scoring/index-transaction-risk-scoring',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Caching architecture',
+              items: [
+                'howtos/solutions/caching-architecture/write-behind/index-write-behind',
+                'howtos/solutions/caching-architecture/write-through/index-write-through',
+                'howtos/solutions/caching-architecture/cache-prefetching/index-cache-prefetching',
+                'howtos/solutions/microservices/caching/index-solutions-caching',
+              ]
+            },
           ],
         },
         'howtos/redisearch/index-redisearch',
