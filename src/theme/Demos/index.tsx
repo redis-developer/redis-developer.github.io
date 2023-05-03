@@ -64,7 +64,7 @@ function Demos() {
                 <h5 className="title">Featured how-tos & tutorials</h5>
                 <ul className="links">
                   <li>
-                    <a href="/howtos/shoppingcart/">
+                    <a href="/howtos/redisjson/shoppingcart/">
                       How to build a Shopping Cart app Using NodeJS & RedisJSON
                     </a>
                   </li>
