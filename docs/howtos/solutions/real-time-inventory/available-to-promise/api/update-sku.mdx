@@ -1,0 +1,69 @@
+The code that follows shows an example API request and response for updateSKU activity.
+
+**updateSKU API Request**
+
+```json
+POST http://localhost:3000/api/updateSKU
+{
+    "sku":1019688,
+    "quantity":25
+}
+```
+
+**updateSKU API Response**
+
+```json
+{
+  "data": {
+    "sku": 1019688,
+    "name": "5-Year Protection Plan - Geek Squad",
+    "type": "BlackTie",
+    "totalQuantity": 25 //updated value
+  },
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `updateSKU` function which looks as follows:
+
+```typescript title="src/inventory-service.ts"
+ static async updateSKU(_productId: number, _quantity: number): Promise<IProduct> {
+        /**
+        Set Quantity of a Product.
+
+        :param _productId: Product Id
+        :param _quantity: new quantity
+        :return: Product with Quantity
+        */
+        const repository = ProductRepo.getRepository();
+        let retItem: IProduct = {};
+
+        if (repository && _productId && _quantity >= 0) {
+            //fetch product by ID (using redis om library)
+            const product = <IProduct>await repository.fetch(_productId.toString());
+
+            if (product) {
+                //update the product fields
+                product.totalQuantity = _quantity;
+
+                // save the modified product
+                const savedItem = <IProduct>await repository.save(<RedisEntity>product);
+
+                retItem = {
+                    sku: savedItem.sku,
+                    name: savedItem.name,
+                    type: savedItem.type,
+                    totalQuantity: savedItem.totalQuantity
+                }
+            }
+            else {
+                throw `Product with Id ${_productId} not found`;
+            }
+        }
+        else {
+            throw `Input params failed !`;
+        }
+
+        return retItem;
+    }
+```

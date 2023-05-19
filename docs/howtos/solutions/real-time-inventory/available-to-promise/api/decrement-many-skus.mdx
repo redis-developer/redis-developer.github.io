@@ -1,0 +1,93 @@
+The code that follows shows an example API request and response for decrementManySKUs activity.
+
+**decrementManySKUs API Request**
+
+```json
+POST http://localhost:3000/api/decrementManySKUs
+[{
+    "sku":1019688,
+    "quantity":4
+},{
+    "sku":1003622,
+     "quantity":2
+},{
+    "sku":1006702,
+    "quantity":2
+}]
+```
+
+**decrementManySKUs API Response**
+
+```json
+{
+  "data": [
+    {
+      "sku": 1019688,
+      "name": "5-Year Protection Plan - Geek Squad",
+      "type": "BlackTie",
+      "totalQuantity": 28 //previous value 32
+    },
+    {
+      "sku": 1003622,
+      "name": "Aquarius - Fender Stratocaster 1,000-Piece Jigsaw Puzzle - Black/Red/White/Yellow/Green/Orange/Blue",
+      "type": "HardGood",
+      "totalQuantity": 8 //previous value 10
+    },
+    {
+      "sku": 1006702,
+      "name": "Clash of the Titans [DVD] [2010]",
+      "type": "Movie",
+      "totalQuantity": 8 //previous value 10
+    }
+  ],
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `decrementManySKUs` function which looks as follows:
+
+```typescript title="src/inventory-service.ts"
+ static async decrementManySKUs(_productsFilter: IProductBodyFilter[]): Promise<IProduct[]> {
+        /**
+        decrement quantity  of specific Products.
+
+        :param _productWithIds: Product list with Id
+        :return: Product list
+        */
+        let retItems: IProduct[] = [];
+
+        if (_productsFilter && _productsFilter.length) {
+            //validation only
+            const promArr: Promise<boolean>[] = [];
+            for (let p of _productsFilter) {
+                if (p.sku) {
+                  //validating if all products in stock
+                    const promObj = InventoryServiceCls.validateQuantityOnDecrementSKU(p.sku, p.quantity);
+                    promArr.push(promObj)
+                }
+            }
+            await Promise.all(promArr);
+
+            //decrement only
+            const promArr2: Promise<IProduct>[] = [];
+            for (let p of _productsFilter) {
+                if (p.sku && p.quantity) {
+                    const isDecrement = true; //increments with negative value
+                    const isReturnProduct = false;
+                    const promObj2 = InventoryServiceCls.incrementSKU(p.sku, p.quantity, isDecrement, isReturnProduct);
+                    promArr2.push(promObj2)
+                }
+            }
+            await Promise.all(promArr2);
+
+
+            //retrieve updated products
+            retItems = await InventoryServiceCls.retrieveManySKUs(_productsFilter);
+        }
+        else {
+            throw `Input params failed !`;
+        }
+
+        return retItems;
+    }
+```

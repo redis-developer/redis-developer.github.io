@@ -1,0 +1,62 @@
+The code that follows shows an example API request and response for retrieveSKU activity.
+
+**retrieveSKU API Request**
+
+```json
+GET http://localhost:3000/api/retrieveSKU?sku=1019688
+```
+
+**retrieveSKU API Response**
+
+```json
+{
+  "data": {
+    "sku": 1019688,
+    "name": "5-Year Protection Plan - Geek Squad",
+    "type": "BlackTie",
+    "totalQuantity": 10
+  },
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `retrieveSKU` function which looks as follows:
+
+**code**
+
+```typescript title="src/inventory-service.ts"
+
+static async retrieveSKU(_productId: number): Promise<IProduct> {
+    /**
+    Get current Quantity of a Product.
+
+    :param _productId: Product Id
+    :return: Product with Quantity
+    */
+    const repository = ProductRepo.getRepository();
+    let retItem: IProduct = {};
+
+    if (repository && _productId) {
+        //fetch product by ID (using redis om library)
+        const product = <IProduct>await repository.fetch(_productId.toString());
+
+        if (product) {
+            retItem = {
+                sku: product.sku,
+                name: product.name,
+                type: product.type,
+                totalQuantity: product.totalQuantity
+            }
+        }
+        else {
+            throw `Product with Id ${_productId} not found`;
+        }
+    }
+    else {
+        throw `Input params failed !`;
+    }
+
+    return retItem;
+}
+
+```
