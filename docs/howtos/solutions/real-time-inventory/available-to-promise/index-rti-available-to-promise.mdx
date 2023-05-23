@@ -15,7 +15,12 @@ import DecrementSKU from './api/decrement-sku.mdx';
 import RetrieveManySKUs from './api/retrieve-many-skus.mdx';
 import DecrementManySKUs from './api/decrement-many-skus.mdx';
 
-import RealTimeInventorySourceCode from './others/source-code-tip.mdx';
+import RealTimeInventorySourceCode from '../common-rti/source-code-tip.mdx';
+import RealTimeInventoryChallenges from '../common-rti/rti-challenges.mdx';
+import RealTimeInventoryCustomerProofs from '../common-rti/customer-proofs.mdx';
+import GeneralAdditionalResources from '../common-rti/additional-resources.mdx';
+
+<Authors frontMatter={frontMatter} />
 
 ## What is available-to-promise (ATP)?
 
@@ -39,15 +44,7 @@ This formula includes the following elements:
 
 ## Current challenges in real time inventory
 
-- **Over and under-stocking** : While adopting multi-channel business model (online & in store), lack of inventory visibility results in over and under-stocking of inventory at different regional levels
-
-- Consumers **seek convenience** : The ability to search across regional store locations and pickup merchandise **immediately** rather than wait for shipping
-
-- Consumers **seek speed** : All retailers, even small family-run, must compete against the **customer experience** of online retailers: Alibaba, FlipKart, Shopee, and Amazon.
-
-- **High inventory costs** : Retailers seek to lower inventory costs by eliminating missed sales from stock-out scenarios which also leads to higher “inventory turnover ratios”
-
-- **Brand value** : Inaccurate store inventory counts lead to frustrated customers and lower sales. The operational pain will **impact of status quo**.
+<RealTimeInventoryChallenges />
 
 ## Why you should use Redis for available-to-promise
 
@@ -69,11 +66,7 @@ This solution increases inventory turnover ratios resulting in lower inventory c
 
 ### Customer proof points
 
-- Redis Enterprise on Google Cloud enables [Ulta Beauty to build a “digital store of the future”](https://redis.com/customers/ulta-beauty/)
-
-- [Dick's Sporting Goods](https://redis.com/thank-you/ty-dicks-sporting-goods-perseverance-during-the-pandemic-produced-by-redis-labs-78/)
-
-- National Auto Retailer : Scaling real time search over 10M products
+<RealTimeInventoryCustomerProofs />
 
 ## Building a realtime inventory service with redis
 
@@ -119,8 +112,6 @@ Hopefully, this tutorial has helped you visualize how to use Redis in a Realtime
 ### Additional resources
 
 - Realtime inventory with Redis
-  - Real-time Local Inventory Search (TODO)
-- [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
-- Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
-- [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
-- [Try Redis Enterprise for free](https://redis.com/try-free/)
+  - [Real-time Local Inventory Search](/howtos/solutions/real-time-inventory/local-inventory-search)
+- General
+  <GeneralAdditionalResources />
