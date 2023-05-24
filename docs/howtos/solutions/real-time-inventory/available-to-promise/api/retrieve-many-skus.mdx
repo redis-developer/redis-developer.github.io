@@ -1,0 +1,97 @@
+The code that follows shows an example API request and response for retrieveManySKUs activity.
+
+**retrieveManySKUs API Request**
+
+```json
+POST http://localhost:3000/api/retrieveManySKUs
+[{
+    "sku":1019688
+},{
+    "sku":1003622
+},{
+    "sku":1006702
+}]
+```
+
+**retrieveManySKUs API Response**
+
+```json
+{
+  "data": [
+    {
+      "sku": 1019688,
+      "name": "5-Year Protection Plan - Geek Squad",
+      "type": "BlackTie",
+      "totalQuantity": 24
+    },
+    {
+      "sku": 1003622,
+      "name": "Aquarius - Fender Stratocaster 1,000-Piece Jigsaw Puzzle - Black/Red/White/Yellow/Green/Orange/Blue",
+      "type": "HardGood",
+      "totalQuantity": 10
+    },
+    {
+      "sku": 1006702,
+      "name": "Clash of the Titans [DVD] [2010]",
+      "type": "Movie",
+      "totalQuantity": 10
+    }
+  ],
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `retrieveManySKUs` function which looks as follows:
+
+```typescript title="src/inventory-service.ts"
+static async retrieveManySKUs(_productWithIds: IProductBodyFilter[]): Promise<IProduct[]> {
+        /**
+        Get current Quantity of specific Products.
+
+        :param _productWithIds: Product list with Id
+        :return: Product list
+        */
+        const repository = ProductRepo.getRepository();
+        let retItems: IProduct[] = [];
+
+        if (repository && _productWithIds && _productWithIds.length) {
+
+            //string id array
+            const idArr = _productWithIds.map((product) => {
+                return product.sku?.toString() || ""
+            });
+
+           //fetch products by IDs (using redis om library)
+            const result = await repository.fetch(...idArr);
+
+            let productsArr: IProduct[] = [];
+
+            if (idArr.length == 1) {
+                productsArr = [<IProduct>result];
+            }
+            else {
+                productsArr = <IProduct[]>result;
+            }
+
+            if (productsArr && productsArr.length) {
+
+                retItems = productsArr.map((product) => {
+                    return {
+                        sku: product.sku,
+                        name: product.name,
+                        type: product.type,
+                        totalQuantity: product.totalQuantity
+                    }
+                });
+            }
+            else {
+                throw `No products found !`;
+            }
+        }
+        else {
+            throw `Input params failed !`;
+        }
+
+        return retItems;
+    }
+```

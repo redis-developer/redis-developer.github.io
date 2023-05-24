@@ -1,0 +1,66 @@
+The code that follows shows an example API request and response for incrementSKU activity.
+
+**incrementSKU API Request**
+
+```json
+POST http://localhost:3000/api/incrementSKU
+{
+    "sku":1019688,
+    "quantity":2
+}
+```
+
+**incrementSKU API Response**
+
+```json
+{
+  "data": {
+    "sku": 1019688,
+    "name": "5-Year Protection Plan - Geek Squad",
+    "type": "BlackTie",
+    "totalQuantity": 12 //previous value 10
+  },
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `incrementSKU` function which looks as follows:
+
+```typescript title="src/inventory-service.ts"
+static async incrementSKU(_productId: number, _incrQuantity: number, _isDecrement: boolean, _isReturnProduct: boolean): Promise<IProduct> {
+        /**
+        increment quantity of a Product.
+
+        :param _productId: Product Id
+        :param _incrQuantity: new increment quantity
+        :return: Product with Quantity
+        */
+
+        const redisOmClient = getRedisOmClient();
+        let retItem: IProduct = {};
+
+        if (!_incrQuantity) {
+            _incrQuantity = 1;
+        }
+        if (_isDecrement) {
+            _incrQuantity = _incrQuantity * -1;
+        }
+        if (redisOmClient && _productId && _incrQuantity) {
+
+            const updateKey = `${ProductRepo.PRODUCT_KEY_PREFIX}:${_productId}`;
+
+            //increment json number field by specific (positive/ negative) value
+            await redisOmClient.redis?.json.numIncrBy(updateKey, '$.totalQuantity', _incrQuantity);
+
+            if (_isReturnProduct) {
+                retItem = await InventoryServiceCls.retrieveSKU(_productId);
+            }
+
+        }
+        else {
+            throw `Input params failed !`;
+        }
+
+        return retItem;
+    }
+```
