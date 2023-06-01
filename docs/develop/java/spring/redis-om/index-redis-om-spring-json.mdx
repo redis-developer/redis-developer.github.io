@@ -18,9 +18,9 @@ a several document-oriented databases like CouchDB and MongoDB gaining in popula
 a data format eliminates the rigidity of relational database schemas, allow applications to
 evolve more naturally.
 
-But did you know that Redis is a full-fledge document database supporting JSON natively? The
-RedisJSON module adds JSON as a native Redis datatype `ReJSON-RL` and it is seamlessly integrated
-with Redis' Search Engine RediSearch. In this tutorial we'll build a simple Document application
+But did you know that Redis is a full-fledge document database supporting JSON natively? Redis Stack
+adds JSON as a native Redis datatype `ReJSON-RL` and it is seamlessly integrated
+with Redis' Search and Query engine. In this tutorial we'll build a simple Document application
 using Redis OM Spring.
 
 ## What You Will build
@@ -142,7 +142,7 @@ public class RomsDocumentsApplication {
 
 ## 🚀 Launch Redis
 
-Redis OM Spring relies on the power of the [RediSearch](https://redisearch.io/) and [RedisJSON](https://redisjson.io) modules.
+Redis OM Spring relies on the power of [Redis Stack](https://redis.io/docs/stack/about/).
 The docker compose YAML file below can get started quickly. You can place at the root folder of your project and name it
 `docker-compose.yml`:
 
@@ -247,7 +247,7 @@ and the `yearFounded` and a `boolean` as to whether the company is `publiclyList
 ## Redis OM Spring Document Repositories
 
 Working with Redis OM Spring Document Repositories lets you seamlessly convert and store domain objects in Redis JSON keys,
-apply custom mapping strategies, and use secondary indexes maintained by RediSearch.
+apply custom mapping strategies, and use secondary indexes maintained by Redis.
 
 To create the component responsible for storage and retrieval, we need to define a repository interface.
 The `RedisDocumentRepository` extends the familiar `PagingAndSortingRepository` from the core `org.springframework.data.repository` package.
@@ -363,10 +363,10 @@ If every goes as expected, you should see the familiar Spring Boot banner fly by
 If you were watching the Redis CLI monitor you should have seen a barrage of output fly by. Let's break it down
 and inspect it using another Redis CLI so as to understand the inner workings of the system.
 
-### RediSearch Indices
+### Redis Stack Search Indices
 
-At the top you should have seen the `FT.CREATE` command which using the annotations in our POJO determined a RediSearch
-index recipe. Since our POJO is annotated with `@Document` we get a RediSearch index `ON JSON` against any keys starting
+At the top you should have seen the `FT.CREATE` command which using the annotations in our POJO determined an
+index recipe. Since our POJO is annotated with `@Document` we get an index `ON JSON` against any keys starting
 with `com.redis.om.documents.domain.Company:` (which is the default key prefix for Spring Data Redis and also for ROMS):
 
 ```bash
@@ -397,7 +397,7 @@ Finally, for each of the `Company` POJOs we should see a sequence of REDIS comma
 ```
 
 The first line checks whether the object already exists in the Redis SET of primary keys using the `SISMEMBER` command. Then,
-the RedisJSON `JSON.SET` commands is used to save the JSON serialization of the entity. Once that operation succeeds, the
+the `JSON.SET` commands is used to save the JSON serialization of the entity. Once that operation succeeds, the
 `id` property of the object is addded to the primary keys set using the `SADD` command.
 
 Let's inspect the data using the Redis CLI. We'll start by listing the keys prefixed with `com.redis.om.documents.domain.Company`:
@@ -533,14 +533,14 @@ Let's format the resulting JSON:
 }
 ```
 
-Inspecting the Redis CLI Monitor shows the resulting RediSearch query:
+Inspecting the Redis CLI Monitor shows the resulting query:
 
 ```bash
 1638344903.218982 [0 172.19.0.1:63410] "FT.SEARCH" "CompanyIdx" "@name:Redis "
 ```
 
 Notice that you can use `redis` (all lowercase) or `rEdI` and you will get a match for `Redis`, if you go below 4
-characters, say you try `red` or `RED` you will get no hits. RediSearch limits the minimun string match size to 4
+characters, say you try `red` or `RED` you will get no hits. Redis limits the minimun string match size to 4
 characters to prevent potentially millions of results being returned.
 
 ### Storing and Querying Geospatial Data
@@ -596,19 +596,19 @@ Formatting the JSON result we get a JSON array containing one entry: `Redis`.
 ]
 ```
 
-Inspecting the Redis CLI Monitor shows the resulting RediSearch query:
+Inspecting the Redis CLI Monitor shows the resulting query:
 
 ```bash
 1638344951.451871 [0 172.19.0.1:63410] "FT.SEARCH" "CompanyIdx" "@location:[-122.064 37.384 30.0 mi] "
 ```
 
-### Native RediSearch Queries
+### Native Redis Stack Searches and Queries
 
-There might be occassions where you just need to reach for the raw querying power of RediSearch
+There might be occassions where you just need to reach for the raw querying power of Redis Stack
 (just like when you need raw SQL over JPA). For these scenario, we provide the `@Query`
 (`com.redis.om.spring.annotations.Query`) and the `@Aggregation` (`com.redis.om.spring.annotations.Aggregation`)
 annotations. These annotations expose the raw querying API provided by the `JRediSearch` library. ROMS adds parameter
-parsing and results mapping so you can use raw RediSearch queries and aggregations in your repositories.
+parsing and results mapping so you can use raw queries and aggregations in your repositories.
 
 ```java
 // find by tag field, using JRediSearch "native" annotation
@@ -656,7 +656,7 @@ Formatting the JSON we can see that the results include companies with the tag `
 ]
 ```
 
-Inspecting the Redis CLI Monitor we see the RediSearch query that produced the results:
+Inspecting the Redis CLI Monitor we see the query that produced the results:
 
 ```bash
 1638345120.384300 [0 172.19.0.1:63412] "FT.SEARCH" "CompanyIdx" "@tags:{reliable} "
