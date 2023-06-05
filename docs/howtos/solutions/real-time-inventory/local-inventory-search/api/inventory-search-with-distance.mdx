@@ -1,0 +1,142 @@
+The code that follows shows an example API request and response for inventorySearchWithDistance activity.
+
+**inventorySearchWithDistance API Request**
+
+```json
+POST http://localhost:3000/api/inventorySearchWithDistance
+{
+    "sku":1019688,
+    "searchRadiusInKm":500,
+    "userLocation": {
+        "latitude": 42.880230,
+        "longitude": -78.878738
+    }
+}
+```
+
+**inventorySearchWithDistance API Response**
+
+```json
+{
+  "data": [
+    {
+      "storeId": "02_NY_ROCHESTER",
+      "storeLocation": {
+        "longitude": -77.608849,
+        "latitude": 43.156578
+      },
+      "sku": "1019688",
+      "quantity": "38",
+      "distInKm": "107.74513"
+    },
+    {
+      "storeId": "05_NY_WATERTOWN",
+      "storeLocation": {
+        "longitude": -75.910759,
+        "latitude": 43.974785
+      },
+      "sku": "1019688",
+      "quantity": "31",
+      "distInKm": "268.86249"
+    },
+    {
+      "storeId": "10_NY_POUGHKEEPSIE",
+      "storeLocation": {
+        "longitude": -73.923912,
+        "latitude": 41.70829
+      },
+      "sku": "1019688",
+      "quantity": "45",
+      "distInKm": "427.90787"
+    }
+  ],
+  "error": null
+}
+```
+
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `inventorySearchWithDistance` function which looks as follows:
+
+```typescript title="src/inventory-service.ts"
+static async inventorySearchWithDistance(_inventoryFilter: IInventoryBodyFilter): Promise<IStoresInventory[]> {
+    /**
+     Search Product in stores within search radius, Also sort results by distance from current user location to store.
+
+    :param _inventoryFilter: Product Id (sku), searchRadiusInKm and current userLocation
+    :return: Inventory product list
+    */
+    const nodeRedisClient = getNodeRedisClient();
+
+    const repository = StoresInventoryRepo.getRepository();
+    let retItems: IStoresInventory[] = [];
+
+    if (nodeRedisClient && repository && _inventoryFilter?.sku
+        && _inventoryFilter?.userLocation?.latitude
+        && _inventoryFilter?.userLocation?.longitude) {
+
+        const lat = _inventoryFilter.userLocation.latitude;
+        const long = _inventoryFilter.userLocation.longitude;
+        const radiusInKm = _inventoryFilter.searchRadiusInKm || 1000;
+
+        const queryBuilder = repository.search()
+            .where('sku')
+            .eq(_inventoryFilter.sku)
+            .and('quantity')
+            .gt(0)
+            .and('storeLocation')
+            .inRadius((circle) => {
+                return circle
+                    .latitude(lat)
+                    .longitude(long)
+                    .radius(radiusInKm)
+                    .kilometers
+            });
+
+        console.log(queryBuilder.query);
+        /* Sample queryBuilder query
+            ( ( (@sku:[1019688 1019688]) (@quantity:[(0 +inf]) ) (@storeLocation:[-78.878738 42.88023 500 km]) )
+        */
+
+        const indexName = `${StoresInventoryRepo.STORES_INVENTORY_KEY_PREFIX}:index`;
+        const aggregator = await nodeRedisClient.ft.aggregate(
+            indexName,
+            queryBuilder.query,
+            {
+                LOAD: ["@storeId", "@storeLocation", "@sku", "@quantity"],
+                STEPS: [{
+                    type: AggregateSteps.APPLY,
+                    expression: `geodistance(@storeLocation, ${long}, ${lat})/1000`,
+                    AS: 'distInKm'
+                }, {
+                    type: AggregateSteps.SORTBY,
+                    BY: "@distInKm"
+                }]
+            });
+
+        /* Sample command to run query directly on CLI
+            FT.AGGREGATE StoresInventory:index '( ( (@sku:[1019688 1019688]) (@quantity:[(0 +inf]) ) (@storeLocation:[-78.878738 42.88023 500 km]) )' LOAD 4 @storeId @storeLocation @sku @quantity  APPLY "geodistance(@storeLocation,-78.878738,42.88043)/1000" AS distInKm SORTBY 1 @distInKm
+        */
+
+        retItems = <IStoresInventory[]>aggregator.results;
+
+        if (!retItems.length) {
+            throw `Product not found with in ${radiusInKm}km range!`;
+        }
+        else {
+            retItems = retItems.map((item) => {
+                if (typeof item.storeLocation == "string") {
+                    const location = item.storeLocation.split(",");
+                    item.storeLocation = {
+                        longitude: Number(location[0]),
+                        latitude: Number(location[1]),
+                    }
+                }
+                return item;
+            })
+        }
+    }
+    else {
+        throw `Input params failed !`;
+    }
+    return retItems;
+}
+```
