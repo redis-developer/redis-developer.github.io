@@ -1,7 +1,7 @@
 ---
 id: index-prometheus
 title: How to monitor Redis with Prometheus and Grafana for Real-Time Analytics
-sidebar_label: Using RedisTimeSeries with Prometheus and Grafana
+sidebar_label: Using TimeSeries data model in Redis Stack along with Prometheus and Grafana
 slug: /operate/observability/prometheus
 authors: [ajeet]
 ---
@@ -28,28 +28,37 @@ A time-series database is a database system designed to store and retrieve such 
 You might find numerous solutions that still store time-series data in a relational database, but they’re quite inefficient and come with their own set of drawbacks. A typical time-series database is usually built to only manage time-series data, hence one of the challenges it faces is with use cases that involve some sort of computation on top of time-series data. One good example could be capturing a live video feed in a time-series database. If you want to run an AI model for face recognition, you would have to extract the time-series data, apply some sort of data transformation and then do computation.
 Relational databases carry the overhead of locking and synchronization that aren’t required for the immutable time-series data. This results in slower-than-required performance for both ingest and queries. When scaling out, it also means investing in additional compute resources. These databases enforce a rigid structure for labels and can’t accommodate unstructured data. They also require scheduled jobs for cleaning up old data. Beyond the time-series use case, these databases are also used for other use cases, which means overuse of running time-series queries may affect other workloads.
 
-### What is RedisTimeSeries?
+### What is Redis Stack ?
 
-RedisTimeSeries is a purpose-built time-series database that addresses the needs of handling time-series data. It removes the limitations enforced by relational databases and enables you to collect, manage, and deliver time-series data at scale. As an in-memory database, RedisTimeSeries can ingest over 500,000 records per second on a standard node. Our benchmarks show that you can ingest over 11.5 million records per second with a cluster of 16 Redis shards.
+[Redis Stack](https://redis.io/docs/stack/about/) extends the core capabilities of Redis OSS and provides a complete developer experience for debugging and more. In addition to all of the features of Redis OSS, Redis Stack supports:
 
-RedisTimeSeries is resource-efficient. With RedisTimeSeries, you can add rules to compact data by downsampling. For example, if you’ve collected more than one billion data points in a day, you could aggregate the data by every minute in order to downsample it, thereby reducing the dataset size to 1,440 data points (24 \* 60 = 1,440). You can also set data retention policies and expire the data by time when you don’t need them anymore. RedisTimeSeries allows you to aggregate data by average, minimum, maximum, sum, count, range, first, and last. You can run over 100,000 aggregation queries per second with sub-millisecond latency. You can also perform reverse lookups on the labels in a specific time range.
+- Queryable JSON documents
+- Querying across hashes and JSON documents
+- Time series data support (ingestion & querying), including full-text search
+- Probabilistic data structures
 
-### Notables features of RedisTimeseries includes:
+### What is TimeSeries data model in Redis Stack?
+
+[Redis Stack](https://redis.io/docs/stack/about/) supports time-series data model that addresses the needs of handling time-series data. It removes the limitations enforced by relational databases and enables you to collect, manage, and deliver time-series data at scale. As an in-memory database, Redis can ingest over 500,000 records per second on a standard node. Our benchmarks show that you can ingest over 11.5 million records per second with a cluster of 16 Redis shards.
+
+TimeSeries support in Redis Stack is resource-efficient. With Redis, you can add rules to compact data by downSampling. For example, if you’ve collected more than one billion data points in a day, you could aggregate the data by every minute in order to downSample it, thereby reducing the dataset size to 1,440 data points (24 \* 60 = 1,440). You can also set data retention policies and expire the data by time when you don’t need them anymore. Redis allows you to aggregate data by average, minimum, maximum, sum, count, range, first, and last. You can run over 100,000 aggregation queries per second with sub-millisecond latency. You can also perform reverse lookups on the labels in a specific time range.
+
+### Notables features related to TimeSeries in Redis Stack includes:
 
 - High volume inserts, low latency reads
 - Query by start time and end-time
 - Aggregated queries (Min, Max, Avg, Sum, Range, Count, First, Last, STD.P, STD.S, Var.P, Var.S) for any time bucket
 - Configurable maximum retention period
-- Downsampling/Compaction - automatically updated aggregate time series
+- DownSampling/Compaction - automatically updated aggregate time series
 - Secondary index - each time series has labels (field value pairs) which will allows to query by labels
 
 ### Why Prometheus?
 
 Prometheus is an open-source systems monitoring and alerting toolkit. It collects and stores its metrics as time series data, i.e. metrics information. The metrics are numeric measurements in a time series, meaning changes recorded over time. These metrics are stored with the timestamp at which it was recorded, alongside optional key-value pairs called labels. Metrics play an important role in understanding why your application is working in a certain way.
 
-### Prometheus remote storage adapter for RedisTimeSeries
+### Prometheus remote storage adapter for TimeSeries data model of Redis Stack
 
-In the RedisTimeSeries organization you can find projects that help you integrate RedisTimeSeries with other tools, including Prometheus and Grafana. The Prometheus remote storage adapter for RedisTimeSeries is available and the project is hosted [on GitHub here](https://github.com/RedisTimeSeries/prometheus-redistimeseries-adapter.) It’s basically a read/write adapter to use RedisTimeSeries as a backend database. RedisTimeSeries Adapter receives Prometheus metrics via the remote write, and writes to Redis with the RedisTimeSeries module.
+In the [TimeSeries Database over Redis](https://github.com/RedisTimeSeries) organization you can find projects that help you integrate TimeSeries data model of Redis Stack with other tools, including Prometheus and Grafana. The Prometheus remote storage adapter for Redis is hosted [on GitHub here](https://github.com/RedisTimeSeries/prometheus-redistimeseries-adapter.) It’s basically a read/write adapter to use Redis Stack as a backend database. This timeSeries Adapter receives Prometheus metrics via the remote write, and writes to Redis.
 
 ## Getting Started
 
@@ -166,7 +175,7 @@ It’s time to test drive a few demo scripts built by the Redis team. To start w
  git clone https://github.com/RedisTimeSeries/prometheus-demos
 ```
 
-This repo contains a set of basic demoes showcasing the integration of RedisTimeSeries with Prometheus and Grafana. Let’s pick up a sensor script.
+This repo contains a set of basic demos showcasing the integration of TimeSeries data model of Redis Stack with Prometheus and Grafana. Let’s pick up a sensor script.
 
 ```
  python3 weather_station/sensors.py
@@ -186,9 +195,9 @@ Open up `https://HOSTIP:9090` to access the Prometheus dashboard for the sensor 
 
 ### Further References:
 
-- [Prometheus remote storage adapter for RedisTimeSeries](https://github.com/RedisTimeSeries/prometheus-redistimeseries-adapter)
+- [Prometheus remote storage adapter for TimeSeries with Redis Stack](https://github.com/RedisTimeSeries/prometheus-redistimeseries-adapter)
 - [Remote Storage Integration](https://prometheus.io/docs/prometheus/latest/storage/#remote-storage-integrations)
-- [RedisTimeSeries Demos](https://github.com/RedisTimeSeries/prometheus-demos)
+- [TimeSeries Demos with Redis Stack](https://github.com/RedisTimeSeries/prometheus-demos)
 
 ##
 
