@@ -26,8 +26,8 @@ import newYorkState from './images/newyork-state.png';
 
 **Real-time local inventory search** is a method of utilizing advanced product search capabilities across a group of stores or warehouses in a region or geographic area by which a retailer can enhance the customer experience with a localized view of inventory while fulfilling orders from the closest store possible.
 
-GeoSpatial search of merchandise local to consumer helps sell stock faster, lowers inventory levels, and thus reduces days sales in inventory and increases inventory turnover ratio.
-Consumers locate product online, placer order on cell phone and pick up at nearest store location, called “buy-online-pickup-in-store” (BOPIS)
+Geospatial search of merchandise local to the consumer helps sell stock faster, lowers inventory levels, and thus increases inventory turnover ratio.
+Consumers locate a product online, place the order in their browser or mobile device, and pick up at nearest store location. This is called “buy-online-pickup-in-store” (BOPIS)
 
 ## Current challenges in real time inventory
 
@@ -35,11 +35,11 @@ Consumers locate product online, placer order on cell phone and pick up at neare
 
 ## Why you should use Redis for local inventory search
 
-- **Accurate location/regional inventory search**: Redis Enterprise geo-spatial search capabilities enables retailers to provide local inventories by store location across geographies and regions based on consumer's location. This provides mobile with a real-time view of store inventory and enables seamless BOPIS shopping experiences
+- **Accurate location/regional inventory search**: Redis Enterprise geospatial search capabilities enable retailers to provide local inventories by store location across geographies and regions based on a consumer's location. This enables a real-time view of store inventory and and seamless BOPIS shopping experience.
 
-- **Consistent and accurate inventory view across multichannel and omnichannel experiences**: Accurate inventory information no matter what channel the shopper is using, in-store, Kiosk, online or mobile
+- **Consistent and accurate inventory view across multichannel and omnichannel experiences**: Accurate inventory information no matter what channel the shopper is using, in-store, kiosk, online, or mobile. Redis Enterprise provides a single source of truth for inventory information across all channels.
 
-- **Real-time search performance at scale**: Redis Enterprise real time search engine allows retailers to provide instant application and inventory search responses and scale performance painlessly during peak periods
+- **Real-time search performance at scale**: Redis Enterprise real-time search and query engine allows retailers to provide instant application and inventory search responses and scale performance effortlessly during peak periods.
 
 ## Real-time local inventory search with Redis
 
@@ -47,25 +47,27 @@ Consumers locate product online, placer order on cell phone and pick up at neare
 
 Redis provides geospatial search capabilities across a group of stores or warehouses in a region or geographic area allowing a retailer to quickly show the available inventory local to the customer.
 
-Redis Enterprise processes event streams keeping store inventories up to date in real-time enhancing the customer experience with localized, accurate search of inventory while fulfilling orders from the closest and fewest stores possible.
+Redis Enterprise processes event streams, keeping store inventories up-to-date in real-time. This enhances the customer experience with localized, accurate search of inventory while fulfilling orders from the nearest and fewest stores possible.
 
-This solution lowers days sales of inventory - selling inventory faster and carrying less inventory for increased revenue generation and profits over a shorter time period.
+This solution lowers days sales of inventory (DSI), selling inventory faster and carrying less inventory for increased revenue generation and profits over a shorter time period.
 
-It also reduces fulfillment costs to home and local stores enhancing retailer's ability to fulfill orders with the least amount of delivery or shipping costs
+It also reduces fulfillment costs to home and local stores enhancing a retailer's ability to fulfill orders with the lowest delivery and shipping costs.
 
-### Customer proof points
+:::tip Customer proof points
 
 <RealTimeInventoryCustomerProofs />
+
+:::
 
 ## Building a real time local inventory search with redis
 
 <RealTimeInventorySourceCode />
 
-### Setting up data
+### Setting up the data
 
-Once the application source code is downloaded , run following commands to setup data in Redis
+Once the application source code is downloaded, run following commands to populate data in Redis:
 
-```sh
+```shell
 # install packages
 npm install
 
@@ -73,14 +75,14 @@ npm install
 npm run seed
 ```
 
-The demo uses twi collections :
+The demo uses two collections:
 
-- **Product collection** : Stores product details like productId, name , price , image and other details
+- **Product collection**: Stores product details like `productId`, `name`, `price`, `image`, and other details
   ![product data](./images/product-data.png)
 
-- **StoresInventory collection** : Stores product quantity available at different local stores.
+- **StoresInventory collection**: Stores product quantity available at different local stores.
 
-  For demo purpose , we have considered below regions in NewYork State (USA) as store locations and different products (id and available quantity) are mapped to these location stores.
+For demo purpose, we are using the below regions in New York, US as store locations. Products are mapped to these location stores with a `storeId` and `quantity`.
 
 <img
   src={newYorkState}
@@ -91,10 +93,10 @@ The demo uses twi collections :
 
 ![inventory data](./images/inventory-data.png)
 
-Let's build following APIs to demonstrate GeoSpatial search using Redis
+Let's build the following APIs to demonstrate geospatial search using Redis:
 
-- **InventorySearch API** : Search Products in local stores within a search radius.
-- **InventorySearchWithDistance API** : Search Product in local stores within search radius and sort results by distance from current user location to store.
+- **InventorySearch API**: Search Products in local stores within a search radius.
+- **InventorySearchWithDistance API**: Search Product in local stores within search radius and sort results by distance from current user location to store.
 
 ### InventorySearch API
 
@@ -104,9 +106,9 @@ Let's build following APIs to demonstrate GeoSpatial search using Redis
 
 <InventorySearchWithDistance />
 
-## Ready to use Redis in Real time local inventory search?
+## Ready to use Redis for real-time local inventory search?
 
-Hopefully, this tutorial has helped you visualize how to use Redis in a Real time local inventory search across different regional stores. For additional resources related to this topic, check out the links below:
+Hopefully this tutorial has helped you visualize how to use Redis for real-time local inventory search across different regional stores. For additional resources related to this topic, check out the links below:
 
 ### Additional resources
 

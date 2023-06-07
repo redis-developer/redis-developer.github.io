@@ -1,22 +1,21 @@
-The code that follows shows an example API request and response for inventorySearchWithDistance activity.
+The code that follows shows an example API request and response for `inventorySearchWithDistance` API:
 
 **inventorySearchWithDistance API Request**
 
-```json
-POST http://localhost:3000/api/inventorySearchWithDistance
+```json title="POST http://localhost:3000/api/inventorySearchWithDistance"
 {
-    "sku":1019688,
-    "searchRadiusInKm":500,
-    "userLocation": {
-        "latitude": 42.880230,
-        "longitude": -78.878738
-    }
+  "sku": 1019688,
+  "searchRadiusInKm": 500,
+  "userLocation": {
+    "latitude": 42.88023,
+    "longitude": -78.878738
+  }
 }
 ```
 
 **inventorySearchWithDistance API Response**
 
-```json
+```json title="inventorySearchWithDistance API Response"
 {
   "data": [
     {
@@ -54,16 +53,16 @@ POST http://localhost:3000/api/inventorySearchWithDistance
 }
 ```
 
-When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `inventorySearchWithDistance` function which looks as follows:
+When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling an `inventorySearchWithDistance` function which looks as follows:
 
 ```typescript title="src/inventory-service.ts"
+/**
+ * Search Product in stores within search radius, Also sort results by distance from current user location to store.
+ *
+ * :param _inventoryFilter: Product Id (sku), searchRadiusInKm and current userLocation
+ * :return: Inventory product list
+ */
 static async inventorySearchWithDistance(_inventoryFilter: IInventoryBodyFilter): Promise<IStoresInventory[]> {
-    /**
-     Search Product in stores within search radius, Also sort results by distance from current user location to store.
-
-    :param _inventoryFilter: Product Id (sku), searchRadiusInKm and current userLocation
-    :return: Inventory product list
-    */
     const nodeRedisClient = getNodeRedisClient();
 
     const repository = StoresInventoryRepo.getRepository();

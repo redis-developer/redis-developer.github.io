@@ -1,9 +1,8 @@
-The code that follows shows an example API request and response for inventorySearch activity.
+The code that follows shows an example API request and response for the `inventorySearch` API:
 
 **inventorySearch API Request**
 
-```json
-POST http://localhost:3000/api/inventorySearch
+```json title="POST http://localhost:3000/api/inventorySearch"
 {
     "sku":1019688,
     "searchRadiusInKm":500,
@@ -51,16 +50,16 @@ POST http://localhost:3000/api/inventorySearch
 }
 ```
 
-When you make a request, it goes through the API gateway to the inventory service. Ultimately, it ends up calling a `inventorySearch` function which looks as follows:
+When you make a request, it goes through the API gateway to the `inventory service`. Ultimately, it ends up calling an `inventorySearch` function which looks as follows:
 
 ```typescript title="src/inventory-service.ts"
- static async inventorySearch(_inventoryFilter: IInventoryBodyFilter): Promise<IStoresInventory[]> {
-    /**
-   Search Product in stores within search radius.
-
-    :param _inventoryFilter: Product Id (sku), searchRadiusInKm and current userLocation
-    :return: Inventory product list
-    */
+/**
+ * Search Product in stores within search radius.
+ *
+ * :param _inventoryFilter: Product Id (sku), searchRadiusInKm and current userLocation
+ * :return: Inventory product list
+ */
+static async inventorySearch(_inventoryFilter: IInventoryBodyFilter): Promise<IStoresInventory[]> {
     const nodeRedisClient = getNodeRedisClient();
 
     const repository = StoresInventoryRepo.getRepository();
