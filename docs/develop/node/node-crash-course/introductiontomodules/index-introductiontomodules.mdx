@@ -1,7 +1,7 @@
 ---
-id: index-introductiontomodules
-title: Introduction to Redis Modules
-sidebar_label: Introduction to Modules
+id: index-introductiontoredisstack
+title: Redis Extensibility
+sidebar_label: Redis Extensibility
 slug: /develop/node/nodecrashcourse/introductiontomodules
 authors: [simon]
 ---
@@ -12,41 +12,35 @@ import Authors from '@theme/Authors';
 
 ![Redis Modules](images/redis_modules.png)
 
-## What are Redis Modules?
+## How to extend Redis?
 
 Redis has a Modules API that allows developers to extend its core functionality with new capabilities. Redis Modules are libraries that can be written in C or other languages (including Rust and Zig). Modules can add new commands and/or data structures to Redis. For example, through the addition of modules, Redis can be extended to become a Timeseries or Graph database, while retaining all of its original key/value store functionality.
 
 Modules are loaded into the Redis server at startup by modifying the redis.conf configuration file. Application developers then make use of the extra functionality provided by a module simply by calling the module's commands in the same way they would any other Redis command. We'll see how to do this using the ioredis client for Node.js shortly.
 
-## Where to Find Modules?
+## Where to find modules?
 
-The redis.io website has a [catalog of available modules](https://redis.io/modules). Redis has developed a number of these that extend Redis in different ways, and we'll use some of them in our sample application.
+The redis.io website has a [catalog of available modules](https://redis.io/resources/modules/). Redis has developed a number of these that extend Redis in different ways, and we'll use some of them in our sample application.
 
-One way to get started with Redis modules is to use the [Redis Stack Docker container](https://registry.hub.docker.com/r/redis/redis-stack) from Docker Hub. This is the container that you're using on this course, and it includes all of the following modules:
+One way to get started with Redis modules is to use the [Redis Stack Docker container](https://registry.hub.docker.com/r/redis/redis-stack) from Docker Hub. This is the container that you're using on this course, and it includes all of the following capabilities:
 
-- [RediSearch](https://redisearch.io/) - a full-featured search engine.
-- [RedisGraph](https://redisgraph.io/) - a powerful graph database that uses the Cypher query language.
-- [RedisTimeSeries](https://redistimeseries.io/) - a timeseries database.
-- [RedisJSON](https://redisjson.io/) - adds a native JSON data type to Redis.
-- [RedisBloom](https://redisbloom.io/) - adds native Bloom and Cuckoo filter data types to Redis, plus other probabilistic data structures.
+- [Search and Query](https://redis.io/docs/stack/search/) - a full-featured search and query engine.
+- [Time Series](https://redis.io/docs/stack/timeseries/) - a timeseries database.
+- [JSON](https://redis.io/docs/stack/json/) - adds a native JSON data type to Redis.
+- [Probabilistic](https://redis.io/docs/stack/bloom/) - adds native Bloom and Cuckoo filter data types to Redis, plus other probabilistic data structures.
 
-The following two modules are not currently included in Redis Stack:
+Redis offers Redis Enterprise Cloud, a fully managed service for running and scaling Redis and Redis Stack. [Sign up for Redis Enterprise Cloud](https://redis.com/try-free/) and use the full-featured free tier to try it out!
 
-- [RedisAI](https://redisai.io/) - a tensor storage and AI model server.
-- [RedisGears](https://redisgears.io/) - a dynamic execution framework for running code on the Redis server.
+## Using Redis Stack in our Application
 
-Redis offers Redis Enterprise Cloud, a fully managed service for running and scaling Redis and Redis modules. [Sign up for Redis Enterprise Cloud](https://redis.com/try-free/) and use the full-featured free tier to try it out!
+Our social checkin application uses three Redis Stack capabilities:
 
-## Using Modules in our Application
-
-Our social checkin application uses three Redis modules:
-
-- We'll use **RediSearch** to index our user and location Hashes, giving us the ability to perform queries such as:
+- We'll use **Search and Query** to index our user and location Hashes, giving us the ability to perform queries such as:
   - "Which user is associated with the email address `sara.olsen@example.com`?"
   - "Find me the users with the most recent checkins".
   - "Find all restaurants within a 3 mile radius of my location that have at least a 3 star rating"
-- **RedisJSON** adds commands to store and manipulate JSON documents. We'll use those to retrieve extra detail about each of our locations.
-- And finally, we'll take advantage of **RedisBloom**'s space efficient Bloom filter to stop users from posting duplicate checkins.
+- **JSON** adds commands to store and manipulate JSON documents. We'll use those to retrieve extra detail about each of our locations.
+- And finally, we'll take advantage of a space efficient **Probabilistic Bloom filter** to stop users from posting duplicate checkins.
 
 In the next section, we'll get to grips with RedisJSON...
 
@@ -54,6 +48,6 @@ In the next section, we'll get to grips with RedisJSON...
 
 Check out these links to learn more about which modules are available for Redis and how to use the modules API to create you own:
 
-- [Modules in Redis Enterprise](https://redis.com/redis-enterprise/modules/)
+- [Redis Stack](https://redis.io/docs/stack/)
 - [List of Redis Modules at redis.io](https://redis.io/modules)
 - [Introduction to the Redis Modules API at redis.io](https://redis.io/topics/modules-intro)
