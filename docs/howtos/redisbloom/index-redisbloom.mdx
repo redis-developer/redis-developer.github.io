@@ -10,14 +10,14 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-RedisBloom extends Redis core to support additional probabilistic data structures. It allows for solving computer science problems in a constant memory space with extremely fast processing and a low error rate. It supports scalable Bloom and Cuckoo filters to determine (with a specified degree of certainty) whether an item is present or absent from a collection.
+Redis Stack extends Redis core to support additional probabilistic data structures. It allows for solving computer science problems in a constant memory space with extremely fast processing and a low error rate. It supports scalable Bloom and Cuckoo filters to determine (with a specified degree of certainty) whether an item is present or absent from a collection.
 
-The RedisBloom module provides four data types:
+Redis Stack provides four probabilistic data types:
 
 - Bloom filter: A probabilistic data structure that can test for presence. A Bloom filter is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set. Bloom filters typically exhibit better performance and scalability when inserting items (so if you're often adding items to your dataset then Bloom may be ideal).
 - Cuckoo filter: An alternative to Bloom filters, Cuckoo filters comes with additional support for deletion of elements from a set. These filters are quicker on check operations.
 - Count-min sketch: A count-min sketch is generally used to determine the frequency of events in a stream. You can query the count-min sketch to get an estimate of the frequency of any given event.
-- Top-K: The Top-K probabilistic data structure in RedisBloom is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned.
+- Top-K: The Top-K probabilistic data structure in Redis Stack is a deterministic algorithm that approximates frequencies for the top k items. With Top-K, you’ll be notified in real time whenever elements enter into or are expelled from your Top-K list. If an element add-command enters the list, the dropped element will be returned.
 
 In this tutorial, you will see how Redis Stack provides Redis with support for low latency and compact probabilistic data structures.
 
@@ -70,11 +70,11 @@ Add the Redis Enterprise cloud database endpoint, port and password.
 
 ![database details](images/database_details.png)
 
-### Step 8. Getting Started with RedisBloom
+### Step 8. Getting Started with Probabilistic data structures in Redis Stack
 
-In the next steps you will use some basic RedisBloom commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI) To interact with RedisBloom, you use the `BF.ADD` and `BF.EXISTS` commands.
+In the next steps you will use some basic Redis Stack commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI) To interact with Probabilistic data structures in Redis, you use the `BF.ADD` and `BF.EXISTS` commands.
 
-Let’s go ahead and test drive some RedisBloom-specific operations. We will create a basic dataset based on unique visitors’ IP addresses, and you will see how to:
+Let’s go ahead and test drive some Probabilistic data structure-specific operations. We will create a basic dataset based on unique visitors’ IP addresses, and you will see how to:
 
 - Create a Bloom filter
 - Determine whether or not an item exists in the Bloom filter
@@ -144,7 +144,7 @@ In the above example, the first command shows the result as “1” for both the
 
 ### Next Steps
 
-- Learn more about RedisBloom in the [Quick Start](https://oss.redis.com/redisbloom/Quick_Start/) tutorial.
-- [How to build a Fraud Detection System using RedisGears and RedisBloom](https://developer.redis.com/howtos/frauddetection/)
+- Learn more about Probabilistic data structures in Redis in the [Quick Start](https://oss.redis.com/redisbloom/Quick_Start/) tutorial.
+- [How to build a Fraud Detection System using Redis Stack and Probabilistic data structures](https://developer.redis.com/howtos/frauddetection/)
 - [How to Use Redis for Content Filtering](https://redis.com/blog/use-redis-content-filtering/)
-- [Benefits of RedisBloom](https://redis.com/modules/redis-bloom/)
+- [Benefits of Probabilistic data structures in Redis](https://redis.com/modules/redis-bloom/)
