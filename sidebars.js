@@ -469,7 +469,7 @@ module.exports = {
                 'howtos/solutions/microservices/interservice-communication/index-solutions-interservice-communication',
                 'howtos/solutions/microservices/caching/index-solutions-caching',
                 'howtos/solutions/microservices/api-gateway-caching/index-solutions-api-gateway-caching',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -477,7 +477,7 @@ module.exports = {
               items: [
                 'howtos/solutions/fraud-detection/digital-identity-validation/index-digital-identity-validation',
                 'howtos/solutions/fraud-detection/transaction-risk-scoring/index-transaction-risk-scoring',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -487,7 +487,7 @@ module.exports = {
                 'howtos/solutions/caching-architecture/write-through/index-write-through',
                 'howtos/solutions/caching-architecture/cache-prefetching/index-cache-prefetching',
                 'howtos/solutions/microservices/caching/index-solutions-caching',
-              ]
+              ],
             },
           ],
         },
@@ -564,7 +564,7 @@ module.exports = {
         'howtos/caching/index-caching',
         {
           type: 'category',
-          label: 'How to list & search Movies database using RediSearch',
+          label: 'How to list & search Movies database using Redis Stack',
           items: [
             'howtos/moviesdatabase/getting-started/index-gettingstarted',
             'howtos/moviesdatabase/install/index-install',
@@ -629,7 +629,7 @@ module.exports = {
       label: 'E-books',
       items: [
         'ebooks/nosql-data-modeling-patterns',
-        'ebooks/three-caching-design-patterns'
+        'ebooks/three-caching-design-patterns',
       ],
     },
   ],
