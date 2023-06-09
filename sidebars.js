@@ -489,6 +489,14 @@ module.exports = {
                 'howtos/solutions/microservices/caching/index-solutions-caching',
               ]
             },
+            {
+              type: 'category',
+              label: 'Real-time Inventory',
+              items: [
+                'howtos/solutions/real-time-inventory/available-to-promise/index-rti-available-to-promise',
+                'howtos/solutions/real-time-inventory/local-inventory-search/index-rti-local-inventory-search',
+              ]
+            },
           ],
         },
         'howtos/redisearch/index-redisearch',
