@@ -32,13 +32,13 @@ employee = {
 
 Follow the below steps to understand how nested JSON objects can be imported into Redis database:
 
-### Step 1. Run RedisJSON Docker container
+### Step 1. Run Redis Docker container
 
 ```bash
  docker run -p 6379:6379 --name redis-redisjson redislabs/rejson:latest
 ```
 
-### Step 2. Verify if RedisJSON module is loaded
+### Step 2. Verify if JSON feature is loaded
 
 ```bash
  redis-cli
@@ -74,7 +74,7 @@ Below is a python code for nested JSON document:
 
 Copy the code and save it in a file called `employee.py`
 
-### Step 4. Load Redis Module
+### Step 4. Load Redis JSON
 
 ```bash
  pip  install rejson
@@ -133,6 +133,6 @@ In case you want to fetch specific filed (like address), then the code would loo
 
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
+- Learn more about [Redis JSON](https://oss.redis.com/redisjson/) in the QuickStart tutorial.
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
