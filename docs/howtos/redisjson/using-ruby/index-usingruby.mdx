@@ -1,7 +1,7 @@
 ---
 id: index-usingruby
 title: How to cache JSON data in Redis with Ruby
-sidebar_label: RedisJSON and Ruby
+sidebar_label: Redis JSON and Ruby
 slug: /howtos/redisjson/using-ruby
 authors: [ajeet]
 ---
@@ -10,8 +10,8 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-rejson-rb is a package that allows storing, updating and querying objects as JSON documents in a Redis database that is extended with the RedisJSON module.
-The package extends redis-rb's interface with RedisJSON's API, and performs on-the-fly serialization/deserialization of objects to/from JSON.
+rejson-rb is a package that allows storing, updating and querying objects as JSON documents in a Redis database that is extended with the JSON feature.
+The package extends redis-rb's interface with Redis JSON's API, and performs on-the-fly serialization/deserialization of objects to/from JSON.
 
 ### Step 1. Run Redis Stack docker container
 
@@ -25,7 +25,7 @@ The package extends redis-rb's interface with RedisJSON's API, and performs on-t
  brew install ruby
 ```
 
-### Step 3. Install RedisJSON Gem
+### Step 3. Install Redis JSON Gem
 
 ```bash
  gem install rejson-rb
@@ -59,7 +59,7 @@ Copy the below content and paste it in a file called 'employee.rb'.
  rcl.json_del "employee", ".address.city"
 ```
 
-The above script uses RedisJSON commands to set the objects, alter the id to 43 and then perform the delete operation using 'json_del'
+The above script uses Redis JSON commands to set the objects, alter the id to 43 and then perform the delete operation using 'json_del'
 
 ### Step 5. Execute the script
 
