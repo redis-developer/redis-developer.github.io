@@ -1,7 +1,7 @@
 ---
 id: index-redistimeseries
-title: Manage Redis time-series data using RedisTimeSeries Browser Tool
-sidebar_label: Manage Redis time-series data using RedisTimeSeries Browser Tool
+title: Manage Redis time-series data using the RedisInsight Browser Tool
+sidebar_label: Manage Redis time-series data using the RedisInsight Browser Tool
 slug: /explore/redisinsight/redistimeseries
 authors: [ajeet]
 ---
@@ -10,9 +10,9 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-If you want to add a time series data structure to your Redis database, check out RedisTimeSeries browser tool that comes with RedisInsight.
+If you want to visualize a time series data structure to your Redis database then download [RedisInsight](https://redis.com/redis-enterprise/redis-insight/).
 
-[RedisTimeseries](https://oss.redis.com/redistimeseries/) is a Redis module developed by Redis to enhance your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
+[Redis Stack](https://redis.io/docs/stack) enhances your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
 With RedisInsight browser tool, you can perform the below sets of activities:
 
@@ -24,7 +24,7 @@ With RedisInsight browser tool, you can perform the below sets of activities:
 
 ## Step 1. Create Redis database
 
-[Follow this link to create Redis Stack database](/create/redis-stack) that comes with RedisTimeSeries module enabled
+[Follow this link to create Redis Stack database](/create/redis-stack) that comes with support for time series data structures
 
 ## Step 2: Download RedisInsight
 
@@ -54,7 +54,7 @@ cd redis-datasets/redistimeseries/AirQualityUCI
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""sample module for dataset loading into redistimeseries from csv file
+"""sample module for dataset loading into redis stack from csv file
 """
 
 import argparse
@@ -200,8 +200,8 @@ $ python3 dataloader.py
 
 ## Additional Resources
 
-- [RedisTimeSeries Project](https://oss.redis.com/redistimeseries/)
-- [RedisTimeSeries Tutorial](/howtos/redistimeseries)
+- [Redis Stack official documentation](https://redis.io/docs/stack)
+- [Time Series Tutorial](https://redis.io/docs/stack/timeseries/quickstart/)
 - [Analyze Your Redis commands using RedisInsight Profiler tool](explore/redisinsight/profiler)
 - [How to Manage Real-Time IoT Sensor Data in Redis](https://redis.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
 
