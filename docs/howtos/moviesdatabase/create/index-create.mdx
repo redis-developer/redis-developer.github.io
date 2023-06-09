@@ -38,7 +38,7 @@ For example:
 
 and for the movies information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes).
 
-A Redis Hash allows the application to structure all the movie attributes in individual fields; also Search in Redis Stack will index the fields based on the index definition.
+A Redis Hash allows the application to structure all the movie attributes in individual fields; also Redis Stack will index the fields based on the index definition.
 
 ## Insert Movies
 
@@ -80,7 +80,7 @@ One option, would be to read all the movies, check all fields and then return on
 
 Nevertheless this is where Redis developers often create custom secondary indexes using SET/SORTED SET structures that point back to the movie hash. This needs some heavy design and implementation.
 
-This is where Search in Redis Stack can help, and why it was created.
+This is where Search and Query in Redis Stack can help, and why it was created.
 
 ## Search & Indexing
 
@@ -88,7 +88,7 @@ Redis Stack greatly simplifies this by offering a simple and automatic way to cr
 
 ![Secondary Index](https://github.com/RediSearch/redisearch-getting-started/blob/master/docs/images/secondary-index.png?raw=true)
 
-When using Search in Redis Stack, if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
+When using Redis Stack, if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
 
 - Title
 - Release Year
