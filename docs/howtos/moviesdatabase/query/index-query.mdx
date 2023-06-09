@@ -53,7 +53,7 @@ It is also possible to limit the list of fields returned by the query using the 
    4) "1980"
 ```
 
-This query does not specify any "field" and still returns some movies, this is because RediSearch will search all TEXT fields by default. In the current index only the title is present as a TEXT field. You will see later how to update an index, to add more fields to it.
+This query does not specify any "field" and still returns some movies, this is because Search in Redis Stack will search all TEXT fields by default. In the current index only the title is present as a TEXT field. You will see later how to update an index, to add more fields to it.
 
 If you need to perform a query on a specific field you can specify it using the `@field:` syntax, for example:
 
