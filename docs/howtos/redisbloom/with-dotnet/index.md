@@ -1,12 +1,12 @@
 ---
 id: redisbloom-withdotnet
-title: Using RedisBloom with .NET
-sidebar_label: Using RedisBloom with .NET
+title: Using Probabilistic Data Structures with .NET
+sidebar_label: Probabilistic Data with .NET
 slug: /howtos/redisbloom/with-dotnet/redisbloom-withdotnet
 authors: [steve]
 ---
 
-Using RedisBloom allows you to efficiently keep track of presence, heavy hitters, and counts on large streams of data. To use RedisBloom in .NET, you should use the [StackExchange.Redis](https://github.com/stackexchange/stackexchange.redis) library. To get started with that package, follow our [getting started guide](https://developer.redis.com/develop/dotnet/). Once you have a reference to an `IDatabase` object, you will need to use the `db.Execute` and `db.ExecuteAsync` methods to run the custom commands you want against redis bloom.
+Using probabilistic data structures in Redis Stack allows you to efficiently keep track of presence, heavy hitters, and counts on large streams of data. To use probabilistic data structures in .NET, you should use the [StackExchange.Redis](https://github.com/stackexchange/stackexchange.redis) library. To get started with that package, follow our [getting started guide](https://developer.redis.com/develop/dotnet/). Once you have a reference to an `IDatabase` object, you will need to use the `db.Execute` and `db.ExecuteAsync` methods to run the custom commands you want.
 
 ## Bloom Filters
 
