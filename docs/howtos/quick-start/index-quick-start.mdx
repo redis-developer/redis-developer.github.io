@@ -3,7 +3,7 @@ id: index-quick-start
 title: Getting Started
 sidebar_label: Getting Started
 slug: /howtos/quick-start
-authors: [prasan,will]
+authors: [prasan, will]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -131,6 +131,7 @@ If you choose to use local Redis we strongly recommend using Docker. If you choo
 <JavaBasicQuerying />
 
 </TabItem> -->
+
 </Tabs>
 
 ## Secondary Indexing and Searching with Redis
@@ -175,6 +176,7 @@ If you choose to use local Redis we strongly recommend using Docker. If you choo
 <JavaSecondaryIndexing />
 
 </TabItem> -->
+
 </Tabs>
 
 ## Sync Redis with Other Databases
@@ -272,41 +274,6 @@ Redis Stack supports probabilistic datatypes and queries. Below you will find a 
 ```
 
 More details in [docs](https://redis.io/docs/stack/bloom/)
-
-## Graph Data and Queries with Redis
-
-Redis Stack is a NoSQL graph database that translates Cypher queries to matrix operations executed over a GraphBLAS engine. It's useful for social graph operation, fraud detection, and real-time recommendation engines. Below you will find an org chart graph example:
-
-```shell
-# Create any graph, for example an Org Chart
-> GRAPH.QUERY OrgChart "CREATE (:Employee {name:'Doug'}), (:Employee {name:'Dani'})-[:REPORTS_TO]->(:Employee {name:'Doug'}), (:Employee {name:'Otto'})-[:REPORTS_TO]->(:Employee {name:'Doug'})"
-1) 1) "Labels added: 1"
-   2) "Nodes created: 5"
-   3) "Properties set: 5"
-   4) "Relationships created: 2"
-   5) "Cached execution: 0"
-   6) "Query internal execution time: 0.324600 milliseconds"
-
-# Get a list of employees and who they report to
-> GRAPH.QUERY OrgChart "MATCH (e:Employee)-[:REPORTS_TO]->(m:Employee) RETURN e.name, m.name"
-1) 1) "e.name"
-   2) "m.name"
-2) 1) 1) "Dani"
-      2) "Doug"
-   2) 1) "Otto"
-      2) "Doug"
-3) 1) "Cached execution: 0"
-   2) "Query internal execution time: 0.288619 milliseconds"
-
-# Get a count of how many reports Doug has
-> GRAPH.QUERY OrgChart "MATCH (e:Employee)-[:REPORTS_TO]->(m:Employee {name: 'Doug'}) RETURN COUNT(e.name)"
-1) 1) "COUNT(e.name)"
-2) 1) 1) "2"
-3) 1) "Cached execution: 0"
-   2) "Query internal execution time: 0.340888 milliseconds"
-```
-
-More details in [docs](https://redis.io/docs/stack/graph/)
 
 ## TimeSeries Data and Queries with Redis
 
