@@ -19,15 +19,12 @@ import Authors from '@theme/Authors';
 This simple container image bundles together the latest stable releases of Redis and select Redis modules.
 This image is based on the official image of Redis from Docker. By default, the container starts with Redis' default configuration and all included modules loaded.
 
-### Modules included in the container
+### Features included in the container
 
-- [RediSearch](https://redis.com/modules/redis-search/): a full-featured search engine
-- [RedisGraph](https://redis.com/modules/redis-graph/): a graph database
-- [RedisTimeSeries](https://redis.com/modules/redis-timeseries/): a timeseries database
-- [RedisAI](https://redis.com/modules/redis-ai/): a tensor and deep learning model server
-- [RedisJSON](https://redis.com/modules/redis-json/): a native JSON data type
-- [RedisBloom](https://redis.com/modules/redis-bloom/): native Bloom and Cuckoo Filter data types
-- [RedisGears](https://redis.com/modules/redis-gears/): a dynamic execution framework
+- [Search](https://redis.com/modules/redis-search/): a full-featured search engine
+- [Time Series](https://redis.com/modules/redis-timeseries/): a timeseries database
+- [JSON](https://redis.com/modules/redis-json/): a native JSON data type
+- [Probabilistic data](https://redis.com/modules/redis-bloom/): native Bloom and Cuckoo Filter data types
 
 ### Step 1. Install Docker
 
@@ -70,11 +67,11 @@ Let's try using redis-cli as shown below:
  module:name=search,ver=20006,api=1,filters=0,usedby=[],using=[],options=[]
 ```
 
-### Step 5. Testing Redis Modules
+### Step 5. Testing Redis Search
 
-Let us test drive RediSearch modules as discussed below in detail.
+Let us test drive Redis Search as discussed below in detail.
 
-#### Insert data into RediSearch
+#### Insert data into Redis Search
 
 We are now ready to insert some data. This example uses movies data stored as Redis Hashes, so let’s insert a couple of movies:
 
@@ -94,7 +91,7 @@ Your Redis database now contains two Hashes. It is simple to retrieve informatio
  HMGET movies:11002 title rating
 ```
 
-#### Create an index in RediSearch
+#### Create an index in Redis Search
 
 To be able to query the hashes on the field for title, say, or genre, you must first create an index. To create an index, you must define a schema to list the fields and their types that are indexed, and that you can use in your queries.
 
@@ -104,7 +101,7 @@ Use the FT.CREATE command to create an index, as shown here:
  FT.CREATE idx:movies ON hash PREFIX 1 "movies:" SCHEMA title TEXT SORTABLE release_year NUMERIC SORTABLE rating NUMERIC SORTABLE genre TAG SORTABLE
 ```
 
-#### Search the movies in the RediSearch index
+#### Search the movies in the Redis Search index
 
 You can now use the FT.SEARCH to search your database, for example, to search all movies sorted by release year:
 
@@ -113,14 +110,3 @@ You can now use the FT.SEARCH to search your database, for example, to search al
 ```
 
 To test drive rest of Redis modules, please visit the links mentioned under "References" section.
-
-### References
-
-- [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)
-- [Redismod GITHUB repository](https://github.com/RedisLabsModules/redismod)
-- [Connecting to the database using RedisInsight](https://developer.redis.com/explore/redisinsight/)
-- [RedisJSON Tutorial](https://developer.redis.com/howtos/redisjson/)
-- [RedisTimeSeries Tutorial](https://developer.redis.com/howtos/redistimeseries)
-- [RedisGraph Tutorial](https://developer.redis.com/howtos/redisgraph)
-- [RedisBloom Tutorial](https://developer.redis.com/howtos/redisbloom)
-- [RedisGears Tutorial](https://developer.redis.com/howtos/redisgears)
