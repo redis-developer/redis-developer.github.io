@@ -1,7 +1,7 @@
 ---
 id: index-redisearch
-title: Indexing and Querying with RediSearch
-sidebar_label: RediSearch
+title: Indexing and Querying with Redis
+sidebar_label: Searching and Querying
 slug: /develop/node/nodecrashcourse/redisearch
 authors: [simon]
 ---
@@ -93,13 +93,13 @@ We'd also need to keep this information up to date and in sync with changes to t
 
 Other sorts of secondary indexes can be created using other Redis data types. For example, we might [use a Redis Sorted Set as a secondary index](https://redis.io/topics/indexes), allowing us to perform range queries such as "Find all the users who have between 1000 and 3000 checkins". Again, we'd have to populate and maintain this extra data structure ourselves in the application code.
 
-The RediSearch module solves all of these problems for us and more. It is an indexing, querying and full-text search engine for Redis that automatically keeps track of changes to data in indexed Hashes. RediSearch provides a flexible query language to answer questions such as "Find me all the gyms with at least a 3 star rating and more than 200 checkins within 10 miles of Oakland, California" without adding code to build or maintain secondary data structures in our application.
+Redis Stack solves all of these problems for us and more. It adds an indexing, querying and full-text search engine to Redis that automatically keeps track of changes to data in indexed Hashes. Redis Stack provides a flexible query language to answer questions such as "Find me all the gyms with at least a 3 star rating and more than 200 checkins within 10 miles of Oakland, California" without adding code to build or maintain secondary data structures in our application.
 
-Watch the video to see how RediSearch is used in our example Node.js application.
+Watch the video to see how Redis Stack is used in our example Node.js application.
 
 ## Coding Exercise
 
-In this exercise, you'll finish implementing a route that uses RediSearch to return all users whose last checkin was at a given location.
+In this exercise, you'll finish implementing a route that uses Redis to return all users whose last checkin was at a given location.
 
 Open the `node-js-crash-course` folder with your IDE, and find the file `src/routes/user_routes.js`.
 
@@ -112,7 +112,7 @@ const searchResults = await redis.performSearch(
 );
 ```
 
-with one containing the correct RediSearch query to return users whose "lastSeenAt" field is set to the value of locationId. You'll need to use the "numeric range" syntax for this, as the "lastSeenAt" field was indexed as a number. Be sure to check out the [Query Syntax documentation](https://redis.io/docs/stack/search/reference/query_syntax/) for RediSearch to get help with this.
+with one containing the correct query to return users whose "lastSeenAt" field is set to the value of locationId. You'll need to use the "numeric range" syntax for this, as the "lastSeenAt" field was indexed as a number. Be sure to check out the [Query Syntax documentation](https://redis.io/docs/stack/search/reference/query_syntax/) for Redis to get help with this.
 
 To try your code, ensure that the API Server component is running:
 
@@ -146,11 +146,7 @@ Then, point your browser at `http://localhost:8081/api/users/at/33`. If your que
 ]
 ```
 
-To help you develop your query, use the RediSearch view in RedisInsight, or the FT.SEARCH command in redis-cli. Here's an example of how to enter a query with RedisInsight (I'm looking for users with the first name "Laura"):
-
-![RediSearch Query Example](images/redisearch_redis_insight.png)
-
-Remember to select the `ncc:usersidx` index, as you're working with users data here.
+To help you develop your query, use one of the guides in RedisInsight workbench, or read more about the [FT.SEARCH command](https://redis.io/commands/ft.search/).
 
 ## External Resources
 
@@ -166,7 +162,7 @@ Querying, Index, and Full-Text Search in Redis:
     allowfullscreen></iframe>
 </div>
 
-Finding Bigfoot RESTfuly with Express + RediSearch:
+Finding Bigfoot RESTfuly with Express + Redis Stack:
 
 <div class="text--center">
   <iframe
@@ -181,5 +177,4 @@ Finding Bigfoot RESTfuly with Express + RediSearch:
 Other resources:
 
 - [RU203, Querying, Indexing, and Full-Text Search](https://university.redis.com/courses/ru203/) at Redis University
-- [RediSearch](https://redisearch.io/), official home page
-- [RediSearch Getting Started Tutorial](https://github.com/RediSearch/redisearch-getting-started)
+- [Official Redis Stack docs for search](https://redis.io/docs/stack/search/)

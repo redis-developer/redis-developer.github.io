@@ -6,7 +6,7 @@ slug: /develop/dotnet/redis-om-dotnet/add-and-retrieve-objects
 authors: [steve]
 ---
 
-The Redis OM library supports declarative storage and retrieval of objects from Redis. Without the RediSearch and RedisJson modules, this is limited to using hashes, and id lookups of objects in Redis. You will still use the `Document` Attribute to decorate a class you'd like to store in Redis. From there, all you need to do is either call `Insert` or `InsertAsync` on the `RedisCollection` or `Set` or `SetAsync` on the RedisConnection, passing in the object you want to set in Redis. You can then retrieve those objects with `Get<T>` or `GetAsync<T>` with the `RedisConnection` or with `FindById` or `FindByIdAsync` in the RedisCollection.
+The Redis OM library supports declarative storage and retrieval of objects from Redis. Without [Redis Stack](https://redis.io/docs/stack), this is limited to using hashes, and id lookups of objects in Redis. You will still use the `Document` Attribute to decorate a class you'd like to store in Redis. From there, all you need to do is either call `Insert` or `InsertAsync` on the `RedisCollection` or `Set` or `SetAsync` on the RedisConnection, passing in the object you want to set in Redis. You can then retrieve those objects with `Get<T>` or `GetAsync<T>` with the `RedisConnection` or with `FindById` or `FindByIdAsync` in the RedisCollection.
 
 ```csharp
 public class Program

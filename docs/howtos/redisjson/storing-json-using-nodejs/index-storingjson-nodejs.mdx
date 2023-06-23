@@ -55,7 +55,7 @@ For each location that users can check in at, we're going to maintain two types 
 }
 ```
 
-We've given each location an ID and a category—we'll use the category to search for locations by type later on. The "location" field stores the coordinates in longitude, latitude format… this is the opposite from the usual latitude, longitude format. We'll see how to use this to perform geospatial searches later when we look at the RediSearch module.
+We've given each location an ID and a category—we'll use the category to search for locations by type later on. The "location" field stores the coordinates in longitude, latitude format… this is the opposite from the usual latitude, longitude format. We'll see how to use this to perform GeoSpatial searches later when we look at the Redis Search and Query feature.
 
 For each location, we're also storing the total number of checkins that have been recorded there by all of our users, the total number of stars that those checkins gave the location, and an average star rating per checkin for the location.
 
@@ -86,7 +86,7 @@ The second type of data that we want to maintain for each location is what we'll
 }
 ```
 
-We want to build an API that allows us to retrieve all or some of these extra details, and keep the overall structure of the document intact. For that, we'll need the RedisJSON module as we'll see later.
+We want to build an API that allows us to retrieve all or some of these extra details, and keep the overall structure of the document intact. For that, we'll need the Redis JSON feature as we'll see later.
 
 ## Checkins
 
@@ -142,7 +142,7 @@ From the node-js-crash-course directory, start Redis using `docker-compose`:
  $ docker ps
 ```
 
-The output from the docker ps command should show one container running, using the "redis/redis-stack" image. This container runs Redis with the RediSearch, RedisJSON, RedisGraph, RedisTimeSeries, and RedisBloom modules.
+The output from the docker ps command should show one container running, using the "redis/redis-stack" image. This container runs Redis with the Search and Query, JSON, Time Series, and Probabilistic data features.
 
 ### Step 3. Load the Sample Data into Redis
 
@@ -360,7 +360,7 @@ Here's an example of the additional data we want to store about a location:
 
 We could store this data as serialized JSON in a Redis String, but then our application would have to retrieve and parse the entire document every time it wanted to read some of the data. And we'd have to do the same to update it too. Furthermore, with this approach, update operations aren't atomic and a second client could update the JSON stored at a given key while we're making changes to it in our application code. Then, when we serialize our version of the JSON back into the Redis String, the other client's changes would be lost.
 
-RedisJSON adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server. This makes our application code simpler, more efficient, and much more reliable.
+Redis JSON adds a new JSON data type, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server. This makes our application code simpler, more efficient, and much more reliable.
 
 ### Step 7. Final exercise
 
@@ -385,7 +385,7 @@ router.get(
     // the JSON stored at the key held in locationDetailsKey.
     // You will need to provide the correct JSON path to the hours
     // array and return the element held in the position specified by
-    // the day variable.  Make sure RedisJSON returns only the day
+    // the day variable.  Make sure Redis JSON returns only the day
     // requested!
     const jsonPath = 'TODO';
 
@@ -415,7 +415,7 @@ If you're using redis-cli, you can look at the structure of the JSON document wi
 json.get ncc:locationdetails:121 .
 ```
 
-Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis. Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
+Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis. Use the [Redis JSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
 
 To test your code, start the server with:
 
@@ -437,8 +437,8 @@ If you have the correct JSON path in your code, visiting `http://localhost:80801
 ## External Resources
 
 - [Sample Social Network GitHub Repository](https://github.com/redislabs-training/node-js-crash-course)
-- [RedisJSON](https://redisjson.io/)
+- [Redis JSON](https://redisjson.io/)
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
+- Learn more about [Redis JSON](https://oss.redis.com/redisjson/) in the QuickStart tutorial.
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University

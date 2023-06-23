@@ -1,7 +1,7 @@
 ---
 id: index-shoppingcart
-title: How to build a Shopping cart app using NodeJS and RedisJSON
-sidebar_label: How to build a Shopping cart app using NodeJS and RedisJSON
+title: How to build a Shopping cart app using NodeJS and Redis
+sidebar_label: How to build a Shopping cart app using NodeJS and Redis
 slug: /howtos/redisjson/shoppingcart
 authors: [ajeet]
 ---
@@ -43,7 +43,7 @@ This tutorial will show you how to harness the power of Redis by creating a basi
 
 ### What do you need?
 
-- Redis compiled with RedisJSON module
+- Redis compiled with JSON feature
 - Express 4 backend
 - Node 15.5.0 (at least v12.9.0+)
 - NPM 7.3.0 (at least v6.14.8+)
@@ -66,9 +66,9 @@ Clone the repository:
 $ git clone https://github.com/redis-developer/basic-redis-shopping-chart-nodejs
 ```
 
-#### Compiling Redis with RedisJSON module
+#### Compiling Redis with JSON feature
 
-You can use the below docker compose file to run Redis server compiled with RedisJSON module:
+You can use the below docker compose file to run Redis server compiled with JSON feature:
 
 ```
 version: '3'

@@ -118,7 +118,7 @@ The demo data initialization is handled in multiple steps:
 
 We create a new user id: INCR total_users. Then we set a user ID lookup key by user name: e.g.
 
-```
+```bash
 SET username:nick user:1
 ```
 
@@ -127,14 +127,14 @@ And finally, the rest of the data is written to the hash set:
 Example:
 
 ```bash
-  HSET user:1 username "nick" password "bcrypt_hashed_password".
+HSET user:1 username "nick" password "bcrypt_hashed_password".
 ```
 
 Additionally, each user is added to the default "General" room.
 For handling rooms for each user, we have a set that holds the room ids. Here's an example command of how to add the room:
 
 ```bash
- SADD user:1:rooms "0"
+SADD user:1:rooms "0"
 ```
 
 #### Populating private messages between users
@@ -144,16 +144,16 @@ First, private rooms are created: if a private room needs to be established, for
 E.g. Create a private room between 2 users:
 
 ```bash
- SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
+SADD user:1:rooms 1:2 and SADD user:2:rooms 1:2
 ```
 
 Then we add messages for each conversation to this room by writing to a sorted set:
 
 ```bash
- ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
+ZADD room:1:2 1615480369 "{'from': 1, 'date': 1615480369, 'message': 'Hello', 'roomId': '1:2'}"
 ```
 
-We are using a stringified JSON to keep the message structure and simplify the implementation details for this demo-app. You may choose to use a Hash or RedisJSON
+We are using a stringified JSON to keep the message structure and simplify the implementation details for this demo-app. You may choose to use a Hash or JSON
 
 ### Populate the "General" room with messages
 
@@ -176,7 +176,7 @@ When a WebSocket connection is established, we can start to listen for events:
 A global set with online_users key is used for keeping the online state for each user. So on a new connection, a user ID is written to that set:
 
 ```bash
- SADD online_users 1
+SADD online_users 1
 ```
 
 Here we have added user with id 1 to the set online_users
@@ -226,7 +226,7 @@ User data is stored in a hash set where each user entry contains the next values
 Get User HGETALL user:{id}.
 
 ```bash
- HGETALL user:2
+HGETALL user:2
 ```
 
 where we get data for the user with id: 2.

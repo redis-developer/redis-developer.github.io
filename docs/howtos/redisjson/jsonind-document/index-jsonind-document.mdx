@@ -1,7 +1,7 @@
 ---
 id: index-jsonind-document
-title: Indexing JSON document using RediSearch
-sidebar_label: Indexing JSON document using RediSearch
+title: Indexing JSON document using Redis
+sidebar_label: Indexing JSON document using Redis
 slug: /howtos/redisjson/jsonind-document
 authors: [ajeet]
 ---
@@ -10,23 +10,23 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-RedisJSON 2.0 Private Preview was announced for the first time during RedisConf 2021. With this newer version, RedisJSON will fully support JSONPath expressions and [Active-Active geo-distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/). The Active-Active implementation is based on [Conflict-free Replicated Data-Types (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
+Redis JSON 2.0 Private Preview was announced for the first time during RedisConf 2021. With this newer version, Redis JSON will fully support JSONPath expressions and [Active-Active geo-distribution](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/). The Active-Active implementation is based on [Conflict-free Replicated Data-Types (CRDT)](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
 
-Prior to v2.2, RediSearch only supported Redis hashes. Going forward, RediSearch will support RedisJSON documents. This opens a powerful new set of document-based indexing use cases. In addition, RediSearch now provides query profiling. This will empower developers to understand and optimize their RediSearch queries, increasing their developer experience.
+Prior to v2.2, Redis Search and Query only supported hashes. Going forward, it will support JSON documents. This opens a powerful new set of document-based indexing use cases. In addition, Redis now provides query profiling. This will empower developers to understand and optimize their search queries, increasing their developer experience.
 
-RediSearch has been providing indexing and search capabilities on hashes. Under the hood, RedisJSON 2.0 exposes an internal public API. Internal, because this API is exposed to other modules running inside a Redis node. Public, because any module can consume this API. So does RediSearch 2.2 ! In addition to indexing Redis hashes, RediSearch also indexes JSON. To index JSON, you must use the RedisJSON module.
+Redis Search and Query has been providing indexing and search capabilities on hashes. Under the hood, Redis JSON 2.0 exposes an internal public API. Internal, because this API is exposed to other features running inside a Redis node. Public, because any feature can consume this API. So does Redis Search 2.2 ! In addition to indexing hashes, Redis Search also indexes JSON. To index JSON, you must use the Redis JSON feature.
 
-By exposing its capabilities to other modules, RedisJSON gives RediSearch the ability to index JSON documents so users can now find documents by indexing and querying the content. These combined modules give you a powerful, low latency, JSON-oriented document database!
+By exposing its capabilities to other features, Redis JSON gives Redis Search the ability to index JSON documents so users can now find documents by indexing and querying the content. These combined features give you a powerful, low latency, JSON-oriented document database!
 
 ### Prerequisite:
 
 - Redis 6.x or later
-- RediSearch 2.2 or later
-- RediJSON 2.0 or later
+- Redis Search 2.2 or later
+- Redis JSON 2.0 or later
 
 ### Step 1. Run the "latest" tagged Redis Stack container
 
-This Docker image contains Redis together with the main Redis modules, including RediSearch and RedisJSON. You'll need the latest tag of the image, which you can access as follows:
+This Docker image contains Redis together with the main Redis features, including JSON, Search and Query. You'll need the latest tag of the image, which you can access as follows:
 
 ```bash
  docker run -p 6379:6379 redis/redis-stack:latest
@@ -46,7 +46,7 @@ This Docker image contains Redis together with the main Redis modules, including
 
 Let's start by creating an index.
 
-We can now specify ON JSON to inform RediSearch that we want to index JSON documents.
+We can now specify ON JSON to inform Redis that we want to index JSON documents.
 Then, on the SCHEMA part, you can provide JSONPath expressions. The result of each JSON Path expression is indexed and associated with a logical name ( attribute ). This attribute (previously called field ) is used in the query part.
 
 This is the basic syntax for indexing a JSON document:
@@ -150,8 +150,6 @@ In this example, we return the result of the JSON Path expression $.user.hp .
 It is not possible to index JSON object and JSON arrays. To be indexed, a JSONPath expression must return a single scalar value (string or number). If the JSONPath expression returns an object or an array, it will be ignored.
 
 :::
-
-
 
 Given the following document:
 
