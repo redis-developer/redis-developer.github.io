@@ -554,7 +554,6 @@ module.exports = {
           type: 'category',
           label: 'RedisAI Tutorial',
           items: [
-            'howtos/redisai/index-redisai',
             'howtos/redisai/getting-started/index-gettingstarted',
             'howtos/redisai/market-basket-analysis/index-market-basket-analysis',
           ],
