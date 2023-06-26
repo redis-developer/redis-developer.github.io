@@ -1,7 +1,7 @@
 ---
 id: index-redisearch
-title: Perform Database Search and Analytics using the RediSearch Plugin in RedisInsight v2.0
-sidebar_label: Perform Database Search and Analytics using the RediSearch Plugin in RedisInsight v2.0
+title: Perform Database Search and Analytics using Redis Stack and RedisInsight
+sidebar_label: Perform Database Search and Analytics using Redis Stack and RedisInsight
 slug: /explore/redisinsightv2/redisearch
 authors: [ajeet]
 ---
@@ -10,7 +10,7 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redis.com/redisearch/) is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules. With RedisInsight, the following functionalities are possible:
+A full-featured pure desktop GUI client, RedisInsight supports Redis Stack. [Redis Stack](https://redis.io/docs/stack) provides a powerful indexing, querying, and full-text search engine for Redis. With RedisInsight, the following functionalities are possible:
 
 ![MyImage](images/redisearch.png)
 
@@ -24,7 +24,7 @@ A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [Redi
 - Pagination
 - Counting
 
-RediSearch allows you to quickly create indexes on datasets (stored as Redis Hashes or, with RedisJSON, as JSON documents), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
+Redis Stack allows you to quickly create indexes on datasets (stored as Redis Hashes or as JSON documents), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
 
 ### Step 1. Create a Redis Database
 
@@ -80,7 +80,7 @@ For example:
 
 and for the movie's information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes).
 
-A Redis Hash allows the application to structure all the movie attributes in individual fields; also RediSearch will index the fields based on the index definition.
+A Redis Hash allows the application to structure all the movie attributes in individual fields; also Redis Stack will index the fields based on the index definition.
 
 ### Step 4. Insert Movies
 
@@ -133,15 +133,15 @@ But how do you get a movie or list of movies by year of release, rating or title
 
 One option, would be to read all the movies, check all fields and then return only matching movies; no need to say that this is a really bad idea. Nevertheless this is where Redis developers often create custom secondary indexes using SET/SORTED SET structures that point back to the movie hash. This needs some heavy design and implementation.
 
-This is where the RediSearch module can help, and why it was created.
+This is where the Redis Stack can help, and part of why it was created.
 
-### Step 5. RediSearch & Indexing
+### Step 5. Redis Stack Indexing and Search
 
-RediSearch greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
+Redis Stack greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
 
 ![Secondary Index](https://github.com/RediSearch/redisearch-getting-started/blob/master/docs/images/secondary-index.png?raw=true)
 
-Using RediSearch if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
+Using Redis Satck if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
 
 - Title
 - Release Year
@@ -233,7 +233,7 @@ FT.SEARCH idx:movie "war" RETURN 2 title release_year
 >
 ```
 
-As you can see the movie _Star Wars: Episode V - The Empire Strikes Back_ is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is [tokenized](https://oss.redis.com/redisearch/Escaping/) and [stemmed](https://oss.redis.com/redisearch/Stemming/).
+As you can see the movie _Star Wars: Episode V - The Empire Strikes Back_ is found, even though you used only the word “war” to match “Wars” in the title. This is because the title has been indexed as text, so the field is tokenized and stemmed.
 
 Later when looking at the query syntax in more detail you will learn more about the search capabilities.
 
@@ -403,11 +403,10 @@ FT.AGGREGATE "idx:movie" "*" GROUPBY 1 @release_year REDUCE COUNT 0 AS nb_of_mov
 
 ### Additional Links
 
-- [RediSearch Project](https://oss.redis.com/redisearch/)
-- [RediSearch Tutorial](/howtos/redisearch)
-- [Getting Started with Movie Database](/howtos/moviesdatabase/getting-started)
-- [Getting Started with RedisInsight v2.0](/explore/redisinsightv2/getting-started)
-- [Visualize Redis Database keys using the RedisInsight Browser Tool](/explore/redisinsightv2/browser)
+- [Redis Stack official documentation](https://redis.io/docs/stack)
+- [Build an IMDB clone with Redis](/howtos/moviesdatabase/getting-started)
+- [Getting Started with RedisInsight](/explore/redisinsightv2/getting-started)
+- [Visualize Redis database keys using the RedisInsight browser tool](/explore/redisinsightv2/browser)
 
 ##
 

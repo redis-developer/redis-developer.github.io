@@ -1,17 +1,17 @@
 ---
 id: index-usingjava
 title: Modeling JSON Documents with Redis and Java
-sidebar_label: RedisJSON and Java
+sidebar_label: Redis JSON and Java
 slug: /howtos/redisjson/using-java
 ---
 
-RedisJSON lets you store, index, and query JSON data in Redis. Jedis, a Java driver for Redis, provides full support for RedisJSON as of the 4.0 release.
+Redis JSON lets you store, index, and query JSON data in Redis. Jedis, a Java driver for Redis, provides full support for Redis JSON as of the 4.0 release.
 
-Follow along with the steps below to get started with Java and RedisJSON.
+Follow along with the steps below to get started with Java and Redis JSON.
 
 ### 1. Run the Redis Stack Docker container
 
-The Redis Stack docker container bundles the Redis modules that power RedisJSON. To get a running Redis instance with RedisJSON, run the following bash command:
+The Redis Stack docker container bundles the Redis features that power JSON. To get a running Redis instance with JSON, run the following bash command:
 
 ```bash
  docker run -d -p 6379:6379 redis/redis-stack:latest
@@ -29,7 +29,7 @@ You'll need to add Jedis to your Java project. If you're using [Maven](https://m
 </dependency>
 ```
 
-Replace the version with your desired version of Jedis, but note that you'll need Jedis 4.0 or greater to get RedisJSON support.
+Replace the version with your desired version of Jedis, but note that you'll need Jedis 4.0 or greater to get Redis JSON support.
 
 ### 3. Connect to Redis
 
@@ -118,12 +118,12 @@ for (Document doc : docs) {
 }
 ```
 
-This example just scratches the surface. You can atomically manipulate JSON documents and query them in a variety of ways. See the [RedisJSON docs](https://oss.redis.com/redisjson/), the [RediSearch](https://oss.redis.com/redisearch/) docs, and our course, ["Querying, Indexing, and Full-text Search in Redis"](https://university.redis.com/courses/ru203/), for a lot more examples.
+This example just scratches the surface. You can atomically manipulate JSON documents and query them in a variety of ways. See the [Redis JSON docs](https://oss.redis.com/redisjson/), the [Redis Search and Query](https://oss.redis.com/redisearch/) docs, and our course, ["Querying, Indexing, and Full-text Search in Redis"](https://university.redis.com/courses/ru203/), for a lot more examples.
 
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
-- [RedisJSON and Python](/howtos/redisjson/using-python)
+- [Redis JSON and Python](/howtos/redisjson/using-python)
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
-- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
+- Learn more about [Redis JSON](https://oss.redis.com/redisjson/) in the QuickStart tutorial.
+- [How to build shopping cart app using NodeJS and Redis JSON](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)

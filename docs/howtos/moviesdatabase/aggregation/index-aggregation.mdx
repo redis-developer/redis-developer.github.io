@@ -9,7 +9,7 @@ A common need for applications, in addition to retrieving information as a docum
 
 For example if we look at the movie documents, you may want to retrieve the number of movies grouped by release year starting with the most recent ones.
 
-For this, RediSearch provides the FT.AGGREGATE command, with aggregations described as a data processing pipeline.
+For this, Redis Stack provides the FT.AGGREGATE command, with aggregations described as a data processing pipeline.
 
 Let's check out some examples.
 
@@ -139,7 +139,7 @@ Let's check out some examples.
 
 The `idx:user` index contains the last_login field. This field stores the last login time as an EPOC timestamp.
 
-RediSearch aggregation allows you to apply transformations to each record. This is done using the [APPLY](https://oss.redis.com/redisearch/Aggregations/#apply_expressions) parameter.
+Redis Stack search aggregation allows you to apply transformations to each record. This is done using the [APPLY](https://oss.redis.com/redisearch/Aggregations/#apply_expressions) parameter.
 
 For this example you have to use a [date/time](https://oss.redis.com/redisearch/Aggregations/#list_of_datetime_apply_functions) function to extract the month and year from the timestamp.
 

@@ -1,7 +1,7 @@
 ---
 id: index-lesson_6
-title: 'Domain Models with RedisJSON'
-sidebar_label: Domain Models w/ RedisJSON
+title: Domain Models with Redis
+sidebar_label: Domain Models w/ Redis
 slug: /develop/java/redis-and-spring-course/lesson_6
 authors: [bsb]
 ---
@@ -12,7 +12,7 @@ import Authors from '@theme/Authors';
 
 ### Objectives
 
-Add a JSON-backed domain model to Redi2Read using the RedisJSON Redis module.
+Add a JSON-backed domain model to Redi2Read using [Redis Stack](https://redis.io/docs/stack/).
 
 ### Agenda
 
@@ -24,23 +24,40 @@ In this lesson, you'll learn how to:
   If you get stuck:
 - The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-6
 
+:::note
+
+As of [Jedis 4.0.0](https://github.com/redis/jedis) this library is deprecated. It's features have been merged into Jedis.
+
+:::
+
 ### Carts and Cart Items
 
-We will implement the `Cart` and `CartItem` models backed by a custom Spring Repository that uses the RedisJSON API via the JRedisJSON client library.
+We will implement the `Cart` and `CartItem` models backed by a custom Spring Repository that uses the [Redis JSON API](https://redis.io/commands/?group=json) via the JRedisJSON client library.
 
 We will represent a user’s cart as a JSON document containing cart item subdocuments. As you can see in the class diagram, a `Cart` has zero or more `CartItems`, and it belongs to a `User`.
 
 ![Carts and Cart Items](./images/carts_and_cartitems.png)
 
-### RedisJSON
+### Redis Stack
 
-RedisJSON is a Redis module that lets you store, update, and fetch JSON values natively in Redis.
-JSON can be a better fit for modeling complex data in Redis than Hashes because, unlike Hashes,
-JSON values can contain nested arrays and objects.
+[Redis Stack](https://redis.io/docs/stack/about/) extends the core capabilities of Redis OSS and provides a complete developer experience for debugging and more. In addition to all of the features of Redis OSS, Redis Stack supports:
+
+- Queryable JSON documents
+- Querying across hashes and JSON documents
+- Time series data support (ingestion & querying), including full-text search
+- Probabilistic data structures
+
 
 ### JRedisJSON
 
-JRedisJSON (https://github.com/RedisJSON/JRedisJSON) is a Java client that provides access to RedisJSON's Redis API and provides Java serialization using Google’s GSON library.
+:::note
+
+As of [Jedis 4.0.0](https://github.com/redis/jedis) this library is deprecated. It's features have been merged into Jedis.
+
+:::
+
+
+JRedisJSON (https://github.com/RedisJSON/JRedisJSON) is a Java client that provides access to Redis's JSON API and provides Java serialization using Google’s GSON library.
 
 #### Adding JRedisJSON as a Dependency
 
@@ -190,7 +207,7 @@ Now, when JSON serialization occurs in the REST controllers, the user collection
 
 ### The Cart Repository
 
-RedisJSON is not yet seamlessly integrated with Spring, but that does not prevent us from using RedisJSON the “Spring Way”. We have provided an implementation of Spring’s CrudRepository so that we can implement our services and controllers.
+Below, we have provided an implementation of Spring’s CrudRepository so that we can implement our services and controllers.
 Add the file src/main/java/com/redislabs/edu/redi2read/repositories/CartRepository.java with the following contents:
 
 ```java

@@ -14,7 +14,7 @@ Hacker News (sometimes abbreviated as HN) is a social news website focusing on c
 It developed as a project of Graham's company Y Combinator, functioning as a real-world application of the Arc . programming language which Graham co-developed.
 
 This is a HackerNews clone built upon React, NextJS as a frontend and NodeJS, ExpressJS & Redis as a backend.
-This application uses RedisJSON module for storing the data and RediSearch module for searching.
+This application uses JSON for storing the data and Search in Redis Stack for searching.
 
 ![hackernews](hackernews.png)
 
@@ -31,7 +31,7 @@ Redis is an open source, in-memory, key-value data store most commonly used as a
 
 Redis Cloud is a fully-managed cloud service for hosting and running your Redis dataset in a highly-available and scalable manner, with predictable and stable top performance. Redis Enterprise cloud allows you to run Redis server over the Cloud and access instance via multiple ways like RedisInsight, Redis command line as well as client tools. You can quickly and easily get your apps up and running with Redis Cloud through its Redis Heroku addons , just tell us how much memory you need and get started instantly with your first Redis database. You can then add more Redis databases (each running in a dedicated process, in a non-blocking manner) and increase or decrease the memory size of your plan without affecting your existing data.
 
-[Follow this link](../create/rediscloud) to create a Redis Enterprise Cloud account with 2 databases - one with the RedisJSON module and other with RediSearch (full-text search and secondary indexing) module enabled.
+[Follow this link](../create/rediscloud) to create a Redis Enterprise Cloud account with 2 databases with Redis Stack.
 
 Save the database endpoint URL and password for our future reference
 
@@ -157,7 +157,7 @@ Open https://localhost:3001 and you should be able to access the HackerNews logi
  // Result - [3,"item:1","item:2","item:3"]
 ```
 
-- Get all items from RedisJSON
+- Get all items from Redis using `JSON.MGET`
 
 ```bash
  JSON.MGET item:1 item:2 item:3 .
@@ -237,7 +237,7 @@ In this case, 1615652598 is a timestamp of 1 week ealier than current timestamp
  SET item:id-indicator 5
 ```
 
-- Create hash and RedisJSON index
+- Create hash and index
 
 ```bash
  HSET item:4 id iBi8sU4HRcZ2 by andy1 title Firebase trends type ask url  domain  text Firebase Performance Monitoring is a service that helps you to
@@ -316,9 +316,9 @@ In this case, 1615652598 is a timestamp of 1 week ealier than current timestamp
 #### There are 2 type of fields, indexed and non-indexed.
 
 1. Indexed fields will be stored in hash using HSET/HGET.
-2. Non-indexed fields will be stored in RedisJSON.
+2. Non-indexed fields will be stored in JSON.
 
-- Create RediSearch Index
+- Create an index
 
 When schema is created, it should created index.
 
@@ -326,7 +326,7 @@ When schema is created, it should created index.
  FT.CREATE idx:user ON hash PREFIX 1 "user:" SCHEMA username TEXT SORTABLE email TEXT SORTABLE karma NUMERIC SORTABLE
 ```
 
-- Drop RediSearch Index
+- Drop search index
 
 Should drop/update index if the schema has changed
 
@@ -334,7 +334,7 @@ Should drop/update index if the schema has changed
  FT.DROPINDEX idx:user
 ```
 
-- Get RediSearch Info
+- Get search info
 
 Validate if the fields are indexed properly. If not, it will update the index fields or drop/recreate.
 
@@ -414,7 +414,7 @@ It will require new hash and new JSON record
  FT.SEARCH idx:user '*' LIMIT 10 20 SORTBY username ASC
 ```
 
-- Get from RedisJson from multiple keys
+- Get from JSON from multiple keys
 
 ```bash
  JSON.MGET idx:user "andy1" "andy2" "andy3"
@@ -422,9 +422,9 @@ It will require new hash and new JSON record
 
 ### References
 
-- [RedisJSON and Python](/howtos/redisjson/using-python)
+- [JSON and Python](/howtos/redisjson/using-python)
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
-- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
+- Learn more about [JSON in Redis](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
+- [How to build shopping cart app using NodeJS and JSON in Redis](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)

@@ -38,7 +38,7 @@ For example:
 
 and for the movies information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes).
 
-A Redis Hash allows the application to structure all the movie attributes in individual fields; also RediSearch will index the fields based on the index definition.
+A Redis Hash allows the application to structure all the movie attributes in individual fields; also Redis Stack will index the fields based on the index definition.
 
 ## Insert Movies
 
@@ -80,15 +80,15 @@ One option, would be to read all the movies, check all fields and then return on
 
 Nevertheless this is where Redis developers often create custom secondary indexes using SET/SORTED SET structures that point back to the movie hash. This needs some heavy design and implementation.
 
-This is where the RediSearch module can help, and why it was created.
+This is where Search and Query in Redis Stack can help, and why it was created.
 
-## RediSearch & Indexing
+## Search & Indexing
 
-RediSearch greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
+Redis Stack greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
 
 ![Secondary Index](https://github.com/RediSearch/redisearch-getting-started/blob/master/docs/images/secondary-index.png?raw=true)
 
-Using RediSearch if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
+When using Redis Stack, if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
 
 - Title
 - Release Year
@@ -116,7 +116,7 @@ Before running some queries let's look at the command in detail:
 
 - [`FT.CREATE`](https://oss.redis.com/redisearch/master/Commands/#ftcreate) : creates an index with the given spec. The index name will be used in all the key names so keep it short.
 - `idx:movie` : the name of the index
-- `ON hash` : the type of structure to be indexed. _Note that in RediSearch 2.0 only hash structures are supported, this parameter will accept other Redis data types in future as RediSearch is updated to index them_
+- `ON hash` : the type of structure to be indexed.
 - `PREFIX 1 "movie:"` : the prefix of the keys that should be indexed. This is a list, so since we want to only index movie:\* keys the number is 1. Suppose you want to index movies and tv_show that have the same fields, you can use: `PREFIX 2 "movie:" "tv_show:"`
 - `SCHEMA ...`: defines the schema, the fields and their type, to index, as you can see in the command, we are using [TEXT](https://oss.redis.com/redisearch/Query_Syntax/#a_few_query_examples), [NUMERIC](https://oss.redis.com/redisearch/Query_Syntax/#numeric_filters_in_query) and [TAG](https://oss.redis.com/redisearch/Query_Syntax/#tag_filters), and [SORTABLE](https://oss.redis.com/redisearch/Sorting/) parameters.
 

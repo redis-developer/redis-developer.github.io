@@ -1,7 +1,7 @@
 ---
 id: index-usingnodejs
 title: How to cache JSON data in Redis with Node.js
-sidebar_label: RedisJSON and Node.js
+sidebar_label: Redis JSON and Node.js
 slug: /howtos/redisjson/using-nodejs
 authors: [ajeet, simon]
 ---
@@ -14,13 +14,13 @@ Node.js has become incredibly popular for both web and mobile application develo
 
 Node.js is a fast runtime, but adding the power, speed and flexibility of Redis can take it to the next level. Redis is best suited to situations that require data to be retrieved and delivered to the client as quickly as possible.
 
-[RedisJSON](https://redisjson.io) is an add-on module that adds JSON as a native data type to Redis. It enables atomic, in place operations to be performed on JSON documents stored in Redis.
+[Redis JSON](https://redisjson.io) is an add-on feature that adds JSON as a native data type to Redis. It enables atomic, in place operations to be performed on JSON documents stored in Redis.
 
-We'll use the [node-redis](https://npmjs.com/package/redis) client to connect to Redis and leverage the power of RedisJSON.
+We'll use the [node-redis](https://npmjs.com/package/redis) client to connect to Redis and leverage the power of Redis JSON.
 
 ### Step 1. Run the Redis Stack Docker Container
 
-This simple container image bundles together the latest stable releases of Redis and select Redis modules from Redis, Inc.
+This simple container image bundles together the latest stable releases of Redis and select Redis features from Redis, Inc.
 
 ```bash
 $ docker run -d -p 6379:6379 redis/redis-stack:latest
@@ -59,7 +59,7 @@ Now edit `package.json` and add the line `"type": "module"`. The file should loo
 
 ### Step 4. Install node-redis
 
-[node-redis](https://npmjs.com/package/redis) is a high performance Node.js Redis client with support for the RedisJSON module. Install it using `npm`:
+[node-redis](https://npmjs.com/package/redis) is a high performance Node.js Redis client with support for the Redis JSON feature. Install it using `npm`:
 
 ```bash
 $ npm install redis
@@ -79,7 +79,7 @@ async function redisJSONDemo() {
     const client = createClient();
     await client.connect();
 
-    // RedisJSON uses JSON Path syntax. '.' is the root.
+    // Redis JSON uses JSON Path syntax. '.' is the root.
     await client.json.set(TEST_KEY, '.', { node: 4303 });
     const value = await client.json.get(TEST_KEY, {
       // JSON Path: .node = the element called 'node' at root level.
@@ -125,9 +125,9 @@ OK
 ### References
 
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
-- [RedisJSON and Python](/howtos/redisjson/using-python)
+- [Redi JSON and Python](/howtos/redisjson/using-python)
 - [How to store and retrieve nested JSON documents](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using Node.js](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://redisjson.io/) in the Quickstart tutorial.
-- [How to build a shopping cart app using Node.js and RedisJSON](/howtos/shoppingcart)
+- Learn more about [Redis JSON](https://redisjson.io/) in the QuickStart tutorial.
+- [How to build a shopping cart app using Node.js and Redis JSON](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)

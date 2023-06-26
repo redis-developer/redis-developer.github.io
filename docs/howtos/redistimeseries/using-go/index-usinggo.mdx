@@ -1,7 +1,7 @@
 ---
 id: index-usinggo
 title: How to collect and process time-series data using Redis and Go
-sidebar_label: RedisTimeSeries and Go
+sidebar_label: Time Series with Redis and Go
 slug: /howtos/redistimeseries/using-go
 authors: [ajeet]
 ---
@@ -12,13 +12,13 @@ import Authors from '@theme/Authors';
 
 ![My Image](images/redistimeseries-go.png)
 
-RedisTimeSeries is a Redis module that allows Redis to be used as a fast in-memory time series database designed to collect, manage, and deliver time series data at scale. The RedisTimeSeries module shares the performance and simplicity aspects of Redis. Under the hood, it uses efficient data structures such as Radix tree to index data by timestamp, which makes it extremely fast and efficient to run time-aggregate queries.
+Time Series is a Redis feature, It allows Redis to be used as a fast in-memory time series database designed to collect, manage, and deliver time series data at scale. The Time Series feature shares the performance and simplicity aspects of Redis. Under the hood, it uses efficient data structures such as Radix tree to index data by timestamp, which makes it extremely fast and efficient to run time-aggregate queries.
 
-## RedisTimeSeries Go Client
+## Time Series with Redis and Go Client
 
-redistimeseries-go is a package that gives developers easy access to the RedisTimeSeries module. Go client for RedisTimeSeries ([https://github.com/RedisTimeSeries/redistimeseries](https://github.com/RedisTimeSeries/redistimeseries)), based on redigo.Client and ConnPool based on the work of dvirsky and mnunberg on [https://github.com/RediSearch/redisearch-go](https://github.com/RediSearch/redisearch-go)
+redistimeseries-go is a package that gives developers easy access to the Time Series feature in Redis. ([Go client for Time Series](https://github.com/RedisTimeSeries/redistimeseries)), based on redigo.Client and ConnPool based on the work of dvirsky and mnunberg on [https://github.com/RediSearch/redisearch-go](https://github.com/RediSearch/redisearch-go)
 
-Follow the steps below to get started with RedisTimeSeries with Go:
+Follow the steps below to get started with Time Series with Redis in Go lang:
 
 ### Step 1. Create free Redis Enterprise Cloud account
 
@@ -58,11 +58,11 @@ You can now verify the subscription as shown below:
 
 ### Step 6. Create database
 
-Click "Create Database". Enter database name and your preferred module.
+Click "Create Database". Enter database name and your preferred feature.
 
 ![alt_text](images/image9.png)
 
-### Step 7.Installing RedisTimeSeries Go client
+### Step 7.Installing Time Series Go client for Redis
 
 ```
 $ go get github.com/RedisTimeSeries/redistimeseries-go
@@ -119,8 +119,8 @@ OK
 
 ## References
 
-- [Getting Started with RedisTimeSeries](/howtos/redistimeseries/getting-started/)
-- Learn more about RedisTimeSeries in the [Quickstart](https://oss.redis.com/redistimeseries/) tutorial.
-- [Build Your Financial Application on RedisTimeSeries](https://redis.com/blog/build-your-financial-application-on-redistimeseries/)
+- [Getting Started with Time Series with Redis](/howtos/redistimeseries/getting-started/)
+- Learn more about Time Series with Redis in the [QuickStart](https://oss.redis.com/redistimeseries/) tutorial.
+- [Build Your Financial Application on Time Series with Redis](https://redis.com/blog/build-your-financial-application-on-redistimeseries/)
 - [How to Manage Real-Time IoT Sensor Data in Redis](https://redis.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
-- [Introduction to RedisTimeSeries - Video](https://www.youtube.com/watch?v=rXynFOrrd-Q)
+- [Introduction to Time Series with Redis - Video](https://www.youtube.com/watch?v=rXynFOrrd-Q)

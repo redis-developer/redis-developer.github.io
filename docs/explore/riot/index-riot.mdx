@@ -13,7 +13,7 @@ import Authors from '@theme/Authors';
 Redis Input/Output Tools (RIOT) is a set of import/export command line utilities for Redis:
 
 - RIOT Redis: live replication from any Redis database (including AWS Elasticache) to another Redis database.
-- RIOT DB: migrate from an RDBMS to Redis, RediSearch, RedisJSON, ...
+- RIOT DB: migrate from an RDBMS to Redis
 
 <Tabs
   defaultValue="RIOT Redis"
@@ -129,7 +129,6 @@ RIOT Redis implements client-side replication using a producer/consumer approach
 1. Key reader: initiates a SCAN and optionally calls SUBSCRIBE to listen for keyspace notifications (live replication).
 2. Value reader: takes the keys and calls DUMP and TTL.
 3. Key/Value writer: takes key/value/ttl tuples and calls RESTORE and EXPIRE.
-
 
 :::note
 

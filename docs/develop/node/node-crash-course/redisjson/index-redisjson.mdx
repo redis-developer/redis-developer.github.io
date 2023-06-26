@@ -1,7 +1,7 @@
 ---
 id: index-redisjson
-title: Managing Document Data with RedisJSON
-sidebar_label: RedisJSON
+title: Managing Document Data with JSON
+sidebar_label: JSON
 slug: /develop/node/nodecrashcourse/redisjson
 authors: [simon]
 ---
@@ -51,7 +51,7 @@ Here's an example of the additional data we want to store about a location:
 
 We could store this data as serialized JSON in a Redis String, but then our application would have to retrieve and parse the entire document every time it wanted to read some of the data. And we'd have to do the same to update it too. Furthermore, with this approach, update operations aren't atomic and a second client could update the JSON stored at a given key while we're making changes to it in our application code. Then, when we serialize our version of the JSON back into the Redis String, the other client's changes would be lost.
 
-RedisJSON adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server. This makes our application code simpler, more efficient, and much more reliable.
+Redis Stack adds a new JSON data type to Redis, and a query syntax for selecting and updating individual elements in a JSON document atomically on the Redis server. This makes our application code simpler, more efficient, and much more reliable.
 
 ## Coding Exercise
 
@@ -106,7 +106,7 @@ If you're using redis-cli, you can look at the structure of the JSON document wi
 json.get ncc:locationdetails:121 .
 ```
 
-Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis. Use the [RedisJSON path syntax page](https://oss.redis.com/redisjson/path/) to help you formulate the right query.
+Make sure your query returns only the day requested, so that you don't have to write Node.js code to filter the value returned from Redis. Use the [JSON path syntax page](https://redis.io/docs/stack/json/path/) to help you formulate the right query.
 
 To test your code, start the server with:
 
@@ -129,7 +129,7 @@ Don't forget that if you have questions or need help, we're available on [Discor
 
 ## External Resources
 
-In this video, Justin introduces RedisJSON using a fun taco truck example!
+In this video, Justin introduces JSON using a fun taco truck example!
 
 <div class="text--center">
   <iframe
@@ -141,4 +141,4 @@ In this video, Justin introduces RedisJSON using a fun taco truck example!
     allowfullscreen></iframe>
 </div>
 
-Learn more about RedisJSON at its [official homepage](https://redisjson.io/).
+Learn more about JSON at https://redis.io/docs/stack/json/.

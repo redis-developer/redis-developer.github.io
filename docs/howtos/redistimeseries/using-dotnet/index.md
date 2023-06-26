@@ -1,7 +1,7 @@
 ---
 id: index-usingdotnet
 title: Processing Time Series data with Redis and .NET
-sidebar_label: Using RedisTimeSeries with .NET
+sidebar_label: Using Time Series with Redis and .NET
 slug: /howtos/redistimeseries/using-dotnet
 authors: [steve]
 ---
@@ -22,9 +22,9 @@ Next, inside the `TimeSeriesDemoApp` directory, run the command:
 dotnet add package NRedisTimeSeries
 ```
 
-## Get a RedisTimeSeries Database
+## Get a Redis Database
 
-The next step is to get a RedisTimeSeries database up and running. The easiest way to do that for development purposes is to use Docker:
+The next step is to get a Redis database up and running. The easiest way to do that for development purposes is to use Docker:
 
 ```
 docker run -p 6379:63379 redis/redis-stack-server:latest
@@ -86,7 +86,7 @@ Now that we produce and consume data run the app with `dotnet run`. This will ru
 
 ## Run Aggregations in the Time Series
 
-Now what we've done so far is produce a time series of random integer data for our .NET app to consume. What if we wanted to do something a bit more interesting with it, though? Let's say we wanted to calculate a moving average every 5 seconds. We can do that with ease using Redis TimeSeries.
+Now what we've done so far is produce a time series of random integer data for our .NET app to consume. What if we wanted to do something a bit more interesting with it, though? Let's say we wanted to calculate a moving average every 5 seconds. We can do that with ease using Time Series.
 
 ### Create Rules to Store Aggregations
 
@@ -133,4 +133,4 @@ When we run the application with `dotnet run`, you will see that the application
 
 - The Source Code for this demo is located in [GitHub](https://github.com/redis-developer/redis-time-series-demo-dotnet)
 - The source code for NRedisTimeSeries is also located in [GitHub](https://github.com/redistimeseries/nredistimeseries)
-- More information about Redis Time Series can be found at [redistimeseries.io](https://redistimeseries.io/)
+- More information about Time Series with Redis can be found at [redistimeseries.io](https://redistimeseries.io/)

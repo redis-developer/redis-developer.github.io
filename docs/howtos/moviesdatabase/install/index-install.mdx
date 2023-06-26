@@ -1,25 +1,25 @@
 ---
 id: index-install
-title: 2. Install Redisearch
-sidebar_label: 2. Install Redisearch
+title: 2. Install Redis Stack
+sidebar_label: 2. Install Redis Stack
 slug: /howtos/moviesdatabase/install
 ---
 
-You have multiple ways to run RediSearch:
+You have multiple ways to run Redis Stack:
 
-- building from [sources](https://github.com/RediSearch/RediSearch) and installing it inside an existing Redis Instance
 - using [Redis Cloud](https://redis.com/redis-enterprise-cloud/overview/)
 - using [Redis Enterprise](https://redis.com/redis-enterprise-software/overview/)
-- using [Docker](https://hub.docker.com/r/redislabs/redisearch/)
+- using [Docker](https://hub.docker.com/r/redis/redis-stack)
+- using [binaries](https://redis.io/docs/stack/get-started/install/binaries/)
 
 Let's use Docker for now.
 
 **1.1 Open a terminal an run the following command**
 
 ```
-> docker run -it --rm --name redis-search-2 \
+> docker run -it --rm --name redis-stack-latest \
    -p 6379:6379 \
-   redislabs/redisearch:2.0.2
+   redis/redis-stack:latest
 ```
 
 :::note
@@ -28,6 +28,6 @@ The container will automatically be removed when it exits (`--rm` parameter).
 
 :::
 
-You have now a Redis instance running with RediSearch installed, let's discover the basics.
+You have now a Redis instance running with Redis Stack installed, let's discover the basics.
 
 ---

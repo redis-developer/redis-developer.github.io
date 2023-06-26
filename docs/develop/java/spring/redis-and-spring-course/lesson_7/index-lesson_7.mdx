@@ -1,7 +1,7 @@
 ---
 id: index-lesson_7
-title: 'Search with RediSearch'
-sidebar_label: Search w/ RediSearch
+title: Search with Redis
+sidebar_label: Search w/ Redis
 slug: /develop/java/redis-and-spring-course/lesson_7
 authors: [bsb]
 ---
@@ -12,29 +12,35 @@ import Authors from '@theme/Authors';
 
 ### Objectives
 
-Learn how the RediSearch module can bridge the querying gap between SQL and NoSQL systems. We’ll focus on two everyday use cases: full-text search and auto-complete.
+Learn how the built-in Search and Query engine in Redis can bridge the querying gap between SQL and NoSQL systems. We’ll focus on two everyday use cases: full-text search and auto-complete.
 
 ### Agenda
 
 In this lesson, you'll learn:
 
-- How to create search indexes with RediSeach using spring-redisearch and lettuce-search.
-- How to use RediSearch in a Spring Boot application to implement faceted search.
-- How to use the RediSearch suggestions feature to implement auto-complete.
+- How to create search indexes with Redis using spring-redisearch and lettuce-search.
+- How to use Redis in a Spring Boot application to implement faceted search.
+- How to use the Redis suggestions feature to implement auto-complete.
   If you get stuck:
 - The progress made in this lesson is available on the redi2read github repository at https://github.com/redis-developer/redi2read/tree/course/milestone-7
 
-### RediSearch
+### Redis Stack Search and Query engine
 
-RediSearch is a source-available module for querying, secondary indexing, and full-text search in Redis.
-Redisearch implements a secondary index in Redis, but unlike other Redis indexing libraries, it does not use internal data structures such as sorted sets.
-This also enables more advanced features, such as multi-field queries, aggregation, and full-text search. Also, RediSearch supports exact phrase matching and numeric filtering for text queries, neither possible nor efficient with traditional Redis indexing approaches.
+Redis Stack is a source-available version of Redis used for querying, secondary indexing, and full-text search in Redis.
+Redis Stack implements a secondary index in Redis, but unlike other Redis indexing libraries, it does not use internal data structures such as sorted sets.
+This also enables more advanced features, such as multi-field queries, aggregation, and full-text search. Also, Redis Stack supports exact phrase matching and numeric filtering for text queries, neither possible nor efficient with traditional Redis indexing approaches.
 Having a rich query and aggregation engine in your Redis database opens the door to many new applications that go well beyond caching. You can use Redis as your primary database even when you need to access the data using complex queries without adding complexity to the code to update and index data.
 
 ### Using spring-redisearch
 
-Spring RediSearch (https://github.com/RediSearch/spring-redisearch) is a library built on LettuSearch (https://github.com/RediSearch/lettusearch), providing access to RediSearch from Spring applications.
-LettuSearch is a Java client for RediSearch based on the popular Redis Java client library Lettuce.
+:::warn
+
+Spring RediSearch and LettuSearch have been merged into multi-module client [**LettuceMod**](https://github.com/redis-developer/lettucemod). Please use LettuceMod instead.
+
+:::
+
+Spring RediSearch (https://github.com/RediSearch/spring-redisearch) is a library built on LettuSearch (https://github.com/RediSearch/lettusearch), providing access to Redis Stack from Spring applications.
+LettuSearch is a Java client for Redis Stack based on the popular Redis Java client library Lettuce.
 Adding the `spring-redisearch` dependency
 In your Maven `pom.xml`, add the following dependency:
 
@@ -57,7 +63,7 @@ For the `Book` model, you will be indexing four fields:
 
 #### Authors
 
-Creating the index is done using the FT.CREATE command. The RediSearch engine will scan the database using one or more PREFIX key pattern values and update the index based on the schema definition.
+Creating the index is done using the FT.CREATE command. The Redis Search and Query engine will scan the database using one or more PREFIX key pattern values and update the index based on the schema definition.
 This active index maintenance makes it easy to add an index to an existing application.
 To create our index, we’ll use the now-familiar `CommandLineRunner` recipe.
 We will keep the name of the soon to be created index in the application's property field as shown:
@@ -133,8 +139,8 @@ public class CreateBooksSearchIndex implements CommandLineRunner {
 ```
 
 Let’s break down what our `CreateBooksSearchIndex` `CommandLineRunner` is doing. We'll be working with classes out of the `com.redislabs.lettusearch` package:
-Inject a `StatefulRediSearchConnection`, which gives access to RediSearch commands in synchronous mode, asynchronous mode, and reactive mode.
-From the `StatefulRediSearchConnection` we get an instance of RediSearchCommands using the `sync()` method (return the synchronous mode methods).
+Inject a `StatefulRediSearchConnection`, which gives access to Search commands in synchronous mode, asynchronous mode, and reactive mode.
+From the `StatefulRediSearchConnection` we get an instance of Search commands using the `sync()` method (return the synchronous mode methods).
 We only create the index if it doesn’t exist, which will be signalled by the FT.INFO command command throwing an exception.
 To create the index, we build a `CreateOptions` object passing the Book class prefix.
 For each one the fields to be indexed, we create a Field object:
@@ -145,7 +151,7 @@ For each one the fields to be indexed, we create a Field object:
 
 Authors are stored in a Set, so they are serialized as prefixed indexed fields (`authors.[0], authors.[1]`, ...). We indexed up to 6 authors.
 To create the index, we invoke the create method passing the index name, the CreateOptions, and the fields.
-To see more options and all field types, see https://oss.redis.com/redisearch/Commands/#ftcreate
+To see more options and all field types, see https://redis.io/commands/ft.create/
 On server restart, you should run your Redis CLI MONITOR to see the following commands:
 
 ```
@@ -174,7 +180,7 @@ This snippet from the FT.INFO command output for the `“books-idx”` index sho
 
 ### Full-text Search Queries
 
-RediSearch is a full-text search engine, allowing the application to run powerful queries. For example, to search all books that contain “networking”-related information, you would run the following command:
+Redis Stack is a full-text search engine, allowing the application to run powerful queries. For example, to search all books that contain “networking”-related information, you would run the following command:
 
 ```bash
 127.0.0.1:6379> FT.SEARCH books-idx "networking" RETURN 1 title
@@ -245,7 +251,7 @@ Unions:
 127.0.0.1:6379> FT.SEARCH books-idx "rust | %scal%" RETURN 3 title subtitle authors.[0]
 ```
 
-You can find more information about the query syntax in the RediSearch documentation.
+You can find more information about the query syntax in the [Redis Search documentation](https://redis.io/docs/stack/search/).
 Adding Search to the Books Controller
 To add full-text search capabilities to the `BooksController`, we'll first inject a `StatefulRediSearchConnection`
 and simply pass a text query param to the search method available from the `RediSearchCommands` interface:
@@ -317,11 +323,11 @@ This returns:
 ]
 ```
 
-### Adding and getting Auto-complete suggestions
+### Adding and getting auto-complete suggestions
 
-RediSearch provides a completion suggester that is typically used for auto-complete/search-as-you-type functionality.
+Redis Stack provides a completion suggester that is typically used for auto-complete/search-as-you-type functionality.
 This is a navigational feature to guide users to relevant results as they are typing, improving search precision.
-RediSearch provides completion suggestions with four commands:
+Redis provides completion suggestions with four commands:
 
 - FT.SUGADD: Adds a suggestion string to an auto-complete dictionary.
 - FT.SUGGET: Get a list of suggestions for a string.

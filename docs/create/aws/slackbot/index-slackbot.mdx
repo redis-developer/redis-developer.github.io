@@ -1,7 +1,7 @@
 ---
 id: index-slackbot
-title: How to Build a Slack Bot to Retrieve Lost Files Using AWS S3 and RediSearch
-sidebar_label: Building a Slack Bot using AWS S3 and RediSearch from scratch
+title: How to Build a Slack Bot to Retrieve Lost Files Using AWS S3 and Redis Search and Query Engine
+sidebar_label: Building a Slack Bot using AWS S3 and Redis Search and Query Engine
 slug: /create/aws/slackbot
 authors: [ajeet]
 ---
@@ -40,13 +40,13 @@ Ready to get started? OK, let’s dive straight in.
 
 ### Step 2. What will you need?
 
-- [Slack:](https://slack.com/intl/en-gb/): used as an instant messaging app that connects employees with one another.
+- [Slack](https://slack.com/intl/en-gb/): used as an instant messaging app that connects employees with one another.
 - [Slack Block Kit](https://api.slack.com/block-kit): used as a UI framework for Slack apps that offers a balance of control and flexibility when building experiences.
-- [Python:](https://www.python.org/): the preferred programming language to connect Redis in the application.
-- [RediSearch](https://redis.com/modules/redis-search/): Provides querying, secondary indexing, and full-text search for Redis.
-- [S3 bucket](https://aws.amazon.com/es/s3/): Used as a public cloud storage resource in Amazon Web Services (AWS).
-- [AWS Textract](https://aws.amazon.com/es/textract/): Used as a machine learning service that automatically extracts text.
-- [Nodejs](https://nodejs.org/en/): Responsible for image generation.
+- [Python](https://www.python.org/): the preferred programming language to connect Redis in the application.
+- [Redis Stack](https://redis.io/docs/stack/): includes a built-in Search and Query feature that provides querying, secondary indexing and full-text search.
+- [S3 bucket](https://aws.amazon.com/es/s3/): used as a public cloud storage resource in Amazon Web Services (AWS).
+- [AWS Textract](https://aws.amazon.com/es/textract/): used as a machine learning service that automatically extracts text.
+- [Nodejs](https://nodejs.org/en/): responsible for image generation.
 
 ### Step 3. Architecture
 
@@ -57,36 +57,36 @@ Let’s look at each of the components that creates the Reeko-Slack bot:
 #### 1. file_shared
 
 - When a new file is shared in any public slack channel the file_share event is sent to the Slack Bot app.
-- The file name is added as a suggestion using the <code>[FT.SUGADD](https://oss.redis.com/redisearch/Commands/)</code> command in RediSearch.
-- All file data is added using the <code>[JSON.SET](https://oss.redis.com/redisjson/commands/#jsonset)</code> command.
+- The file name is added as a suggestion using the [`FT.SUGADD`](https://redis.io/commands/?group=search) command in Redis.
+- All file data is added using the [`JSON.SET`](https://redis.io/commands/?group=json) command.
 - The file is then stored on the S3 bucket as an object with the key as the filename.
 
 #### 2. S3-get
 
-- The <code>[JSON.GET ](https://oss.redis.com/redisjson/commands/#jsonget)</code>command checks whether the desired file exists.
+- The [`JSON.GET`](https://redis.io/commands/?group=json) command checks whether the desired file exists.
 - The file will then be retrieved from the S3 bucket if found.
 
 #### 3. S3-search
 
-- The <code>[FT.SEARCH ](https://oss.redis.com/redisearch/Commands/#ftsearch)</code>command uses RediSearch to look for documents in the S3 bucket- Users are presented will be prompted with different file name suggestions based on what they’ve typed in the search bar.
+- The [`FT.SEARCH`](https://redis.io/commands/?group=search) command uses the Redis Search and Query engine to look for documents in the S3 bucket- Users are presented will be prompted with different file name suggestions based on what they’ve typed in the search bar.
 - Once the user chooses one of the file suggestions, it is then downloaded and sent back to Slack.
 
 #### 4. S3-delete
 
-- User types the file name from the<strong> command["text']</strong> parameter
-- The file data is deleted from RedisJson using the <code>[JSON.DEL](https://oss.redis.com/redisjson/commands/#jsondel)</code> command and is also removed from RediSearch's suggestions using the <code>FT.SUGDEL</code> command.
+- User types the file name from the<strong> command['text']</strong> parameter
+- The file data is deleted from Redis using the [`JSON.DEL`](https://redis.io/commands/?group=json) command and is also removed from Redis's suggestions using the `FT.SUGDEL` command.
 
 #### 5. Summarise-document
 
 - The file name is identified from the <strong>command['text']</strong> parameter.
-- It is then retrieved from the S3 bucket through the[ JSON.GET](https://oss.redis.com/redisjson/commands/#jsonget) command.
+- It is then retrieved from the S3 bucket through the [JSON.GET](https://redis.io/commands/?group=json) command.
 - Users can either download the pdf or png file locally from the S3 bucket.
-- The text is extracted using [AWS Textract ](https://aws.amazon.com/textract/).
-- The extracted text is then summarised using Hugging face transformers summarization pipeline. The text summary is also added back to the <code>JSON</code> document using[ JSON.SET](https://oss.redis.com/redisjson/commands/#jsonset)<code> </code>command.
+- The text is extracted using [AWS Textract](https://aws.amazon.com/textract/).
+- The extracted text is then summarised using Hugging face transformers summarization pipeline. The text summary is also added back to the `JSON` document using [`JSON.SET`](https://redis.io/commands/?group=json) command.
 - A post request is then sent to the /create-image on the NodeJS backend with the file name and summary text.
 - An image is generated using a base template.
 - The image that is returned is saved to the S3 bucket and sent back to Slack.
-- The image URL is also added to the <code>JSON</code> document using <code>[JSON.SET ](https://oss.redis.com/redisjson/commands/#jsonset)</code>command.
+- The image URL is also added to the `JSON` document using [`JSON.SET`](https://redis.io/commands/?group=json) command.
 
 ### What is the S3 bucket?
 
@@ -197,7 +197,7 @@ SLACK_SIGNING_SECRET=your-signing-secret
 
 ![alt_text](images/image8.png)
 
-1. Make sure you have followed the steps in [Cloning the repo t](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#Cloning-the-repo)o start the bolt app. The HTTP server is using a built-in development adapter, which is responsible for handling and parsing incoming events from Slack on port 3000.
+1. Make sure you have followed the steps in [Cloning the repo](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#Cloning-the-repo) to start the bolt app. The HTTP server is using a built-in development adapter, which is responsible for handling and parsing incoming events from Slack on port 3000.
 
 ```
 python3 app.py
@@ -205,7 +205,7 @@ python3 app.py
 
 ![alt_text](images/image6.png)
 
-Open a new terminal and ensure that you've installed [ngrok. Make sure to](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#ngrok) tell ngrok to use port 3000 (which Bolt for Python uses by default):
+Open a new terminal and ensure that you've installed [ngrok](https://github.com/redis-developer/Reeko-Slack-Bot/tree/master/python-backend#ngrok). Make sure to tell ngrok to use port 3000 (which Bolt for Python uses by default):
 
 ```
 ngrok http 3000
@@ -216,16 +216,15 @@ ngrok http 3000
 For local slack development, we'll use your ngrok URL from above, so copy it to your clipboard.
 
 ```
-For example: https://your-own-url.ngrok.io (copy to clipboard)
-
+https://your-own-url.ngrok.io
 ```
 
 1. Now we’re going to subscribe to events. Your app can listen to all sorts of events that are happening around your workspace - messages being posted, files being shared and more. On your app configuration page, select the _Event Subscriptions_ sidebar. You'll be presented with an input box to enter a Request URL, which is where Slack sends the events your app is subscribed to. Hit the _save_ button.
 
-By default Bolt for Python listens for all incoming requests at the /slack/events route, so for the Request URL you can enter your ngrok URL appended with /slack/events.
+By default Bolt for Python listens for all incoming requests at the /slack/events route, so for the Request URL you can enter your ngrok URL appended with /slack/events:
 
 ```
-Request URL: https://your-own-url.ngrok.io/slack/events
+https://your-own-url.ngrok.io/slack/events
 ```
 
 If the challenge was successful, you’ll get “verified” right next to the Request URL.
@@ -245,18 +244,18 @@ Add the following scopes
 
 ![alt_text](images/image26.png)
 
-1. Select the _Interactivity & Shortcuts_ sidebar and toggle the switch as on. Again, for the Request URL, enter your ngrok URL appended with /slack/events.
+1. Select the _Interactivity & Shortcuts_ sidebar and toggle the switch as on. Again, for the Request URL, enter your ngrok URL appended with /slack/events:
 
 ```
-Request URL: https://your-own-url.ngrok.io/slack/events
+https://your-own-url.ngrok.io/slack/events
 ```
 
 ![alt_text](images/image16.png)
 
-1. Scroll down to the _Select Menus_ section in the Options Load URL and enter your ngork URL appended with /slack/events.
+1. Scroll down to the _Select Menus_ section in the Options Load URL and enter your ngork URL appended with /slack/events:
 
 ```
-Options Load URL: https://your-own-url.ngrok.io/slack/events
+https://your-own-url.ngrok.io/slack/events
 ```
 
 ![alt_text](images/image32.png)
@@ -327,7 +326,7 @@ Install all the packages and run the server.
 
 ```
 npm install
-npm run start
+npm start
 ```
 
 ![alt_text](images/image18.png)
@@ -352,7 +351,7 @@ JSON.GET amazonshareholderletterpdf
 
 This command involves deleting files from the S3 bucket. To achieve this you simply need to type in the file name in the search bar and Reeko will pull up the file as demonstrated below.
 
-You’ll have the option to permanently delete the file from the S3 bucket. The file data is deleted from RedisJson using the JSON.DEL command and is removed from RediSearch's suggestions using the `FT.SUGDEL` command. You’ll be informed when the file is deleted.
+You’ll have the option to permanently delete the file from the S3 bucket. The file data is deleted from Redis using the JSON.DEL command and is removed from RediSearch's suggestions using the `FT.SUGDEL` command. You’ll be informed when the file is deleted.
 
 ```
 FT.SUGDEL file-index "amazon-shareholder-letter.pdf"
@@ -383,7 +382,6 @@ In this step, Reeko will extract all of the text from the documents and summariz
 
 ```
  JSON.GET amazonshareholderletterpdf
-
 ```
 
 3. Download the pdf or png file locally from S3 bucket
@@ -407,7 +405,7 @@ Below we’ve used the [Amazon 2020 shareholder letter](https://s2.q4cdn.com/299
 
 #### 5. How it works
 
-The Slack app is built using Bolt for Python framework. To connect the AWS S3 bucket and AWS Textract, use their respective [boto3 ](https://github.com/boto/boto3)clients.
+The Slack app is built using Bolt for Python framework. To connect the AWS S3 bucket and AWS Textract, use their respective [boto3](https://github.com/boto/boto3) clients.
 
 Slack is receptive to all events around your workspace such as messages being posted, files being shared, users joining the team, and more. To listen to events, Slack uses the Events API. And to enable custom interactivity, you can use the Block Kit.
 
@@ -415,10 +413,10 @@ Slash commands work in the following way. First they consider the text you enter
 
 In the application there are two Redis Modules:
 
-- [RedisJSON](https://oss.redislabs.com/redisjson/) - store file information like filename, summary and image url.
-- [RediSearch](https://oss.redislabs.com/redisearch/) - searches for files in the S3 bucket
+- [Redis JSON](https://redis.io/docs/stack/json/) - store file information like filename, summary and image url.
+- [Redis Search and Query](https://redis.io/docs/stack/search/) - searches for files in the S3 bucket
 
-The code below is used to initialize RediSearch in redisearch_connector.py. This is done by creating an index with the name `file_index.`
+The code below is used to initialize Redis in redisearch_connector.py. This is done by creating an index with the name `file_index.`
 
 ```
 from redisearch import Client, TextField, AutoCompleter, Suggestion
@@ -440,7 +438,7 @@ class RedisJsonConnector():
         self.rj = Client(decode_responses=True)
 ```
 
-And the code below is used to create an index on RediSearch
+And the code below is used to create an index in Redis
 
 ```
 FT.CREATE file-index ON HASH SCHEMA file_name TEXT SORTABLE file_id TEXT created TEXT timestamp TEXT mimetype TEXT filetype TEXT user_id TEXT size
@@ -448,7 +446,7 @@ FT.CREATE file-index ON HASH SCHEMA file_name TEXT SORTABLE file_id TEXT created
 
 ### Conclusion: preventing lost files with Redis
 
-The advanced capabilities of Redis allowed this Launchpad App to create an invaluable asset to remote workers - to never lose a file again on Slack. RediSearch offered a simple yet effective way of transmitting data to and from the S3 bucket with no lags, no pauses and no delays whatsoever. You can discover more about the ins and outs of how this app was made by simply [clicking here](https://launchpad.redis.com/?id=project%3AReeko-Slack-Bot).
+The advanced capabilities of Redis allowed this Launchpad App to create an invaluable asset to remote workers - to never lose a file again on Slack. Redis Stack offered a simple yet effective way of transmitting data to and from the S3 bucket with no lags, no pauses and no delays whatsoever. You can discover more about the ins and outs of how this app was made by simply [clicking here](https://launchpad.redis.com/?id=project%3AReeko-Slack-Bot).
 
 Reeko is an innovative application that joins our _exciting_ collection of apps that we currently have on the [Redis Launchpad](https://launchpad.redis.com/). By using Redis, programmers from all over the world are creating breakthrough applications that are having an impact on daily lives… _and you can too_.
 
@@ -467,5 +465,5 @@ To discover more about his work and his activity on GitHub, you can [check out h
 ### References
 
 - [Create Redis database on AWS](/create/aws/redis-on-aws)
-- [Connecting to the database using RedisInsight](/explore/redisinsight/)
-- [How to list & search Movies database using Redisearch](/howtos/moviesdatabase/getting-started/)
+- [Connecting to a Redis database using RedisInsight](/explore/redisinsight/)
+- [How to build an IMDB clone with the Redis Search and Query engine](/howtos/moviesdatabase/getting-started/)

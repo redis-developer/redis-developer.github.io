@@ -10,7 +10,7 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-[RedisTimeSeries](https://redis.com/modules/redis-timeseries/) is a Redis module developed by Redis Inc. to enhance your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
+[Time Series](https://redis.com/modules/redis-timeseries/) is a Redis feature developed by Redis Inc. to enhance your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With Time Series, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downSampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
 <div class="text--center">
   <iframe
@@ -47,7 +47,7 @@ click "Create a custom database" option shown in the image.
 
 ### Step 3. Verify the database details
 
-You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of modules that comes by default.
+You will be provided with Public endpoint URL and "Redis Stack" as the type of database with the list of features that comes by default.
 
 ![verify database](images/details_database.png)
 
@@ -86,20 +86,20 @@ Add the Redis Enterprise cloud database endpoint, port and password.
 
 ![database details](images/database_details.png)
 
-### Step 8. Getting Started with RedisTimeSeries
+### Step 8. Getting Started with Redis Time Series feature
 
-This section will walk you through using some basic RedisTimeseries commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.)
+This section will walk you through using some basic Time Series commands in Redis. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.)
 Using a basic air-quality dataset, we will show you how to:
 
 - Create a new time series
 - Add a new sample to the list of series
 - Query a range across one or multiple time series
 
-![RedisTimeSeries](redistimeseriesflow.png)
+![Time Series](redistimeseriesflow.png)
 
 #### Create a new time series
 
-Let’s create a time series representing air quality dataset measurements. To interact with RedisTimeSeries you will most often use the TS.RANGE command, but here you will create a time series per measurement using the TS.CREATE command. Once created, all the measurements will be sent using TS.ADD.
+Let’s create a time series representing air quality dataset measurements. To interact with Time Series you will most often use the TS.RANGE command, but here you will create a time series per measurement using the TS.CREATE command. Once created, all the measurements will be sent using TS.ADD.
 
 The sample command below creates a time series and populates it with three entries:
 
@@ -206,10 +206,10 @@ You can use various aggregation types such as avg, sum, min, max, range, count, 
 
 ### Next Steps
 
-- Learn more about RedisTimeSeries in the [Quickstart](https://oss.redis.com/redistimeseries/) tutorial.
-- [Build Your Financial Application on RedisTimeSeries](https://redis.com/blog/build-your-financial-application-on-redistimeseries/)
+- Learn more about Time Series with Redis in the [QuickStart](https://oss.redis.com/redistimeseries/) tutorial.
+- [Build Your Financial Application on Time Series using Redis](https://redis.com/blog/build-your-financial-application-on-redistimeseries/)
 - [How to Manage Real-Time IoT Sensor Data in Redis](https://redis.com/blog/how-to-manage-real-time-iot-sensor-data-in-redis/)
-- [Introduction to RedisTimeSeries - Video](https://www.youtube.com/watch?v=rXynFOrrd-Q)
+- [Introduction to Time Series in Redis - Video](https://www.youtube.com/watch?v=rXynFOrrd-Q)
 
 ##
 

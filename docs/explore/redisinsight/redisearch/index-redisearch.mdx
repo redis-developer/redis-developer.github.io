@@ -1,7 +1,7 @@
 ---
 id: index-redisearch
-title: Perform Database Search and Analytics using RediSearch Browser Tool
-sidebar_label: Perform Database Search and Analytics using RediSearch Browser Tool
+title: Perform Database Search and Analytics using Redis Search Browser Tool
+sidebar_label: Perform Database Search and Analytics using Redis Search Browser Tool
 slug: /explore/redisinsight/redisearch
 authors: [ajeet]
 ---
@@ -10,7 +10,7 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [RediSearch](https://oss.redis.com/redisearch/) is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules.With RedisInsight, the below functionalities are possible
+A full-featured pure desktop GUI client, RedisInsight supports Redis Search. [Redis Search](https://redis.io/docs/stack/search/) is a powerful indexing, querying, and full-text search engine for Redis. It is one of the most mature and feature-rich Redis modules.With RedisInsight, the below functionalities are possible
 
 - Multi-line for building queries
 - Added ability to submit query with ‘ctrl + enter’ in single line mode
@@ -23,11 +23,11 @@ A full-featured pure desktop GUI client, RedisInsight supports RediSearch. [Redi
 - Pagination
 - Counting
 
-RediSearch allows you to quickly create indexes on datasets (Hashes), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
+Redis Search allows you to quickly create indexes on datasets (Hashes), and uses an incremental indexing approach for rapid index creation and deletion. The indexes let you query your data at lightning speed, perform complex aggregations, and filter by properties, numeric ranges, and geographical distance.
 
 ### Step 1. Create Redis database
 
-[Follow this link to create Redis Stack database](/create/redis-stack) that comes with RediSearch module enabled
+[Follow this link to create Redis Stack database](/create/redis-stack) that comes with Redis Search
 
 ## Step 2: Download RedisInsight
 
@@ -51,7 +51,7 @@ Let us begin with OpenBeerDB sample dataset.
 
 ### Step 3. OpenBeerDB sample dataset
 
-To demonstrate RediSearch, we will use OpenbeerDB dataset. The dataset is available publicly for general public under [openbeerdb.com](https://openbeerdb.com)
+To demonstrate Redis Search, we will use OpenbeerDB dataset. The dataset is available publicly for general public under [openbeerdb.com](https://openbeerdb.com)
 
 ![alt_text](images/image2.png)
 
@@ -76,11 +76,11 @@ $ python3 import.py --url redis://localhost:6379
 Importing categories…
 Importing styles...
 Importing breweries...
-Adding beer data to RediSearch..
+Adding beer data to Redis Search..
 
 ```
 
-### Step 6: Choose “RediSearch” under RedisInsight browser tool
+### Step 6: Choose “Redis Search” under RedisInsight browser tool
 
 ![alt_text](images/image3.png)
 
@@ -106,7 +106,7 @@ You can download the data in CSV format.
 
 #### Query: All beers with ABV higher than 5% but lower than 6%
 
-The beers are added to the RediSearch index weighted by ABV. So by default, the results will be ordered by ABV highest to lowest. Both ABV and IBU are sortable, so you can order results by either of these fields using sortby in the query
+The beers are added to the Redis Search index weighted by ABV. So by default, the results will be ordered by ABV highest to lowest. Both ABV and IBU are sortable, so you can order results by either of these fields using sortby in the query
 
 ![alt_text](images/image9.png)
 
@@ -140,7 +140,7 @@ Let us look at Movie sample dataset too.
 
 ### Step 8. Create Redis database
 
-[Follow this link to create Redis Stack database using Docker container](/create/redis-stack) that comes with RediSearch module enabled
+[Follow this link to create Redis Stack database using Docker container](/create/redis-stack) that comes with Redis Search module enabled
 
 ### Step 9. Install RedisInsight
 
@@ -179,7 +179,7 @@ For example:
 
 and for the movies information you should use a Redis [Hash](https://redis.io/topics/data-types#hashes).
 
-A Redis Hash allows the application to structure all the movie attributes in individual fields; also RediSearch will index the fields based on the index definition.
+A Redis Hash allows the application to structure all the movie attributes in individual fields; also Redis Search will index the fields based on the index definition.
 
 ### Step 11. Insert Movies
 
@@ -228,15 +228,15 @@ One option, would be to read all the movies, check all fields and then return on
 
 Nevertheless this is where Redis developers often create custom secondary indexes using SET/SORTED SET structures that point back to the movie hash. This needs some heavy design and implementation.
 
-This is where the RediSearch module can help, and why it was created.
+This is where the Redis Search module can help, and why it was created.
 
-### Step 12. RediSearch & Indexing
+### Step 12. Redis Search & Indexing
 
-RediSearch greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
+Redis Search greatly simplifies this by offering a simple and automatic way to create secondary indices on Redis Hashes. (more datastructure will eventually come)
 
-![Secondary Index](https://github.com/RediSearch/redisearch-getting-started/blob/master/docs/images/secondary-index.png?raw=true)
+![Secondary Index](https://github.com/Redis Search/redisearch-getting-started/blob/master/docs/images/secondary-index.png?raw=true)
 
-Using RediSearch if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
+Using Redis Search if you want to query on a field, you must first index that field. Let's start by indexing the following fields for our movies:
 
 - Title
 - Release Year
@@ -346,8 +346,8 @@ The FT.SEARCH syntax has two ways to query numeric fields:
 
 ### Additional Links
 
-- [RediSearch Project](https://oss.redis.com/redisearch/)
-- [RediSearch Tutorial](/howtos/redisearch)
+- [Redis Search Project](https://oss.redis.com/redisearch/)
+- [Redis Search Tutorial](/howtos/redisearch)
 - [Getting Started with Movie Database](/howtos/moviesdatabase/getting-started)
 - [Slowlog Configuration using RedisInsight](/explore/redisinsight/slowlog)
 - [Memory Analysis using RedisInsight](/explore/redisinsight/memoryanalyzer)

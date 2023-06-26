@@ -17,7 +17,7 @@ In the previous steps you used only a few movies, let's now import:
 
 ### Movies
 
-The file `sample-app/redisearch-docker/dataset/import_movies.redis` is a script that creates 922 Hashes.
+The file `https://raw.githubusercontent.com/RediSearch/redisearch-getting-started/master/sample-app/redisearch-docker/dataset/import_movies.redis` is a script that creates 922 Hashes.
 
 The movie hashes contain the following fields.
 
@@ -101,7 +101,7 @@ The movie hashes contain the following fields.
 
 ### Theaters
 
-The file `sample-app/redisearch-docker/dataset/import_theaters.redis` is a script that creates 117 Hashes (used for Geospatial queries). _This dataset is a list of New York Theaters, and not movie theaters, but it is not that critical for this project ;)._
+The file `https://raw.githubusercontent.com/RediSearch/redisearch-getting-started/master/sample-app/redisearch-docker/dataset/import_theaters.redis` is a script that creates 117 Hashes (used for Geospatial queries). _This dataset is a list of New York Theaters, and not movie theaters, but it is not that critical for this project ;)._
 
 The theater hashes contain the following fields.
 
@@ -174,7 +174,7 @@ The theater hashes contain the following fields.
 
 ### Users
 
-The file `sample-app/redisearch-docker/dataset/import_users.redis` is a script that creates 5996 Hashes.
+The file ` https://raw.githubusercontent.com/RediSearch/redisearch-getting-started/master/sample-app/redisearch-docker/dataset/import_users.redis` is a script that creates 5996 Hashes.
 
 The user hashes contain the following fields.
 
@@ -286,12 +286,12 @@ Before importing the data, flush the database:
 The easiest way to import the file is to use the `redis-cli`, using the following terminal command:
 
 ```
-$ redis-cli -h localhost -p 6379 < ./sample-app/redisearch-docker/dataset/import_movies.redis
+$ curl -s https://raw.githubusercontent.com/RediSearch/redisearch-getting-started/master/sample-app/redisearch-docker/dataset/import_movies.redis | redis-cli -h localhost -p 6379 --pipe
 
-$ redis-cli -h localhost -p 6379 < ./sample-app/redisearch-docker/dataset/import_theaters.redis
+$ curl -s https://raw.githubusercontent.com/RediSearch/redisearch-getting-started/master/sample-app/redisearch-docker/dataset/import_theaters.redis | redis-cli -h localhost -p 6379 --pipe
 
 
-$ redis-cli -h localhost -p 6379 < ./sample-app/redisearch-docker/dataset/import_users.redis
+$ curl -s https://raw.githubusercontent.com/RediSearch/redisearch-getting-started/master/sample-app/redisearch-docker/dataset/import_users.redis | redis-cli -h localhost -p 6379 --pipe
 
 ```
 
@@ -336,7 +336,7 @@ The movies have now been indexed, you can run the `FT.INFO "idx:movie"` command 
 
 **Create the `idx:theater` index:**
 
-This index will mostly be used to show the geospatial capabilties of RediSearch.
+This index will mostly be used to show the geospatial capabilties of search in Redis Stack.
 
 In the previous examples we have created indexes with 3 types:
 
