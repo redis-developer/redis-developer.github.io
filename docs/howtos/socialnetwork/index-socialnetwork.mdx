@@ -1,7 +1,7 @@
 ---
 id: index-socialnetwork
-title: How to Build a Social Network Application using RediSearch and NodeJS
-sidebar_label: Building a Social Network Application using RediSearch
+title: How to Build a Social Network Application using Redis Stack and NodeJS
+sidebar_label: Building a Social Network Application using Redis Stack
 slug: /howtos/socialnetwork/
 authors: [julian, manuel]
 ---
@@ -12,9 +12,9 @@ import Authors from '@theme/Authors';
 
 ![image](images/socialnetwork.png)
 
-In this blog post we’ll build a social network application using RediSearch and NodeJS. This is the idea that we used for our app [Skillmarket](https://www.youtube.com/watch?v=18NPKZy28cQ).
+In this blog post we’ll build a social network application using Redis Stack and NodeJS. This is the idea that we used for our app [Skillmarket](https://www.youtube.com/watch?v=18NPKZy28cQ).
 
-The goal of the application is to match users with complementary skills. It will allow users to register and provide some information about themselves, like location, areas of expertise and interests. Using RediSearch it will match two users who are geographically close, and have complementary areas of expertise and interests, e.g., one of them knows French and want to learn Guitar and the other knows Guitar and want to learn French.
+The goal of the application is to match users with complementary skills. It will allow users to register and provide some information about themselves, like location, areas of expertise and interests. Using search in Redis Stack it will match two users who are geographically close, and have complementary areas of expertise and interests, e.g., one of them knows French and want to learn Guitar and the other knows Guitar and want to learn French.
 
 The full source code of our application can be found in GitHub (note that we used some features like <code>[FT.ADD](https://oss.redis.com/redisearch/Commands/#ftadd)</code> which now are deprecated):
 
@@ -23,16 +23,16 @@ The full source code of our application can be found in GitHub (note that we use
 
 We will be using a more condensed version of the backend which can be found in the [Skillmarket Blogpost](https://github.com/julianmateu/skillmarket-blogpost) GitHub repo.
 
-Refer to the [official tutorial](https://github.com/RediSearch/redisearch-getting-started) for more information about RediSearch.
+Refer to the [official tutorial](https://github.com/RediSearch/redisearch-getting-started) for more information about search in Redis Stack.
 
-## Getting Familiar with RediSearch
+## Getting Familiar with search in Redis Stack
 
-### Launching RediSearch in a Docker container
+### Launching search in RedisStack in a Docker container
 
-Let’s start by launching Redis from the RediSearch image using Docker:
+Let’s start by launching Redis from the Redis Stack image using Docker:
 
 ```
-docker run -d --name redis redislabs/redisearch:latest
+docker run -d --name redis redis/redis-stack:latest
 ```
 
 Here we use the `docker run` command to start the container and pull the image if it is not present. The `-d` flag tells docker to launch the container in the background (detached mode). We provide a name with `--name redis` which will allow us to refer to this container with a friendly name instead of the hash or the random name docker will assign to it.
@@ -59,7 +59,7 @@ We’ll use a Hash as the data structure to store information about our users. T
 
 In a nutshell, you can think of a hash as a key/value store where the key can be any string we want, and the values are a document with several fields. It’s common practise to use the hash to store many different types of objects, so they can be prefixed with their type, so a key would take the form of "object_type:id".
 
-An index will then be used on this hash data structure, to efficiently search for values of given fields. The following diagram taken from the RediSearch docs exeplifies this with a database for movies:
+An index will then be used on this hash data structure, to efficiently search for values of given fields. The following diagram taken from the search docs exeplifies this with a database for movies:
 
 ![alt_text](images/searchindex.png)
 
@@ -89,9 +89,9 @@ HSET users:3 name "Charles" expertises "spanish, bowling" interests "piano, danc
 
 ### Query to match users
 
-Here we can see the power of the RediSearch index, which allows us to query by [tags](https://oss.redis.com/redisearch/Tags/) (we provide a list of values, such as interests, and it will return any user whose interests match at least one value in the list), and [Geo](https://oss.redis.com/redisearch/Query_Syntax/#geo_filters_in_query) (we can ask for users whose location is at a given radius in km from a point).
+Here we can see the power of the search index, which allows us to query by [tags](https://oss.redis.com/redisearch/Tags/) (we provide a list of values, such as interests, and it will return any user whose interests match at least one value in the list), and [Geo](https://oss.redis.com/redisearch/Query_Syntax/#geo_filters_in_query) (we can ask for users whose location is at a given radius in km from a point).
 
-To be able to do this, we have to instruct RediSearch to create an index:
+To be able to do this, we have to instruct search to create an index:
 
 ```
 FT.CREATE idx:users ON hash PREFIX 1 "users:" SCHEMA interests TAG expertises TAG location GEO
@@ -176,22 +176,7 @@ const client: RediSearchClient = createClient({
     port: Number(REDIS_PORT),
     host: REDIS_HOST,
 });
-```
 
-Given that the raw client does not include the functions from the rediSearch module, we have to add them by defining a new type and adding the commands (this is what the [redis-redisearch](https://www.npmjs.com/package/redis-redisearch) module does, and there’s also another module named [redisearchclient](https://www.npmjs.com/package/redisearchclient) which also provides more functions instead of providing arguments as strings).
-
-```
-type RediSearchClient = RedisClient & {
-    ft_create?(args: any): any;
-    ft_search?(args: any): any;
-    hgetallAsync?(key: string): Promise<any>
-    hsetAsync?(key: string, fields: string[]): Promise<any>
-    ft_createAsync?(index: string, args: string[]): Promise<any>
-    ft_searchAsync?(index: string, query: string): Promise<any>
-};
-
-addCommand('ft.create');
-addCommand('ft.search');
 ```
 
 All the functions in the library use callbacks, but we can use `promisify` to enable the `async/await` syntax:
@@ -432,7 +417,7 @@ docker compose down --volumes --remove-orphans
 
 - [Skillmarket Backend](https://github.com/julianmateu/skillmarket-backend)
 - [Skillmarket Frontend](https://github.com/julianmateu/skillmarket-front)
-- [RediSearch Official Tutorial](https://github.com/RediSearch/redisearch-getting-started)
+- [Search Tutorial](https://github.com/RediSearch/redisearch-getting-started)
 
 ##
 

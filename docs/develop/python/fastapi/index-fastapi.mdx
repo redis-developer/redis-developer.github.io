@@ -25,8 +25,7 @@ Redis. Unlike most databases, Redis excels at low-latency access because it's an
 
 In this tutorial, we'll walk through the steps necessary to use Redis with
 FastAPI. We're going to build _IsBitcoinLit_, an API that stores Bitcoin
-sentiment and price averages in [RedisTimeSeries](https://oss.redis.com/redistimeseries/), then rolls these averages up for
-the last three hours.
+sentiment and price averages in [Redis Stack](https://redis.io/docs/stack/timeseries/) using a timeseries data structure, then rolls these averages up for the last three hours.
 
 Next, let's look at the learning objectives of this tutorial.
 
@@ -36,7 +35,7 @@ The learning objectives of this tutorial are:
 
 1. Learn how to install aioredis-py and connect to Redis
 2. Learn how to integrate aioredis-py with FastAPI
-3. Learn how to use RedisTimeSeries to store and query timeseries data
+3. Learn how to use Redis to store and query timeseries data
 4. Learn how to use Redis as a cache with aioredis-py
 
 Let's get started!
@@ -72,13 +71,11 @@ GitHub](https://github.com/redis-developer/fastapi-redis-tutorial).
 [Follow the README](https://github.com/redis-developer/fastapi-redis-tutorial/blob/master/README.md)
 to the project running.
 
-## About RedisTimeSeries
+## About Redis for time series data
 
-RedisTimeSeries is a source available Redis Module that adds a timeseries data type to Redis. Timeseries is a great way to model any data that you want to query over time, like in this case, the ever-changing price of Bitcoin.
+Redis Stack adds a time series data type to Redis. Time Series is a great way to model any data that you want to query over time, like in this case, the ever-changing price of Bitcoin.
 
-You can get started by following the [setup instructions](https://oss.redis.com/redistimeseries/#setup) in the RedisTimeSeries documentation.
-
-However, note that this tutorial's example project configures RedisTimeSeries automatically for you with the redismod Docker image. You can even use Docker Compose to build up your Redis server.
+You can get started by following the [setup instructions](https://redis.io/docs/stack/timeseries/) in the Redis Stack documentation.
 
 ## An Asyncio Primer
 
@@ -132,7 +129,7 @@ We're going to use Redis for a few things in this FastAPI app:
 
 Let's look at each of these integration points in more detail.
 
-### Creating the Timeseries
+### Creating the time series
 
 The data for our app consists of 30-second averages of Bitcoin prices and sentiment ratings for the last 24 hours. We pull these from the [SentiCrypt API](https://senticrypt.com/docs.html).
 
@@ -142,7 +139,7 @@ We have no affiliation with SentiCrypt or any idea how accurate these numbers ar
 
 :::
 
-We're going to store price and sentiment averages in a timeseries with RedisTimeSeries, so we want to make sure that when the app starts up, the timeseries exists.
+We're going to store price and sentiment averages in a time series with Redis Stack, so we want to make sure that when the app starts up, the time series exists.
 
 We can use a [startup event](https://fastapi.tiangolo.com/advanced/events/) to accomplish this. Doing so looks like the following:
 
@@ -153,7 +150,7 @@ async def startup_event():
     await initialize_redis(keys)
 ```
 
-We'll use the `TS.CREATE` RedisTimeSeries command to create the timeseries within our `initialize_redis()` function:
+We'll use the `TS.CREATE` command to create the time series within our `initialize_redis()` function:
 
 ```python
 async def make_timeseries(key):
@@ -174,17 +171,17 @@ async def make_timeseries(key):
         )
     except ResponseError as e:
         # Time series probably already exists
-        log.info('Could not create timeseries %s, error: %s', key, e)
+        log.info('Could not create time series %s, error: %s', key, e)
 
 ```
 
 :::tip
 
-When you create a timeseries, use the `DUPLICATE_POLICY` option to specify how to handle duplicate pairs of timestamp and values.
+When you create a time series, use the `DUPLICATE_POLICY` option to specify how to handle duplicate pairs of timestamp and values.
 
 :::
 
-### Storing Sentiment and Price Data in RedisTimeSeries
+### Storing Sentiment and Price Data in Redis
 
 A `/refresh` endpoint exists in the app to allow a client to trigger a refresh of the 30-second averages. This is the entire function:
 
@@ -219,7 +216,7 @@ The first thing we do is get the latest sentiment and price data from SentiCrypt
 ]
 ```
 
-Then we save the data into two timeseries in Redis with the `persist()` function. That ends up calling another helper, `add_many_to_timeseries()`, like this:
+Then we save the data into two time series in Redis with the `persist()` function. That ends up calling another helper, `add_many_to_timeseries()`, like this:
 
 ```python
     await add_many_to_timeseries(
@@ -230,7 +227,7 @@ Then we save the data into two timeseries in Redis with the `persist()` function
     )
 ```
 
-The `add_many_to_timeseries()` function takes a list of (timeseries key, sample key) pairs and a list of samples from SentiCrypt. For each sample, it reads the value of the sample key in the SentiCrypt sample, like "btc_price," and adds that value to the given timeseries key.
+The `add_many_to_timeseries()` function takes a list of (time series key, sample key) pairs and a list of samples from SentiCrypt. For each sample, it reads the value of the sample key in the SentiCrypt sample, like "btc_price," and adds that value to the given time eries key.
 
 Here's the function:
 
@@ -260,11 +257,11 @@ async def add_many_to_timeseries(
 
 This code is dense, so let's break it down.
 
-We're using the `TS.MADD` RedisTimeSeries command to add many samples to a timeseries. We use `TS.MADD` because doing so is faster than `TS.ADD` for adding batches of samples to a timeseries.
+We're using the `TS.MADD` command to add many samples to a time series. We use `TS.MADD` because doing so is faster than `TS.ADD` for adding batches of samples to a time series.
 
-This results in a single large `TS.MADD` call that adds price data to the price timeseries and sentiment data to the sentiment timeseries. Conveniently, `TS.MADD` can add samples to multiple timeseries in a single call.
+This results in a single large `TS.MADD` call that adds price data to the price time series and sentiment data to the sentiment timeseries. Conveniently, `TS.MADD` can add samples to multiple time series in a single call.
 
-## Calculating Three-Hour Averages with RedisTimeSeries
+## Calculating Three-Hour Averages with Redis
 
 Clients use IsBitcoinLit to get the average price and sentiment for each of the last three hours. But so far, we've only stored 30-second averages in Redis. How do we calculate the average of these averages for the last three hours?
 
@@ -315,7 +312,7 @@ So where does this leave us? With **averages of the averages**, one for each of 
 Let's review. We have code that achieves the following:
 
 1. Gets the latest sentiment and price data from SentiCrypt.
-2. Saves the data into two timeseries in Redis.
+2. Saves the data into two time series in Redis.
 3. Calculates the average of the averages for the last three hours.
 
 The snapshot of averages for the last three hours is the data we want to serve clients when they hit the `/is-bitcoin-lit` endpoint. We could run this calculation every time a client requests data, but that would be inefficient. Let's cache it in Redis!
@@ -405,4 +402,4 @@ Putting all the pieces together, we now have a FastAPI app that can retrieve Bit
 Here are a few **notes to consider**:
 
 1. We manually controlled caching in this tutorial, but you can also use a library like [aiocache](https://github.com/aio-libs/aiocache) to cache data in Redis.
-2. We ran RedisTimeSeries commands like `TS.MADD` using the `execute_command()` method in aioredis-py. If you are instead using redis-py in a synchronous project, you can use the [redistimeseries-py](https://github.com/RedisTimeSeries/redistimeseries-py) library to run RedisTimeSeries commands.
+2. We ran Redis commands like `TS.MADD` using the `execute_command()` method in aioredis-py. If you are instead using [redis-py](https://pypi.org/project/redis/) in a synchronous project, you can use the same commands.

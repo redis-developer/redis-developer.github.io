@@ -469,7 +469,7 @@ module.exports = {
                 'howtos/solutions/microservices/interservice-communication/index-solutions-interservice-communication',
                 'howtos/solutions/microservices/caching/index-solutions-caching',
                 'howtos/solutions/microservices/api-gateway-caching/index-solutions-api-gateway-caching',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -477,7 +477,7 @@ module.exports = {
               items: [
                 'howtos/solutions/fraud-detection/digital-identity-validation/index-digital-identity-validation',
                 'howtos/solutions/fraud-detection/transaction-risk-scoring/index-transaction-risk-scoring',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -487,7 +487,7 @@ module.exports = {
                 'howtos/solutions/caching-architecture/write-through/index-write-through',
                 'howtos/solutions/caching-architecture/cache-prefetching/index-cache-prefetching',
                 'howtos/solutions/microservices/caching/index-solutions-caching',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -531,24 +531,24 @@ module.exports = {
             'howtos/redistimeseries/using-prometheus/index-usingprometheus',
           ],
         },
-        {
-          type: 'category',
-          label: 'RedisGraph Tutorial',
-          items: [
-            'howtos/redisgraph/index-redisgraph',
-            'howtos/redisgraph/getting-started/index-gettingstarted',
-            'howtos/redisgraph/explore-python-code/index-explorepythoncode',
-            'howtos/redisgraph/using-redisinsight/index-usingredisinsight',
-            'howtos/redisgraph/using-dotnet/index-using-dotnet',
-            'howtos/redisgraph/using-python/index-usingpython',
-            'howtos/redisgraph/using-ruby/index-usingruby',
-            'howtos/redisgraph/using-javascript/index-usingjavascript',
-            'howtos/redisgraph/using-go/index-usinggo',
-            'howtos/redisgraph/using-rust/index-usingrust',
-            'howtos/redisgraph/redisgraphmovies/index-redisgraphmovies',
-            'howtos/redisgraph/csvtograph/index-csvtograph',
-          ],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'RedisGraph Tutorial',
+        //   items: [
+        //     'howtos/redisgraph/index-redisgraph',
+        //     'howtos/redisgraph/getting-started/index-gettingstarted',
+        //     'howtos/redisgraph/explore-python-code/index-explorepythoncode',
+        //     'howtos/redisgraph/using-redisinsight/index-usingredisinsight',
+        //     'howtos/redisgraph/using-dotnet/index-using-dotnet',
+        //     'howtos/redisgraph/using-python/index-usingpython',
+        //     'howtos/redisgraph/using-ruby/index-usingruby',
+        //     'howtos/redisgraph/using-javascript/index-usingjavascript',
+        //     'howtos/redisgraph/using-go/index-usinggo',
+        //     'howtos/redisgraph/using-rust/index-usingrust',
+        //     'howtos/redisgraph/redisgraphmovies/index-redisgraphmovies',
+        //     'howtos/redisgraph/csvtograph/index-csvtograph',
+        //   ],
+        // },
         {
           type: 'category',
           label: 'Redis Bloom Tutorial',
@@ -558,21 +558,12 @@ module.exports = {
           ],
         },
         'howtos/redisgears/index-redisgears',
-        {
-          type: 'category',
-          label: 'RedisAI Tutorial',
-          items: [
-            'howtos/redisai/index-redisai',
-            'howtos/redisai/getting-started/index-gettingstarted',
-            'howtos/redisai/market-basket-analysis/index-market-basket-analysis',
-          ],
-        },
         'howtos/leaderboard/index-leaderboard',
         'howtos/ratelimiting/index-ratelimiting',
         'howtos/caching/index-caching',
         {
           type: 'category',
-          label: 'How to list & search Movies database using RediSearch',
+          label: 'How to list & search Movies database using Redis Stack',
           items: [
             'howtos/moviesdatabase/getting-started/index-gettingstarted',
             'howtos/moviesdatabase/install/index-install',
@@ -637,7 +628,7 @@ module.exports = {
       label: 'E-books',
       items: [
         'ebooks/nosql-data-modeling-patterns',
-        'ebooks/three-caching-design-patterns'
+        'ebooks/three-caching-design-patterns',
       ],
     },
   ],

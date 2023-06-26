@@ -33,12 +33,12 @@ function Demos() {
                   </li>
                   <li>
                     <a href="/howtos/redisjson/getting-started/">
-                      Storing and querying JSON documents
+                      Storing and Searching JSON documents
                     </a>
                   </li>
                   <li>
                     <a href="/howtos/redisearch/">
-                      Full-text search using Redis Stack
+                      Full-text Search Using Redis Stack
                     </a>
                   </li>
                   <li>
@@ -48,7 +48,7 @@ function Demos() {
                   </li>
                   <li>
                     <a href="/howtos/redisbloom/">
-                      Probabilistic data structures using Redis Stack
+                      Probabilistic Data Structures Using Redis Stack
                     </a>
                   </li>
                 </ul>
@@ -65,27 +65,27 @@ function Demos() {
                 <ul className="links">
                   <li>
                     <a href="/howtos/shoppingcart/">
-                      How to build a Shopping Cart app Using NodeJS & RedisJSON
+                      How to Build a Shopping App Using NodeJS and Redis
                     </a>
                   </li>
                   <li>
                     <a href="/howtos/ratelimiting/">
-                      How to build a Rate Limiter Using Redis & Python
+                      How to Build a Rate Limiter Using Redis and Python
                     </a>
                   </li>
                   <li>
                     <a href="/howtos/moviesdatabase/getting-started/">
-                      How to build a Movies Database app Using RediSearch
+                      How to Build an IMDB Clone Using Redis Stack
                     </a>
                   </li>
                   <li>
                     <a href="/howtos/leaderboard/">
-                      How to build a Real-Time Leaderboard app Using Redis
+                      How to Build a Real-Time Leaderboard App Using Redis
                     </a>
                   </li>
                   <li>
-                    <a href="/howtos/caching/">
-                      How to cache REST API responses Using Redis & NodeJS
+                    <a href="/howtos/solutions/microservices/caching">
+                      How to Implement Cache-aside Using Redis and NodeJS
                     </a>
                   </li>
                 </ul>

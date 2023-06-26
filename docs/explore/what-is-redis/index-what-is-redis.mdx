@@ -59,17 +59,14 @@ Redis is a multi-model database, and provides several built-in data structures s
 - Geospatial - a Sorted Set of longitude/latitude/name key-value pairs useful for maps, geosearching, and "nearby" features
 - Streams - a data type that models an append only log and which can be used as a durable message queue
 
-#### Redis modules
+#### Redis Stack
 
-Redis also supports custom data structures called modules that run natively alongside core Redis. These modules can be used to create custom data structures that are not available in the built-in data structures. Examples of custom modules include:
+[Redis Stack](https://redis.io/docs/stack) extends Redis with modules that provide additional data structures and capabilities. Redis Stack is available in Redis Enterprise Cloud and Redis Enterprise Software. Redis Stack includes:
 
-- [RediSearch](https://redis.com/redis-enterprise/redis-search/) - a real-time search and secondary indexing engine that runs on your Redis dataset and allows you to query data that has just been indexed
-- [RedisJSON](https://redis.com/redis-enterprise/redis-json/) - a native JSON data type tailored for fast, efficient, in-memory storage and retrieval of JSON documents at high speed and volume
-- [RedisGears](https://redis.com/redis-enterprise/redis-gears/) - a programmable engine for Redis that runs inside Redis, closer to where your data lives, and which allows cluster-wide operations across shards, nodes, data structures, and data models at a sub-millisecond speed
-- [RedisAI](https://redis.com/redis-enterprise/redis-ai/) - a machine learning data type that runs inside Redis and allows you to train and predict on your data. Additionally provides a common layer among different formats and platforms, including PyTorch, TensorFlow/TensorRT, and ONNX Runtime
-- [RedisGraph](https://redis.com/redis-enterprise/redis-graph/) - a graph data structure that can be used to store and query data in a graph-oriented way. Supports the industry-standard Cypher as a query language and incorporates the state-of-the-art SuiteSparse GraphBLAS engine for matrix operations on sparse matrices
-- [RedisTimeSeries](https://redis.com/redis-enterprise/redis-time-series/) - a time series data type with capabilities like automatic downsampling, aggregations, labeling and search, compression, and enhanced multi-range queries as well as built-in connectors to popular monitoring tools like Prometheus and Grafana to enable the extraction of data into useful formats for visualization and monitoring
-- [RedisBloom](https://redis.com/redis-enterprise/redis-bloom/) - provides Redis with support for additional probabilistic data structures and allows for constant memory space and extremely fast processing while still maintaining a low error rate. Supports Bloom and Cuckoo filters to determine whether an item is present or absent from a collection with a given degree of certainty, Count-min sketch to count the frequency of the different items in sub-linear space, and Top-K to count top k events in a near deterministic manner
+- [Search](https://redis.io/docs/stack/search) - a real-time search and secondary indexing engine that runs on your Redis dataset and allows you to query data that has just been indexed
+- [JSON](https://redis.io/docs/stack/json) - a native JSON data type tailored for fast, efficient, in-memory storage and retrieval of JSON documents at high speed and volume
+- [Time Series](https://redis.io/docs/stack/timeseries) - a time series data type with capabilities like automatic downsampling, aggregations, labeling and search, compression, and enhanced multi-range queries as well as built-in connectors to popular monitoring tools like Prometheus and Grafana to enable the extraction of data into useful formats for visualization and monitoring
+- [Probabilistic Data](https://redis.io/docs/stack/bloom) - provides Redis with support for additional probabilistic data structures and allows for constant memory space and extremely fast processing while still maintaining a low error rate. Supports Bloom and Cuckoo filters to determine whether an item is present or absent from a collection with a given degree of certainty, Count-min sketch to count the frequency of the different items in sub-linear space, and Top-K to count top k events in a near deterministic manner
 
 ### Simplicity and ease-of-use
 
@@ -87,7 +84,7 @@ Redis provides a primary-replica architecture as a single node or cluster. This 
 
 ### Open source
 
-Redis is open source and available for free, and offers open source clients in many languages. The [Redis modules listed above](#redis-modules) are also available for download or use in Redis Enterprise Cloud.
+Redis is open source and available for free, and offers open source clients in many languages. The [Redis Stack](https://redis.io/docs/stack) is also available for download and self-hosting or use in Redis Enterprise Cloud. Read the [Redis Stack license](https://redis.io/docs/stack/license/) for more information.
 
 ## Popular Redis use cases
 
@@ -148,7 +145,7 @@ Both Redis and Memcached are open source, powerful, in-memory data stores. The m
 You can [sign up for Redis Enterprise Cloud](https://redis.com/try-free/) for free, and when you create your subscription you can specify that you want to use AWS, GCP, or Azure. You can also configure the geographic region where you want to host Redis. Redis Enterprise Cloud is a great option when choosing Redis because:
 
 1. It is a fully managed service that provides a single point of contact for all your Redis clusters.
-1. It is the only managed service that provides [Redis modules](https://redis.com/modules/get-started/) that turn Redis into a multi-model database.
+1. It is the only managed service that provides [Redis Stack](hhttps://redis.io/docs/stack) and turn Redis into a multi-model database.
 1. It is built to scale with enterprise clustering, Redis-on-Flash, and Active-Active geo-distribution using CRDTs.
 
 ## Getting started with Redis

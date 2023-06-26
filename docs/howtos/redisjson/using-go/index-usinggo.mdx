@@ -1,7 +1,7 @@
 ---
 id: index-usinggo
 title: How to cache JSON data in Redis with Go
-sidebar_label: RedisJSON and Go
+sidebar_label: Redis JSON and Go
 slug: /howtos/redisjson/using-go
 authors: [ajeet]
 ---
@@ -10,11 +10,11 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-[Go-ReJSON](https://github.com/nitishm/go-rejson) is a Go client for RedisJSON Module. It is a Golang client that support multiple Redis clients such as the print-like Redis-api client [redigo](/develop/golang/) and the type-safe Redis client [go-redis](/develop/golang/).
+[Go-ReJSON](https://github.com/nitishm/go-rejson) is a Go client for Redis JSON feature. It is a Golang client that support multiple Redis clients such as the print-like Redis-api client [redigo](/develop/golang/) and the type-safe Redis client [go-redis](/develop/golang/).
 
-Follow the below steps to get started with RedisJSON using Go client.
+Follow the below steps to get started with Redis JSON using Go client.
 
-### Step 1. Initialise the Go module
+### Step 1. Initialize the Go feature
 
 ```bash
  go mod init github.com/my/repo
@@ -26,7 +26,7 @@ Follow the below steps to get started with RedisJSON using Go client.
  go get github.com/go-redis/redis/v8
 ```
 
-### Step 3. Install Go client for RedisJSON
+### Step 3. Install Go client for Redis JSON
 
 ```bash
  go get github.com/nitishm/go-rejson/v4
@@ -127,9 +127,9 @@ Follow the below steps to get started with RedisJSON using Go client.
 
 - [Go and Redis](/develop/golang/)
 - [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
-- [RedisJSON and Python](/howtos/redisjson/using-python)
+- [Redis JSON and Python](/howtos/redisjson/using-python)
 - [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
 - [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
-- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
-- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
+- Learn more about [Redis JSON](https://oss.redis.com/redisjson/) in the QuickStart tutorial.
+- [How to build shopping cart app using NodeJS and Redis JSON](/howtos/shoppingcart)
 - [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)

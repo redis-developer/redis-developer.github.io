@@ -53,7 +53,7 @@ It is also possible to limit the list of fields returned by the query using the 
    4) "1980"
 ```
 
-This query does not specify any "field" and still returns some movies, this is because RediSearch will search all TEXT fields by default. In the current index only the title is present as a TEXT field. You will see later how to update an index, to add more fields to it.
+This query does not specify any "field" and still returns some movies, this is because Search in Redis Stack will search all TEXT fields by default. In the current index only the title is present as a TEXT field. You will see later how to update an index, to add more fields to it.
 
 If you need to perform a query on a specific field you can specify it using the `@field:` syntax, for example:
 
@@ -82,7 +82,7 @@ Adding the string `-jedi` (minus) will ask the query engine not to return values
 
 **Example : _All the movies that contains the string "`gdfather` using fuzzy search"_**
 
-As you can see the word godfather contains a speelling error, it can however be matched using [fuzzy matching](https://oss.redis.com/redisearch/Query_Syntax/#fuzzy_matching). Fuzzy matches are performed based on [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) (LD).
+As you can see the word godfather contains a spelling error, it can however be matched using [fuzzy matching](https://oss.redis.com/redisearch/Query_Syntax/#fuzzy_matching). Fuzzy matches are performed based on [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) (LD).
 
 ```
 > FT.SEARCH idx:movie " %gdfather% " RETURN 2 title release_year
