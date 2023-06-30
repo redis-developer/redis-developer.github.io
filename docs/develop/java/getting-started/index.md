@@ -39,7 +39,7 @@ Use these commands to setup a Redis server locally on Mac OS:
 ```
 
 :::info INFO
-Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack bundles five Redis modules: RedisJSON, RedisSearch, RedisGraph, RedisTimeSeries, and RedisBloom.
+Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack provides the following in addition to Redis Open Source: JSON, Search, Time Series, and Probabilistic data structures.
 [Learn more](/create/redis-stack)
 :::
 
@@ -167,7 +167,7 @@ Check out a few of these apps below, or [click here to access the complete list]
 
 ![launchpad](images/moviedatabasejava.png)
 
-[Movie Database app in Java](http://launchpad.redis.com/?id=project%3Ademo-movie-app-redisearch-java) based on RediSearch capabilities
+[Movie Database app in Java](http://launchpad.redis.com/?id=project%3Ademo-movie-app-redisearch-java) based on Search capabilities
 
 </div>
 </div>
@@ -255,7 +255,7 @@ As developer you can use the Java client library directly in your application, o
 #### Sample Code
 
 **[Brewdis - Product Catalog (Spring)](https://github.com/redis-developer/brewdis)**
-See how to use Redis and Spring to build a product catalog with streams, hashes and RediSearch
+See how to use Redis and Spring to build a product catalog with streams, hashes and Search
 
 **[Redis Stream in Action (Spring)](https://github.com/redis-developer/redis-streams-in-action)**
 See how to use Spring to create multiple producer and consumers with Redis Streams

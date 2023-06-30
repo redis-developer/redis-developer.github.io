@@ -1,7 +1,7 @@
 ---
 id: index-redisgears
-title: Write Your Serverless Redis function using RedisGears Browser Tool
-sidebar_label: Write Your Serverless Redis function using RedisGears Browser Tool
+title: Write Your Serverless Redis function using RedisInsight Browser Tool
+sidebar_label: Write Your Serverless Redis function using RedisInsight Browser Tool
 slug: /explore/redisinsight/redisgears
 authors: [ajeet]
 ---
@@ -10,21 +10,21 @@ import Authors from '@theme/Authors';
 
 <Authors frontMatter={frontMatter} />
 
-RedisInsight has built-in support for Redis Modules like RedisJSON, RediSearch, RedisGraph, Streams, RedisTimeSeries, and RedisGears. RedisGears enables reactive programming at the database level. It's like using lambda functions, but with a dramatically lower latency, and with much less encoding/decoding overhead.
+RedisInsight has built-in support for Redis with JSON, Search, Graph, Streams, Time Series, and Triggers and Functions. Triggers and Functions enable reactive programming at the database level. It's like using lambda functions, but with a dramatically lower latency, and with much less encoding/decoding overhead.
 
-Support for [RedisGears](https://oss.redis.com/redisgears/) was first introduced in RedisInsight v1.5.0. RedisInsights allows you:
+Support for [Triggers and Functions](https://oss.redis.com/redisgears/) was first introduced in RedisInsight v1.5.0. RedisInsights allows you:
 
 - Explore the latest executed functions and analyze the results or errors.
 - Manage registered functions and get execution summary.
 - Code, build and execute functions.
 
-RedisGears is a dynamic framework that enables developers to write and execute [functions](https://oss.redis.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. These capabilities enable efficient data processing using multiple models in Redis with infinite programmability, while remaining simple to use in any environment.
+Triggers and Functions enable developers to write and execute [functions](https://oss.redis.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. These capabilities enable efficient data processing using multiple models in Redis with infinite programmability, while remaining simple to use in any environment.
 
 Follow the below steps to get started with the RedisInsight browser tool for RedisGears.
 
 ## Step 1. Create Redis database
 
-[Follow this link to run Redis container with RedisGears modules enabled ](/explore/redismod)
+[Follow this link to get started with Redis Stack](/howtos/quick-start)
 
 ## Step 2: Download RedisInsight
 
@@ -86,10 +86,10 @@ GB('KeysOnlyReader').map(lambda x: execute('hget', x, 'genres')).flatmap(lambda 
 
 ## Additional References
 
-- [RedisGears Project](https://oss.redis.com/redisgears/)
-- [RedisGears Tutorials](/howtos/redisgears)
-- [How to build a Fraud Detection System using RedisGears and RedisBloom](/howtos/frauddetection)
-- [Building a Pipeline for Natural Language Processing using RedisGears](/howtos/nlp)
+- [Triggers and Functions Project](https://oss.redis.com/redisgears/)
+- [Triggers and Functions Tutorials](/howtos/redisgears)
+- [How to build a Fraud Detection System using Probabilistic Data Structures](/howtos/frauddetection)
+- [Building a Pipeline for Natural Language Processing using Redis](/howtos/nlp)
 
 ##
 

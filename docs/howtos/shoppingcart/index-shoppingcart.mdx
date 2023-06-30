@@ -43,7 +43,7 @@ This tutorial will show you how to harness the power of Redis by creating a basi
 
 ### What do you need?
 
-- Redis compiled with RedisJSON module
+- Redis Stack
 - Express 4 backend
 - Node 15.5.0 (at least v12.9.0+)
 - NPM 7.3.0 (at least v6.14.8+)
@@ -66,21 +66,20 @@ Clone the repository:
 $ git clone https://github.com/redis-developer/basic-redis-shopping-chart-nodejs
 ```
 
-#### Compiling Redis with RedisJSON module
+#### Running Redis Stack
 
-You can use the below docker compose file to run Redis server compiled with RedisJSON module:
+You can use the below docker compose file to run Redis Stack server:
 
 ```
 version: '3'
 
 services:
     redis:
-        image: redislabs/rejson:latest
+        image: redis/redis-stack:latest
         container_name: redis.redisshoppingcart.docker
         restart: unless-stopped
         environment:
             REDIS_PASSWORD: ${REDIS_PASSWORD}
-        command: redis-server --loadmodule "/usr/lib/redis/modules/rejson.so" --requirepass "$REDIS_PASSWORD"
         ports:
             - 127.0.0.1:${REDIS_PORT}:6379
         networks:

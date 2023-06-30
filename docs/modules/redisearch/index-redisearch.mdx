@@ -1,13 +1,13 @@
 ---
 id: index-redisearch
-title: RediSearch
-sidebar_label: RediSearch
+title: Redis Search
+sidebar_label: Redis Search
 slug: /modules/redisearch
 ---
 
-RediSearch is a powerful text search and secondary indexing engine, built on top of Redis as a Redis module. Written in C, RediSearch is extremely fast compared to other open-source search engines. It implements multiple data types and commands that fundamentally change what you can do with Redis. RediSearch supports capabilities for search and filtering such as geo-spatial queries, retrieving only IDs (instead of whole documents), and custom document scoring. Aggregations can combine map, filter, and reduce/group-by operations in custom pipelines that run across millions of elements in an instant.
+Redis Search is a powerful text search and secondary indexing engine, built on top of Redis as a Redis module. Written in C, Redis Search is extremely fast compared to other open-source search engines. It implements multiple data types and commands that fundamentally change what you can do with Redis. Redis Search supports capabilities for search and filtering such as geo-spatial queries, retrieving only IDs (instead of whole documents), and custom document scoring. Aggregations can combine map, filter, and reduce/group-by operations in custom pipelines that run across millions of elements in an instant.
 
-RediSearch also supports auto-completion with fuzzy prefix matching, and atomic real-time insertion of new documents to a search index.With the latest RediSearch 2.0 release, it’s now easier than ever to create a secondary index on top of your existing data. You can just add RediSearch to your existing Redis database, create an index, and start querying it, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new RediSearch users and lets you create indexes on your existing Redis databases—without even having to restart them.
+Redis Search also supports auto-completion with fuzzy prefix matching, and atomic real-time insertion of new documents to a search index.With the latest Redis Search 2.0 release, it’s now easier than ever to create a secondary index on top of your existing data. You can just add Redis Search to your existing Redis database, create an index, and start querying it, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new Redis Search users and lets you create indexes on your existing Redis databases—without even having to restart them.
 
 ### Step 1. Register and subscribe
 
@@ -33,7 +33,7 @@ To begin, let’s create a basic dataset based on movies information, which we w
 
 ![Redisearch](redisearch12.png)
 
-#### Insert data into RediSearch
+#### Insert data into Redis Search
 
 We are now ready to insert some data. This example uses movies data stored as Redis Hashes, so let’s insert a couple of movies:
 
@@ -56,7 +56,7 @@ Your Redis Enterprise Cloud database now contains two Hashes. It is simple to re
 2) "8.7"
 ```
 
-#### Create an index in RediSearch
+#### Create an index in Redis Search
 
 To be able to query the hashes on the field for title, say, or genre, you must first create an index. To create an index, you must define a schema to list the fields and their types that are indexed, and that you can use in your queries.
 
@@ -80,13 +80,13 @@ In the command above, we:
 Before running queries on our new index, though, let’s take a closer look at the elements of the FT.CREATE command:
 
 - idx:movies: the name of the index, which you will use when doing queries
-- ON hash: the type of structure to be indexed. (Note that RediSearch 2.0 supports only the Hash structure, but this parameter will allow RediSearch to index other structures in the future.)
+- ON hash: the type of structure to be indexed. (Note that Redis Search 2.0 supports only the Hash structure, but this parameter will allow Redis Search to index other structures in the future.)
 - PREFIX 1 “movies:”: the prefix of the keys that should be indexed. This is a list, so since we want to index only movies:\* keys the number is 1. If you want to index movies and TV shows with the same fields, you could use: PREFIX 2 “movies:” “tv_show:”
 - SCHEMA …: defines the schema, the fields, and their type to index. As you can see in the command, we are using TEXT, NUMERIC, and TAG, as well as SORTABLE parameters.
 
-The RediSearch 2.0 engine will scan the database using the PREFIX values, and update the index based on the schema definition. This makes it easy to add an index to an existing application that uses Hashes, there’s no need to change your code.
+The Redis Search 2.0 engine will scan the database using the PREFIX values, and update the index based on the schema definition. This makes it easy to add an index to an existing application that uses Hashes, there’s no need to change your code.
 
-#### Search the movies in the RediSearch index
+#### Search the movies in the Redis Search index
 
 You can now use the FT.SEARCH to search your database, for example, to search all movies sorted by release year:
 
@@ -127,5 +127,5 @@ You can also use the index to do data aggregation using the FT.AGGREGATE command
 
 ### Next Steps
 
-- Learn more about RediSearch in the [Getting Started with RediSearch 2.0](https://github.com/RediSearch/redisearch-getting-started/) tutorial on GitHub.
+- Learn more about Redis Search in the [Getting Started with Redis Search 2.0](https://github.com/RediSearch/redisearch-getting-started/) tutorial on GitHub.
 - [How to list and search Movie database using Redisearch](/howtos/moviesdatabase/getting-started)

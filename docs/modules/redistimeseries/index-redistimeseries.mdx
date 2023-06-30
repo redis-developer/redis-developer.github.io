@@ -1,11 +1,11 @@
 ---
 id: index-redistimeseries
-title: RedisTimeSeries
-sidebar_label: RedisTimeSeries
+title: Redis Time Series
+sidebar_label: Redis Time Series
 slug: /modules/redistimeseries
 ---
 
-RedisTimeseries is a Redis module that enhances your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With RedisTimeSeries, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
+RedisTimeseries is a Redis module that enhances your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT) data, stock prices, and telemetry. With Redis Time Series, you can ingest and query millions of samples and events at the speed of Redis. Advanced tooling such as downsampling and aggregation ensure a small memory footprint without impacting performance. Use a variety of queries for visualization and monitoring with built-in connectors to popular monitoring tools like Grafana, Prometheus, and Telegraf.
 
 ### Step 1. Register and subscribe
 
@@ -13,7 +13,7 @@ Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis 
 
 ![Redistimeseries](redistimeseries.png)
 
-### Step 2. Create a database with RedisTimeSeries Module
+### Step 2. Create a database with Redis Time Series Module
 
 ![Redistimeseries](redistimeseries1.png)
 
@@ -21,7 +21,7 @@ Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis 
 
 Follow [this](explore/redisinsight) link to know how to connect to a database
 
-### Step 4. Getting Started with RedisTimeSeries
+### Step 4. Getting Started with Redis Time Series
 
 This section will walk you through using some basic RedisTimeseries commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight. (See part 2 of this tutorial to learn more about using the RedisInsight CLI.)
 Using a basic air-quality dataset, we will show you how to:
@@ -30,11 +30,11 @@ Using a basic air-quality dataset, we will show you how to:
 - Add a new sample to the list of series
 - Query a range across one or multiple time series
 
-![RedisTimeSeries](redistimeseriesflow.png)
+![Redis Time Series](redistimeseriesflow.png)
 
 #### Create a new time series
 
-Let’s create a time series representing air quality dataset measurements. To interact with RedisTimeSeries you will most often use the TS.RANGE command, but here you will create a time series per measurement using the TS.CREATE command. Once created, all the measurements will be sent using TS.ADD.
+Let’s create a time series representing air quality dataset measurements. To interact with Redis Time Series you will most often use the TS.RANGE command, but here you will create a time series per measurement using the TS.CREATE command. Once created, all the measurements will be sent using TS.ADD.
 
 The sample command below creates a time series and populates it with three entries:
 
@@ -141,4 +141,4 @@ You can use various aggregation types such as avg, sum, min, max, range, count, 
 
 ### Next Steps
 
-- Learn more about RedisTimeSeries in the [Quickstart](https://oss.redis.com/redistimeseries/) tutorial.
+- Learn more about Redis Time Series in the [Quickstart](https://oss.redis.com/redistimeseries/) tutorial.

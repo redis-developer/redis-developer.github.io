@@ -145,11 +145,11 @@ By default, the Redis Stack Docker containers use internal configuration files f
 To pass in arbitrary configuration changes, you can set any of these environment variables:
 
 - `REDIS_ARGS`: extra arguments for Redis
-- `REDISEARCH_ARGS`: arguments for RediSearch
-- `REDISJSON_ARGS`: arguments for RedisJSON
-- `REDISGRAPH_ARGS`: arguments for RedisGraph
-- `REDISTIMESERIES_ARGS`: arguments for RedisTimeSeries
-- `REDISBLOOM_ARGS`: arguments for RedisBloom
+- `REDISEARCH_ARGS`: arguments for Redis Search
+- `REDISJSON_ARGS`: arguments for Redis JSON
+- `REDISGRAPH_ARGS`: arguments for Redis Graph
+- `REDISTIMESERIES_ARGS`: arguments for Redis Time Series
+- `REDISBLOOM_ARGS`: arguments for Redis Probabilistic Data Structures
 
 For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
 

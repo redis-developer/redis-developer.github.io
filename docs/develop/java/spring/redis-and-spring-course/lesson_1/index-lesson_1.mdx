@@ -88,18 +88,16 @@ Read the [Git documentation on submodules](https://git-scm.com/book/en/v2/Git-To
 
 You’ll find this file in the [redismod-docker-compose repo](https://github.com/redis-developer/redismod-docker-compose),
 hosted under the [redis-developer](https://github.com/redis-developer/) organization in Github.
-The Repo contains a [Docker Compose](https://docs.docker.com/compose) file configured to use the Redis “redismod” image, which is a Docker image
-that includes Redis built with select modules. In particular, we will use the [RedisJSON](https://redisjson.io), [RediSearch](https://redisearch.io),
-and [RedisGraph](https://redisgraph.io) modules while building this application.
+The Repo contains a [Docker Compose](https://docs.docker.com/compose) file configured to use the Redis “redismod” image, which is a Docker image that includes Redis built with support for JSON, Search, Graph, Time Series, Triggers and Functions, and Probabilistic data structures.
 
 Modules included in the container:
 
-- **RediSearch**: a full-featured search engine
-- **RedisGraph**: a graph database
-- **RedisTimeSeries**: a time-series database
-- **RedisJSON**: a native JSON data type
-- **RedisBloom**: native Bloom and Cuckoo Filter data types
-- **RedisGears**: a dynamic execution framework
+- **Search**: a full-featured search engine
+- **Graph**: a graph database
+- **Time Series**: a time-series database
+- **JSON**: a native JSON data type
+- **Probabilistic**: native Bloom and Cuckoo Filter data types
+- **Triggers and Functions**: a dynamic execution framework
 
 To add the submodule, we use the git submodule command at the root of the project:
 

@@ -351,7 +351,7 @@ JSON.GET amazonshareholderletterpdf
 
 This command involves deleting files from the S3 bucket. To achieve this you simply need to type in the file name in the search bar and Reeko will pull up the file as demonstrated below.
 
-You’ll have the option to permanently delete the file from the S3 bucket. The file data is deleted from Redis using the JSON.DEL command and is removed from RediSearch's suggestions using the `FT.SUGDEL` command. You’ll be informed when the file is deleted.
+You’ll have the option to permanently delete the file from the S3 bucket. The file data is deleted from Redis using the JSON.DEL command and is removed from Search suggestions using the `FT.SUGDEL` command. You’ll be informed when the file is deleted.
 
 ```
 FT.SUGDEL file-index "amazon-shareholder-letter.pdf"
@@ -361,7 +361,7 @@ JSON.DEL amazonshareholderletterpdf
 
 #### Step 8: File searching
 
-Have you ever searched for a file without being entirely sure what it is you’re looking for? You may remember snippets of the content but not enough to manually track down its location. Well due to RediSearch’s autocomplete functionality this will no longer be a problem.
+Have you ever searched for a file without being entirely sure what it is you’re looking for? You may remember snippets of the content but not enough to manually track down its location. Well due to Search’s autocomplete functionality this will no longer be a problem.
 
 #### /s3-search
 
@@ -428,7 +428,7 @@ class RedisSearchConnector():
         self.ac = AutoCompleter(self.index_name)
 ```
 
-Use the following code to initialise RedisJSON in redisjson_connector.py.
+Use the following code to initialise Redis JSON in redisjson_connector.py.
 
 ```
 from rejson import Client, Path
