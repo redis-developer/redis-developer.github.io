@@ -25,7 +25,7 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
  <div class="col">
     <RedisCard
         title="Shopping Cart"
-        description="Implementing a Shopping Cart using NodeJS & RedisJSON"
+        description="Implementing a Shopping Cart using NodeJS & Redis JSON"
         page="/howtos/shoppingcart/"
         />
  </div>
@@ -36,7 +36,7 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
  <div class="col">
     <RedisCard
         title="Movies Database"
-        description="How to search and list Movies database using RediSearch"
+        description="How to search and list Movies database using Redis Search"
         page="/howtos/moviesdatabase/getting-started"
         />
  </div>
@@ -85,7 +85,7 @@ This page holds a catalog with dozens of ready-to-use app listings from Redis. N
  <div class="col">
     <RedisCard
         title="HackerNews Clone"
-        description="How to build a HackerNews Clone Using RedisJSON"
+        description="How to build a HackerNews Clone Using Redis JSON"
         page="/howtos/hackernews"
         />
  </div>

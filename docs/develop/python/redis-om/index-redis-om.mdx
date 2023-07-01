@@ -82,11 +82,9 @@ We'll talk about how to actually start Redis with Docker when we discuss _runnin
 :::
 
 
-## Recommended: RediSearch and RedisJSON
+## Recommended: Redis Search and JSON
 
-Redis OM relies on the [RediSearch][redisearch-url] and
-[RedisJSON][redis-json-url] Redis modules to support rich queries and embedded
-models.
+Redis OM relies on the Search and JSON support of Redis Stack.
 
 You don't need these Redis modules to use Redis OM's data modeling, validation,
 and persistence features, but we recommend them to get the most out of Redis OM.
@@ -781,7 +779,7 @@ class Customer(HashModel):
 
 
 # Now, if we use this model with a Redis deployment that has the
-# RediSearch module installed, we can run queries like the following.
+# Redis Stack installed, we can run queries like the following.
 
 # Before running queries, we need to run migrations to set up the
 # indexes that Redis OM will use. You can also use the `migrate`

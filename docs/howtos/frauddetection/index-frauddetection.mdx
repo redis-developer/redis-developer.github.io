@@ -19,10 +19,10 @@ This blog post will demonstrate a simplified use case of how real-time fraud det
 Here’s what we have used:
 
 - Python-based fraud detector module which performs two kinds of fraud checks : IP blacklisting & click spamming
-- IP blacklisting uses Redis Cuckoo Filter from the RedisBloom package.
+- IP blacklisting uses Redis Cuckoo Filter.
 - Click spamming uses Redis Sorted Set.
 - The data is then pushed to RediStream which is consumed by RedisGears for processing
-- RedisTimeSeries gets updated and Redis Data Source for Grafana displays the dashboard
+- Redis Time Series gets updated and Redis Data Source for Grafana displays the dashboard
 
 ![Fraud Detection](frauddetection.png)
 
@@ -109,7 +109,7 @@ Let's take a look at how connections are managed in this project.
 
 In line 2, we import the redis package for package. All the core Redis commands are available in this Redis package.
 
-In line 4, we import the redisbloom package. Since RedisBloom is a module, the clients used to interact with this module are also different. We will see more such examples below.
+In line 4, we import the RedisBloom package. Since RedisBloom is a module, the clients used to interact with this module are also different. We will see more such examples below.
 The singleton_decorator ensures only one instance of this connection class is created, and os package is used to read the environment variables to form the connection.
 
 Now let’s take a look at how we use Redis to solve click spamming and IP fraud.
@@ -138,7 +138,7 @@ Gist: https://gist.github.com/Sachin-Kottarathodi/c3a0647d3fdd0fe8a76425e0594e11
 	RedisConn().redis().xadd(Constants.STREAM_NAME, data, id='*')
 ```
 
-In the above code, Cuckoo Filter is used to find blacklisted IP fraud. Cuckoo Filter is a probabilistic data structure that’s part of the module, RedisBloom. Checking for existence of IP in Cuckoo Filter is done using the cfExists method provided by bloom client.
+In the above code, Cuckoo Filter is used to find blacklisted IP fraud. Cuckoo Filter is a probabilistic data structure that’s part of Redis Stack. Checking for existence of IP in Cuckoo Filter is done using the cfExists method provided by bloom client.
 
 :::tip
 
@@ -174,9 +174,9 @@ Gist:https://gist.github.com/Sachin-Kottarathodi/f9dac7a3342a3643e792e2143a6adf7
   GearsBuilder(reader='StreamReader', r=redis_conn, requirements=["redis", "redistimeseries"]).foreach(stream_handler).register('data_stream')
 ```
 
-As mentioned before, since RedisGears and RedisTimeSeries are modules, we need to use the clients provided in their respective packages.
+As mentioned before, since RedisGears and Redis Time Series are modules, we need to use the clients provided in their respective packages.
 
-We use the GearsRemoteBuilder class to build the Gear. StreamReader ensures that the stream_handler function is executed for every new message from the stream. The stream_handler adds the data to the sorted set using zadd (This information is used in zcount to identify click_spam) and increments the count of time series for clean and fraud types using incrby of the RedisTimeSeries module, which is later used for visualization.
+We use the GearsRemoteBuilder class to build the Gear. StreamReader ensures that the stream_handler function is executed for every new message from the stream. The stream_handler adds the data to the sorted set using zadd (This information is used in zcount to identify click_spam) and increments the count of time series for clean and fraud types using incrby of the Redis Time Series module, which is later used for visualization.
 
 ![Fraud Detection](fraud_redisinsight.png)
 
@@ -286,7 +286,6 @@ This creates a dashboard ‘Fraud Stats’. If you get an error while importing 
 - If we consider the entire flow starting from fraud check, from event streaming to data processing to visualization (using insights), all of this would have required multiple components and extensive orchestration. With Redis Ecosystem, most of this is removed.
 - This is just the beginning of more checks that can be done on events. A lot of other checks can be done using modules and data structures. For example; Redis provides geospatial data structures built over sorted sets. Since latitude and longitude can be derived from IP using IP to location conversion providers, a lot of insight can be derived on whether the event can be fraudulent or not.
 - To reject servicing requests altogether, the redis-cell module to rate limit requests against a key can be used.
-- RedisAI and neural-redis can be used to improve efficiency of identifying fraud based.
 
 ### References and Links
 

@@ -108,7 +108,7 @@ When possible, the best defence is to avoid the development pattern that is crea
 
 In Redis, the KEYS command can be used to perform exhaustive pattern matching on all stored keys. This is not advisable, as running this on an instance with a large number of keys could take a long time to complete, and will slow down the Redis instance in the process. In the relational world, this is equivalent to running an unbound query (SELECT...FROM without a WHERE clause). Execute this type of operation with care, and take necessary measures to ensure that your tenants are not performing a KEYS operation from within their application code. Use SCAN, which spreads the iteration over many calls, not tying up your whole server at one time.
 
-Scaning keyspace by keyname is an extremely slow operation and will run O(N) with N being the number of keys. It is recommended to use RediSearch to return information based on the contents of the data instead of iterating through the key space.
+Scaning keyspace by keyname is an extremely slow operation and will run O(N) with N being the number of keys. It is recommended to use Redis Search to return information based on the contents of the data instead of iterating through the key space.
 
 ```bash
  FT.SEARCH orders "@make: ford @model: explorer"
@@ -123,7 +123,7 @@ With Redis open source, you need to set up Redis Sentinel for high availability.
 
 ### 11. Storing JSON blobs in a string
 
-Microservices written in several languages may not marshal/unmarshal JSON in a consistent manner. Application logic will be required to lock/watch a key for atomic updates. JSON manipulation is often a very compute costly operation. Hence, it is recommended to use HASH data structure and also, RedisJSON module.
+Microservices written in several languages may not marshal/unmarshal JSON in a consistent manner. Application logic will be required to lock/watch a key for atomic updates. JSON manipulation is often a very compute costly operation. Hence, it is recommended to use HASH data structure and also Redis JSON.
 
 ### 12. Translating a table or JSON to a HASH without considering query pattern
 
@@ -132,7 +132,7 @@ Using SELECT command and multiple databases inside one Redis instance
 
 The usage of SELECT and multiple databases inside one Redis instance was mentioned as an anti-pattern by Salvatore (the creator of Redis). It is recommended to use a dedicated Redis instance for each database need. This is especially true in microservice architectures where client applications might step on each other's toes (noisy neighbor, database setup/teardown impact, maintenance, upgrade, ...)
 
-The RedisTimeSeries module provides a direct compete to time series databases. But if the only query is based on ordering, it's unnecessary complexity. Hence, it is recommended to use a SORTED SET with a score of 0 for every value. The values are appended. Or use a timestamp for the score for simple time based queries
+The Redis Time Series module provides a direct compete to time series databases. But if the only query is based on ordering, it's unnecessary complexity. Hence, it is recommended to use a SORTED SET with a score of 0 for every value. The values are appended. Or use a timestamp for the score for simple time based queries
 
 ### References
 

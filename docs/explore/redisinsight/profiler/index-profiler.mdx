@@ -22,9 +22,9 @@ Because MONITOR streams back all commands, its use comes at a cost. Running moni
 
 Follow the below instructions to test drive RedisInsight profiler tool:
 
-## Step 1. Create Redis database with RedisTimeSeries module enabled
+## Step 1. Create Redis database with Redis Time Series module enabled
 
-Visit [https://developer.redis.com/create/rediscloud](https://developer.redis.com/create/rediscloud) and create a Redis database. [Follow these steps to enable RedisTimeSeries module ](https://developer.redis.com/howtos/redistimeseries)on Redis Enterprise Cloud
+Visit [https://developer.redis.com/create/rediscloud](https://developer.redis.com/create/rediscloud) and create a Redis database. [Follow these steps to enable Redis Time Series module ](https://developer.redis.com/howtos/redistimeseries)on Redis Enterprise Cloud
 
 ![alt_text](images/image1.png)
 
@@ -222,9 +222,9 @@ OK
 
 ```
 
-## Step 5: Accessing the RedisTimeSeries Keys
+## Step 5: Accessing the Redis Time Series Keys
 
-[Follow these steps to connect to the database](https://developer.redis.com/explore/redisinsight/getting-started) using RedisInsight. Once you are connected to RedisInsight GUI, you can verify the 3 RedisTimeSeries keys:
+[Follow these steps to connect to the database](https://developer.redis.com/explore/redisinsight/getting-started) using RedisInsight. Once you are connected to RedisInsight GUI, you can verify the 3 Redis Time Series keys:
 
 - ts:temperature
 - ts:pressure
@@ -232,11 +232,11 @@ OK
 
 ![alt_text](images/image2.png)
 
-## Step 6: Running RedisTimeSeries specific queries\*\*
+## Step 6: Running Redis Time Series specific queries\*\*
 
 ![alt_text](images/image3.png)
 
-Please note that In RedisTimeSeries, only [TS.RANGE ](https://oss.redis.com/redistimeseries/commands/#tsrangetsrevrange)and [TS.MRANGE](https://oss.redis.com/redistimeseries/commands/#tsmrangetsmrevrange) are supported as of the current release. In the next release, TS.REVRANGE and TS.MREVRANGE will be supported too.
+Please note that In Redis Time Series, only [TS.RANGE ](https://oss.redis.com/redistimeseries/commands/#tsrangetsrevrange)and [TS.MRANGE](https://oss.redis.com/redistimeseries/commands/#tsmrangetsmrevrange) are supported as of the current release. In the next release, TS.REVRANGE and TS.MREVRANGE will be supported too.
 
 ![alt_text](images/image4.png)
 

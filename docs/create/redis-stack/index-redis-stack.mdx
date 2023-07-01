@@ -30,7 +30,7 @@ In addition to all of the features of OSS Redis, Redis Stack supports:
 
 Redis Stack is made up of several components, licensed as follows:
 
-- Redis Stack Server combines open source Redis with RediSearch, RedisJSON RedisGraph, RedisTimeSeries and RedisBloom is licensed under the [Redis Source Available License](https://github.com/RediSearch/RediSearch/blob/master/LICENSE) (RSAL).
+- Redis Stack Server combines open source Redis with Search, JSON, Time Series and Probabilistic data structures is licensed under the [Redis Source Available License](https://redis.com/legal/licenses/) (RSAL).
 - RedisInsight is licensed under the [Server Side Public License](https://en.wikipedia.org/wiki/Server_Side_Public_License) (SSPL).
 
 ### Which client libraries support Redis Stack?
@@ -253,7 +253,7 @@ Since the metrics are collected with a millisecond timestamp, we can compact our
 
 ### Step 8. Time series Aggregations
 
-RedisTimeSeries supports downsampling with the following aggregations: avg, sum, min, max, range, count, first and last. If you want to keep all of your raw data points indefinitely, your data set grows linearly over time. However, if your use case allows you to have less fine-grained data further back in time, downsampling can be applied. This allows you to keep fewer historical data points by aggregating raw data for a given time window using a given aggregation function.
+Redis Time Series supports downsampling with the following aggregations: avg, sum, min, max, range, count, first and last. If you want to keep all of your raw data points indefinitely, your data set grows linearly over time. However, if your use case allows you to have less fine-grained data further back in time, downsampling can be applied. This allows you to keep fewer historical data points by aggregating raw data for a given time window using a given aggregation function.
 
 #### Example:
 
@@ -313,11 +313,11 @@ By default, the Redis Stack Docker containers use internal configuration files f
 To pass in arbitrary configuration changes, you can set any of these environment variables:
 
 - `REDIS_ARGS`: extra arguments for Redis
-- `REDISEARCH_ARGS`: arguments for RediSearch
-- `REDISJSON_ARGS`: arguments for RedisJSON
-- `REDISGRAPH_ARGS`: arguments for RedisGraph
-- `REDISTIMESERIES_ARGS`: arguments for RedisTimeSeries
-- `REDISBLOOM_ARGS`: arguments for RedisBloom
+- `REDISEARCH_ARGS`: arguments for Search
+- `REDISJSON_ARGS`: arguments for JSON
+- `REDISGRAPH_ARGS`: arguments for Graph
+- `REDISTIMESERIES_ARGS`: arguments for Time Series
+- `REDISBLOOM_ARGS`: arguments for Probabilistic Data Structures
 
 For example, here’s how to use the `REDIS_ARGS` environment variable to pass the `requirepass` directive to Redis:
 
@@ -325,7 +325,7 @@ For example, here’s how to use the `REDIS_ARGS` environment variable to pass t
  docker run -e REDIS_ARGS="--requirepass redis-stack" redis/redis-stack:latest
 ```
 
-Here’s how to set a retention policy for RedisTimeSeries:
+Here’s how to set a retention policy for Redis Time Series:
 
 ```
  docker run -e REDISTIMESERIES_ARGS="RETENTION_POLICY=20" redis/redis-stack:latest

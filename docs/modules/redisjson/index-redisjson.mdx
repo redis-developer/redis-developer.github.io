@@ -1,31 +1,31 @@
 ---
 id: index-redisjson
-title: RedisJSON
-sidebar_label: RedisJSON
+title: Redis JSON
+sidebar_label: Redis JSON
 slug: /modules/redisjson
 ---
 
-The RedisJSON module provides in-memory manipulation of JSON documents at high velocity and volume. With RedisJSON, you can natively store document data in a hierarchical, tree-like format to scale and query documents efficiently, significantly improving performance over storing and manipulating JSON with Lua scripts and core Redis data structures.
+Redis Stack provides in-memory manipulation of JSON documents at high velocity and volume. With Redis Stack, you can natively store document data in a hierarchical, tree-like format to scale and query documents efficiently, significantly improving performance over storing and manipulating JSON with Lua scripts and core Redis data structures.
 
 ### Step 1. Register and subscribe
 
 Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
 
-![RedisJSON](redisjson3.png)
+![Redis JSON](redisjson3.png)
 
-### Step 2. Create a database with RedisJSON Module
+### Step 2. Create a database with Redis JSON Module
 
-![RedisJSON](redisjson1.png)
+![Redis JSON](redisjson1.png)
 
 ### Step 3. Connect to a database
 
 Follow [this](explore/redisinsight) link to know how to connect to a database
 
-### Step 4. Getting Started with RedisJSON
+### Step 4. Getting Started with Redis JSON
 
-The following steps use some basic RedisJSON commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight.
+The following steps use some basic Redis JSON commands. You can run them from the Redis command-line interface (redis-cli) or use the CLI available in RedisInsight.
 
-To interact with RedisJSON, you will most often use the JSON.SET and JSON.GET commands. Before using RedisJSON, you should familiarize yourself with its commands and syntax as detailed in the documentation: RedisJSON Commands.
+To interact with Redis JSON, you will most often use the JSON.SET and JSON.GET commands. Before using Redis JSON, you should familiarize yourself with its commands and syntax as detailed in the documentation: Redis JSON Commands.
 
 Let’s go ahead and test drive some JSON-specific operations for setting and retrieving a Redis key with a JSON value:
 
@@ -36,7 +36,7 @@ Let’s go ahead and test drive some JSON-specific operations for setting and re
 
 #### Scalar
 
-Under RedisJSON, a key can contain any valid JSON value. It can be scalar, objects or arrays. JSON scalar is basically a string. You will have to use the JSON.SET command to set the JSON value. For new Redis keys the path must be the root, so you will use “.” path in the example below. For existing keys, when the entire path exists, the value that it contains is replaced with the JSON value. Here you will use JSON.SET to set the JSON scalar value to “Hello JSON!” Scalar will contain a string that holds “Hello JSON!”
+Under Redis JSON, a key can contain any valid JSON value. It can be scalar, objects or arrays. JSON scalar is basically a string. You will have to use the JSON.SET command to set the JSON value. For new Redis keys the path must be the root, so you will use “.” path in the example below. For existing keys, when the entire path exists, the value that it contains is replaced with the JSON value. Here you will use JSON.SET to set the JSON scalar value to “Hello JSON!” Scalar will contain a string that holds “Hello JSON!”
 
 ```
 >> JSON.SET scalar .  ' "Hello JSON!" '
@@ -144,5 +144,5 @@ A JSON object can also have another object. Here is a simple example of a JSON o
 
 ### Next Steps
 
-- Learn more about [RedisJSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
-- [How to build shopping cart app using NodeJS and RedisJSON](/howtos/shoppingcart)
+- Learn more about [Redis JSON](https://oss.redis.com/redisjson/) in the Quickstart tutorial.
+- [How to build shopping cart app using NodeJS and Redis JSON](/howtos/shoppingcart)

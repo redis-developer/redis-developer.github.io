@@ -502,7 +502,7 @@ module.exports = {
         'howtos/redisearch/index-redisearch',
         {
           type: 'category',
-          label: 'RedisJSON Tutorial',
+          label: 'Redis JSON Tutorial',
           items: [
             'howtos/redisjson/index-redisjson',
             'howtos/redisjson/getting-started/index-gettingstarted',
@@ -521,7 +521,7 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'RedisTimeSeries Tutorial',
+          label: 'Redis Time Series Tutorial',
           items: [
             'howtos/redistimeseries/index-redistimeseries',
             'howtos/redistimeseries/getting-started/index-gettingstarted',

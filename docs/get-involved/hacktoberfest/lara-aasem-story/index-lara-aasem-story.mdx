@@ -33,7 +33,7 @@ It fit all my criteria:
 
 ## ... enjoying...
 
-This last point made the issue all the more enjoyable to work on. I have a high-level understanding of how Redis works and have used it before with Ruby on Rails via `redis-rb`, a [Ruby client library](https://github.com/redis/redis-rb). It was exciting to try a [Node.js client](https://github.com/luin/ioredis) instead (`ioredis`) and to be exposed to RedisJSON, going through its [docs](https://oss.redis.com/redisjson/commands/) to find the most suitable command to use for this particular issue. It was also helpful to see another contributor suggest improvements to my implementation in their own [pull request (PR)](https://github.com/redis-developer/redis-kaboom-rpg/pull/12) implementing validation for another API.
+This last point made the issue all the more enjoyable to work on. I have a high-level understanding of how Redis works and have used it before with Ruby on Rails via `redis-rb`, a [Ruby client library](https://github.com/redis/redis-rb). It was exciting to try a [Node.js client](https://github.com/luin/ioredis) instead (`ioredis`) and to be exposed to Redis JSON, going through its [docs](https://oss.redis.com/redisjson/commands/) to find the most suitable command to use for this particular issue. It was also helpful to see another contributor suggest improvements to my implementation in their own [pull request (PR)](https://github.com/redis-developer/redis-kaboom-rpg/pull/12) implementing validation for another API.
 
 ## ... and working on the issue
 
@@ -63,7 +63,7 @@ The API in question is a `GET` request that fetches the data for a room given th
 
 If this API was called with an invalid room number, the server would crash with a `500` HTTP status code. The issue was to explicitly validate the room number, returning a more meaningful `400` HTTP status code and response body to the client.
 
-After combing through the sample data I had loaded previously via npm run load and finding out that the room data was persisted as an array of JSON objects, I assumed the minimum room number would be 0. To get the maximum, then, I would need to get the last index in the array by getting the array length and subtracting one from it. For this, I used the `JSON.ARRLEN` RedisJSON command, validating that the room number sent in the request path was within range and returning `400` otherwise.
+After combing through the sample data I had loaded previously via npm run load and finding out that the room data was persisted as an array of JSON objects, I assumed the minimum room number would be 0. To get the maximum, then, I would need to get the last index in the array by getting the array length and subtracting one from it. For this, I used the `JSON.ARRLEN` Redis JSON command, validating that the room number sent in the request path was within range and returning `400` otherwise.
 
 ![Screen grab of the file changes in GitHub](images/7-github.png)
 

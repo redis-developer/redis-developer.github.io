@@ -63,8 +63,8 @@ orchestration problem. You have to juggle multiple connections to different data
 libraries used.
 
 With Redis, in addition to the basic data structures such as strings, lists, sets, and hashes, you can also store advanced
-data structures such as RedisJSON for documents, RediSearch for secondary indexing, RedisGraph for graph data,
-RedisTimeSeries for time-series data, and RedisBloom for probabilistic data (think leaderboards).
+data structures such as JSON for documents, Search for secondary indexing,
+Time Series for time-series data, and Probabilistic data (think leaderboards).
 
 This reduces impedance mismatch because your data is stored in one of 15 structures with little or no transformations.
 You can also use a single connection (or connection pool) and client library to access your data. What you end up with is
@@ -135,9 +135,9 @@ FROM
 
 ### 1-to-1 Relationships using Redis
 
-In Redis, similar to a relational database, you can create a collection called `products` and another called `product_details`. But with RedisJSON you can improve this by simply embedding `product_images` and `product_details` directly into the `Products` collection. Then, when you query the `Products` collection, specify which fields you need based on which view you are trying to create.
+In Redis, similar to a relational database, you can create a collection called `products` and another called `product_details`. But with Redis JSON you can improve this by simply embedding `product_images` and `product_details` directly into the `Products` collection. Then, when you query the `Products` collection, specify which fields you need based on which view you are trying to create.
 
-This will allow you to easily keep all the data in one place. This is called the **Embedded Pattern** and is one of the most common patterns you will see in NoSQL document databases like RedisJSON. **Code Example 2** uses Python and a client library called Redis OM (an ORM for Redis) to model `Products` and `ProductDetails`. Note that `ProductDetails` is embedded into `Products` directly, so all of the data for a product will be stored within the same document.
+This will allow you to easily keep all the data in one place. This is called the **Embedded Pattern** and is one of the most common patterns you will see in NoSQL document databases like Redis JSON. **Code Example 2** uses Python and a client library called Redis OM (an ORM for Redis) to model `Products` and `ProductDetails`. Note that `ProductDetails` is embedded into `Products` directly, so all of the data for a product will be stored within the same document.
 
 ```python title="Code Example 2"
 class ProductDetail(EmbeddedJsonModel):
@@ -154,7 +154,7 @@ class Product(JsonModel):
     details: Optional[ProductDetail]
 ```
 
-**Code Example 2** also shows how you can index fields using Redis OM and RediSearch. Doing this turns Redis into not only a document store but also a search engine since RediSearch enables secondary indexing and searching. When you create models using Redis OM, it will automatically manage secondary indexes with RediSearch on your behalf.
+**Code Example 2** also shows how you can index fields using Redis OM and Redis Search. Doing this turns Redis into not only a document store but also a search engine since Redis Search enables secondary indexing and searching. When you create models using Redis OM, it will automatically manage secondary indexes with Redis Search on your behalf.
 
 Using Redis OM we can write a function to retrieve our `products` list for the list view, as shown in **Code Example 3**.
 
@@ -168,7 +168,7 @@ async def get_product_list():
     return Product.from_redis(results)
 ```
 
-Notice that in **Code Example 3** we are using the `FT.SEARCH` (RediSearch) command, which specifies the index managed on our behalf by Redis OM and returns three fields: name, image, and price. While the documents all have details and images embedded, we don’t want to display them in the list view so we don’t need to query them. When we want the detailed view, we can query an entire Product document. See **Code Example 4** for how to query an entire document.
+Notice that in **Code Example 3** we are using the `FT.SEARCH` command, which specifies the index managed on our behalf by Redis OM and returns three fields: name, image, and price. While the documents all have details and images embedded, we don’t want to display them in the list view so we don’t need to query them. When we want the detailed view, we can query an entire Product document. See **Code Example 4** for how to query an entire document.
 
 ```python title="Code Example 4"
 async def get_product_details(product_id: str):
