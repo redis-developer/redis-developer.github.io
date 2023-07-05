@@ -370,8 +370,5 @@ module.exports = {
   plugins: [
     'docusaurus-plugin-sass',
     path.resolve(__dirname, 'plugins', 'gtm'),
-  ],
-  clientModules: [
-    require.resolve('./static/scripts/custom-page-script.js'),
-  ],
+  ]
 };

@@ -5,7 +5,9 @@ sidebar_label: RedisGraph and .NET
 slug: /howtos/redisgraph/using-dotnet
 authors: [steve]
 ---
+import GraphEol from '@site/docs/common/_graph-eol.mdx';
 
+<GraphEol />
 RedisGraph enables you to store and query graph data in Redis using the [Cypher Query Language](https://opencypher.org/). In this article, we will discuss the usage of RedisGraph with .NET.
 
 ## NRedisGraph
