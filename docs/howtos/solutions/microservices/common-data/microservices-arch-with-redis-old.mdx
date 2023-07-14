@@ -6,11 +6,5 @@ The e-commerce microservices application discussed in the rest of this tutorial 
 1. `payments service`: handles processing orders for payment
 1. `digital identity service`: handles storing digital identity and calculating identity score
 1. `api gateway`: unifies services under a single endpoint
-1. `mongodb/ postgresql`: serves as the primary database, storing orders, order history, products, etc.
+1. `mongodb`: serves as the primary database, storing orders, order history, products, etc.
 1. `redis`: serves as the **stream processor** and caching database
-
-:::info
-
-You don't need to use MongoDB/ Postgresql as your primary database in the demo application; you can use other <u>[prisma supported databases](https://www.prisma.io/docs/reference/database-reference/supported-databases)</u> as well. This is just an example.
-
-:::

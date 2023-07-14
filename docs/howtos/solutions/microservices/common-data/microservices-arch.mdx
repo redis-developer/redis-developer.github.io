@@ -5,10 +5,10 @@ You eventually land on the following architecture:
 1. `order history service`: handles querying a customer's order history
 1. `payments service`: handles processing orders for payment
 1. `api gateway`: unifies the services under a single endpoint
-1. `mongodb`: serves as the write-optimized database for storing orders, order history, products, etc.
+1. `mongodb/ postgresql`: serves as the write-optimized database for storing orders, order history, products, etc.
 
 :::info
 
-You don’t need to use MongoDB as your write-optimized database; you can use other databases such as a SQL database as well. This is just an example.
+You don't need to use MongoDB/ Postgresql as your write-optimized database in the demo application; you can use other <u>[prisma supported databases](https://www.prisma.io/docs/reference/database-reference/supported-databases)</u> as well. This is just an example.
 
 :::

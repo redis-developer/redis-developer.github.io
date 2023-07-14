@@ -24,7 +24,7 @@ import cacheHitImage from './images/redis-cache-aside-cache-hit.png';
 Have you ever been in a situation where your database queries are slowing down?
 Query caching is the technique you need to speed database queries by using different caching methods while keeping costs down! Imagine that you built an e-commerce application. It started small but is growing fast. By now, you have an extensive product catalog and millions of customers.
 
-That’s good for business, but a hardship for technology. Your queries to MongoDB are beginning to slow down, even though you already attempted to optimize them. Even though you can squeak out a little extra performance, it isn’t enough to satisfy your customers.
+That's good for business, but a hardship for technology. Your queries to primary database (MongoDB/ Postgressql) are beginning to slow down, even though you already attempted to optimize them. Even though you can squeak out a little extra performance, it isn't enough to satisfy your customers.
 
 ## Why you should use Redis for query caching
 
@@ -99,7 +99,7 @@ If you use **Redis Enterprise** and a database that uses a JDBC driver, you can 
 
 <SourceCode />
 
-## Caching in a microservices application with Redis and MongoDB
+## Caching in a microservices application with Redis and primary database (MongoDB/ Postgressql)
 
 In our sample application, the products service publishes an API for filtering products. Here's what a call to the API looks like:
 
@@ -114,32 +114,27 @@ In our sample application, the products service publishes an API for filtering p
 
 ### Get products by filter response (cache miss)
 
-```json {30}
+```json {25}
 {
   "data": [
     {
-      "_id": 11000,
-      "data": {
-        "id": 11000,
-        "price": 3995,
-        "productDisplayName": "Puma Men Slick 3HD Yellow Black Watches",
-        "variantName": "Slick 3HD Yellow",
-        "brandName": "Puma",
-        "ageGroup": "Adults-Men",
-        "gender": "Men",
-        "displayCategories": "Accessories",
-        "styleImages": {
-          "default": {
-            "imageURL": "http://host.docker.internal:8080/images/11000.jpg"
-          }
-        },
-        "productDescriptors": {
-          "description": {
-            "value": "Stylish and comfortable, this motor sport inspired wrist watch from puma is designed with a plastic case and ..."
-          }
-        }
-      },
-      "productId": 11000
+      "productId": "11000",
+      "price": 3995,
+      "productDisplayName": "Puma Men Slick 3HD Yellow Black Watches",
+      "variantName": "Slick 3HD Yellow",
+      "brandName": "Puma",
+      "ageGroup": "Adults-Men",
+      "gender": "Men",
+      "displayCategories": "Accessories",
+      "masterCategory_typeName": "Accessories",
+      "subCategory_typeName": "Watches",
+      "styleImages_default_imageURL": "http://host.docker.internal:8080/images/11000.jpg",
+      "productDescriptors_description_value": "<p style=\"text-align: justify;\">Stylish and comfortable, ...",
+      "createdOn": "2023-07-13T14:07:38.020Z",
+      "createdBy": "ADMIN",
+      "lastUpdatedOn": "2023-07-13T14:07:38.020Z",
+      "lastUpdatedBy": null,
+      "statusCode": 1
     }
     //...
   ],
@@ -160,66 +155,36 @@ In our sample application, the products service publishes an API for filtering p
 }
 ```
 
-### Implementing cache-aside with Redis and MongoDB
+### Implementing cache-aside with Redis and primary database (MongoDB/ Postgressql)
 
-The following code shows the function used to search for products in MongoDB:
+The following code shows the function used to search for products in primary database:
 
 ```typescript title="server/src/services/products/src/service-impl.ts"
-async function getProductsByFilter(productFilter: IProductFilter) {
-  const mongo = getMongodb();
-  const filter: Document = {
-    statusCode: {
-      $eq: DB_ROW_STATUS.ACTIVE,
-    },
+async function getProductsByFilter(productFilter: Product) {
+  const prisma = getPrismaClient();
+
+  const whereQuery: Prisma.ProductWhereInput = {
+    statusCode: DB_ROW_STATUS.ACTIVE,
   };
 
   if (productFilter && productFilter.productDisplayName) {
-    filter['data.productDisplayName'] = {
-      $regex: productFilter.productDisplayName,
-      $options: 'i',
+    whereQuery.productDisplayName = {
+      contains: productFilter.productDisplayName,
+      mode: 'insensitive',
     };
   }
 
-  const projection: IProduct = {
-    productId: 1,
-    data: {
-      id: 1,
-      price: 1,
-      productDisplayName: 1,
-      variantName: 1,
-      brandName: 1,
-      ageGroup: 1,
-      gender: 1,
-      displayCategories: 1,
-      styleImages: {
-        default: {
-          imageURL: 1,
-        },
-      },
-      productDescriptors: {
-        description: {
-          value: 1,
-        },
-      },
-    },
-  };
+  const products: Product[] = await prisma.product.findMany({
+    where: whereQuery,
+  });
 
-  const limit = 100;
-  const sort = {};
-  const products = await mongo.find(
-    COLLECTIONS.PRODUCTS.collectionName,
-    filter,
-    projection,
-    limit,
-    sort,
-  );
   return products;
 }
 ```
 
-If you're familiar with MongoDB, this code should be pretty straightforward. You simply make a call to MongoDB to find products based on a filter on the product’s `displayName` property. You also define a projection object to specify which properties to get out of MongoDB. You can set up multiple columns for better fuzzy searching, but we simplified it for the purposes of this tutorial.
+You simply make a call to primary database (MongoDB/ Postgressql) to find products based on a filter on the product's `displayName` property. You can set up multiple columns for better fuzzy searching, but we simplified it for the purposes of this tutorial.
 
-Using MongoDB directly without Redis works for a while, but eventually it slows down. That's why you might use Redis, to speed things up. The cache-aside pattern helps you balance performance with cost.
+Using primary database directly without Redis works for a while, but eventually it slows down. That's why you might use Redis, to speed things up. The cache-aside pattern helps you balance performance with cost.
 
 The basic decision tree for cache-aside is as follows.
 
@@ -228,7 +193,7 @@ When the frontend requests products:
 1. Form a hash with the contents of the request (i.e., the search parameters).
 1. Check Redis to see if a value exists for the hash.
 1. Is there a cache hit? If data is found for the hash, it is returned; the process stops here.
-1. Is there a cache miss? When data is not found, it is read out of MongoDB and subsequently stored in Redis prior to being returned.
+1. Is there a cache miss? When data is not found, it is read out of primary database and subsequently stored in Redis prior to being returned.
 
 Here’s the code used to implement the decision tree:
 
@@ -256,7 +221,7 @@ router.post(API.GET_PRODUCTS_BY_FILTER, async (req: Request, res: Response) => {
     result.data = docArr;
     result.isFromCache = true;
   } else {
-    // get data from mongodb
+    // get data from primary database
     const dbData = await getProductsByFilter(body); //method shown earlier
 
     if (body && body.productDisplayName && dbData.length) {

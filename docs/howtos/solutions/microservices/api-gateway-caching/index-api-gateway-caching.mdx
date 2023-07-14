@@ -32,7 +32,7 @@ While this works, you end up with a fair amount of duplicated code. Plus, it's d
 
 Once you decide to handle authentication at the API gateway layer, you must decide where to store sessions.
 
-Imagine you're building an e-commerce application that uses MongoDB as the primary data store. You could store sessions in MongoDB, but think about how many times the application needs to hit MongoDB to retrieve session information. If you have millions of customers, you don't want to go to MongoDB for every single request made to the API.
+Imagine you're building an e-commerce application that uses MongoDB/ any relational database as the primary data store. You could store sessions in primary database, but think about how many times the application needs to hit primary database to retrieve session information. If you have millions of customers, you don't want to go to database for every single request made to the API.
 
 This is where Redis comes in.
 
@@ -60,7 +60,7 @@ Use a **Redis Enterprise Cluster** to get the benefit of linear scaling to ensur
 
 <SourceCode />
 
-## API gateway caching in a microservices application with Redis and MongoDB
+## API gateway caching in a microservices application with Redis
 
 What's nice about a microservice architecture is that each service is set up so it can scale independently. Now, seeing as how each service might require authentication, you likely want to obtain session information for most requests. Therefore, it makes sense to use the API gateway to cache and retrieve session information and to subsequently pass the information on to each service. Let's see how you might accomplish this.
 
