@@ -14,12 +14,15 @@ cron.schedule('*/10 * * * * *', async () => {
 });
 ```
 
-The transaction generator creates a randomized banking debit or credit which will reflect on a starting user balance of $100,000.00
-
-The transaction is saved as a JSON document within Redis. The `balanceAfter` value is recorded in a Timeseries with the key `balance_ts`. The transaction is also added to a stream (`transactions`) as an entry. The sorted set `bigspenders` is also updated - the associated **`fromAccountName`** member within the sorted set is incremented by the transaction amount. Note that this amount can be positive or negative.
+- The transaction generator creates a randomized banking debit or credit which will reflect on a (default) starting user balance of $100,000.00
+- The **transaction data** is saved as a JSON document within Redis.
+- To capture **balance over time**, the `balanceAfter` value is recorded in a TimeSeries with the key `balance_ts` for every transaction.
+- To track **biggest spenders**, an associated **`fromAccountName`** member within the sorted set `bigspenders` is incremented by the transaction amount. Note that this amount can be positive or negative.
 
 ```js title="app/transactions/transactionsGenerator.js"
 let balance = 100000.0;
+const BALANCE_TS = 'balance_ts';
+const SORTED_SET_KEY = 'bigspenders';
 
 export const createBankTransaction = async () => {
   //to create random bank transaction

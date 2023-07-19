@@ -22,9 +22,9 @@ Account dashboard make customer's finances easily visible in one place. It reduc
 
 1. Banks store information in a number of separate databases that support individual banking products
 
-2. Key customer account details (balances, recent transactions) across the banks product portfolio re prefetched into Redis Enterprise using Redis Data Integration
+2. Key customer account details (balances, recent transactions) across the banks product portfolio are prefetched into Redis Enterprise using Redis Data Integration (RDI)
 
-3. Redis Enterprise powers customers' account dashboards, enabling mobile banking users to view balances and other high-priority information immediately upon login
+3. Redis Enterprise powers customer's account dashboards, enabling mobile banking users to view balances and other high-priority information immediately upon login
 
 ## Why you should use Redis for mobile banking account dashboard?
 
@@ -78,13 +78,13 @@ The balance endpoint leverages **[Redis time series](https://redis.io/docs/stack
 ```js title="app/routers/transaction-router.js"
 const BALANCE_TS = 'balance_ts';
 
-/* fetch all transactions up to an hour ago */
+/* fetch transactions up to sometime ago */
 transactionRouter.get('/balance', async (req, res) => {
   //time series range
   const balance = await redis.ts.range(
     BALANCE_TS,
-    Date.now() - 1000 * 60 * 5,
-    Date.now(),
+    Date.now() - 1000 * 60 * 5, //from
+    Date.now(), //to
   );
 
   let balancePayload = balance.map((entry) => {
@@ -152,7 +152,7 @@ transactionRouter.get('/biggestspenders', async (req, res) => {
 | Query Parameters | term                             |
 | Return value     | array of results matching term   |
 
-The search endpoint leverages Redis **[Search and Query](https://redis.io/docs/stack/search/)** feature, It receives a `term` query parameter from the UI. A [Redis om Node](https://github.com/redis/redis-om-node) query for the fields `description`, `fromAccountName`, and `accountType` will trigger and return all results.
+The search endpoint leverages Redis **[Search and Query](https://redis.io/docs/stack/search/)** feature, It receives a `term` query parameter from the UI. A [Redis om Node](https://github.com/redis/redis-om-node) query for the fields `description`, `fromAccountName`, and `accountType` will trigger and return results.
 
 ```js title="app/routers/transaction-router.js"
 transactionRouter.get('/search', async (req, res) => {
@@ -175,11 +175,11 @@ transactionRouter.get('/search', async (req, res) => {
 });
 ```
 
-### Get most recent transactions
+### Get recent transactions
 
 **Dashboard widget**
 
-![View most recent transactions](./images/04-ui-recent-transactions.png)
+![View recent transactions](./images/04-ui-recent-transactions.png)
 
 **API end point**
 
