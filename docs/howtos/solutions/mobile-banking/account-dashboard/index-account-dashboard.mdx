@@ -12,21 +12,21 @@ import MobileBankingDataSeeding from '../common-mb/data-seeding.mdx';
 
 <MobileBankingSourceCode />
 
-## What is account dashboard for mobile banking?
+## What is a mobile banking account dashboard?
 
-An account dashboard is a page in a mobile banking app to instantly render account highlights to users. A customer can click on any of the accounts on the dashboard to see the real time account details, such as latest transactions, mortgage amount they have left to pay, checking and savings, etc.
+An account dashboard is a page in a mobile banking app that instantly renders account highlights to users. A customer can click on any of the accounts on the dashboard to see the real-time account details, such as latest transactions, mortgage amount they have left to pay, checking and savings, etc.
 
-Account dashboard make customer's finances easily visible in one place. It reduces financial complexity for the customer and fosters customer loyalty
+An account dashboard makes a customer's finances easily visible in one place. It reduces financial complexity for the customer and fosters customer loyalty.
+
+The following diagram is an example data architecture for an account dashboard:
 
 ![dashboard](./images/dashboard.png)
 
 1. Banks store information in a number of separate databases that support individual banking products
-
 2. Key customer account details (balances, recent transactions) across the banks product portfolio are prefetched into Redis Enterprise using Redis Data Integration (RDI)
-
 3. Redis Enterprise powers customer's account dashboards, enabling mobile banking users to view balances and other high-priority information immediately upon login
 
-## Why you should use Redis for mobile banking account dashboard?
+## Why you should use Redis for account dashboards in mobile banking
 
 - **Resilience**: Redis Enterprise provides resilience with 99.999% uptime and Active-Active Geo Distribution to prevent loss of critical user profile data
 
@@ -42,14 +42,14 @@ Redis Stack supports the [<u>**JSON**</u>](/howtos/redisjson/) data type and all
 
 :::
 
-## Building account dashboard with Redis
+## Building an account dashboard with Redis
 
 <MobileBankingSourceCode />
 
 Download the above source code and run following command to start the demo application
 
 ```sh
-docker compose up
+docker compose up -d
 ```
 
 After docker up & running, open [http://localhost:8080/](http://localhost:8080/) url in browser to view application
@@ -64,7 +64,7 @@ After docker up & running, open [http://localhost:8080/](http://localhost:8080/)
 
 ![Chart](./images/01-ui-balance-over-time.png)
 
-**API end point**
+**API endpoint**
 
 |               |                                   |
 | ------------- | --------------------------------- |
@@ -73,7 +73,7 @@ After docker up & running, open [http://localhost:8080/](http://localhost:8080/)
 | Parameters    | none                              |
 | Return value  | `[{x: timestamp, y: value}, ...]` |
 
-The balance endpoint leverages **[Redis time series](https://redis.io/docs/stack/timeseries/) feature**, It returns the range of all values from the time series object `balance_ts`. The resulting range is converted to an array of objects with each object containing an `x` property containing the timestamp and a `y` property containing the associated value. This endpoint supplies the time series chart with coordinates to plot a visualization of the balance over time.
+The balance endpoint leverages [**Time Series**](https://redis.io/docs/stack/timeseries/), It returns the range of all values from the time series object `balance_ts`. The resulting range is converted to an array of objects with each object containing an `x` property containing the timestamp and a `y` property containing the associated value. This endpoint supplies the time series chart with coordinates to plot a visualization of the balance over time.
 
 ```js title="app/routers/transaction-router.js"
 const BALANCE_TS = 'balance_ts';
@@ -113,7 +113,7 @@ transactionRouter.get('/balance', async (req, res) => {
 | Parameters    | none                             |
 | Return value  | `{labels:[...], series:[...] }`  |
 
-The biggest spenders endpoint leverages **[Redis sorted sets](https://redis.io/docs/manual/patterns/indexes/) as a secondary index**, It retrieves all members of the sorted set `bigspenders` that have scores greater than zero. The top five or less are returned to provide the UI pie chart with data. The labels array contains the names of the biggest spenders and the series array contains the numeric values associated with each member name.
+The biggest spenders endpoint leverages [**sorted sets**](https://redis.io/docs/manual/patterns/indexes/) as a secondary index, It retrieves all members of the sorted set `bigspenders` that have scores greater than zero. The top five or fewer are returned to provide the UI pie chart with data. The labels array contains the names of the biggest spenders and the series array contains the numeric values associated with each member name.
 
 ```js title="app/routers/transaction-router.js"
 const SORTED_SET_KEY = 'bigspenders';
@@ -152,7 +152,7 @@ transactionRouter.get('/biggestspenders', async (req, res) => {
 | Query Parameters | term                             |
 | Return value     | array of results matching term   |
 
-The search endpoint leverages Redis **[Search and Query](https://redis.io/docs/stack/search/)** feature, It receives a `term` query parameter from the UI. A [Redis om Node](https://github.com/redis/redis-om-node) query for the fields `description`, `fromAccountName`, and `accountType` will trigger and return results.
+The search endpoint leverages [**Search and Query**](https://redis.io/docs/stack/search/), It receives a `term` query parameter from the UI. A [Redis om Node](https://github.com/redis/redis-om-node) query for the fields `description`, `fromAccountName`, and `accountType` will trigger and return results.
 
 ```js title="app/routers/transaction-router.js"
 transactionRouter.get('/search', async (req, res) => {
@@ -190,7 +190,7 @@ transactionRouter.get('/search', async (req, res) => {
 | Parameters    | none                             |
 | Return value  | array of results                 |
 
-Even the transactions endpoint leverages Redis **[Search and Query](https://redis.io/docs/stack/search/)** feature. A [Redis om Node](https://github.com/redis/redis-om-node) query will trigger and return ten most recent transactions.
+Even the transactions endpoint leverages [**Search and Query**](https://redis.io/docs/stack/search/). A [Redis om Node](https://github.com/redis/redis-om-node) query will trigger and return ten most recent transactions.
 
 ```js title="app/routers/transaction-router.js"
 /* return ten most recent transactions */
