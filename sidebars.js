@@ -501,8 +501,8 @@ module.exports = {
               type: 'category',
               label: 'Mobile Banking',
               items: [
-                'howtos/solutions/mobile-banking/session-management/index-session-management',
-                'howtos/solutions/mobile-banking/account-dashboard/index-account-dashboard',
+                'howtos/solutions/mobile-banking/session-management/index-mb-session-management',
+                'howtos/solutions/mobile-banking/account-dashboard/index-mb-account-dashboard',
               ]
             },
           ],
