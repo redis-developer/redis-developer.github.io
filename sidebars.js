@@ -497,6 +497,14 @@ module.exports = {
                 'howtos/solutions/real-time-inventory/local-inventory-search/index-rti-local-inventory-search',
               ]
             },
+            {
+              type: 'category',
+              label: 'Mobile Banking',
+              items: [
+                'howtos/solutions/mobile-banking/session-management/index-mb-session-management',
+                'howtos/solutions/mobile-banking/account-dashboard/index-mb-account-dashboard',
+              ]
+            },
           ],
         },
         'howtos/redisearch/index-redisearch',
