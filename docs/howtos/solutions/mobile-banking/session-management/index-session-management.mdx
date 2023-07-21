@@ -1,5 +1,5 @@
 ---
-id: index-session-management
+id: index-mb-session-management
 title: Mobile Banking Authentication and Session Storage Using Redis
 sidebar_label: Mobile Banking Authentication and Session Storage Using Redis
 slug: /howtos/solutions/mobile-banking/session-management
@@ -8,12 +8,13 @@ authors: [prasan, will]
 
 import GeneralAdditionalResources from '../common-mb/additional-resources.mdx';
 import MobileBankingSourceCode from '../common-mb/source-code-tip.mdx';
+import MobileBankingDataSeeding from '../common-mb/data-seeding.mdx';
 
 import MobileBankingDashboardBalance from './images/demo-dashboard-balance-widget.png';
 
 <MobileBankingSourceCode />
 
-## What is Authentication and Session Storage for Mobile Banking?
+## What is authentication and session storage for mobile banking?
 
 After a user has successfully entered their login credentials, mobile banking apps use a `token` and `sessionId` created by the server to represent a user's identity. The `token` is stored in Redis for the duration of a user session and also sent in the login response to the banking application client (mobile/ browser). The client application then sends the `token` with every request to server and server validates it before processing the request.
 
@@ -60,57 +61,7 @@ After docker up & running, open [http://localhost:8080/](http://localhost:8080/)
 
 ### Data seeding
 
-On application startup in `app/server.js`, a cron is scheduled to create random bank transactions at regular intervals and seed those transactions in to Redis.
-
-```js title="app/server.js"
-//cron job to trigger createBankTransaction() at regular intervals
-
-cron.schedule('*/10 * * * * *', async () => {
-  const userName = process.env.REDIS_USERNAME;
-
-  createBankTransaction(userName);
-
-  //...
-});
-```
-
-```js title="app/transactions/transactionsGenerator.js"
-export const createBankTransaction = async () => {
-  //to create random bank transaction
-  let vendorsList = source.source; //app/transactions/transaction_sources.js
-  const random = Math.floor(Math.random() * 9999999999);
-
-  const vendor = vendorsList[random % vendorsList.length]; //random vendor from the list
-
-  const amount = createTransactionAmount(vendor.fromAccountName, random); //random amount
-  const transaction = {
-    id: random * random,
-    fromAccount: Math.floor((random / 2) * 3).toString(),
-    fromAccountName: vendor.fromAccountName,
-    toAccount: '1580783161',
-    toAccountName: 'bob',
-    amount: amount,
-    description: vendor.description,
-    transactionDate: new Date(),
-    transactionType: vendor.type,
-    balanceAfter: balance,
-  };
-
-  const bankTransaction = await bankTransactionRepository.save(transaction);
-  console.log('Created bankTransaction!');
-  // ...
-};
-```
-
-Sample `bankTransaction` data view using [RedisInsight](https://redis.com/redis-enterprise/redis-insight/)
-
-![bank transaction data](./images/bank-transaction-data.png)
-
-![bank transaction json](./images/bank-transaction-json.png)
-
-:::tip
-Download [<u>**RedisInsight**</u>](https://redis.com/redis-enterprise/redis-insight/) to view your Redis data or to play with raw Redis commands in the workbench. Learn more by reading the [<u>**RedisInsight tutorial**</u>](/explore/redisinsight/)
-:::
+<MobileBankingDataSeeding />
 
 ### Session configuration
 
