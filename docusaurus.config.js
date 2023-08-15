@@ -314,14 +314,14 @@ module.exports = {
         // Useful if you want to support a single color mode
         disableSwitch: false,
       },
-      //   announcementBar: {
-      //     id: 'redisconf20201cfp', // Any value that will identify this message.
-      //     content:
-      //       '<a href="https://redis.com/redisdays/" target="_blank" rel="noopener">RedisDays Available Now On-Demand.</a>',
-      //     backgroundColor: '#fff', // Defaults to `#fff`.
-      //     textColor: '#000', // Defaults to `#000`.
-      //     isCloseable: true, // Defaults to `true`.
-      //   },
+        announcementBar: {
+          id: 'redis-7-2-release', // Any value that will identify this message.
+          content:
+            '<div class="announcement-bar"><a href="https://redis.com/blog/introducing-redis-7-2/" target="_blank" rel="noopener"><span>Announcing Redis 7.2 and Enhanced Vector DB</span> <span style="margin-left:1rem">Learn more</span> <span style="margin-left:0.25rem">→</span></a></div>',
+          backgroundColor: 'rgb(210, 215, 254)', // Defaults to `#fff`.
+          textColor: 'rgb(22 31 49)', // Defaults to `#000`.
+          isCloseable: true, // Defaults to `true`.
+        },
     }),
   presets: [
     [
