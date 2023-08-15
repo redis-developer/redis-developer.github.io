@@ -55,3 +55,16 @@ html[data-theme='dark'] {
 .home-main {
   overflow: hidden;
 }
+
+.announcement-bar {
+  :hover {
+    color: rgb(79, 70, 229);
+  }
+
+  > a {
+    display: inline-block;
+    width:100%;
+    text-decoration: none !important;
+    font-size: 1rem;
+  }
+}
