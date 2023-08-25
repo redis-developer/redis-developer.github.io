@@ -46,6 +46,12 @@ In a more complex scenario, like natural language processing (NLP), words or ent
 Vector similarity is a measure that quantifies how alike two vectors are, typically by evaluating the `distance` or `angle` between them in a multi-dimensional space.
 When vectors represent data points, such as texts or images, the similarity score can indicate how similar the underlying data points are in terms of their features or content.
 
+### Use cases for vector similarity:
+
+- **Recommendation Systems**: If you have vectors representing user preferences or item profiles, you can quickly find items that are most similar to a user's preference vector.
+- **Image Search**: Store vectors representing image features, and then retrieve images most similar to a given image's vector.
+- **Textual Content Retrieval**: Store vectors representing textual content (e.g., articles, product descriptions) and find the most relevant texts for a given query vector.
+
 ## How to calculate vector similarity?
 
 There are several ways to calculate vector similarity, but some of the most common methods include:
@@ -266,7 +272,7 @@ const imageEmbeddings = await generateImageEmbeddings('images/11001.jpg');
 console.log(imageEmbeddings);
 /*
  1024 dim vector output
- embeddings = [ 
+ imageEmbeddings = [ 
     0.013823275454342365,    0.33256298303604126,                     0,
     2.2764432430267334,    0.14010703563690186,     0.972867488861084,
     1.2307443618774414,      2.254523992538452,   0.44696325063705444,
@@ -280,15 +286,13 @@ console.log(imageEmbeddings);
 */
 ```
 
-## Querying vectors with Redis
+## Database setup
 
-### Sample JSON
+### Sample Data seeding
 
-consider below sample `products` JSON for our vector generation demonstration.
+Let's assume a simplified e-commerce scenario. consider below `products` JSON for vector search demonstration in this tutorial.
 
-**give local links to images**
-
-```js
+```js title="src/data.ts"
 const products = [
   {
     _id: '1',
@@ -333,6 +337,288 @@ const products = [
 ];
 ```
 
-### Vector KNN Query
+:::tip GITHUB CODE
 
-### Vector Range Query
+Below is a command to the clone the source code used in this tutorial
+
+git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
+:::
+
+Below is the sample code to add `products` data as JSON in Redis along with vectors of product descriptions and product image.
+
+```js title="src/index.ts"
+async function addProductWithEmbeddings(_products) {
+  const nodeRedisClient = getNodeRedisClient();
+
+  if (_products && _products.length) {
+    for (let product of _products) {
+      console.log(
+        `generating description embeddings for product ${product._id}`,
+      );
+      const sentenceEmbedding = await generateSentenceEmbeddings(
+        product.productDescription,
+      );
+      product['productDescriptionEmbeddings'] = sentenceEmbedding;
+
+      console.log(`generating image embeddings for product ${product._id}`);
+      const imageEmbedding = await generateImageEmbeddings(product.imageURL);
+      product['productImageEmbeddings'] = imageEmbedding;
+
+      await nodeRedisClient.json.set(`products:${product._id}`, '$', {
+        ...product,
+      });
+      console.log(`product ${product._id} added to redis`);
+    }
+  }
+}
+```
+
+Data view in RedisInsight
+
+![products data in RedisInsight](./images/products-data-gui.png)
+
+:::tip
+Download <u>[RedisInsight](https://redis.com/redis-enterprise/redis-insight/)</u> to view your Redis data or to play with raw Redis commands in the workbench. learn more about <u>[RedisInsight in tutorials](/explore/redisinsight/)</u>
+:::
+
+### Create vector index
+
+Below implementation shows indexing different field types in Redis including vector fields like productDescriptionEmbeddings and productImageEmbeddings.
+
+```ts title="src/redis-index.ts"
+import {
+  createClient,
+  SchemaFieldTypes,
+  VectorAlgorithms,
+  RediSearchSchema,
+} from 'redis';
+
+const PRODUCTS_KEY_PREFIX = 'products';
+const PRODUCTS_INDEX_KEY = 'idx:products';
+const REDIS_URI = 'redis://localhost:6379';
+let nodeRedisClient = null;
+
+const getNodeRedisClient = async () => {
+  if (!nodeRedisClient) {
+    nodeRedisClient = createClient({ url: REDIS_URI });
+    await nodeRedisClient.connect();
+  }
+  return nodeRedisClient;
+};
+
+const createRedisIndex = async () => {
+  /*    (RAW COMMAND)
+          FT.CREATE idx:products
+          ON JSON
+              PREFIX 1 "products:"
+          SCHEMA
+          "$.productDisplayName" as productDisplayName TEXT NOSTEM SORTABLE
+          "$.brandName" as brandName TEXT NOSTEM SORTABLE
+          "$.price" as price NUMERIC SORTABLE
+          "$.masterCategory" as "masterCategory" TAG
+          "$.subCategory" as subCategory TAG
+          "$.productDescriptionEmbeddings" as productDescriptionEmbeddings VECTOR "FLAT" 10
+                  "TYPE" FLOAT32
+                  "DIM" 768
+                  "DISTANCE_METRIC" "L2"
+                  "INITIAL_CAP" 111
+                  "BLOCK_SIZE"  111
+          "$.productDescription" as productDescription TEXT NOSTEM SORTABLE       
+          "$.imageURL" as imageURL TEXT NOSTEM       
+          "$.productImageEmbeddings" as productImageEmbeddings VECTOR "HNSW" 8
+                          "TYPE" FLOAT32
+                          "DIM" 1024
+                          "DISTANCE_METRIC" "COSINE"
+                          "INITIAL_CAP" 111
+          
+      */
+  const nodeRedisClient = await getNodeRedisClient();
+
+  const schema: RediSearchSchema = {
+    '$.productDisplayName': {
+      type: SchemaFieldTypes.TEXT,
+      NOSTEM: true,
+      SORTABLE: true,
+      AS: 'productDisplayName',
+    },
+    '$.brandName': {
+      type: SchemaFieldTypes.TEXT,
+      NOSTEM: true,
+      SORTABLE: true,
+      AS: 'brandName',
+    },
+    '$.price': {
+      type: SchemaFieldTypes.NUMERIC,
+      SORTABLE: true,
+      AS: 'price',
+    },
+    '$.masterCategory': {
+      type: SchemaFieldTypes.TAG,
+      AS: 'masterCategory',
+    },
+    '$.subCategory': {
+      type: SchemaFieldTypes.TAG,
+      AS: 'subCategory',
+    },
+    '$.productDescriptionEmbeddings': {
+      type: SchemaFieldTypes.VECTOR,
+      TYPE: 'FLOAT32',
+      ALGORITHM: VectorAlgorithms.FLAT,
+      DIM: 768,
+      DISTANCE_METRIC: 'L2',
+      INITIAL_CAP: 111,
+      BLOCK_SIZE: 111,
+      AS: 'productDescriptionEmbeddings',
+    },
+    '$.productDescription': {
+      type: SchemaFieldTypes.TEXT,
+      NOSTEM: true,
+      SORTABLE: true,
+      AS: 'productDescription',
+    },
+    '$.imageURL': {
+      type: SchemaFieldTypes.TEXT,
+      NOSTEM: true,
+      AS: 'imageURL',
+    },
+    '$.productImageEmbeddings': {
+      type: SchemaFieldTypes.VECTOR,
+      TYPE: 'FLOAT32',
+      ALGORITHM: VectorAlgorithms.HNSW, //Hierarchical Navigable Small World graphs
+      DIM: 1024,
+      DISTANCE_METRIC: 'COSINE',
+      INITIAL_CAP: 111,
+      AS: 'productImageEmbeddings',
+    },
+  };
+  console.log(`index ${PRODUCTS_INDEX_KEY} created`);
+
+  try {
+    await nodeRedisClient.ft.dropIndex(PRODUCTS_INDEX_KEY);
+  } catch (indexErr) {
+    console.error(indexErr);
+  }
+  await nodeRedisClient.ft.create(PRODUCTS_INDEX_KEY, schema, {
+    ON: 'JSON',
+    PREFIX: PRODUCTS_KEY_PREFIX,
+  });
+};
+```
+
+:::note FLAT VS HNSW indexing
+FLAT : When you index your vectors in a "FLAT" manner, you're essentially storing them as they are, without any additional structure or hierarchy. When you query against a FLAT index, the algorithm will perform a linear scan through all the vectors to find the most similar ones. This is a more accurate, but much slower and compute intensive approach (suitable for smaller dataset).
+
+HNSW : (Hierarchical Navigable Small World) :
+HNSW is a graph-based method for indexing high-dimensional data. For bigger datasets it becomes slower to compare with every single vector in the index, so a probabilistic approach through the HNSW algorithm provides very fast search results (but sacrifices some accuracy)
+:::
+
+## What is vector search by KNN?
+
+KNN, or k-Nearest Neighbors, is an algorithm used in both classification and regression tasks, but when referring to "KNN Search," we're typically discussing the task of finding the "k" points in a dataset that are closest (most similar) to a given query point. In the context of vector search, this means identifying the "k" vectors in our database that are most similar to a given query vector, usually based on some distance metric like cosine similarity or Euclidean distance.
+
+Redis provides support for vector search, allowing you to index and then search for vectors [using the KNN approach](https://redis.io/docs/stack/search/reference/vectors/#pure-knn-queries).
+
+### Vector KNN query with Redis
+
+```ts title="src/knn-query.ts"
+const float32Buffer = (arr) => {
+  const floatArray = new Float32Array(arr);
+  const float32Buffer = Buffer.from(floatArray.buffer);
+  return float32Buffer;
+};
+const queryProductDescriptionEmbeddingsByKNN = async (
+  _searchTxt,
+  _resultCount,
+) => {
+  //A KNN query will give us the top n documents that best match the query vector.
+
+  /*  sample raw query
+
+        FT.SEARCH idx:products
+        "*=>[KNN 5 @productDescriptionEmbeddings $searchBlob AS score]" 
+        RETURN 4 score brandName productDisplayName imageURL 
+        SORTBY score 
+        PARAMS 2 searchBlob "6\xf7\..." 
+        DIALECT 2 
+
+    */
+  //https://redis.io/docs/interact/search-and-query/query/
+
+  console.log(`queryProductDescriptionEmbeddingsByKNN started`);
+  let results = {};
+  if (_searchTxt) {
+    _resultCount = _resultCount ?? 5;
+
+    const nodeRedisClient = getNodeRedisClient();
+    const searchTxtVectorArr = await generateSentenceEmbeddings(_searchTxt);
+
+    const searchQuery = `*=>[KNN ${_resultCount} @productDescriptionEmbeddings $searchBlob AS score]`;
+
+    results = await nodeRedisClient.ft.search(PRODUCTS_INDEX_KEY, searchQuery, {
+      PARAMS: {
+        searchBlob: float32Buffer(searchTxtVectorArr),
+      },
+      RETURN: ['score', 'brandName', 'productDisplayName', 'imageURL'],
+      SORTBY: {
+        BY: 'score',
+        // DIRECTION: "DESC"
+      },
+      DIALECT: 2,
+    });
+  } else {
+    throw 'Search text cannot be empty';
+  }
+
+  return results;
+};
+```
+
+```js title="sample output"
+const result = await queryProductDescriptionEmbeddingsByKNN(
+  'Puma watch with cat',
+  3,
+);
+console.log(JSON.stringify(result, null, 4));
+
+/*
+(Lower score/distance indicates higher similarity)
+{
+    "total": 3,
+    "documents": [
+        {
+            "id": "products:1",
+            "value": {
+                "score": "0.762174725533",
+                "brandName": "Puma",
+                "productDisplayName": "Puma Men Race Black Watch",
+                "imageURL": "images/11002.jpg"
+            }
+        },
+        {
+            "id": "products:2",
+            "value": {
+                "score": "0.825711071491",
+                "brandName": "Puma",
+                "productDisplayName": "Puma Men Top Fluctuation Red Black Watches",
+                "imageURL": "images/11001.jpg"
+            }
+        },
+        {
+            "id": "products:3",
+            "value": {
+                "score": "1.79949247837",
+                "brandName": "Inkfruit",
+                "productDisplayName": "Inkfruit Women Behind Cream Tshirts",
+                "imageURL": "images/11008.jpg"
+            }
+        }
+    ]
+}
+*/
+```
+
+- [hybrid-knn-queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries)
+
+## What is vector search by range ?
+
+### Vector range query with Redis
