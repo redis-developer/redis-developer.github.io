@@ -46,7 +46,7 @@ In a more complex scenario, like natural language processing (NLP), words or ent
 Vector similarity is a measure that quantifies how alike two vectors are, typically by evaluating the `distance` or `angle` between them in a multi-dimensional space.
 When vectors represent data points, such as texts or images, the similarity score can indicate how similar the underlying data points are in terms of their features or content.
 
-### Use cases for vector similarity:
+### Use cases for vector similarity
 
 - **Recommendation Systems**: If you have vectors representing user preferences or item profiles, you can quickly find items that are most similar to a user's preference vector.
 - **Image Search**: Store vectors representing image features, and then retrieve images most similar to a given image's vector.
@@ -54,11 +54,11 @@ When vectors represent data points, such as texts or images, the similarity scor
 
 ## How to calculate vector similarity?
 
-There are several ways to calculate vector similarity, but some of the most common methods include:
+Several techniques are available to assess vector similarity, with some of the most prevalent ones being:
 
 ### Euclidean Distance (L2 norm)
 
-**Euclidean Distance (L2 norm)** computes the "straight line" distance between two points in a multi-dimensional space. Lower values indicate closer proximity, and hence higher similarity.
+**Euclidean Distance (L2 norm)** calculates the linear distance between two points within a multi-dimensional space. Lower values indicate closer proximity, and hence higher similarity.
 
 <img
   src={EuclideanDistanceFormulaImage}
@@ -67,7 +67,7 @@ There are several ways to calculate vector similarity, but some of the most comm
   className="margin-bottom--md"
 />
 
-Lets consider `product 1` and `product 2` from above ecommerce dataset and calculate `Euclidean Distance` between those products with all features.
+For illustration purposes, let's assess `product 1` and `product 2` from the earlier ecommerce dataset and determine the `Euclidean Distance` considering all features.
 
 <img
   src={EuclideanDistanceSampleImage}
@@ -76,7 +76,7 @@ Lets consider `product 1` and `product 2` from above ecommerce dataset and calcu
   className="margin-bottom--md"
 />
 
-For the purpose of this demonstration, We will consider 2D chart built using [chart.js](https://www.chartjs.org/) of `Price vs. Quality` features (rather all features with multi dimensional chart) for our products and calculate `Euclidean Distance` between products with Price & Quality features only.
+As an example, we will use a 2D chart made with [chart.js](https://www.chartjs.org/) comparing the `Price vs. Quality` features of our products, focusing solely on these two attributes to compute the `Euclidean Distance`.
 
 ![chart](./images/euclidean-distance-chart.png)
 
@@ -91,13 +91,16 @@ For the purpose of this demonstration, We will consider 2D chart built using [ch
   className="margin-bottom--md"
 />
 
-Note: If two vectors are pointing in the same direction, the cosine of the angle between them is 1. If they're orthogonal, the cosine is 0, and if they're pointing in opposite directions, the cosine is -1.
+:::note
+If two vectors are pointing in the same direction, the cosine of the angle between them is 1. If they're orthogonal, the cosine is 0, and if they're pointing in opposite directions, the cosine is -1.
+:::
 
-Lets consider same `product 1` and `product 2` from above ecommerce dataset and calculate `Cosine Distance` between those products with all features.
+Again, consider `product 1` and `product 2` from the previous dataset and calculate the `Cosine Distance` for all features.
 
 ![sample](./images/cosine-sample.png)
 
-Lets consider 2D chart built using [chart.js](https://www.chartjs.org/) of `Price vs. Quality` features for our products and visualize `Cosine Similarity` between products with Price & Quality features only.
+Using [chart.js](https://www.chartjs.org/), we've crafted a 2D chart of `Price vs. Quality` features. It visualizes the `Cosine Similarity` solely based on these attributes.
+
 ![chart](./images/cosine-chart.png)
 
 ### Inner Product
@@ -110,25 +113,27 @@ Lets consider 2D chart built using [chart.js](https://www.chartjs.org/) of `Pric
   width="450"
   className="margin-bottom--md"
 />
-Note: The inner product can be thought of as a measure of how much two vectors "align"
+
+:::note
+The inner product can be thought of as a measure of how much two vectors "align"
 in a given vector space. Higher values indicate higher similarity. However, the raw
 values can be large for long vectors; hence, normalization is recommended for better
-interpretation. If the vectors are normalized, their dot product will be `1 if they
-are identical` and `0 if they are orthogonal` (uncorrelated).
+interpretation. If the vectors are normalized, their dot product will be `1 if they are identical` and `0 if they are orthogonal` (uncorrelated).
+:::
 
-Lets consider same `product 1` and `product 2` from above ecommerce dataset and calculate `inner Product` between those products with all features.
+Considering our `product 1` and `product 2`, let's compute the `Inner Product` across all features.
 
 ![sample](./images/ip-sample.png)
 
-:::note
+:::tip
 Vectors can also be stored in databases in **binary formats** to save space. In practical applications, it's crucial to strike a balance between the dimensionality of the vectors (which impacts storage and computational costs) and the quality or granularity of the information they capture.
 :::
 
 ## Generating vectors
 
-In our context, we're interested in generating sentence (product description) and image (product image) embeddings/ vector.There are many AI model repositories (say like GitHub) where pre-trained AI models are stored, maintained, and shared with the public.
+In our scenario, our focus revolves around generating sentence (product description) and image (product image) embeddings or vectors. There's an abundance of AI model repositories, like GitHub, where AI models are pre-trained, maintained, and shared.
 
-Let's use one of model from [Hugging Face Model Hub](https://huggingface.co/models) for sentence embeddings and from [TensorFlow Hub](https://tfhub.dev/) for image embeddings for diversity.
+For sentence embeddings, we'll employ a model from [Hugging Face Model Hub](https://huggingface.co/models), and for image embeddings, one from [TensorFlow Hub](https://tfhub.dev/) will be leveraged for variety.
 
 :::tip GITHUB CODE
 
@@ -139,29 +144,27 @@ git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
 
 ### Sentence vector
 
-To obtain sentence embeddings, let's use a hugging face model called [Xenova/all-distilroberta-v1](https://huggingface.co/Xenova/all-distilroberta-v1) which is compatible version of [sentence-transformers/all-distilroberta-v1](https://huggingface.co/sentence-transformers/all-distilroberta-v1) for transformer.js with ONNX weights.
+To procure sentence embeddings, we'll make use of a Hugging Face model titled [Xenova/all-distilroberta-v1](https://huggingface.co/Xenova/all-distilroberta-v1). It's a compatible version of [sentence-transformers/all-distilroberta-v1](https://huggingface.co/sentence-transformers/all-distilroberta-v1) for transformer.js with ONNX weights.
 
-:::note
+:::info
 
-<u>
-  [Hugging Face Transformers](https://huggingface.co/docs/transformers.js/index)
-</u> is a widely-used open-source library for Natural Language Processing (NLP) tasks.
-It provides an accessible and straightforward way to use many state-of-the-art NLP
-models
+[<u>Hugging Face Transformers</u>](https://huggingface.co/docs/transformers.js/index)
+is a renowned open-source tool for Natural Language Processing (NLP) tasks.
+It simplifies the use of cutting-edge NLP models.
 
-transformers.j library is essentially the JavaScript version of Hugging Face's popular Python library.
+The transformers.j library is essentially the JavaScript version of Hugging Face's popular Python library.
 
 :::
 
-:::note
+:::info
 
-<u>[ONNX (Open Neural Network eXchange)](https://onnx.ai) </u> is an open standard
+[<u>ONNX (Open Neural Network eXchange)</u>](https://onnx.ai) is an open standard
 that defines a common set of operators and a common file format to represent deep
 learning models in a wide variety of frameworks, including PyTorch and TensorFlow
 
 :::
 
-Below is a Node.js code sample that showcases how to generate vector embeddings for any sentence provided:
+Below, you'll find a Node.js code snippet that illustrates how to create vector embeddings for any provided `sentence`:
 
 ```sh
 npm install @xenova/transformers
@@ -186,7 +189,7 @@ async function generateSentenceEmbeddings(_sentence): Promise<number[]> {
 export { generateSentenceEmbeddings };
 ```
 
-Please find vector output for a sample text
+Here's a glimpse of the vector output for a sample text:
 
 ```js title="sample output"
 const embeddings = await generateSentenceEmbeddings('I Love Redis !');
@@ -203,9 +206,9 @@ console.log(embeddings);
 
 ### Image vector
 
-To obtain image embeddings, let's use a tensor flow model called [mobilenet](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)
+To obtain image embeddings, we'll leverage the [mobilenet](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet) model from TensorFlow.
 
-Below is a Node.js code sample that showcases how to generate vector embeddings for any image provided:
+Below, you'll find a Node.js code snippet that illustrates how to create vector embeddings for any provided `image`:
 
 ```sh
 npm i @tensorflow/tfjs @tensorflow/tfjs-node @tensorflow-models/mobilenet jpeg-js
@@ -259,11 +262,12 @@ async function generateImageEmbeddings(imagePath: string) {
 
 <div>
 
-:::note
-We are using <u>[mobilenet model](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)</u> which is trained only on small <u>[set of image classes](https://github.com/tensorflow/tfjs-examples/blob/master/mobilenet/imagenet_classes.js)</u>. Selecting an image classification model depends on various factors, such as the dataset size, dataset diversity, computational resources, and the specific needs of the application. There are many image classification models like EfficientNet, ResNets, Vision Transformers (ViT)..etc which can be chosen from based on your requirements.
+:::tip Image classification model
+
+We are using <u>[mobilenet model](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)</u> which is trained only on small <u>[set of image classes](https://github.com/tensorflow/tfjs-examples/blob/master/mobilenet/imagenet_classes.js)</u>. The choice of an image classification model depends on various factors, such as the dataset size, dataset diversity, computational resources, and the specific requirements of your application. There are various alternative image classification models, such as EfficientNet, ResNets, and Vision Transformers (ViT), that you can select based on your needs.
 :::
 
-Please find vector output for a sample watch image
+Below is an illustration of the vector output for a sample watch image:
 
 </div>
 
@@ -307,7 +311,7 @@ git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
 
 ### Sample Data seeding
 
-Let's assume a simplified e-commerce scenario. consider below `products` JSON for vector search demonstration in this tutorial.
+For the purposes of this tutorial, let's consider a simplified e-commerce context. The `products` JSON provided offers a glimpse into vector search functionalities we'll be discussing.
 
 ```js title="src/data.ts"
 const products = [
@@ -354,7 +358,7 @@ const products = [
 ];
 ```
 
-Below is the sample code to add `products` data as JSON in Redis along with vectors of product description and product image.
+Below is the sample code to seed `products` data as JSON in Redis. The data also includes vectors of both product descriptions and images.
 
 ```js title="src/index.ts"
 async function addProductWithEmbeddings(_products) {
@@ -383,17 +387,17 @@ async function addProductWithEmbeddings(_products) {
 }
 ```
 
-Data view in RedisInsight
+You can observe products JSON data in RedisInsight:
 
 ![products data in RedisInsight](./images/products-data-gui.png)
 
 :::tip
-Download <u>[RedisInsight](https://redis.com/redis-enterprise/redis-insight/)</u> to view your Redis data or to play with raw Redis commands in the workbench. learn more about <u>[RedisInsight in tutorials](/explore/redisinsight/)</u>
+Download <u>[RedisInsight](https://redis.com/redis-enterprise/redis-insight/)</u> to visually explore your Redis data or to engage with raw Redis commands in the workbench. Dive deeper into RedisInsight with these <u>[tutorials](/explore/redisinsight/)</u>.
 :::
 
 ### Create vector index
 
-JSON fields must be indexed in Redis to perform search on them. Below implementation shows indexing different field types including vector fields like productDescriptionEmbeddings and productImageEmbeddings.
+For searches to be conducted on JSON fields in Redis, they must be indexed. The methodology below highlights the process of indexing different types of fields. This encompasses vector fields such as productDescriptionEmbeddings and productImageEmbeddings.
 
 ```ts title="src/redis-index.ts"
 import {
@@ -515,15 +519,14 @@ const createRedisIndex = async () => {
 };
 ```
 
-:::note FLAT VS HNSW indexing
-FLAT : When you index your vectors in a "FLAT" manner, you're essentially storing them as they are, without any additional structure or hierarchy. When you query against a FLAT index, the algorithm will perform a linear scan through all the vectors to find the most similar ones. This is a more accurate, but much slower and compute intensive approach (suitable for smaller dataset).
+:::info FLAT VS HNSW indexing
+FLAT: When vectors are indexed in a "FLAT" structure, they're stored in their original form without any added hierarchy. A search against a FLAT index will require the algorithm to scan each vector linearly to find the most similar matches. While this is accurate, it's computationally intensive and slower, making it ideal for smaller datasets.
 
-HNSW : (Hierarchical Navigable Small World) :
-HNSW is a graph-based method for indexing high-dimensional data. For bigger datasets it becomes slower to compare with every single vector in the index, so a probabilistic approach through the HNSW algorithm provides very fast search results (but sacrifices some accuracy)
+HNSW (Hierarchical Navigable Small World): HNSW is a graph-centric method tailored for indexing high-dimensional data. With larger datasets, linear comparisons against every vector in the index become time-consuming. HNSW employs a probabilistic approach, ensuring faster search results but with a slight trade-off in accuracy.
 :::
 
-:::note INITIAL_CAP and BLOCK_SIZE parameters
-INITIAL_CAP and BLOCK_SIZE are configuration parameters related to how vectors are stored and indexed.
+:::info INITIAL_CAP and BLOCK_SIZE parameters
+Both INITIAL_CAP and BLOCK_SIZE are configuration parameters that control how vectors are stored and indexed.
 
 INITIAL_CAP defines the initial capacity of the vector index. It helps in pre-allocating space for the index.
 
@@ -538,7 +541,7 @@ KNN, or k-Nearest Neighbors, is an algorithm used in both classification and reg
 
 Redis allows you to index and then search for vectors [using the KNN approach](https://redis.io/docs/stack/search/reference/vectors/#pure-knn-queries).
 
-Below is a Node.js code sample that showcases how to perform a KNN query for any search term provided:
+Below, you'll find a Node.js code snippet that illustrates how to perform `KNN query` for any provided `search text`:
 
 ```ts title="src/knn-query.ts"
 const float32Buffer = (arr) => {
@@ -593,12 +596,12 @@ const queryProductDescriptionEmbeddingsByKNN = async (
 };
 ```
 
-Please find output for a KNN query in Redis **(Lower score/distance in output indicates higher similarity)**
+Please find output for a KNN query in Redis **(A lower score or distance in the output signifies a higher degree of similarity.)**
 
 ```js title="sample output"
 const result = await queryProductDescriptionEmbeddingsByKNN(
-  'Puma watch with cat', //search term
-  3, //max no of results expected
+  'Puma watch with cat', //search text
+  3, //max number of results expected
 );
 console.log(JSON.stringify(result, null, 4));
 
@@ -638,7 +641,9 @@ console.log(JSON.stringify(result, null, 4));
 */
 ```
 
-Note : Can combine KNN query with regular Redis search feature using [hybrid knn queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries)
+:::note
+KNN queries can be combined with standard Redis search functionalities using <u>[hybrid knn queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries).</u>
+:::
 
 ## What is vector range query?
 
@@ -647,7 +652,7 @@ For vectors, a "range query" typically refers to retrieving all vectors within a
 
 ### Range query with Redis
 
-Below is a Node.js code sample that showcases how to perform a vector range query for any radius (distance) range provided:
+Below, you'll find a Node.js code snippet that illustrates how to perform vector `range query` for any range (radius/ distance)provided:
 
 ```js title="src/range-query.ts"
 const queryProductDescriptionEmbeddingsByRange = async (_searchTxt, _range) => {
@@ -697,8 +702,8 @@ Please find output for a range query in Redis
 
 ```js title="sample output"
 const result2 = await queryProductDescriptionEmbeddingsByRange(
-  'Puma watch with cat', //search term
-  1.0, //with in score or distance
+  'Puma watch with cat', //search text
+  1.0, //with in range or distance
 );
 console.log(JSON.stringify(result2, null, 4));
 /*
@@ -727,3 +732,7 @@ console.log(JSON.stringify(result2, null, 4));
 }
 */
 ```
+
+:::info Image vs text vector query
+The syntax for KNN/range vector queries remains consistent whether you're dealing with image vectors or text vectors.
+:::
