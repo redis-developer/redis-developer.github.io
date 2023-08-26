@@ -126,13 +126,9 @@ Vectors can also be stored in databases in **binary formats** to save space. In 
 
 ## Generating vectors
 
-The [Hugging Face Transformers](https://huggingface.co/docs/transformers.js/index) library provides pre-trained models that can be fine-tuned or used out-of-the-box for various NLP (natural language processing) tasks. In our context, we're interested in generating sentence and image embeddings (vector).
+In our context, we're interested in generating sentence (product description) and image (product image) embeddings/ vector.There are many AI model repositories (say like GitHub) where pre-trained AI models are stored, maintained, and shared with the public.
 
-:::note
-transformers.j library is essentially the JavaScript version of Hugging Face's popular Python library.
-:::
-
-### Sentence vector
+Let's use one of model from [Hugging Face Model Hub](https://huggingface.co/models) for sentence embeddings and from [TensorFlow Hub](https://tfhub.dev/) for image embeddings for diversity.
 
 :::tip GITHUB CODE
 
@@ -141,16 +137,31 @@ Below is a command to the clone the source code used in this tutorial
 git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
 :::
 
+### Sentence vector
+
 To obtain sentence embeddings, let's use a hugging face model called [Xenova/all-distilroberta-v1](https://huggingface.co/Xenova/all-distilroberta-v1) which is compatible version of [sentence-transformers/all-distilroberta-v1](https://huggingface.co/sentence-transformers/all-distilroberta-v1) for transformer.js with ONNX weights.
+
+:::note
+
+<u>
+  [Hugging Face Transformers](https://huggingface.co/docs/transformers.js/index)
+</u> is a widely-used open-source library for Natural Language Processing (NLP) tasks.
+It provides an accessible and straightforward way to use many state-of-the-art NLP
+models
+
+transformers.j library is essentially the JavaScript version of Hugging Face's popular Python library.
+
+:::
 
 :::note
 
 <u>[ONNX (Open Neural Network eXchange)](https://onnx.ai) </u> is an open standard
 that defines a common set of operators and a common file format to represent deep
 learning models in a wide variety of frameworks, including PyTorch and TensorFlow
+
 :::
 
-Below is a Node.js code sample that showcases how to generate vector embeddings for the any sentence provided:
+Below is a Node.js code sample that showcases how to generate vector embeddings for any sentence provided:
 
 ```sh
 npm install @xenova/transformers
@@ -168,12 +179,14 @@ async function generateSentenceEmbeddings(_sentence): Promise<number[]> {
     normalize: true,
   });
 
-  const embeddings: number[] = Object.values(vectorOutput?.data); //object to array
+  const embeddings: number[] = Object.values(vectorOutput?.data);
   return embeddings;
 }
 
 export { generateSentenceEmbeddings };
 ```
+
+Please find vector output for a sample text
 
 ```js title="sample output"
 const embeddings = await generateSentenceEmbeddings('I Love Redis !');
@@ -190,12 +203,9 @@ console.log(embeddings);
 
 ### Image vector
 
-:::tip GITHUB CODE
+To obtain image embeddings, let's use a tensor flow model called [mobilenet](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)
 
-Below is a command to the clone the source code used in this tutorial
-
-git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
-:::
+Below is a Node.js code sample that showcases how to generate vector embeddings for any image provided:
 
 ```sh
 npm i @tensorflow/tfjs @tensorflow/tfjs-node @tensorflow-models/mobilenet jpeg-js
@@ -253,7 +263,7 @@ async function generateImageEmbeddings(imagePath: string) {
 We are using <u>[mobilenet model](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)</u> which is trained only on small <u>[set of image classes](https://github.com/tensorflow/tfjs-examples/blob/master/mobilenet/imagenet_classes.js)</u>. Selecting an image classification model depends on various factors, such as the dataset size, dataset diversity, computational resources, and the specific needs of the application. There are many image classification models like EfficientNet, ResNets, Vision Transformers (ViT)..etc which can be chosen from based on your requirements.
 :::
 
-Please find vector details for the sample watch image (11001.jpg)
+Please find vector output for a sample watch image
 
 </div>
 
@@ -287,6 +297,13 @@ console.log(imageEmbeddings);
 ```
 
 ## Database setup
+
+:::tip GITHUB CODE
+
+Below is a command to the clone the source code used in this tutorial
+
+git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
+:::
 
 ### Sample Data seeding
 
@@ -337,14 +354,7 @@ const products = [
 ];
 ```
 
-:::tip GITHUB CODE
-
-Below is a command to the clone the source code used in this tutorial
-
-git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
-:::
-
-Below is the sample code to add `products` data as JSON in Redis along with vectors of product descriptions and product image.
+Below is the sample code to add `products` data as JSON in Redis along with vectors of product description and product image.
 
 ```js title="src/index.ts"
 async function addProductWithEmbeddings(_products) {
@@ -383,7 +393,7 @@ Download <u>[RedisInsight](https://redis.com/redis-enterprise/redis-insight/)</u
 
 ### Create vector index
 
-Below implementation shows indexing different field types in Redis including vector fields like productDescriptionEmbeddings and productImageEmbeddings.
+JSON fields must be indexed in Redis to perform search on them. Below implementation shows indexing different field types including vector fields like productDescriptionEmbeddings and productImageEmbeddings.
 
 ```ts title="src/redis-index.ts"
 import {
@@ -512,13 +522,23 @@ HNSW : (Hierarchical Navigable Small World) :
 HNSW is a graph-based method for indexing high-dimensional data. For bigger datasets it becomes slower to compare with every single vector in the index, so a probabilistic approach through the HNSW algorithm provides very fast search results (but sacrifices some accuracy)
 :::
 
-## What is vector search by KNN?
+:::note INITIAL_CAP and BLOCK_SIZE parameters
+INITIAL_CAP and BLOCK_SIZE are configuration parameters related to how vectors are stored and indexed.
+
+INITIAL_CAP defines the initial capacity of the vector index. It helps in pre-allocating space for the index.
+
+BLOCK_SIZE defines the size of each block of the vector index. As more vectors are added, Redis will allocate memory in chunks, with each chunk being the size of the BLOCK_SIZE. It helps in optimizing the memory allocations during index growth.
+:::
+
+## What is vector KNN query?
 
 KNN, or k-Nearest Neighbors, is an algorithm used in both classification and regression tasks, but when referring to "KNN Search," we're typically discussing the task of finding the "k" points in a dataset that are closest (most similar) to a given query point. In the context of vector search, this means identifying the "k" vectors in our database that are most similar to a given query vector, usually based on some distance metric like cosine similarity or Euclidean distance.
 
-Redis provides support for vector search, allowing you to index and then search for vectors [using the KNN approach](https://redis.io/docs/stack/search/reference/vectors/#pure-knn-queries).
+### KNN query with Redis
 
-### Vector KNN query with Redis
+Redis allows you to index and then search for vectors [using the KNN approach](https://redis.io/docs/stack/search/reference/vectors/#pure-knn-queries).
+
+Below is a Node.js code sample that showcases how to perform a KNN query for any search term provided:
 
 ```ts title="src/knn-query.ts"
 const float32Buffer = (arr) => {
@@ -573,15 +593,16 @@ const queryProductDescriptionEmbeddingsByKNN = async (
 };
 ```
 
+Please find output for a KNN query in Redis **(Lower score/distance in output indicates higher similarity)**
+
 ```js title="sample output"
 const result = await queryProductDescriptionEmbeddingsByKNN(
-  'Puma watch with cat',
-  3,
+  'Puma watch with cat', //search term
+  3, //max no of results expected
 );
 console.log(JSON.stringify(result, null, 4));
 
 /*
-(Lower score/distance indicates higher similarity)
 {
     "total": 3,
     "documents": [
@@ -617,8 +638,92 @@ console.log(JSON.stringify(result, null, 4));
 */
 ```
 
-- [hybrid-knn-queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries)
+Note : Can combine KNN query with regular Redis search feature using [hybrid knn queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries)
 
-## What is vector search by range ?
+## What is vector range query?
 
-### Vector range query with Redis
+Range queries retrieve data that falls within a specified range of values.
+For vectors, a "range query" typically refers to retrieving all vectors within a certain distance of a target vector. The "range" in this context is a radius in the vector space.
+
+### Range query with Redis
+
+Below is a Node.js code sample that showcases how to perform a vector range query for any radius (distance) range provided:
+
+```js title="src/range-query.ts"
+const queryProductDescriptionEmbeddingsByRange = async (_searchTxt, _range) => {
+  /*  sample raw query
+   
+       FT.SEARCH idx:products
+       "@productDescriptionEmbeddings:[VECTOR_RANGE $searchRange $searchBlob]=>{$YIELD_DISTANCE_AS: score}"
+       RETURN 4 score brandName productDisplayName imageURL 
+       SORTBY score 
+       PARAMS 4 searchRange 0.685 searchBlob "A=\xe1\xbb\x8a\xad\x...."
+       DIALECT 2
+       */
+
+  console.log(`queryProductDescriptionEmbeddingsByRange started`);
+  let results = {};
+  if (_searchTxt) {
+    _range = _range ?? 1.0;
+
+    const nodeRedisClient = getNodeRedisClient();
+
+    const searchTxtVectorArr = await generateSentenceEmbeddings(_searchTxt);
+
+    const searchQuery =
+      '@productDescriptionEmbeddings:[VECTOR_RANGE $searchRange $searchBlob]=>{$YIELD_DISTANCE_AS: score}';
+
+    results = await nodeRedisClient.ft.search(PRODUCTS_INDEX_KEY, searchQuery, {
+      PARAMS: {
+        searchBlob: float32Buffer(searchTxtVectorArr),
+        searchRange: _range,
+      },
+      RETURN: ['score', 'brandName', 'productDisplayName', 'imageURL'],
+      SORTBY: {
+        BY: 'score',
+        // DIRECTION: "DESC"
+      },
+      DIALECT: 2,
+    });
+  } else {
+    throw 'Search text cannot be empty';
+  }
+
+  return results;
+};
+```
+
+Please find output for a range query in Redis
+
+```js title="sample output"
+const result2 = await queryProductDescriptionEmbeddingsByRange(
+  'Puma watch with cat', //search term
+  1.0, //with in score or distance
+);
+console.log(JSON.stringify(result2, null, 4));
+/*
+{
+    "total": 2,
+    "documents": [
+        {
+            "id": "products:1",
+            "value": {
+                "score": "0.762174725533",
+                "brandName": "Puma",
+                "productDisplayName": "Puma Men Race Black Watch",
+                "imageURL": "images/11002.jpg"
+            }
+        },
+        {
+            "id": "products:2",
+            "value": {
+                "score": "0.825711071491",
+                "brandName": "Puma",
+                "productDisplayName": "Puma Men Top Fluctuation Red Black Watches",
+                "imageURL": "images/11001.jpg"
+            }
+        }
+    ]
+}
+*/
+```
