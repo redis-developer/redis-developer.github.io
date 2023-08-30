@@ -41,6 +41,16 @@ Now, product 1 `Puma Men Race Black Watch` might be represented as the vector `[
 
 In a more complex scenario, like natural language processing (NLP), words or entire sentences can be converted into dense vectors (often referred to as embeddings) that capture the semantic meaning of the text.Vectors play a foundational role in many machine learning algorithms, particularly those that involve distance measurements, such as clustering and classification algorithms.
 
+## What is a vector database?
+
+A vector database is a database that's optimized for storing and searching vectors. It's a specialized database that's designed to store and search vectors efficiently. Vector databases are often used to power vector search applications, such as recommendation systems, image search, and textual content retrieval. Vector databases are also referred to as vector stores, vector indexes, or vector search engines. Vector databases use vector similarity algorithms to search for vectors that are similar to a given query vector.
+
+:::tip
+
+[<u>**Redis Cloud**</u>](https://redis.com/try-free) is a popular choice for vector databases, as it offers a rich set of data structures and commands that are well-suited for vector storage and search. Redis Cloud allows you to index vectors and perform vector similarity search in a few different ways outlined further in this tutorial. It also maintains a high level of performance and scalability.
+
+:::
+
 ## What is vector similarity?
 
 Vector similarity is a measure that quantifies how alike two vectors are, typically by evaluating the `distance` or `angle` between them in a multi-dimensional space.
@@ -52,81 +62,10 @@ When vectors represent data points, such as texts or images, the similarity scor
 - **Image Search**: Store vectors representing image features, and then retrieve images most similar to a given image's vector.
 - **Textual Content Retrieval**: Store vectors representing textual content (e.g., articles, product descriptions) and find the most relevant texts for a given query vector.
 
-## How to calculate vector similarity?
+:::tip CALCULATING VECTOR SIMILARITY
 
-Several techniques are available to assess vector similarity, with some of the most prevalent ones being:
+If you're interested in learning more about the mathematics behind vector similarity, scroll down to the [<u>**How to calculate vector similarity?**</u>](#how-to-calculate-vector-similarity) section.
 
-### Euclidean Distance (L2 norm)
-
-**Euclidean Distance (L2 norm)** calculates the linear distance between two points within a multi-dimensional space. Lower values indicate closer proximity, and hence higher similarity.
-
-<img
-  src={EuclideanDistanceFormulaImage}
-  alt="EuclideanDistanceFormulaImage"
-  width="300"
-  className="margin-bottom--md"
-/>
-
-For illustration purposes, let's assess `product 1` and `product 2` from the earlier ecommerce dataset and determine the `Euclidean Distance` considering all features.
-
-<img
-  src={EuclideanDistanceSampleImage}
-  alt="EuclideanDistanceSampleImage"
-  width="600"
-  className="margin-bottom--md"
-/>
-
-As an example, we will use a 2D chart made with [chart.js](https://www.chartjs.org/) comparing the `Price vs. Quality` features of our products, focusing solely on these two attributes to compute the `Euclidean Distance`.
-
-![chart](./images/euclidean-distance-chart.png)
-
-### Cosine Similarity
-
-**Cosine Similarity** measures the cosine of the angle between two vectors. The cosine similarity value ranges between -1 and 1. A value closer to 1 implies a smaller angle and higher similarity, while a value closer to -1 implies a larger angle and lower similarity. Cosine similarity is particularly popular in NLP when dealing with text vectors.
-
-<img
-  src={CosineFormulaImage}
-  alt="CosineFormulaImage"
-  width="450"
-  className="margin-bottom--md"
-/>
-
-:::note
-If two vectors are pointing in the same direction, the cosine of the angle between them is 1. If they're orthogonal, the cosine is 0, and if they're pointing in opposite directions, the cosine is -1.
-:::
-
-Again, consider `product 1` and `product 2` from the previous dataset and calculate the `Cosine Distance` for all features.
-
-![sample](./images/cosine-sample.png)
-
-Using [chart.js](https://www.chartjs.org/), we've crafted a 2D chart of `Price vs. Quality` features. It visualizes the `Cosine Similarity` solely based on these attributes.
-
-![chart](./images/cosine-chart.png)
-
-### Inner Product
-
-**Inner Product (dot product)** The inner product (or dot product) isn't a distance metric in the traditional sense but can be used to calculate similarity, especially when vectors are normalized (have a magnitude of 1). It's the sum of the products of the corresponding entries of the two sequences of numbers.
-
-<img
-  src={IpFormulaImage}
-  alt="IpFormulaImage"
-  width="450"
-  className="margin-bottom--md"
-/>
-
-:::note
-The inner product can be thought of as a measure of how much two vectors "align"
-in a given vector space. Higher values indicate higher similarity. However, the raw
-values can be large for long vectors; hence, normalization is recommended for better
-interpretation. If the vectors are normalized, their dot product will be `1 if they are identical` and `0 if they are orthogonal` (uncorrelated).
-:::
-
-Considering our `product 1` and `product 2`, let's compute the `Inner Product` across all features.
-
-![sample](./images/ip-sample.png)
-
-:::tip
-Vectors can also be stored in databases in **binary formats** to save space. In practical applications, it's crucial to strike a balance between the dimensionality of the vectors (which impacts storage and computational costs) and the quality or granularity of the information they capture.
 :::
 
 ## Generating vectors
@@ -144,7 +83,7 @@ git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
 
 ### Sentence vector
 
-To procure sentence embeddings, we'll make use of a Hugging Face model titled [Xenova/all-distilroberta-v1](https://huggingface.co/Xenova/all-distilroberta-v1). It's a compatible version of [sentence-transformers/all-distilroberta-v1](https://huggingface.co/sentence-transformers/all-distilroberta-v1) for transformer.js with ONNX weights.
+To generate sentence embeddings, we'll make use of a Hugging Face model titled [Xenova/all-distilroberta-v1](https://huggingface.co/Xenova/all-distilroberta-v1). It's a compatible version of [sentence-transformers/all-distilroberta-v1](https://huggingface.co/sentence-transformers/all-distilroberta-v1) for transformer.js with ONNX weights.
 
 :::info
 
@@ -196,7 +135,7 @@ const embeddings = await generateSentenceEmbeddings('I Love Redis !');
 console.log(embeddings);
 /*
  768 dim vector output
- embeddings = [ 
+ embeddings = [
     -0.005076113156974316,  -0.006047232076525688,   -0.03189406543970108,
     -0.019677048549056053,    0.05152582749724388,  -0.035989608615636826,
     -0.009754283353686333,   0.002385444939136505,   -0.04979122802615166,
@@ -242,7 +181,7 @@ async function generateImageEmbeddings(imagePath: string) {
   // Load MobileNet model
   const model = await mobilenet.load();
 
-  //to check properly classifying image
+  // Classify and predict what the image is
   const prediction = await model.classify(imageTensor);
   console.log(`${imagePath} prediction`, prediction);
 
@@ -286,7 +225,7 @@ const imageEmbeddings = await generateImageEmbeddings('images/11001.jpg');
 console.log(imageEmbeddings);
 /*
  1024 dim vector output
- imageEmbeddings = [ 
+ imageEmbeddings = [
     0.013823275454342365,    0.33256298303604126,                     0,
     2.2764432430267334,    0.14010703563690186,     0.972867488861084,
     1.2307443618774414,      2.254523992538452,   0.44696325063705444,
@@ -392,12 +331,14 @@ You can observe products JSON data in RedisInsight:
 ![products data in RedisInsight](./images/products-data-gui.png)
 
 :::tip
+
 Download <u>[RedisInsight](https://redis.com/redis-enterprise/redis-insight/)</u> to visually explore your Redis data or to engage with raw Redis commands in the workbench. Dive deeper into RedisInsight with these <u>[tutorials](/explore/redisinsight/)</u>.
+
 :::
 
 ### Create vector index
 
-For searches to be conducted on JSON fields in Redis, they must be indexed. The methodology below highlights the process of indexing different types of fields. This encompasses vector fields such as productDescriptionEmbeddings and productImageEmbeddings.
+For searches to be conducted on JSON fields in Redis, they must be indexed. The methodology below highlights the process of indexing different types of fields. This encompasses vector fields such as `productDescriptionEmbeddings` and `productImageEmbeddings`.
 
 ```ts title="src/redis-index.ts"
 import {
@@ -437,14 +378,14 @@ const createRedisIndex = async () => {
                   "DISTANCE_METRIC" "L2"
                   "INITIAL_CAP" 111
                   "BLOCK_SIZE"  111
-          "$.productDescription" as productDescription TEXT NOSTEM SORTABLE       
-          "$.imageURL" as imageURL TEXT NOSTEM       
+          "$.productDescription" as productDescription TEXT NOSTEM SORTABLE
+          "$.imageURL" as imageURL TEXT NOSTEM
           "$.productImageEmbeddings" as productImageEmbeddings VECTOR "HNSW" 8
                           "TYPE" FLOAT32
                           "DIM" 1024
                           "DISTANCE_METRIC" "COSINE"
                           "INITIAL_CAP" 111
-          
+
       */
   const nodeRedisClient = await getNodeRedisClient();
 
@@ -520,24 +461,28 @@ const createRedisIndex = async () => {
 ```
 
 :::info FLAT VS HNSW indexing
+
 FLAT: When vectors are indexed in a "FLAT" structure, they're stored in their original form without any added hierarchy. A search against a FLAT index will require the algorithm to scan each vector linearly to find the most similar matches. While this is accurate, it's computationally intensive and slower, making it ideal for smaller datasets.
 
 HNSW (Hierarchical Navigable Small World): HNSW is a graph-centric method tailored for indexing high-dimensional data. With larger datasets, linear comparisons against every vector in the index become time-consuming. HNSW employs a probabilistic approach, ensuring faster search results but with a slight trade-off in accuracy.
+
 :::
 
 :::info INITIAL_CAP and BLOCK_SIZE parameters
+
 Both INITIAL_CAP and BLOCK_SIZE are configuration parameters that control how vectors are stored and indexed.
 
 INITIAL_CAP defines the initial capacity of the vector index. It helps in pre-allocating space for the index.
 
 BLOCK_SIZE defines the size of each block of the vector index. As more vectors are added, Redis will allocate memory in chunks, with each chunk being the size of the BLOCK_SIZE. It helps in optimizing the memory allocations during index growth.
+
 :::
 
 ## What is vector KNN query?
 
 KNN, or k-Nearest Neighbors, is an algorithm used in both classification and regression tasks, but when referring to "KNN Search," we're typically discussing the task of finding the "k" points in a dataset that are closest (most similar) to a given query point. In the context of vector search, this means identifying the "k" vectors in our database that are most similar to a given query vector, usually based on some distance metric like cosine similarity or Euclidean distance.
 
-### KNN query with Redis
+### Vector KNN query with Redis
 
 Redis allows you to index and then search for vectors [using the KNN approach](https://redis.io/docs/stack/search/reference/vectors/#pure-knn-queries).
 
@@ -558,11 +503,11 @@ const queryProductDescriptionEmbeddingsByKNN = async (
   /*  sample raw query
 
         FT.SEARCH idx:products
-        "*=>[KNN 5 @productDescriptionEmbeddings $searchBlob AS score]" 
-        RETURN 4 score brandName productDisplayName imageURL 
-        SORTBY score 
-        PARAMS 2 searchBlob "6\xf7\..." 
-        DIALECT 2 
+        "*=>[KNN 5 @productDescriptionEmbeddings $searchBlob AS score]"
+        RETURN 4 score brandName productDisplayName imageURL
+        SORTBY score
+        PARAMS 2 searchBlob "6\xf7\..."
+        DIALECT 2
 
     */
   //https://redis.io/docs/interact/search-and-query/query/
@@ -650,18 +595,18 @@ KNN queries can be combined with standard Redis search functionalities using <u>
 Range queries retrieve data that falls within a specified range of values.
 For vectors, a "range query" typically refers to retrieving all vectors within a certain distance of a target vector. The "range" in this context is a radius in the vector space.
 
-### Range query with Redis
+### Vector range query with Redis
 
 Below, you'll find a Node.js code snippet that illustrates how to perform vector `range query` for any range (radius/ distance)provided:
 
 ```js title="src/range-query.ts"
 const queryProductDescriptionEmbeddingsByRange = async (_searchTxt, _range) => {
   /*  sample raw query
-   
+
        FT.SEARCH idx:products
        "@productDescriptionEmbeddings:[VECTOR_RANGE $searchRange $searchBlob]=>{$YIELD_DISTANCE_AS: score}"
-       RETURN 4 score brandName productDisplayName imageURL 
-       SORTBY score 
+       RETURN 4 score brandName productDisplayName imageURL
+       SORTBY score
        PARAMS 4 searchRange 0.685 searchBlob "A=\xe1\xbb\x8a\xad\x...."
        DIALECT 2
        */
@@ -735,4 +680,81 @@ console.log(JSON.stringify(result2, null, 4));
 
 :::info Image vs text vector query
 The syntax for KNN/range vector queries remains consistent whether you're dealing with image vectors or text vectors.
+:::
+
+## How to calculate vector similarity?
+
+Several techniques are available to assess vector similarity, with some of the most prevalent ones being:
+
+### Euclidean Distance (L2 norm)
+
+**Euclidean Distance (L2 norm)** calculates the linear distance between two points within a multi-dimensional space. Lower values indicate closer proximity, and hence higher similarity.
+
+<img
+  src={EuclideanDistanceFormulaImage}
+  alt="EuclideanDistanceFormulaImage"
+  width="300"
+  className="margin-bottom--md"
+/>
+
+For illustration purposes, let's assess `product 1` and `product 2` from the earlier ecommerce dataset and determine the `Euclidean Distance` considering all features.
+
+<img
+  src={EuclideanDistanceSampleImage}
+  alt="EuclideanDistanceSampleImage"
+  width="600"
+  className="margin-bottom--md"
+/>
+
+As an example, we will use a 2D chart made with [chart.js](https://www.chartjs.org/) comparing the `Price vs. Quality` features of our products, focusing solely on these two attributes to compute the `Euclidean Distance`.
+
+![chart](./images/euclidean-distance-chart.png)
+
+### Cosine Similarity
+
+**Cosine Similarity** measures the cosine of the angle between two vectors. The cosine similarity value ranges between -1 and 1. A value closer to 1 implies a smaller angle and higher similarity, while a value closer to -1 implies a larger angle and lower similarity. Cosine similarity is particularly popular in NLP when dealing with text vectors.
+
+<img
+  src={CosineFormulaImage}
+  alt="CosineFormulaImage"
+  width="450"
+  className="margin-bottom--md"
+/>
+
+:::note
+If two vectors are pointing in the same direction, the cosine of the angle between them is 1. If they're orthogonal, the cosine is 0, and if they're pointing in opposite directions, the cosine is -1.
+:::
+
+Again, consider `product 1` and `product 2` from the previous dataset and calculate the `Cosine Distance` for all features.
+
+![sample](./images/cosine-sample.png)
+
+Using [chart.js](https://www.chartjs.org/), we've crafted a 2D chart of `Price vs. Quality` features. It visualizes the `Cosine Similarity` solely based on these attributes.
+
+![chart](./images/cosine-chart.png)
+
+### Inner Product
+
+**Inner Product (dot product)** The inner product (or dot product) isn't a distance metric in the traditional sense but can be used to calculate similarity, especially when vectors are normalized (have a magnitude of 1). It's the sum of the products of the corresponding entries of the two sequences of numbers.
+
+<img
+  src={IpFormulaImage}
+  alt="IpFormulaImage"
+  width="450"
+  className="margin-bottom--md"
+/>
+
+:::note
+The inner product can be thought of as a measure of how much two vectors "align"
+in a given vector space. Higher values indicate higher similarity. However, the raw
+values can be large for long vectors; hence, normalization is recommended for better
+interpretation. If the vectors are normalized, their dot product will be `1 if they are identical` and `0 if they are orthogonal` (uncorrelated).
+:::
+
+Considering our `product 1` and `product 2`, let's compute the `Inner Product` across all features.
+
+![sample](./images/ip-sample.png)
+
+:::tip
+Vectors can also be stored in databases in **binary formats** to save space. In practical applications, it's crucial to strike a balance between the dimensionality of the vectors (which impacts storage and computational costs) and the quality or granularity of the information they capture.
 :::
