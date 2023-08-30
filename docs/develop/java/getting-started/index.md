@@ -14,17 +14,7 @@ Find tutorials, examples and technical articles that will help you to develop wi
 
 ## Getting Started
 
-Java community has built many client libraries that you can find [here](https://redis.io/clients#java). For your first steps with Java and Redis, this article will show how to use the two main libraries: [Jedis](https://github.com/redis/jedis) and [Lettuce](https://lettuce.io/).
-
-The blog post “[Jedis vs. Lettuce: An Exploration](https://redis.com/blog/jedis-vs-lettuce-an-exploration/)” will help you to select the best for your application; keeping in mind that both are available in Spring & SpringBoot framework.
-
-<Tabs
-defaultValue="jedis"
-values={[
-{label: 'Jedis', value: 'jedis'},
-{label: 'Lettuce', value: 'lettuce'},
-]}>
-<TabItem value="jedis">
+Java community has built many client libraries that you can find [here](https://redis.io/clients#java). For your first steps with Java and Redis, this article will show how to use [Jedis](https://github.com/redis/jedis), the supported Redis client for Java.
 
 Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
 
@@ -105,53 +95,6 @@ Once you have access to the connection pool you can now get a Jedis instance and
 ```
 
 Find more information about Java & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/java/jedis)".
-
-  </TabItem>
-  <TabItem value="lettuce">
-
-## Using Lettuce
-
-### Step 1. Add dependencies Jedis dependency to your Maven (or Gradle) project file:
-
-```xml
- <dependency>
-    <groupId>io.lettuce</groupId>
-    <artifactId>lettuce-core</artifactId>a
-     <version>6.0.1.RELEASE</version>
- </dependency>
-```
-
-### Step 2. Import the Jedis classes
-
-```java
- import io.lettuce.core.RedisClient;
- import io.lettuce.core.api.StatefulRedisConnection;
- import io.lettuce.core.api.sync.RedisCommands;
-```
-
-### Step 3. Write your application code
-
-```java
-  RedisClient redisClient = RedisClient.create("redis://localhost:6379/");
-  StatefulRedisConnection<String, String> connection = redisClient.connect();
-  RedisCommands<String, String> syncCommands = connection.sync();
-
-  syncCommands.set("mykey", "Hello from Lettuce!");
-  String value = syncCommands.get("mykey");
-  System.out.println( value );
-
-  syncCommands.zadd("vehicles", 0, "car");
-  syncCommands.zadd("vehicles", 0, "bike");
-  List<String> vehicles = syncCommands.zrange("vehicles", 0, -1);
-  System.out.println( vehicles );
-
-  connection.close();
-  redisClient.shutdown();
-```
-
-Find more information about Java & Redis connections in the "[Redis Connect](https://github.com/redis-developer/redis-connect/tree/master/java/lettuce)".
-</TabItem>
-</Tabs>
 
 ### Redis Launchpad
 
@@ -248,12 +191,6 @@ As developer you can use the Java client library directly in your application, o
 
 ### More developer resources
 
-<div class="row">
-
-<div class="col">
-
-#### Sample Code
-
 **[Brewdis - Product Catalog (Spring)](https://github.com/redis-developer/brewdis)**
 See how to use Redis and Spring to build a product catalog with streams, hashes and Search
 
@@ -262,27 +199,6 @@ See how to use Spring to create multiple producer and consumers with Redis Strea
 
 **[Rate Limiting with Vert.x](https://github.com/redis-developer/vertx-rate-limiting-redis)**
 See how to use Redis Sorted Set with Vert.x to build a rate limiting service.
-
-**[Redis Java Samples with Lettuce](https://github.com/redis-developer/vertx-rate-limiting-redis)**
-Run Redis Commands from Lettuce
-
-</div>
-<div class="col col--1">
-</div>
-
-<div class="col">
-
-#### Technical Articles
-
-**[Getting Started with Redis Streams and Java (Lettuce)](https://redis.com/blog/getting-started-with-redis-streams-and-java/)**
-
-**[Jedis vs. Lettuce: An Exploration](https://redis.com/blog/jedis-vs-lettuce-an-exploration/)**
-
-</div>
-
-</div>
-
----
 
 ### Redis University
 
@@ -294,7 +210,6 @@ Redis for Java Developers teaches you how to build robust Redis client applicati
 <iframe width="560" height="315" src="https://www.youtube.com/embed/CmQMdJefTjc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-##
 
 <div>
 <a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
