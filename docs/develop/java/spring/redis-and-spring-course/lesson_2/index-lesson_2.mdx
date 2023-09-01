@@ -63,7 +63,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 Notice that while the template types are generic, it is up to the serializers/deserializers to convert the given Objects to-and-from binary data correctly.
 
-We could also configure the Redis host and port programmatically by defining a `@Bean` annotated method that returns a `RedisConnectionFactory` (either a `JedisConnectionFactory` or `LettuceConnectionFactory`) and use the `setHostName` and `setPort` methods.
+We could also configure the Redis host and port programmatically by defining a `@Bean` annotated method that returns a `RedisConnectionFactory` (either a `JedisConnectionFactory`) and use the `setHostName` and `setPort` methods.
 
 But since Spring Data Redis can configure the beans using a properties file (either Java Properties or YAML), we will use the `applications.properties` file instead.
 

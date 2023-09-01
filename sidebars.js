@@ -495,7 +495,7 @@ module.exports = {
               items: [
                 'howtos/solutions/real-time-inventory/available-to-promise/index-rti-available-to-promise',
                 'howtos/solutions/real-time-inventory/local-inventory-search/index-rti-local-inventory-search',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -503,7 +503,14 @@ module.exports = {
               items: [
                 'howtos/solutions/mobile-banking/session-management/index-mb-session-management',
                 'howtos/solutions/mobile-banking/account-dashboard/index-mb-account-dashboard',
-              ]
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Vectors',
+              items: [
+                'howtos/solutions/vector/getting-started-vector/index-getting-started-vector',
+              ],
             },
           ],
         },
