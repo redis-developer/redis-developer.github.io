@@ -678,13 +678,26 @@ console.log(JSON.stringify(result2, null, 4));
 */
 ```
 
+## Image vs text vector query
+
 :::info Image vs text vector query
-The syntax for KNN/range vector queries remains consistent whether you're dealing with image vectors or text vectors.
+The syntax for vector KNN/ range queries is consistent, regardless of whether you're working with image vectors or text vectors. Just as there's a method for text vector queries named `queryProductDescriptionEmbeddingsByKNN`, there's a corresponding method for images titled `queryProductImageEmbeddingsByKNN` in the code base.
 :::
 
-## Understanding the math behind vector similarity searches
+:::tip GITHUB CODE
 
-### How to calculate vector similarity?
+Below is a command to the clone the source code used in this tutorial
+
+git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
+:::
+
+Hopefully this tutorial has helped you visualize how to use Redis for vector similarity search.
+
+---
+
+(Optional) If you want to also understand the math behind vector similarity search , then read following
+
+## How to calculate vector similarity?
 
 Several techniques are available to assess vector similarity, with some of the most prevalent ones being:
 
