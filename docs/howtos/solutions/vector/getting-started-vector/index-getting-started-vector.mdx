@@ -682,11 +682,13 @@ console.log(JSON.stringify(result2, null, 4));
 The syntax for KNN/range vector queries remains consistent whether you're dealing with image vectors or text vectors.
 :::
 
-## How to calculate vector similarity?
+## Understanding the math behind vector similarity searches
+
+### How to calculate vector similarity?
 
 Several techniques are available to assess vector similarity, with some of the most prevalent ones being:
 
-### Euclidean Distance (L2 norm)
+#### Euclidean Distance (L2 norm)
 
 **Euclidean Distance (L2 norm)** calculates the linear distance between two points within a multi-dimensional space. Lower values indicate closer proximity, and hence higher similarity.
 
@@ -710,7 +712,7 @@ As an example, we will use a 2D chart made with [chart.js](https://www.chartjs.o
 
 ![chart](./images/euclidean-distance-chart.png)
 
-### Cosine Similarity
+#### Cosine Similarity
 
 **Cosine Similarity** measures the cosine of the angle between two vectors. The cosine similarity value ranges between -1 and 1. A value closer to 1 implies a smaller angle and higher similarity, while a value closer to -1 implies a larger angle and lower similarity. Cosine similarity is particularly popular in NLP when dealing with text vectors.
 
@@ -733,7 +735,7 @@ Using [chart.js](https://www.chartjs.org/), we've crafted a 2D chart of `Price v
 
 ![chart](./images/cosine-chart.png)
 
-### Inner Product
+#### Inner Product
 
 **Inner Product (dot product)** The inner product (or dot product) isn't a distance metric in the traditional sense but can be used to calculate similarity, especially when vectors are normalized (have a magnitude of 1). It's the sum of the products of the corresponding entries of the two sequences of numbers.
 
@@ -758,3 +760,7 @@ Considering our `product 1` and `product 2`, let's compute the `Inner Product` a
 :::tip
 Vectors can also be stored in databases in **binary formats** to save space. In practical applications, it's crucial to strike a balance between the dimensionality of the vectors (which impacts storage and computational costs) and the quality or granularity of the information they capture.
 :::
+
+## Further reading
+
+- [Vector search in Redis 7.2](https://redis.com/blog/introducing-redis-7-2/)
