@@ -1,7 +1,7 @@
 ---
 id: index-getting-started-vector
-title: Getting Started with Vector Search Using Redis in NodeJS
-sidebar_label: Getting Started with Vector Search Using Redis in NodeJS
+title: How to Perform Vector Similarity Search Using Redis in NodeJS
+sidebar_label: How to Perform Vector Similarity Search Using Redis in NodeJS
 slug: /howtos/solutions/vector/getting-started-vector
 authors: [prasan, will]
 ---
@@ -17,14 +17,42 @@ import IpSampleImage from './images/ip-sample.png';
 
 <Authors frontMatter={frontMatter} />
 
-:::tip GITHUB CODE
+## What you Will learn in this tutorial
 
-Below is a command to the clone the source code used in this tutorial
+This tutorial is a comprehensive guide to leveraging Redis for vector similarity search in a NodeJS environment. Aimed at software developers with expertise in the NodeJS/ JavaScript ecosystem, this tutorial will provide you with the knowledge and techniques required for advanced vector operations. Here's what's covered:
 
-git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
-:::
+- [Foundational Concepts](./#vectors-introduction):
 
-## What is a vector in machine learning?
+  - [About Vectors](./#what-is-a-vector-in-machine-learning): Delve into the foundational concept of vectors in machine learning.
+  - [Vector Databases](./#what-is-a-vector-database): Understand specialized databases designed to handle vector data efficiently.
+  - [Vector Similarity](./#what-is-vector-similarity): Grasp the concept and significance of comparing vectors. Discover some use cases where vector similarity plays a pivotal role, from recommendation systems to content retrieval.
+
+- [Vector Generation](./#generating-vectors):
+
+  - [Textual Content](./#sentence-text-vector): Learn techniques to generate vectors from textual data.
+  - [Imagery Content](./#image-vector): Understand how images can be represented as vectors and how they're processed.
+
+- [Redis Database Setup](./#database-setup):
+
+  - [Data Seeding](./#sample-data-seeding): Get hands-on with populating your Redis database with vector data.
+  - [Index Creation](./#create-vector-index): Understand the process of indexing vector fields in Redis, optimizing for both accuracy and performance.
+
+- Advanced Vector Queries in Redis:
+
+  - [KNN (k-Nearest Neighbors) Queries](./#what-is-vector-knn-query): Dive into the concept of KNN and its implementation in Redis to retrieve vectors most similar to a query vector.
+  - [Range Queries](./#what-is-vector-range-query): Discover how to retrieve vectors within a certain distance or range from a target vector.
+
+- [Vector Similarity Calculations](./#how-to-calculate-vector-similarity): (Optionally) if you want to understand the math behind vector similarity search
+
+  - [Euclidean Distance](./#euclidean-distance-l2-norm): Understand the L2 norm method for calculating similarity.
+  - [Cosine Similarity](./#cosine-similarity): Dive into the angular differences and its importance in vector space.
+  - [Inner Product](./#inner-product): Learn about another essential metric in understanding vector similarities.
+
+- [Additional Resources](./#further-reading): Take your learning further with other resources related to vectors in Redis.
+
+## Vectors introduction
+
+### What is a vector in machine learning?
 
 In the context of machine learning, a vector is a mathematical representation of data. It is an ordered list of numbers that encode the features or attributes of a piece of data.
 
@@ -41,7 +69,7 @@ Now, product 1 `Puma Men Race Black Watch` might be represented as the vector `[
 
 In a more complex scenario, like natural language processing (NLP), words or entire sentences can be converted into dense vectors (often referred to as embeddings) that capture the semantic meaning of the text.Vectors play a foundational role in many machine learning algorithms, particularly those that involve distance measurements, such as clustering and classification algorithms.
 
-## What is a vector database?
+### What is a vector database?
 
 A vector database is a specialized system optimized for storing and searching vectors. Designed explicitly for efficiency, these databases play a crucial role in powering vector search applications, including recommendation systems, image search, and textual content retrieval. Often referred to as vector stores, vector indexes, or vector search engines, these databases employ vector similarity algorithms to identify vectors that closely match a given query vector.
 
@@ -51,12 +79,12 @@ A vector database is a specialized system optimized for storing and searching ve
 
 :::
 
-## What is vector similarity?
+### What is vector similarity?
 
 Vector similarity is a measure that quantifies how alike two vectors are, typically by evaluating the `distance` or `angle` between them in a multi-dimensional space.
 When vectors represent data points, such as texts or images, the similarity score can indicate how similar the underlying data points are in terms of their features or content.
 
-### Use cases for vector similarity
+**Use cases for vector similarity:**
 
 - **Recommendation Systems**: If you have vectors representing user preferences or item profiles, you can quickly find items that are most similar to a user's preference vector.
 - **Image Search**: Store vectors representing image features, and then retrieve images most similar to a given image's vector.
@@ -81,7 +109,7 @@ Below is a command to the clone the source code used in this tutorial
 git clone https://github.com/redis-developer/redis-vector-nodejs-solutions.git
 :::
 
-### Sentence vector
+### Sentence/ text vector
 
 To generate sentence embeddings, we'll make use of a Hugging Face model titled [Xenova/all-distilroberta-v1](https://huggingface.co/Xenova/all-distilroberta-v1). It's a compatible version of [sentence-transformers/all-distilroberta-v1](https://huggingface.co/sentence-transformers/all-distilroberta-v1) for transformer.js with ONNX weights.
 
@@ -484,7 +512,7 @@ KNN, or k-Nearest Neighbors, is an algorithm used in both classification and reg
 
 ### Vector KNN query with Redis
 
-Redis allows you to index and then search for vectors [using the KNN approach](https://redis.io/docs/stack/search/reference/vectors/#pure-knn-queries).
+Redis allows you to index and then search for vectors [using the KNN approach](https://redis.io/docs/interact/search-and-query/search/vectors/).
 
 Below, you'll find a Node.js code snippet that illustrates how to perform `KNN query` for any provided `search text`:
 
@@ -587,7 +615,7 @@ console.log(JSON.stringify(result, null, 4));
 ```
 
 :::note
-KNN queries can be combined with standard Redis search functionalities using <u>[hybrid knn queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries).</u>
+KNN queries can be combined with standard Redis search functionalities using <u>[Hybrid queries](https://redis.io/docs/interact/search-and-query/search/vectors/#hybrid-knn-queries).</u>
 :::
 
 ## What is vector range query?
@@ -701,7 +729,7 @@ Hopefully this tutorial has helped you visualize how to use Redis for vector sim
 
 Several techniques are available to assess vector similarity, with some of the most prevalent ones being:
 
-#### Euclidean Distance (L2 norm)
+### Euclidean Distance (L2 norm)
 
 **Euclidean Distance (L2 norm)** calculates the linear distance between two points within a multi-dimensional space. Lower values indicate closer proximity, and hence higher similarity.
 
@@ -725,7 +753,7 @@ As an example, we will use a 2D chart made with [chart.js](https://www.chartjs.o
 
 ![chart](./images/euclidean-distance-chart.png)
 
-#### Cosine Similarity
+### Cosine Similarity
 
 **Cosine Similarity** measures the cosine of the angle between two vectors. The cosine similarity value ranges between -1 and 1. A value closer to 1 implies a smaller angle and higher similarity, while a value closer to -1 implies a larger angle and lower similarity. Cosine similarity is particularly popular in NLP when dealing with text vectors.
 
@@ -748,7 +776,7 @@ Using [chart.js](https://www.chartjs.org/), we've crafted a 2D chart of `Price v
 
 ![chart](./images/cosine-chart.png)
 
-#### Inner Product
+### Inner Product
 
 **Inner Product (dot product)** The inner product (or dot product) isn't a distance metric in the traditional sense but can be used to calculate similarity, especially when vectors are normalized (have a magnitude of 1). It's the sum of the products of the corresponding entries of the two sequences of numbers.
 

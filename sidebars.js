@@ -507,7 +507,7 @@ module.exports = {
             },
             {
               type: 'category',
-              label: 'Vectors',
+              label: 'Vector Database',
               items: [
                 'howtos/solutions/vector/getting-started-vector/index-getting-started-vector',
               ],
