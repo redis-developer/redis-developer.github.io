@@ -1,0 +1,167 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>SADD</td>
+      <td>SADD key member [member ...]</td>
+      <td>
+        <pre>
+          <code>{`
+SADD myset "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Adds the specified members to the set stored at
+        key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SMEMBERS</td>
+      <td>SMEMBERS key</td>
+      <td>
+        <pre>
+          <code>{`
+SMEMBERS myset
+`}</code>
+        </pre>
+      </td>
+      <td>1) "Hello"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns all the members of the set value stored at
+        key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SCARD</td>
+      <td>SCARD key</td>
+      <td>
+        <pre>
+          <code>{`
+SCARD myset
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the set cardinality (number of elements)
+        of the set stored at key.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>SISMEMBER</td>
+      <td>SISMEMBER key member</td>
+      <td>
+        <pre>
+          <code>{`
+SISMEMBER myset "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns if member is a member of the set stored at
+        key.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>SREM</td>
+      <td>SREM key member [member ...]</td>
+      <td>
+        <pre>
+          <code>{`
+SREM myset "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Removes the specified members from the set stored
+        at key.
+      </td>
+    </tr>
+    <tr>
+      <td>SDIFF</td>
+      <td>SDIFF key1 [key2]</td>
+      <td>
+        <pre>
+          <code>{`
+SDIFF myset myotherset
+`}</code>
+        </pre>
+      </td>
+      <td>1) "Hello"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the members of the set resulting from the
+        difference between the first set and all the successive sets.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SDIFFSTORE</td>
+      <td>SDIFFSTORE destination key1 [key2]</td>
+      <td>
+        <pre>
+          <code>{`
+SDIFFSTORE mynewset myset myotherset
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> This command is equal to SDIFF, but instead of
+        returning the resulting set, it is stored in destination.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,207 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>KEYS</td>
+      <td>KEYS pattern</td>
+      <td>
+        <pre>
+          <code>{`
+KEYS *name
+`}</code>
+        </pre>
+      </td>
+      <td>["firstname", "lastname"]</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns all keys matching pattern.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>EXISTS</td>
+      <td>EXISTS key [key ...]</td>
+      <td>
+        <pre>
+          <code>{`
+EXISTS mykey
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Checks if one or more keys exist.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>EXPIRE</td>
+      <td>EXPIRE key seconds</td>
+      <td>
+        <pre>
+          <code>{`
+EXPIRE mykey 120
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Set a timeout on a key.After the timeout has
+        expired, the key will automatically be deleted.<em>Time Complexity:</em>
+        O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>PERSIST</td>
+      <td>PERSIST key</td>
+      <td>
+        <pre>
+          <code>{`
+PERSIST mykey
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Removes the expiration from a key.
+        <em>Time Complexity:</em>
+        O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>TTL</td>
+      <td>TTL key</td>
+      <td>
+        <pre>
+          <code>{`
+TTL mykey
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 113</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the remaining time to live of a key that
+        has a timeout.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>SCAN</td>
+      <td>SCAN cursor [MATCH pattern] [COUNT count]</td>
+      <td>
+        <pre>
+          <code>{`
+SCAN 0 MATCH my* COUNT 2
+`}</code>
+        </pre>
+      </td>
+      <td>1) "0" 2) 1) "mykey" 2) "myotherkey"</td>
+    </tr>
+    <tr>
+      <td>DEL</td>
+      <td>DEL key [key ...]</td>
+      <td>
+        <pre>
+          <code>{`
+DEL mykey
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Removes the specified keys.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Iterates the set of keys in the currently selected
+        Redis database.<em>Time Complexity:</em> O(1) for every call. O(N) for a
+        complete iteration.
+      </td>
+    </tr>
+    <tr>
+      <td>INFO</td>
+      <td>INFO [section]</td>
+      <td>
+        <pre>
+          <code>{`
+INFO server
+INFO keyspace
+`}</code>
+        </pre>
+      </td>
+      <td>
+        # Server
+        <br />
+        redis_version:6.2.5
+        <br />
+        redis_git_sha1:00000000
+        <br />
+        redis_build_id:9893b2a-dirty
+        <br />
+        redis_mode:standalone
+        <br />
+        os:Linux 5.4.72-microsoft-standard-WSL2 x86_64
+        <br />
+        arch_bits:64
+        <br />
+        ... <br /># Keyspace db0:keys=2,expires=0,avg_ttl=0
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em>
+        Returns information and statistics about the server, with the following sections:
+        server, clients, memory, persistence, stats, replication, cpu, commandstats,
+        latencystats, sentinel, cluster, modules, keyspace, errorstats.<em>
+          Time Complexity:
+        </em> O(1)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+</TabItem>
+
+</Tabs>

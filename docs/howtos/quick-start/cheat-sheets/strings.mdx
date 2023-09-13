@@ -1,0 +1,114 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>SET</td>
+      <td>SET key value</td>
+      <td>
+        <pre>
+          <code>{`
+SET mykey "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>"OK"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Set key to hold the string value. If key already
+        holds a value, it is overwritten, regardless of its type.
+        <em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>GET key</td>
+      <td>
+        <pre>
+          <code>{`
+GET mykey
+`}</code>
+        </pre>
+      </td>
+      <td>"Hello"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Get the string value of key. If the key does not
+        exist the special value nil is returned.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>MGET</td>
+      <td>MGET key [key ...]</td>
+      <td>
+        <pre>
+          <code>{`
+MGET mykey nonexistantkey
+`}</code>
+        </pre>
+      </td>
+      <td>["Hello", nil]</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the values of all specified keys. For
+        every key that does not hold a string value or does not exist, the
+        special value nil is returned.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>INCR</td>
+      <td>INCR key</td>
+      <td>
+        <pre>
+          <code>{`
+INCR mycounter
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Increments the number stored at key by one. If the
+        key does not exist, it is set to 0 before performing the operation.
+        <em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+</TabItem>
+
+</Tabs>

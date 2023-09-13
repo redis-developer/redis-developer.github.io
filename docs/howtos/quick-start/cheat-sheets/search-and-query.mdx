@@ -1,0 +1,204 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>FT.CREATE</td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.CREATE index 
+  [ON HASH | JSON] 
+  [PREFIX count prefix [prefix ...]] 
+  [FILTER {filter}]
+  SCHEMA 
+  field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] 
+  [NOINDEX] 
+   ...
+`}</code>
+        </pre>
+      </td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.CREATE staff:index 
+    ON JSON 
+    PREFIX 1 staff: 
+    SCHEMA 
+    "$.name" AS name TEXT 
+    "$.age" AS age NUMERIC 
+    "$.isSingle"  AS isSingle TAG 
+    '$["skills"][*]' AS skills TAG SEPARATOR "|"
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Create an index with the given specification
+      </td>
+    </tr>
+    <tr>
+      <td>FT._LIST</td>
+      <td>FT._LIST</td>
+      <td>
+        <pre>
+          <code>{`
+FT._LIST
+`}</code>
+        </pre>
+      </td>
+      <td>1) staff:index</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns a list of all existing indexes
+      </td>
+    </tr>
+    <tr>
+      <td>FT.INFO</td>
+      <td>FT.INFO index</td>
+      <td>
+        <pre>
+          <code>{`
+FT.INFO staff:index
+`}</code>
+        </pre>
+      </td>
+      <td>A list of configuration parameters and stats for the index.</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Return information and statistics on the index
+      </td>
+    </tr>
+    <tr>
+      <td>FT.DROPINDEX</td>
+      <td>FT.DROPINDEX index [DD]</td>
+      <td>
+        <pre>
+          <code>{`
+FT.DROPINDEX staff:index
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Dropping index
+      </td>
+    </tr>
+    <tr>
+      <td>FT.SEARCH</td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.SEARCH index query 
+  [FILTER numeric_field min max [ FILTER numeric_field min max ...]] 
+  [RETURN count identifier [AS property] [ identifier [AS property] ...]] 
+  [SORTBY sortby [ ASC | DESC] [WITHCOUNT]] 
+  [LIMIT offset num] 
+  [PARAMS nargs name value [ name value ...]] 
+`}</code>
+        </pre>
+      </td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+JSON.SET "staff:1" "$" '{"name":"Bob","age":22,"isSingle":true,"skills":["NodeJS","MongoDB","React"]}' \n
+JSON.SET "staff:2" "$" '{"name":"Alex","age":45,"isSingle":true,"skills":["Python","MySQL","Angular"]}' \n
+FT.SEARCH staff:index 
+  "(@name:'alex')" 
+  RETURN 1 $ LIMIT 0 10 \n
+FT.SEARCH staff:index 
+  "((@isSingle:{true}) (@age:[(18 +inf]))" 
+  RETURN 1 $ LIMIT 0 10   
+`}</code>
+        </pre>
+      </td>
+      <td>Matching documents data</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Search on indexed documents
+      </td>
+    </tr>
+    <tr>
+      <td>FT.AGGREGATE</td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.AGGREGATE index query 
+  [LOAD count field [field ...]] 
+  [ GROUPBY nargs property [property ...] [ REDUCE function nargs arg [arg ...] [AS name] ...
+  [ SORTBY nargs [ property ASC | DESC [ property ASC | DESC ...]] [MAX num] [WITHCOUNT] 
+  [ APPLY expression AS name  ...
+  [ LIMIT offset num] 
+  [FILTER filter] 
+  [ PARAMS nargs name value [ name value ...]] 
+`}</code>
+        </pre>
+      </td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.AGGREGATE staff:index "(@age:[(18 +inf])"
+  GROUPBY 1 @age
+  	REDUCE COUNT_DISTINCT 1 @name AS staff_count
+`}</code>
+        </pre>
+      </td>
+      <td>
+        <pre>
+          <code>{`
+         | age | staff_count |
+         | ----| ------------|
+         | 22  | 1           |
+         | 45  | 1           |
+`}</code>
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Run a search query on an index, and perform
+        aggregate transformations on the results
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+</TabItem>
+
+</Tabs>

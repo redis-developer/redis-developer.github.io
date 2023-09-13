@@ -456,6 +456,7 @@ module.exports = {
       label: 'HowTos & Tutorials',
       items: [
         'howtos/index-howtos',
+        'howtos/quick-start/cheat-sheets/index-quick-start-cheat-sheet',
         {
           type: 'category',
           label: 'Solutions',

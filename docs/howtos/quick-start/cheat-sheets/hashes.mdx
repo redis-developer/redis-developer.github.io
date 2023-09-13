@@ -1,0 +1,111 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>HSET</td>
+      <td>HSET key field value [field value ...]</td>
+      <td>
+        <pre>
+          <code>{`
+HSET h_employee_profile:101 name "Nicol" age 33
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 2</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Sets the specified fields to their respective
+        values in the hash stored at key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>HGET</td>
+      <td>HGET key field</td>
+      <td>
+        <pre>
+          <code>{`
+HGET h_employee_profile:101 name 
+`}</code>
+        </pre>
+      </td>
+      <td>"Nicol"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the value associated with field in the
+        hash stored at key.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>HGETALL</td>
+      <td>HGETALL key</td>
+      <td>
+        <pre>
+          <code>{`
+HGETALL h_employee_profile:101
+`}</code>
+        </pre>
+      </td>
+      <td>1) "name" 2) "Nicol" 3) "age" 4) "33"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em>Returns all fields and values of the hash stored at
+        key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>HMGET</td>
+      <td>HMGET key field1 [field2]</td>
+      <td>
+        <pre>
+          <code>{`
+HMGET h_employee_profile:101 name age
+`}</code>
+        </pre>
+      </td>
+      <td>1) "Nicol" 2) "33"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the values associated with the specified
+        fields in the hash stored at key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+</TabItem>
+
+</Tabs>

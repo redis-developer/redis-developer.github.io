@@ -1,0 +1,191 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.SET</td>
+      <td>JSON.SET key path json [NX | XX]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.SET employee_profile:1 . '{"name":"Alice"}'
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Sets JSON value at path in key.
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.GET</td>
+      <td>
+        JSON.GET key [INDENT indentation-string] [NEWLINE line-break-string]
+        [SPACE space-string] [path]
+      </td>
+      <td>
+        <pre>
+          <code>{`
+JSON.GET employee_profile:1
+`}</code>
+        </pre>
+      </td>
+      <td>
+        <pre>
+          <code>{`
+        { "name": 'Alice' }
+`}</code>
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the JSON value at path in key.
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.NUMINCRBY</td>
+      <td>JSON.NUMINCRBY key path number</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.SET employee_profile:1 .age 30
+JSON.NUMINCRBY employee_profile:1 .age 5
+`}</code>
+        </pre>
+      </td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Increments a number inside a JSON document.
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.OBJKEYS</td>
+      <td>JSON.OBJKEYS key [path]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.OBJKEYS employee_profile:1
+`}</code>
+        </pre>
+      </td>
+      <td>1) "name" 2) "age"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Return the keys in the object that's referenced by
+        path
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.OBJLEN</td>
+      <td>JSON.OBJLEN key [path]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.OBJLEN employee_profile:1
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 2</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Report the number of keys in the JSON object at
+        path in key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.ARRAPPEND</td>
+      <td>JSON.ARRAPPEND key path json...</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.SET employee_profile:1 .colors '["red", "green", "blue"]'  
+JSON.ARRAPPEND employee_profile:1 .colors '"yellow"'
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 3</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Appends the specified JSON value(s) to the JSON
+        array at the specified path.
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.ARRINSERT</td>
+      <td>JSON.ARRINSERT key path index json...</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.ARRINSERT employee_profile:1 .colors 2 '"purple"'
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 5</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Inserts the JSON value(s) in the JSON array at the
+        specified path.
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.ARRINDEX</td>
+      <td>JSON.ARRINDEX key path json [start [stop]]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.ARRINDEX employee_profile:1 .colors '"purple"'
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 2</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Searches for the first occurrence of a JSON value
+        in an array.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+</TabItem>
+
+</Tabs>
