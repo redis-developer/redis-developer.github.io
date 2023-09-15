@@ -33,7 +33,7 @@ import TabItem from '@theme/TabItem';
       <td>
         <pre>
           <code>{`
-LPUSH mylist "World"
+LPUSH myList "World"
 `}</code>
         </pre>
       </td>
@@ -51,7 +51,7 @@ LPUSH mylist "World"
       <td>
         <pre>
           <code>{`
-RPUSH mylist "Hello"
+RPUSH myList "Hello"
 `}</code>
         </pre>
       </td>
@@ -69,7 +69,7 @@ RPUSH mylist "Hello"
       <td>
         <pre>
           <code>{`
-LRANGE mylist 0 -1
+LRANGE myList 0 -1
 `}</code>
         </pre>
       </td>
@@ -88,7 +88,7 @@ LRANGE mylist 0 -1
       <td>
         <pre>
           <code>{`
-LLEN mylist
+LLEN myList
 `}</code>
         </pre>
       </td>
@@ -106,7 +106,7 @@ LLEN mylist
       <td>
         <pre>
           <code>{`
-LPOP mylist
+LPOP myList
 `}</code>
         </pre>
       </td>
@@ -124,7 +124,7 @@ LPOP mylist
       <td>
         <pre>
           <code>{`
-RPOP mylist
+RPOP myList
 `}</code>
         </pre>
       </td>
@@ -142,6 +142,56 @@ RPOP mylist
 </TabItem>
 
 <TabItem value="NODE_JS">
+
+```js
+/*
+    LPUSH key value [value ...]
+    Inserts the specified values at the head of the list stored at key.
+    Time Complexity: O(N)
+    */
+const lPushResult = await client.lPush('myList', 'World');
+console.log(lPushResult); // 1
+
+/*
+    RPUSH key value [value ...]
+    Inserts the specified values at the tail of the list stored at key.
+    Time Complexity: O(N)
+    */
+const rPushResult = await client.rPush('myList', 'Hello');
+console.log(rPushResult); // 2
+
+/*
+    LRANGE key start stop
+    Returns the specified elements of the list stored at key.
+    Time Complexity: O(S+N) where S is the distance of start and N is the number of elements in the specified range.
+    */
+const lRangeResult = await client.lRange('myList', 0, -1);
+console.log(lRangeResult); // ["World", "Hello"]
+
+/*
+    LLEN key
+    Returns the length of the list stored at key.
+    Time Complexity: O(1)
+    */
+const lLenResult = await client.lLen('myList');
+console.log(lLenResult); // 2
+
+/*
+    LPOP key [count]
+    Removes and returns the first element of the list stored at key.
+    Time Complexity: O(N)
+    */
+const lPopResult = await client.lPop('myList');
+console.log(lPopResult); // "World"
+
+/*
+    RPOP key [count]
+    Removes and returns the last element of the list stored at key.
+    Time Complexity: O(N)
+    */
+const rPopResult = await client.rPop('myList');
+console.log(rPopResult); // "Hello"
+```
 
 </TabItem>
 

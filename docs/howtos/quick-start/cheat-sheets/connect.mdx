@@ -39,6 +39,18 @@ Download <u>[RedisInsight](https://redis.com/redis-enterprise/redis-insight/)</u
 
 <TabItem value="NODE_JS">
 
+```js
+import { createClient } from 'redis';
+
+let client = createClient({ url: 'redis://localhost:6379' });
+
+await client.connect();
+
+//await client.set('key', 'value');
+
+await client.disconnect();
+```
+
 </TabItem>
 
 </Tabs>

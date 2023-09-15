@@ -33,11 +33,11 @@ import TabItem from '@theme/TabItem';
       <td>
         <pre>
           <code>{`
-ZADD myzset 1 "one" 2 "two"
+ZADD myZSet 1 "one" 2 "two"
 `}</code>
         </pre>
       </td>
-      <td>(integer) 1</td>
+      <td>(integer) 2</td>
     </tr>
     <tr>
       <td colspan="4">
@@ -52,7 +52,7 @@ ZADD myzset 1 "one" 2 "two"
       <td>
         <pre>
           <code>{`
-ZRANGE myzset 0 -1
+ZRANGE myZSet 0 -1
 `}</code>
         </pre>
       </td>
@@ -71,6 +71,33 @@ ZRANGE myzset 0 -1
 </TabItem>
 
 <TabItem value="NODE_JS">
+
+```js
+/*
+    ZADD key score member [score member ...]
+    Adds all the specified members with the specified scores to the sorted set stored at key.
+    Time Complexity: O(log(N))
+    */
+const zAddResult = await client.zAdd('myZSet', [
+  {
+    score: 1,
+    value: 'one',
+  },
+  {
+    score: 2,
+    value: 'two',
+  },
+]);
+console.log(zAddResult); // 2
+
+/*
+    ZRANGE key start stop [WITHSCORES]
+    Returns the specified range of elements in the sorted set stored at key.
+    Time Complexity: O(log(N)+M) where M is the number of elements returned
+    */
+const zRangeResult = await client.zRange('myZSet', 0, -1);
+console.log(zRangeResult); // ["one", "two"]
+```
 
 </TabItem>
 

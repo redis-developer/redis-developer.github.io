@@ -77,8 +77,8 @@ HGETALL h_employee_profile:101
     </tr>
     <tr>
       <td colspan="4">
-        <em>Description:</em>Returns all fields and values of the hash stored at
-        key.<em>Time Complexity:</em> O(N)
+        <em>Description:</em> Returns all fields and values of the hash stored
+        at key.<em>Time Complexity:</em> O(N)
       </td>
     </tr>
     <tr>
@@ -105,6 +105,47 @@ HMGET h_employee_profile:101 name age
 </TabItem>
 
 <TabItem value="NODE_JS">
+
+```js
+/*
+    HSET key field value [field value ...]
+    Sets the specified fields to their respective values in the hash stored at key.
+    Time Complexity: O(N)
+    */
+
+const hSetResult = await client.hSet('h_employee_profile:101', {
+  name: 'Nicol',
+  age: 33,
+});
+console.log(hSetResult); // 2
+
+/*
+    HGET key field
+    Returns the value associated with field in the hash stored at key.
+    Time Complexity: O(1)
+    */
+const hGetResult = await client.hGet('h_employee_profile:101', 'name');
+console.log(hGetResult); // "Nicol"
+
+/*
+    HGETALL key
+    Returns all fields and values of the hash stored at key.
+    Time Complexity: O(N)
+    */
+const hGetAllResult = await client.hGetAll('h_employee_profile:101');
+console.log(hGetAllResult); // {name: "Nicol", age: "33"}
+
+/*
+    HMGET key field1 [field2]
+    Returns the values associated with the specified fields in the hash stored at key.
+    Time Complexity: O(N)
+    */
+const hmGetResult = await client.hmGet('h_employee_profile:101', [
+  'name',
+  'age',
+]);
+console.log(hmGetResult); // ["Nicol", "33"]
+```
 
 </TabItem>
 
