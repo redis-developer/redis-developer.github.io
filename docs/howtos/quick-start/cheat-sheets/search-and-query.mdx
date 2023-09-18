@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -32,13 +35,13 @@ import TabItem from '@theme/TabItem';
       <td class="cst-large-code">
         <pre>
           <code>{`
-FT.CREATE index 
-  [ON HASH | JSON] 
-  [PREFIX count prefix [prefix ...]] 
+FT.CREATE index
+  [ON HASH | JSON]
+  [PREFIX count prefix [prefix ...]]
   [FILTER {filter}]
-  SCHEMA 
-  field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] 
-  [NOINDEX] 
+  SCHEMA
+  field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]]
+  [NOINDEX]
    ...
 `}</code>
         </pre>
@@ -46,13 +49,13 @@ FT.CREATE index
       <td class="cst-large-code">
         <pre>
           <code>{`
-FT.CREATE staff:index 
-    ON JSON 
-    PREFIX 1 staff: 
-    SCHEMA 
-    "$.name" AS name TEXT 
-    "$.age" AS age NUMERIC 
-    "$.isSingle"  AS isSingle TAG 
+FT.CREATE staff:index
+    ON JSON
+    PREFIX 1 staff:
+    SCHEMA
+    "$.name" AS name TEXT
+    "$.age" AS age NUMERIC
+    "$.isSingle"  AS isSingle TAG
     '$["skills"][*]' AS skills TAG SEPARATOR "|"
 `}</code>
         </pre>
@@ -71,12 +74,12 @@ FT.CREATE staff:index
       <td class="cst-large-code">
         <pre>
           <code>{`
-FT.SEARCH index query 
-  [FILTER numeric_field min max [ FILTER numeric_field min max ...]] 
-  [RETURN count identifier [AS property] [ identifier [AS property] ...]] 
-  [SORTBY sortby [ ASC | DESC] [WITHCOUNT]] 
-  [LIMIT offset num] 
-  [PARAMS nargs name value [ name value ...]] 
+FT.SEARCH index query
+  [FILTER numeric_field min max [ FILTER numeric_field min max ...]]
+  [RETURN count identifier [AS property] [ identifier [AS property] ...]]
+  [SORTBY sortby [ ASC | DESC] [WITHCOUNT]]
+  [LIMIT offset num]
+  [PARAMS nargs name value [ name value ...]]
 `}</code>
         </pre>
       </td>
@@ -85,12 +88,12 @@ FT.SEARCH index query
           <code>{`
 JSON.SET "staff:1" "$" '{"name":"Bob","age":22,"isSingle":true,"skills":["NodeJS","MongoDB","React"]}' \n
 JSON.SET "staff:2" "$" '{"name":"Alex","age":45,"isSingle":true,"skills":["Python","MySQL","Angular"]}' \n
-FT.SEARCH staff:index 
-  "(@name:'alex')" 
+FT.SEARCH staff:index
+  "(@name:'alex')"
   RETURN 1 $ LIMIT 0 10 \n
-FT.SEARCH staff:index 
-  "((@isSingle:{true}) (@age:[(18 +inf]))" 
-  RETURN 1 $ LIMIT 0 10   
+FT.SEARCH staff:index
+  "((@isSingle:{true}) (@age:[(18 +inf]))"
+  RETURN 1 $ LIMIT 0 10
 `}</code>
         </pre>
       </td>
@@ -107,14 +110,14 @@ FT.SEARCH staff:index
       <td class="cst-large-code">
         <pre>
           <code>{`
-FT.AGGREGATE index query 
-  [LOAD count field [field ...]] 
+FT.AGGREGATE index query
+  [LOAD count field [field ...]]
   [ GROUPBY nargs property [property ...] [ REDUCE function nargs arg [arg ...] [AS name] ...
-  [ SORTBY nargs [ property ASC | DESC [ property ASC | DESC ...]] [MAX num] [WITHCOUNT] 
+  [ SORTBY nargs [ property ASC | DESC [ property ASC | DESC ...]] [MAX num] [WITHCOUNT]
   [ APPLY expression AS name  ...
-  [ LIMIT offset num] 
-  [FILTER filter] 
-  [ PARAMS nargs name value [ name value ...]] 
+  [ LIMIT offset num]
+  [FILTER filter]
+  [ PARAMS nargs name value [ name value ...]]
 `}</code>
         </pre>
       </td>
@@ -275,8 +278,8 @@ console.log(JSON.stringify(searchResult));
     FT.AGGREGATE index query
     Run a search query on an index, and perform aggregate transformations on the results
 
-    FT.AGGREGATE staff:index "(@age:[(10 +inf])" 
-      GROUPBY 1 @age 
+    FT.AGGREGATE staff:index "(@age:[(10 +inf])"
+      GROUPBY 1 @age
         REDUCE COUNT 0 AS userCount
       SORTBY 1 @age
       LIMIT 0 10
@@ -328,6 +331,198 @@ console.log(infoResult);
         ...
      }
      */
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+try:
+    r.ft('idx-employees').dropindex()
+except:
+    pass
+
+# FT.CREATE index [ON HASH | JSON] [PREFIX count prefix [prefix ...]] SCHEMA field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAP [SORTABLE [UNF]] [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] [NOINDEX] ...]
+# O(K) where K is the number of fields in the document, O(N) for keys in the keyspace
+# Creates a new search index with the given specification.
+schema = (TextField('$.name', as_name='name', sortable=True), NumericField('$.age', as_name='age', sortable=True),
+          TagField('$.single', as_name='single'), TagField('$.skills[*]', as_name='skills'))
+
+r.ft('idx-employees').create_index(schema, definition=IndexDefinition(
+    prefix=['employee_profile:'], index_type=IndexType.JSON))
+
+# FT.INFO index
+# O(1)
+# Return information and statistics on the index.
+r.ft('idx-employees').info()
+
+# FT.SEARCH index query
+# O(N)
+# Search the index with a textual query, returning either documents or just ids
+r.ft('idx-employees').search('Nicol')
+r.ft('idx-employees').search("@single:{false}")
+r.ft('idx-employees').search("@skills:{python}")
+r.ft('idx-employees').search(Query("*").add_filter(NumericFilter('age', 30, 40)))
+r.json().arrappend('employee_profile:karol', '$.skills', 'python', 'java', 'c#')
+r.ft('idx-employees').search(Query("@skills:{java}, @skills:{python}"))
+
+# FT.AGGREGATE index query
+# O(1)
+# Run a search query on an index, and perform aggregate transformations on the results, extracting statistics etc from them
+r.ft('idx-employees').aggregate(aggregations.AggregateRequest("*").group_by('@age',
+                                                                            reducers.count().alias('count')).sort_by("@age")).rows
+
+r.ft('idx-employees').aggregate(aggregations.AggregateRequest("@skills:{python}").group_by('@skills',
+                                                                                           reducers.tolist('@name').alias('names'))).rows
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+try
+{
+	/*
+	 * FT.DROPINDEX index [DD]
+	 * O(1)
+	 * Deletes an index and all the documents in it.
+	 */
+	db.FT().DropIndex("idx-employees");
+}
+catch
+{
+	// Index not found
+}
+
+/*
+ * FT.CREATE index [ON HASH | JSON] [PREFIX count prefix [prefix ...]] SCHEMA
+ * field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAP [SORTABLE
+ * [UNF]] [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR
+ * | GEOSHAPE [ SORTABLE [UNF]] [NOINDEX] ...]
+ * O(K) where K is the number of fields in the document, O(N) for keys in the
+ * keyspace
+ * Creates a new search index with the given specification.
+ */
+db.FT().Create("idx-employees", new FTCreateParams()
+									.On(IndexDataType.JSON)
+									.Prefix("employee_profile:"),
+								new Schema()
+									.AddTextField(new FieldName("$.name", "name"), sortable: true)
+									.AddNumericField(new FieldName("$.age", "age"), sortable: true)
+									.AddTagField(new FieldName("$.single", "single"))
+									.AddTagField(new FieldName("$.skills[*]", "skills")));
+
+/*
+ * FT.INFO index
+ * O(1)
+ * Returns information and statistics on the index.
+ */
+db.FT().Info("idx-employees");
+
+/*
+ * FT._LIST
+ * O(1)
+ * Returns a list of all existing indexes.
+ */
+db.FT()._List();
+
+/*
+ * FT.SEARCH index query
+ * O(N)
+ * Search the index with a textual query, returning either documents or just ids
+ */
+db.FT().Search("idx-employees", new Query("@name:{nicol}"));
+db.FT().Search("idx-employees", new Query("@single:{false}"));
+db.FT().Search("idx-employees", new Query("@skills:{python}"));
+db.FT().Search("idx-employees", new Query().AddFilter(new NumericFilter("@age", 30, 40)));
+db.JSON().ArrAppend("employee_profile:karol", "$.skills", "python", "java", "c#");
+db.FT().Search("idx-employees", new Query("@skills:{java}, @skills:{python}"));
+
+/*
+ * FT.AGGREGATE index query
+ * O(1)
+ * Run a search query on an index, and perform aggregate transformations on the
+ * results, extracting statistics etc from them
+ */
+db.FT().Aggregate("idx-employees", new AggregationRequest("@age:[20 40]")
+									.GroupBy("@age", Reducers.Count().As("count"))
+									.SortBy(new SortedField("@age", SortedField.SortOrder.ASC)));
+db.FT().Aggregate("idx-employees", new AggregationRequest("@skills:{python}")
+									.GroupBy("@skills", Reducers.ToList("@name").As("names")));
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+try {
+	jedis.ftDropIndex("idx-employees");
+} catch (Exception e) {
+	// Index not found
+}
+
+/*
+ * FT.CREATE index [ON HASH | JSON] [PREFIX count prefix [prefix ...]] SCHEMA
+ * field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAP [SORTABLE
+ * [UNF]] [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR
+ * | GEOSHAPE [ SORTABLE [UNF]] [NOINDEX] ...]
+ * O(K) where K is the number of fields in the document, O(N) for keys in the
+ * keyspace
+ * Creates a new search index with the given specification.
+ */
+Schema schema = new Schema()
+		.addSortableTextField("$.name", 1.0).as("name")
+		.addSortableNumericField("$.age").as("age")
+		.addTagField("$.single").as("single")
+		.addTagField("$.skills[*]").as("skills");
+
+IndexDefinition def = new IndexDefinition(IndexDefinition.Type.JSON)
+		.setPrefixes("employee_profile:");
+
+jedis.ftCreate("idx-employees", IndexOptions.defaultOptions().setDefinition(def), schema);
+
+/*
+ * FT.INFO index
+ * O(1)
+ * Returns information and statistics on the index.
+ */
+jedis.ftInfo("idx-employees");
+
+/*
+ * FT._LIST
+ * O(1)
+ * Returns a list of all existing indexes.
+ */
+jedis.ftList();
+
+/*
+ * FT.SEARCH index query
+ * O(N)
+ * Search the index with a textual query, returning either documents or just ids
+ */
+jedis.ftSearch("idx-employees", "Nicol");
+jedis.ftSearch("idx-employees", "@single:{false}");
+jedis.ftSearch("idx-employees", "@skills:{python}");
+jedis.ftSearch("idx-employees", "*",
+		FTSearchParams.searchParams().filter(new NumericFilter("age", 30, 40)));
+jedis.jsonArrAppend("employee_profile:karol", Path2.of("$.skills"), "\"python\"", "\"java\"", "\"c#\"");
+jedis.ftSearch("idx-employees", "@skills:{java}, @skills:{python}");
+
+/*
+ * FT.AGGREGATE index query
+ * O(1)
+ * Run a search query on an index, and perform aggregate transformations on the
+ * results, extracting statistics etc from them
+ */
+jedis.ftAggregate("idx-employees", new AggregationBuilder()
+		.groupBy("@age", Reducers.count().as("count")).sortBy(new SortedField("@age", SortOrder.ASC)))
+		.getRows();
+jedis.ftAggregate("idx-employees", new AggregationBuilder("@skills:{python}")
+		.groupBy("@skills", Reducers.to_list("@name").as("names")))
+		.getRows();
 ```
 
 </TabItem>

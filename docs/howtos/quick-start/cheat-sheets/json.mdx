@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -139,7 +142,7 @@ JSON.OBJLEN employee_profile:1
       <td>
         <pre>
           <code>{`
-JSON.SET employee_profile:1 .colors '["red", "green", "blue"]'  
+JSON.SET employee_profile:1 .colors '["red", "green", "blue"]'
 JSON.ARRAPPEND employee_profile:1 .colors '"yellow"'
 `}</code>
         </pre>
@@ -291,6 +294,126 @@ const arrIndexResult = await client.json.arrIndex(
   'purple',
 );
 console.log(arrIndexResult); // 2
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# JSON.SET key path value
+# O(M+N) where M is the original size and N is the new size
+# Set the JSON value at path in key.
+r.json().set('employee_profile:nicol', '.', {
+    'name': 'nicol', 'age': 24, 'single': True, 'skills': []})
+r.json().set('employee_profile:nicol', '$.name', 'Nicol')
+
+# JSON.GET key [path [path ...]]
+# O(N)
+# Return the value at path in JSON serialized form
+r.json().get('employee_profile:nicol', '.')
+
+# JSON.ARRAPPEND key [path] value [value ...]
+# O(1) for each value added, O(N) for multiple values added where N is the size of the key
+# Append the value(s) to the array at path in key after the last element in the array.
+r.json().set('employee_profile:nicol', '$.skills', [])
+r.json().arrappend('employee_profile:nicol', '$.skills', 'python')
+r.json().get('employee_profile:nicol', '$.skills')
+
+# JSON.ARRINDEX key path value [start [stop]]
+# O(N)
+# Search for the first occurrence of a JSON value in an array.
+r.json().arrindex('employee_profile:nicol', '$.skills', 'python')
+r.json().arrindex('employee_profile:nicol', '$.skills', 'java')
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * JSON.SET key path value
+ * O(M+N) where M is the original size and N is the new size
+ * Set the JSON value at path in key.
+ */
+db.JSON().Set("employee_profile:nicol", ".", new
+{
+    name = "Nicol",
+    age = 24,
+    single = true,
+    skills = new string[] { }
+});
+db.JSON().Set("employee_profile:nicol", "$.name", "\"Nicol\"");
+
+/*
+ * JSON.GET key [path [path ...]]
+ * O(N)
+ * Return the value at path in JSON serialized form
+ */
+db.JSON().Get("employee_profile:nicol", ".");
+
+/*
+ * JSON.ARRAPPEND key [path] value [value ...]
+ * O(1) for each value added, O(N) for multiple values added where N is the size
+ * of the key
+ * Append the value(s) to the array at path in key after the last element in the
+ * array.
+ */
+db.JSON().Set("employee_profile:nicol", "$.skills", "[]");
+db.JSON().ArrAppend("employee_profile:nicol", "$.skills", "python");
+db.JSON().Get("employee_profile:nicol", "$.skills");
+
+/*
+ * JSON.ARRINDEX key path value [start [stop]]
+ * O(N)
+ * Search for the first occurrence of a JSON value in an array.
+ */
+db.JSON().ArrIndex("employee_profile:nicol", "$.skills", "python");
+db.JSON().ArrIndex("employee_profile:nicol", "$.skills", "java");
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * JSON.SET key path value
+ * O(M+N) where M is the original size and N is the new size
+ * Set the JSON value at path in key.
+ */
+jedis.jsonSet("employee_profile:nicol", Path2.ROOT_PATH,
+        "{\"name\":\"nicol\",\"age\":24,\"single\":true,\"skills\":[]}");
+jedis.jsonSet("employee_profile:nicol", Path2.of("$.name"),
+        "\"Nicol\"");
+
+/*
+ * JSON.GET key [path [path ...]]
+ * O(N)
+ * Return the value at path in JSON serialized form
+ */
+jedis.jsonGet("employee_profile:nicol", Path2.ROOT_PATH);
+
+/*
+ * JSON.ARRAPPEND key [path] value [value ...]
+ * O(1) for each value added, O(N) for multiple values added where N is the size
+ * of the key
+ * Append the value(s) to the array at path in key after the last element in the
+ * array.
+ */
+jedis.jsonSet("employee_profile:nicol", Path2.of("$.skills"),
+        "[]");
+jedis.jsonArrAppend("employee_profile:nicol", Path2.of("$.skills"), "\"python\"");
+jedis.jsonGet("employee_profile:nicol", Path2.of("$.skills"));
+
+/*
+ * JSON.ARRINDEX key path value [start [stop]]
+ * O(N)
+ * Search for the first occurrence of a JSON value in an array.
+ */
+jedis.jsonArrIndex("employee_profile:nicol", Path2.of("$.skills"), "\"python\"");
+jedis.jsonArrIndex("employee_profile:nicol", Path2.of("$.skills"), "\"java\"");
 ```
 
 </TabItem>

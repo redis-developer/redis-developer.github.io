@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -141,6 +144,115 @@ console.log(mGetResult); // ["Hello", null]
   */
 const incrResult = await client.incr('myCounter');
 console.log(incrResult); // 1
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# SET key value
+# O(1)
+# Set key to hold the string value. If key already holds a value, it is overwritten, regardless of its type.
+r.set('mykey', 'Hello')
+r.set('mykey2', 'World')
+
+# GET key
+# O(1)
+# Get the string value of key. If the key does not exist the special value nil is returned.
+r.get('mykey')
+
+# MGET key [key ...]
+# O(N)
+# Returns the values of all specified keys. For every key that does not hold a string value or does not exist, the special value nil is returned.
+r.mget(['mykey', 'mykey2', 'nonexistantkey'])
+
+# INCR key
+# O(1)
+# Increments the number stored at key by one. If the key does not exist, it is set to 0 before performing the operation.
+r.delete('mykey')
+r.incr('mykey', 1)
+r.get('mykey')
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * SET key value
+ * O(1)
+ * Set key to hold the string value. If key already holds a value, it is
+ * overwritten, regardless of its type.
+ */
+db.StringSet("mykey", "Hello");
+db.StringSet("mykey2", "World");
+
+/*
+ * GET key
+ * O(1)
+ * Get the value of key. If the key does not exist the special value nil
+ */
+db.StringGet("mykey");
+
+/*
+ * MGET key [key ...]
+ * O(N)
+ * Returns the values of all specified keys. For every key that does not hold a
+ * string value or does not exist, the special value nil is returned.
+ */
+db.StringGet(new RedisKey[] { "mykey", "mykey2", "nonexistantkey" });
+
+/*
+ * INCR key
+ * O(1)
+ * Increments the number stored at key by one. If the key does not exist, it is
+ * set to 0 before performing the operation.
+ */
+db.KeyDelete("mykey");
+db.StringIncrement("mykey");
+db.StringGet("mykey");
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * SET key value
+ * O(1)
+ * Set key to hold the string value. If key already holds a value, it is
+ * overwritten, regardless of its type.
+ */
+jedis.set("mykey", "Hello");
+jedis.set("mykey2", "World");
+
+/*
+ * GET key
+ * O(1)
+ * Get the value of key. If the key does not exist the special value nil
+ */
+jedis.get("mykey");
+
+/*
+ * MGET key [key ...]
+ * O(N)
+ * Returns the values of all specified keys. For every key that does not hold a
+ * string value or does not exist, the special value nil is returned.
+ */
+jedis.mget("mykey", "mykey2", "nonexistantkey");
+
+/*
+ * INCR key
+ * O(1)
+ * Increments the number stored at key by one. If the key does not exist, it is
+ * set to 0 before performing the operation.
+ */
+jedis.del("mykey");
+jedis.incr("mykey");
+jedis.get("mykey");
 ```
 
 </TabItem>

@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -191,6 +194,105 @@ console.log(lPopResult); // "World"
     */
 const rPopResult = await client.rPop('myList');
 console.log(rPopResult); // "Hello"
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# LPOP key [count]
+# O(N)
+# Removes and returns the first element(s) of the list stored at key.
+r.rpush('mylist', 'one', 'two', 'three', 'four', 'five')
+r.lpop('mylist')
+r.lpop('mylist', 2)
+
+# LRANGE key start stop
+# O(S+N)
+# Returns the specified elements of the list stored at key.
+r.delete('mylist')
+r.rpush('mylist', 'one', 'two', 'three', 'four', 'five')
+r.lrange('mylist', 0, -1)
+r.lrange('mylist', -3, 2)
+
+# LPUSH key element [element ...]
+# O(N)
+# Inserts specified values at the head of the list stored at key.
+r.delete('mylist')
+r.lpush('mylist', 'world')
+r.lpush('mylist', 'hello')
+r.lrange('mylist', 0, -1)
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * LPOP key [count]
+ * O(N)
+ * Removes and returns the first elements of the list stored at key.
+ */
+db.ListLeftPush("mylist", new RedisValue[] { "one", "two", "three", "four", "five" });
+db.ListLeftPop("mylist");
+db.ListLeftPop("mylist", 2);
+
+/*
+ * LRANGE key start stop
+ * O(S+N)
+ * Returns the specified elements of the list stored at key.
+ */
+db.KeyDelete("mylist");
+db.ListRightPush("mylist", new RedisValue[] { "one", "two", "three", "four", "five" });
+db.ListRange("mylist", 0, -1);
+db.ListRange("mylist", -3, 2);
+
+/*
+ * LPUSH key value [value ...]
+ * O(N)
+ * Insert all the specified values at the head of the list stored at key.
+ */
+db.KeyDelete("mylist");
+db.ListLeftPush("mylist", new RedisValue[] { "world" });
+db.ListLeftPush("mylist", new RedisValue[] { "hello" });
+db.ListRange("mylist", 0, -1);
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * LPOP key [count]
+ * O(N)
+ * Removes and returns the first elements of the list stored at key.
+ */
+jedis.lpush("mylist", "one", "two", "three", "four", "five");
+jedis.lpop("mylist");
+jedis.lpop("mylist", 2);
+
+/*
+ * LRANGE key start stop
+ * O(S+N)
+ * Returns the specified elements of the list stored at key.
+ */
+jedis.del("mylist");
+jedis.rpush("mylist", "one", "two", "three", "four", "five");
+jedis.lrange("mylist", 0, -1);
+jedis.lrange("mylist", -3, 2);
+
+/*
+ * LPUSH key value [value ...]
+ * O(N)
+ * Insert all the specified values at the head of the list stored at key.
+ */
+jedis.del("mylist");
+jedis.lpush("mylist", "world");
+jedis.lpush("mylist", "hello");
+jedis.lrange("mylist", 0, -1);
 ```
 
 </TabItem>
