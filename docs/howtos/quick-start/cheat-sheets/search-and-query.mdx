@@ -61,58 +61,9 @@ FT.CREATE staff:index
     </tr>
     <tr>
       <td colspan="4">
-        <em>Description:</em> Create an index with the given specification
-      </td>
-    </tr>
-    <tr>
-      <td>FT._LIST</td>
-      <td>FT._LIST</td>
-      <td>
-        <pre>
-          <code>{`
-FT._LIST
-`}</code>
-        </pre>
-      </td>
-      <td>1) staff:index</td>
-    </tr>
-    <tr>
-      <td colspan="4">
-        <em>Description:</em> Returns a list of all existing indexes
-      </td>
-    </tr>
-    <tr>
-      <td>FT.INFO</td>
-      <td>FT.INFO index</td>
-      <td>
-        <pre>
-          <code>{`
-FT.INFO staff:index
-`}</code>
-        </pre>
-      </td>
-      <td>A list of configuration parameters and stats for the index.</td>
-    </tr>
-    <tr>
-      <td colspan="4">
-        <em>Description:</em> Return information and statistics on the index
-      </td>
-    </tr>
-    <tr>
-      <td>FT.DROPINDEX</td>
-      <td>FT.DROPINDEX index [DD]</td>
-      <td>
-        <pre>
-          <code>{`
-FT.DROPINDEX staff:index
-`}</code>
-        </pre>
-      </td>
-      <td>OK</td>
-    </tr>
-    <tr>
-      <td colspan="4">
-        <em>Description:</em> Dropping index
+        <em>Description:</em> Create an index with the given specification.
+        <em>Time Complexity:</em> O(K) where K is the number of fields in the document,
+        O(N) for keys in the keySpace
       </td>
     </tr>
     <tr>
@@ -147,7 +98,8 @@ FT.SEARCH staff:index
     </tr>
     <tr>
       <td colspan="4">
-        <em>Description:</em> Search on indexed documents
+        <em>Description:</em> Search the index with a query, returning either
+        documents or just ids. <em>Time Complexity:</em> O(N)
       </td>
     </tr>
     <tr>
@@ -189,7 +141,44 @@ FT.AGGREGATE staff:index "(@age:[(18 +inf])"
     <tr>
       <td colspan="4">
         <em>Description:</em> Run a search query on an index, and perform
-        aggregate transformations on the results
+        aggregate transformations on the results.
+      </td>
+    </tr>
+    <tr>
+      <td>FT.INFO</td>
+      <td>FT.INFO index</td>
+      <td>
+        <pre>
+          <code>{`
+FT.INFO staff:index
+`}</code>
+        </pre>
+      </td>
+      <td>A list of configuration parameters and stats for the index.</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Return information and statistics on the index.
+        <em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>FT.DROPINDEX</td>
+      <td>FT.DROPINDEX index [DD]</td>
+      <td>
+        <pre>
+          <code>{`
+FT.DROPINDEX staff:index
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Dropping existing index.<em>Time Complexity:</em>
+        O(1) or O(N) if documents are deleted, where N is the number of keys in the
+        keyspace
       </td>
     </tr>
   </tbody>
@@ -198,6 +187,148 @@ FT.AGGREGATE staff:index "(@age:[(18 +inf])"
 </TabItem>
 
 <TabItem value="NODE_JS">
+
+```js
+const STAFF_INDEX_KEY = 'staff:index';
+const STAFF_KEY_PREFIX = 'staff:';
+
+try {
+  /*
+       FT.DROPINDEX index [DD]
+       Dropping existing index
+       O(1) or O(N) if documents are deleted, where N is the number of keys in the keyspace
+      */
+  await client.ft.dropIndex(STAFF_INDEX_KEY);
+} catch (indexErr) {
+  console.error(indexErr);
+}
+
+/*
+   FT.CREATE index [ON HASH | JSON] [PREFIX n] SCHEMA [field type [field type ...]]
+   Create an index with the given specification
+   O(K) where K is the number of fields in the document, O(N) for keys in the keyspace
+ */
+const schema: RediSearchSchema = {
+  '$.name': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'name',
+  },
+  '$.age': {
+    type: SchemaFieldTypes.NUMERIC,
+    AS: 'age',
+  },
+  '$.isSingle': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'isSingle',
+  },
+  '$["skills"][*]': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'skills',
+    SEPARATOR: '|',
+  },
+};
+await client.ft.create(STAFF_INDEX_KEY, schema, {
+  ON: 'JSON',
+  PREFIX: STAFF_KEY_PREFIX,
+});
+
+//-------addStaffEntries for search
+await client.json.set('staff:1', '.', {
+  name: 'Bob',
+  age: 22,
+  isSingle: true,
+  skills: ['NodeJS', 'MongoDB', 'React'],
+});
+await client.json.set('staff:2', '.', {
+  name: 'Alex',
+  age: 45,
+  isSingle: true,
+  skills: ['Python', 'MySQL', 'Angular'],
+});
+//------
+
+/*
+    FT.SEARCH index query
+    Search the index with a query, returning either documents or just ids
+    O(N)
+    */
+
+const query1 = '*'; //all records
+const query2 = "(@name:'alex')"; // name == 'alex'
+const query3 = '( (@isSingle:{true}) (@age:[(18 +inf]) )'; //isSingle == true && age > 18
+const query4 = '(@skills:{NodeJS})';
+const searchResult = await client.ft.search(
+  STAFF_INDEX_KEY,
+  query1, //query2, query3, query4
+  {
+    RETURN: ['name', 'age', 'isSingle'],
+    LIMIT: {
+      from: 0,
+      size: 10,
+    },
+  },
+);
+console.log(JSON.stringify(searchResult));
+//{"total":1,"documents":[{"id":"staff:2","value":{"name":"Alex","age":"45","isSingle":"1"}}]}
+
+/*
+    FT.AGGREGATE index query
+    Run a search query on an index, and perform aggregate transformations on the results
+
+    FT.AGGREGATE staff:index "(@age:[(10 +inf])" 
+      GROUPBY 1 @age 
+        REDUCE COUNT 0 AS userCount
+      SORTBY 1 @age
+      LIMIT 0 10
+    */
+const aggregateResult = await client.ft.aggregate(
+  STAFF_INDEX_KEY,
+  '(@age:[(10 +inf])',
+  {
+    STEPS: [
+      {
+        type: AggregateSteps.GROUPBY,
+        properties: ['@age'],
+        REDUCE: [
+          {
+            type: AggregateGroupByReducers.COUNT,
+            AS: 'userCount',
+          },
+        ],
+      },
+      {
+        type: AggregateSteps.SORTBY,
+        BY: '@age',
+      },
+      {
+        type: AggregateSteps.LIMIT,
+        from: 0,
+        size: 10,
+      },
+    ],
+  },
+);
+console.log(JSON.stringify(aggregateResult));
+//{"total":2,"results":[{"age":"22","userCount":"1"},{"age":"45","userCount":"1"}]}
+//----
+
+/*
+    FT.INFO index
+    Return information and statistics on the index
+    O(1)
+    */
+const infoResult = await client.ft.info(STAFF_INDEX_KEY);
+console.log(infoResult);
+/**
+     {
+        indexName: 'staff:index',
+        numDocs: '2',
+        maxDocId: '4',
+        stopWords: 2
+        ...
+     }
+     */
+```
 
 </TabItem>
 
