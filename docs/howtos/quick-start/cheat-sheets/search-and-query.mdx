@@ -1,0 +1,335 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>FT.CREATE</td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.CREATE index 
+  [ON HASH | JSON] 
+  [PREFIX count prefix [prefix ...]] 
+  [FILTER {filter}]
+  SCHEMA 
+  field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] 
+  [NOINDEX] 
+   ...
+`}</code>
+        </pre>
+      </td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.CREATE staff:index 
+    ON JSON 
+    PREFIX 1 staff: 
+    SCHEMA 
+    "$.name" AS name TEXT 
+    "$.age" AS age NUMERIC 
+    "$.isSingle"  AS isSingle TAG 
+    '$["skills"][*]' AS skills TAG SEPARATOR "|"
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Create an index with the given specification.
+        <em>Time Complexity:</em> O(K) where K is the number of fields in the document,
+        O(N) for keys in the keySpace
+      </td>
+    </tr>
+    <tr>
+      <td>FT.SEARCH</td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.SEARCH index query 
+  [FILTER numeric_field min max [ FILTER numeric_field min max ...]] 
+  [RETURN count identifier [AS property] [ identifier [AS property] ...]] 
+  [SORTBY sortby [ ASC | DESC] [WITHCOUNT]] 
+  [LIMIT offset num] 
+  [PARAMS nargs name value [ name value ...]] 
+`}</code>
+        </pre>
+      </td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+JSON.SET "staff:1" "$" '{"name":"Bob","age":22,"isSingle":true,"skills":["NodeJS","MongoDB","React"]}' \n
+JSON.SET "staff:2" "$" '{"name":"Alex","age":45,"isSingle":true,"skills":["Python","MySQL","Angular"]}' \n
+FT.SEARCH staff:index 
+  "(@name:'alex')" 
+  RETURN 1 $ LIMIT 0 10 \n
+FT.SEARCH staff:index 
+  "((@isSingle:{true}) (@age:[(18 +inf]))" 
+  RETURN 1 $ LIMIT 0 10   
+`}</code>
+        </pre>
+      </td>
+      <td>Matching documents data</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Search the index with a query, returning either
+        documents or just ids. <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>FT.AGGREGATE</td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.AGGREGATE index query 
+  [LOAD count field [field ...]] 
+  [ GROUPBY nargs property [property ...] [ REDUCE function nargs arg [arg ...] [AS name] ...
+  [ SORTBY nargs [ property ASC | DESC [ property ASC | DESC ...]] [MAX num] [WITHCOUNT] 
+  [ APPLY expression AS name  ...
+  [ LIMIT offset num] 
+  [FILTER filter] 
+  [ PARAMS nargs name value [ name value ...]] 
+`}</code>
+        </pre>
+      </td>
+      <td class="cst-large-code">
+        <pre>
+          <code>{`
+FT.AGGREGATE staff:index "(@age:[(18 +inf])"
+  GROUPBY 1 @age
+  	REDUCE COUNT_DISTINCT 1 @name AS staff_count
+`}</code>
+        </pre>
+      </td>
+      <td>
+        <pre>
+          <code>{`
+         | age | staff_count |
+         | ----| ------------|
+         | 22  | 1           |
+         | 45  | 1           |
+`}</code>
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Run a search query on an index, and perform
+        aggregate transformations on the results.
+      </td>
+    </tr>
+    <tr>
+      <td>FT.INFO</td>
+      <td>FT.INFO index</td>
+      <td>
+        <pre>
+          <code>{`
+FT.INFO staff:index
+`}</code>
+        </pre>
+      </td>
+      <td>A list of configuration parameters and stats for the index.</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Return information and statistics on the index.
+        <em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>FT.DROPINDEX</td>
+      <td>FT.DROPINDEX index [DD]</td>
+      <td>
+        <pre>
+          <code>{`
+FT.DROPINDEX staff:index
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Dropping existing index.<em>Time Complexity:</em>
+        O(1) or O(N) if documents are deleted, where N is the number of keys in the
+        keyspace
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+```js
+const STAFF_INDEX_KEY = 'staff:index';
+const STAFF_KEY_PREFIX = 'staff:';
+
+try {
+  /*
+       FT.DROPINDEX index [DD]
+       Dropping existing index
+       O(1) or O(N) if documents are deleted, where N is the number of keys in the keyspace
+      */
+  await client.ft.dropIndex(STAFF_INDEX_KEY);
+} catch (indexErr) {
+  console.error(indexErr);
+}
+
+/*
+   FT.CREATE index [ON HASH | JSON] [PREFIX n] SCHEMA [field type [field type ...]]
+   Create an index with the given specification
+   O(K) where K is the number of fields in the document, O(N) for keys in the keyspace
+ */
+const schema: RediSearchSchema = {
+  '$.name': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'name',
+  },
+  '$.age': {
+    type: SchemaFieldTypes.NUMERIC,
+    AS: 'age',
+  },
+  '$.isSingle': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'isSingle',
+  },
+  '$["skills"][*]': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'skills',
+    SEPARATOR: '|',
+  },
+};
+await client.ft.create(STAFF_INDEX_KEY, schema, {
+  ON: 'JSON',
+  PREFIX: STAFF_KEY_PREFIX,
+});
+
+//-------addStaffEntries for search
+await client.json.set('staff:1', '.', {
+  name: 'Bob',
+  age: 22,
+  isSingle: true,
+  skills: ['NodeJS', 'MongoDB', 'React'],
+});
+await client.json.set('staff:2', '.', {
+  name: 'Alex',
+  age: 45,
+  isSingle: true,
+  skills: ['Python', 'MySQL', 'Angular'],
+});
+//------
+
+/*
+    FT.SEARCH index query
+    Search the index with a query, returning either documents or just ids
+    O(N)
+    */
+
+const query1 = '*'; //all records
+const query2 = "(@name:'alex')"; // name == 'alex'
+const query3 = '( (@isSingle:{true}) (@age:[(18 +inf]) )'; //isSingle == true && age > 18
+const query4 = '(@skills:{NodeJS})';
+const searchResult = await client.ft.search(
+  STAFF_INDEX_KEY,
+  query1, //query2, query3, query4
+  {
+    RETURN: ['name', 'age', 'isSingle'],
+    LIMIT: {
+      from: 0,
+      size: 10,
+    },
+  },
+);
+console.log(JSON.stringify(searchResult));
+//{"total":1,"documents":[{"id":"staff:2","value":{"name":"Alex","age":"45","isSingle":"1"}}]}
+
+/*
+    FT.AGGREGATE index query
+    Run a search query on an index, and perform aggregate transformations on the results
+
+    FT.AGGREGATE staff:index "(@age:[(10 +inf])" 
+      GROUPBY 1 @age 
+        REDUCE COUNT 0 AS userCount
+      SORTBY 1 @age
+      LIMIT 0 10
+    */
+const aggregateResult = await client.ft.aggregate(
+  STAFF_INDEX_KEY,
+  '(@age:[(10 +inf])',
+  {
+    STEPS: [
+      {
+        type: AggregateSteps.GROUPBY,
+        properties: ['@age'],
+        REDUCE: [
+          {
+            type: AggregateGroupByReducers.COUNT,
+            AS: 'userCount',
+          },
+        ],
+      },
+      {
+        type: AggregateSteps.SORTBY,
+        BY: '@age',
+      },
+      {
+        type: AggregateSteps.LIMIT,
+        from: 0,
+        size: 10,
+      },
+    ],
+  },
+);
+console.log(JSON.stringify(aggregateResult));
+//{"total":2,"results":[{"age":"22","userCount":"1"},{"age":"45","userCount":"1"}]}
+//----
+
+/*
+    FT.INFO index
+    Return information and statistics on the index
+    O(1)
+    */
+const infoResult = await client.ft.info(STAFF_INDEX_KEY);
+console.log(infoResult);
+/**
+     {
+        indexName: 'staff:index',
+        numDocs: '2',
+        maxDocId: '4',
+        stopWords: 2
+        ...
+     }
+     */
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,227 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>SADD</td>
+      <td>SADD key member [member ...]</td>
+      <td>
+        <pre>
+          <code>{`
+SADD mySet "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Adds the specified members to the set stored at
+        key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SMEMBERS</td>
+      <td>SMEMBERS key</td>
+      <td>
+        <pre>
+          <code>{`
+SMEMBERS mySet
+`}</code>
+        </pre>
+      </td>
+      <td>1) "Hello"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns all the members of the set value stored at
+        key.<em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SCARD</td>
+      <td>SCARD key</td>
+      <td>
+        <pre>
+          <code>{`
+SCARD mySet
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the set cardinality (number of elements)
+        of the set stored at key.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>SISMEMBER</td>
+      <td>SISMEMBER key member</td>
+      <td>
+        <pre>
+          <code>{`
+SISMEMBER mySet "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns if member is a member of the set stored at
+        key.<em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>SDIFF</td>
+      <td>SDIFF key1 [key2]</td>
+      <td>
+        <pre>
+          <code>{`
+SDIFF mySet myOtherSet
+`}</code>
+        </pre>
+      </td>
+      <td>1) "Hello"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the members of the set resulting from the
+        difference between the first set and all the successive sets.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SDIFFSTORE</td>
+      <td>SDIFFSTORE destination key1 [key2]</td>
+      <td>
+        <pre>
+          <code>{`
+SDIFFSTORE myNewSet mySet myOtherSet
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> This command is equal to SDIFF, but instead of
+        returning the resulting set, it is stored in destination.
+        <em>Time Complexity:</em> O(N)
+      </td>
+    </tr>
+    <tr>
+      <td>SREM</td>
+      <td>SREM key member [member ...]</td>
+      <td>
+        <pre>
+          <code>{`
+SREM mySet "Hello"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Removes the specified members from the set stored
+        at key.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+```js
+/*
+    SADD key member [member ...]
+    Adds the specified members to the set stored at key.
+    Time Complexity: O(N)
+    */
+const sAddResult = await client.sAdd('mySet', 'Hello');
+console.log(sAddResult); // 1
+
+/*
+    SMEMBERS key
+    Returns all the members of the set value stored at key.
+    Time Complexity: O(N)
+    */
+const sMembersResult = await client.sMembers('mySet');
+console.log(sMembersResult); // ["Hello"]
+
+/*
+    SCARD key
+    Returns the set cardinality (number of elements) of the set stored at key.
+    Time Complexity: O(1)
+    */
+const sCardResult = await client.sCard('mySet');
+console.log(sCardResult); // 1
+
+/*
+    SISMEMBER key member
+    Returns if member is a member of the set stored at key.
+    Time Complexity: O(1)
+    */
+const sIsMemberResult = await client.sIsMember('mySet', 'Hello');
+console.log(sIsMemberResult); // true
+
+/*
+    SDIFF key1 [key2]
+    Returns the members of the set resulting from the difference between the first set and all the successive sets.
+    Time Complexity: O(N)
+    */
+const sDiffResult = await client.sDiff(['mySet', 'myOtherSet']);
+console.log(sDiffResult); // ["Hello"]
+
+/*
+    SDIFFSTORE destination key1 [key2]
+    This command is equal to SDIFF, but instead of returning the resulting set, it is stored in destination.
+    Time Complexity: O(N)
+    */
+const sDiffStoreResult = await client.sDiffStore('myNewSet', [
+  'mySet',
+  'myOtherSet',
+]);
+console.log(sDiffStoreResult); // 1
+
+/*
+    SREM key member [member ...]
+    Removes the specified members from the set stored at key.
+    */
+const sRemResult = await client.sRem('mySet', 'Hello');
+console.log(sRemResult); // 1
+```
+
+</TabItem>
+
+</Tabs>

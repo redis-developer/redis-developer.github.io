@@ -1,0 +1,298 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.SET</td>
+      <td>JSON.SET key path value</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.SET employee_profile:1 . '{"name":"Alice"}'
+`}</code>
+        </pre>
+      </td>
+      <td>OK</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Sets JSON value at path in key.
+        <em>Time Complexity:</em> O(M+N) where M is the original size and N is the
+        new size
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.GET</td>
+      <td>JSON.GET key [path [path ...]]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.GET employee_profile:1
+`}</code>
+        </pre>
+      </td>
+      <td>
+        <pre>
+          <code>{`
+        { "name": 'Alice' }
+`}</code>
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the JSON value at path in key.
+        <em>Time Complexity:</em> O(N) when path is evaluated to a single value where
+        N is the size of the value, O(N) when path is evaluated to multiple values,
+        where N is the size of the key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.NUMINCRBY</td>
+      <td>JSON.NUMINCRBY key path number</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.SET employee_profile:1 .age 30
+JSON.NUMINCRBY employee_profile:1 .age 5
+`}</code>
+        </pre>
+      </td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Increments a number inside a JSON document.
+        <em>Time Complexity:</em> O(1) when path is evaluated to a single value,
+        O(N) when path is evaluated to multiple values, where N is the size of the
+        key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.OBJKEYS</td>
+      <td>JSON.OBJKEYS key [path]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.OBJKEYS employee_profile:1
+`}</code>
+        </pre>
+      </td>
+      <td>1) "name" 2) "age"</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Return the keys in the object that's referenced by
+        path. <em>Time Complexity:</em> O(N) when path is evaluated to a single
+        value, where N is the number of keys in the object, O(N) when path is
+        evaluated to multiple values, where N is the size of the key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.OBJLEN</td>
+      <td>JSON.OBJLEN key [path]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.OBJLEN employee_profile:1
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 2</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Report the number of keys in the JSON object at
+        path in key. <em>Time Complexity:</em> O(1) when path is evaluated to a
+        single value, O(N) when path is evaluated to multiple values, where N is
+        the size of the key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.ARRAPPEND</td>
+      <td>JSON.ARRAPPEND key [path] value [value ...]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.SET employee_profile:1 .colors '["red", "green", "blue"]'  
+JSON.ARRAPPEND employee_profile:1 .colors '"yellow"'
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 4</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Append the json values into the array at path
+        after the last element in it. <em>Time Complexity:</em> O(1) for each
+        value added, O(N) for multiple values added where N is the size of the
+        key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.ARRINSERT</td>
+      <td>JSON.ARRINSERT key path index value [value ...]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.ARRINSERT employee_profile:1 .colors 2 '"purple"'
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 5</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Insert the json values into the array at path
+        before the index (shifts to the right). <em>Time Complexity:</em> O(N)
+        when path is evaluated to a single value where N is the size of the
+        array, O(N) when path is evaluated to multiple values, where N is the
+        size of the key
+      </td>
+    </tr>
+    <tr>
+      <td>JSON.ARRINDEX</td>
+      <td>JSON.ARRINDEX key path value [start [stop]]</td>
+      <td>
+        <pre>
+          <code>{`
+JSON.ARRINDEX employee_profile:1 .colors '"purple"'
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 2</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Searches for the first occurrence of a JSON value
+        in an array. <em>Time Complexity:</em> O(N) when path is evaluated to a
+        single value where N is the size of the array, O(N) when path is
+        evaluated to multiple values, where N is the size of the key
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+```js
+/*
+      JSON.SET key path value
+      Sets JSON value at path in key.
+      O(M+N) where M is the original size and N is the new size
+    */
+const setResult = await client.json.set('employee_profile:1', '.', {
+  name: 'Alice',
+});
+console.log(setResult); // OK
+
+/*
+       JSON.GET key [path [path ...]]
+       Returns the JSON value at path in key.
+       O(N) when path is evaluated to a single value where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
+    */
+const getResult = await client.json.get('employee_profile:1');
+console.log(getResult); // { name: 'Alice' }
+
+/*
+      JSON.NUMINCRBY key path number
+      Increments a number inside a JSON document.
+      O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
+    */
+await client.json.set('employee_profile:1', '.age', 30);
+const incrementResult = await client.json.numIncrBy(
+  'employee_profile:1',
+  '.age',
+  5,
+);
+console.log(incrementResult); // 35
+
+/*
+      JSON.OBJKEYS key [path]
+      Return the keys in the object that's referenced by path
+      O(N) when path is evaluated to a single value, where N is the number of keys in the object, O(N) when path is evaluated to multiple values, where N is the size of the key
+    */
+const objKeysResult = await client.json.objKeys('employee_profile:1');
+console.log(objKeysResult); // [ 'name', 'age' ]
+
+/*
+      JSON.OBJLEN key [path]
+      Report the number of keys in the JSON object at path in key
+      O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
+    */
+const objLenResult = await client.json.objLen('employee_profile:1');
+console.log(objLenResult); // 2
+
+/*
+      JSON.ARRAPPEND key [path] value [value ...]
+      Append the json values into the array at path after the last element in it
+      O(1) for each value added, O(N) for multiple values added where N is the size of the key
+    */
+await client.json.set('employee_profile:1', '.colors', [
+  'red',
+  'green',
+  'blue',
+]);
+const arrAppendResult = await client.json.arrAppend(
+  'employee_profile:1',
+  '.colors',
+  'yellow',
+);
+console.log(arrAppendResult); // 4
+
+/*
+      JSON.ARRINSERT key path index value [value ...]
+      Insert the json values into the array at path before the index (shifts to the right)
+      O(N) when path is evaluated to a single value where N is the size of the array, O(N) when path is evaluated to multiple values, where N is the size of the key
+    */
+const arrInsertResult = await client.json.arrInsert(
+  'employee_profile:1',
+  '.colors',
+  2,
+  'purple',
+);
+console.log(arrInsertResult); // 5
+
+/*
+      JSON.ARRINDEX key path json [start [stop]]
+      Searches for the first occurrence of a JSON value in an array.
+      O(N) when path is evaluated to a single value where N is the size of the array, O(N) when path is evaluated to multiple values, where N is the size of the key
+    */
+const arrIndexResult = await client.json.arrIndex(
+  'employee_profile:1',
+  '.colors',
+  'purple',
+);
+console.log(arrIndexResult); // 2
+```
+
+</TabItem>
+
+</Tabs>

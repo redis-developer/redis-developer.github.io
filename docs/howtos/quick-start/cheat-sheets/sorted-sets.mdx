@@ -1,0 +1,104 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>ZADD</td>
+      <td>ZADD key score member [score member ...]</td>
+      <td>
+        <pre>
+          <code>{`
+ZADD myZSet 1 "one" 2 "two"
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 2</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Adds all the specified members with the specified
+        scores to the sorted set stored at key. <em>Time Complexity: </em>
+        O(log(N))
+      </td>
+    </tr>
+    <tr>
+      <td>ZRANGE</td>
+      <td>ZRANGE key start stop [WITHSCORES]</td>
+      <td>
+        <pre>
+          <code>{`
+ZRANGE myZSet 0 -1
+`}</code>
+        </pre>
+      </td>
+      <td>1) "one" 2)"two" </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the specified range of elements in the
+        sorted set stored at key.<em>Time Complexity: </em>
+        O(log(N)+M) where M is the number of elements returned
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+```js
+/*
+    ZADD key score member [score member ...]
+    Adds all the specified members with the specified scores to the sorted set stored at key.
+    Time Complexity: O(log(N))
+    */
+const zAddResult = await client.zAdd('myZSet', [
+  {
+    score: 1,
+    value: 'one',
+  },
+  {
+    score: 2,
+    value: 'two',
+  },
+]);
+console.log(zAddResult); // 2
+
+/*
+    ZRANGE key start stop [WITHSCORES]
+    Returns the specified range of elements in the sorted set stored at key.
+    Time Complexity: O(log(N)+M) where M is the number of elements returned
+    */
+const zRangeResult = await client.zRange('myZSet', 0, -1);
+console.log(zRangeResult); // ["one", "two"]
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,238 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="CLI"
+  groupId="REDIS_CHEAT_SHEET"
+  values={[
+    {label: 'CLI', value: 'CLI'},
+    {label: 'NodeRedis', value: 'NODE_JS'},
+  ]}>
+
+<TabItem value="CLI">
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Command</strong>
+      </td>
+      <td>
+        <strong>Syntax</strong>
+      </td>
+      <td>
+        <strong>Example</strong>
+      </td>
+      <td>
+        <strong>Output</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>XADD</td>
+      <td>XADD key field value [field value ...]</td>
+      <td>
+        <pre>
+          <code>{`
+XADD myStream * sensorId "1234" temperature "19.8"
+`}</code>
+        </pre>
+      </td>
+      <td>1518951480106-0</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Appends the specified stream entry to the stream
+        at the specified key. <em>Time Complexity:</em> O(1) when adding a new
+        entry.
+      </td>
+    </tr>
+    <tr>
+      <td>XREAD</td>
+      <td>
+        XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] ID [ID
+        ...]
+      </td>
+      <td>
+        <pre>
+          <code>{`
+XREAD COUNT 2 STREAMS myStream 0
+`}</code>
+        </pre>
+      </td>
+      <td>
+        1) 1) "myStream" 2) 1) 1) "1518951480106-0" 2) 1) "sensorId" 2) "1234"
+        3) "temperature" 4) "19.8"
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Read data from one or multiple streams, only
+        returning entries with an <b>ID greater</b> than the last received ID
+        reported by the caller.
+      </td>
+    </tr>
+    <tr>
+      <td>XRANGE</td>
+      <td>XRANGE key start end [COUNT count]</td>
+      <td>
+        <pre>
+          <code>{`
+XRANGE myStream 1518951480106-0 1518951480106-0
+`}</code>
+        </pre>
+      </td>
+      <td>
+        1) 1) 1) "1518951480106-0" 2) 1) "sensorId" 2) "1234" 3) "temperature"
+        4) "19.8"
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the entries matching a range of IDs in a
+        stream. <em>Time Complexity:</em> O(N) with N being the number of
+        elements being returned. If N is constant (e.g. always asking for the
+        first 10 elements with COUNT), you can consider it O(1).
+      </td>
+    </tr>
+    <tr>
+      <td>XLEN</td>
+      <td>XLEN key</td>
+      <td>
+        <pre>
+          <code>{`
+XLEN myStream
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Returns the number of entries of a stream.{' '}
+        <em>Time Complexity:</em> O(1)
+      </td>
+    </tr>
+    <tr>
+      <td>XDEL</td>
+      <td>XDEL key ID [ID ...]</td>
+      <td>
+        <pre>
+          <code>{`
+XDEL myStream 1518951480106-0
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 1</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Removes the specified entries from a stream.{' '}
+        <em>Time Complexity:</em> O(1) for each single item to delete in the
+        stream
+      </td>
+    </tr>
+    <tr>
+      <td>XTRIM</td>
+      <td>XTRIM key MAXLEN [~] count</td>
+      <td>
+        <pre>
+          <code>{`
+XTRIM myStream MAXLEN 0
+`}</code>
+        </pre>
+      </td>
+      <td>(integer) 0</td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <em>Description:</em> Trims the stream to a different length.{' '}
+        <em>Time Complexity:</em> O(N), with N being the number of evicted
+        entries. Constant times are very small however, since entries are
+        organized in macro nodes containing multiple entries that can be
+        released with a single deallocation.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="NODE_JS">
+
+```js
+/*
+XADD key field value [field value ...]
+Appends the specified stream entry to the stream at the specified key.
+O(1) when adding a new entry.
+*/
+
+const xAddResult = await client.xAdd(
+  'myStream',
+  '*', //dynamic id
+  {
+    sensorId: '1234',
+    temperature: '19.8',
+  },
+);
+console.log(xAddResult); // "1518951480106-0"
+
+/*
+    XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] ID [ID ...]
+    Read data from one or multiple streams, only returning entries with an ID greater than the last received ID reported by the caller.
+    */
+const xReadResult = await client.xRead(
+  commandOptions({
+    isolated: true,
+  }),
+  [
+    {
+      // XREAD can read from multiple streams, starting at a different ID for each.
+      key: 'myStream',
+      id: '0', //entries greater than id
+    },
+  ],
+  {
+    // Read 2 entries at a time, block for 5 seconds if there are none.
+    COUNT: 2,
+    BLOCK: 5000,
+  },
+);
+
+console.log(JSON.stringify(xReadResult)); // [{"name":"myStream","messages":[{"id":"1518951480106-0","message":{"sensorId":"1234","temperature":"19.8"}}]}]
+
+/*
+    XRANGE key start end [COUNT count]
+    Returns the entries matching a range of IDs in a stream.
+    O(N) with N being the number of elements being returned. If N is constant (e.g. always asking for the first 10 elements with COUNT), you can consider it O(1).
+    */
+const xRangeResult = await client.xRange('myStream', xAddResult, xAddResult);
+console.log(JSON.stringify(xRangeResult)); // [{"id":"1518951480106-0","message":{"sensorId":"1234","temperature":"19.8"}}]
+
+/*
+    XLEN key
+    Returns the number of entries of a stream.
+    O(1)
+    */
+const xLenResult = await client.xLen('myStream');
+console.log(xLenResult); // 1
+
+/*
+    XDEL key ID [ID ...]
+    Removes the specified entries from a stream.
+    O(1) for each single item to delete in the stream
+    */
+const xDelResult = await client.xDel('myStream', xAddResult);
+console.log(xDelResult); // 1
+
+/*
+    XTRIM key MAXLEN [~] count
+    Trims the stream to a different length.
+    O(N), with N being the number of evicted entries. Constant times are very small however, since entries are organized in macro nodes containing multiple entries that can be released with a single deallocation.
+    */
+const xTrimResult = await client.xTrim('myStream', 'MAXLEN', 0);
+console.log(xTrimResult); // 0
+```
+
+</TabItem>
+
+</Tabs>
