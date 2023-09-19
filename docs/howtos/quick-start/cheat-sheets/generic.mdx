@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -291,6 +294,142 @@ console.log(delResult); // 1
     */
 let infoResult = await client.info('keyspace');
 console.log(infoResult); //# Keyspace \n db0:keys=2,expires=0,avg_ttl=0"
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# KEYS pattern
+# O(N)
+# Returns all keys matching pattern.
+r.keys('*')
+
+# EXPIRE key seconds
+# O(1)
+# Set a timeout on key. After the timeout has expired, the key will automatically be deleted.
+r.expire('mykey', 10)
+
+# SCAN cursor [MATCH pattern] [COUNT count]
+# O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0.
+# Iterates the set of keys in the currently selected Redis database.
+r.delete('mykey', 'mykey2')
+scanResult = r.scan(0, match='employee_profile:*')
+r.scan(scanResult[0], match='employee_profile:*')
+
+# DEL key [key ...]
+# O(N)
+# Removes the specified keys.
+r.delete('employee_profile:viraj', 'employee_profile:terry',
+         'employee_profile:sheera')
+
+# TTL key
+# O(1)
+# Returns the remaining time to live of a key that has a timeout.
+r.ttl('employee_profile:nicol')
+
+# INFO [section ...]
+# O(1)
+# Returns information and statistics about the server, with the following sections: server, clients, memory, persistence, stats, replication, cpu, commandstats, latencystats, sentinel, cluster, modules, keyspace, errorstats
+r.info('keyspace')
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * KEYS pattern
+ * O(N)
+ * Returns all keys matching pattern.
+ */
+redis.GetServer("localhost:6379").Keys();
+
+/*
+ * EXPIRE key seconds
+ * O(1)
+ * Set a timeout on key. After the timeout has expired, the key will be
+ * automatically deleted.
+ */
+db.KeyExpire("mykey", TimeSpan.FromSeconds(10));
+
+/*
+ * SCAN cursor [MATCH pattern] [COUNT count]
+ * O(1) for every call. O(N) for a complete iteration, including enough command
+ * calls for the cursor to return back to 0.
+ * Iterates the set of keys in the currently selected Redis database.
+ */
+db.KeyDelete(new RedisKey[] { "mykey", "mykey2" });
+redis.GetServer("localhost:6379").Keys(-1, "employee_profile:*", 10);
+
+/*
+ * DEL key [key ...]
+ * O(N)
+ * Removes the specified keys.
+ */
+db.KeyDelete(new RedisKey[] { "employee_profile:viraj", "employee_profile:terry", "employee_profile:sheera" });
+
+/*
+ * TTL key
+ * O(1)
+ * Returns the remaining time to live of a key that has a timeout.
+ */
+db.KeyTimeToLive("employee_profile:nicol");
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * KEYS pattern
+ * O(N)
+ * Returns all keys matching pattern.
+ */
+jedis.keys("*");
+
+/*
+ * EXPIRE key seconds
+ * O(1)
+ * Set a timeout on key. After the timeout has expired, the key will be
+ * automatically deleted.
+ */
+jedis.expire("mykey", 10);
+
+/*
+ * SCAN cursor [MATCH pattern] [COUNT count]
+ * O(1) for every call. O(N) for a complete iteration, including enough command
+ * calls for the cursor to return back to 0.
+ * Iterates the set of keys in the currently selected Redis database.
+ */
+jedis.del("mykey", "mykey2");
+ScanResult<String> scan = jedis.scan("0", new ScanParams() {
+    {
+        match("employee_profile:*");
+    }
+});
+scan = jedis.scan(scan.getCursor(), new ScanParams() {
+    {
+        match("employee_profile:*");
+    }
+});
+
+/*
+ * DEL key [key ...]
+ * O(N)
+ * Removes the specified keys.
+ */
+jedis.del("employee_profile:viraj", "employee_profile:terry""employee_profile:sheera");
+
+/*
+ * TTL key
+ * O(1)
+ * Returns the remaining time to live of a key that has a timeout.
+ */
+jedis.ttl("employee_profile:nicol");
 ```
 
 </TabItem>

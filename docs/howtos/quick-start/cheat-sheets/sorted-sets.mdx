@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -97,6 +100,77 @@ console.log(zAddResult); // 2
     */
 const zRangeResult = await client.zRange('myZSet', 0, -1);
 console.log(zRangeResult); // ["one", "two"]
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# ZADD key score member [score member ...]
+# O(log(N))
+# Adds all the specified members with the specified scores to the sorted set stored at key.
+r.zadd('myzset', {'one': 1, 'two': 2, 'three': 3})
+
+# ZRANGE key start stop [WITHSCORES]
+# O(log(N)+M)
+# Returns the specified range of elements in the sorted set stored at key.
+r.zrange('myzset', 0, -1, withscores=True)
+r.zrange('myzset', 0, -1)
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * ZADD key score member [score member ...]
+ * O(log(N))
+ * Adds all the specified members with the specified scores to the sorted set
+ * stored at key.
+ */
+db.KeyDelete("myzset");
+db.SortedSetAdd("myzset", new SortedSetEntry[] {
+                            new SortedSetEntry("one", 1.0),
+                            new SortedSetEntry("two", 2.0),
+                            new SortedSetEntry("three", 3.0)
+                          });
+
+/*
+ * ZRANGE key start stop [WITHSCORES]
+ * O(log(N)+M)
+ * Returns the specified range of elements in the sorted set stored at key.
+ */
+db.SortedSetRangeByRank("myzset", 0, -1);
+db.SortedSetRangeByRankWithScores("myzset", 0, -1);
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * ZADD key score member [score member ...]
+ * O(log(N))
+ * Adds all the specified members with the specified scores to the sorted set
+ * stored at key.
+ */
+jedis.del("myzset");
+jedis.zadd("myzset", Map.of(
+                            "one", 1.0,
+                            "two", 2.0,
+                            "three", 3.0
+                            ));
+
+/*
+ * ZRANGE key start stop [WITHSCORES]
+ * O(log(N)+M)
+ * Returns the specified range of elements in the sorted set stored at key.
+ */
+jedis.zrange("myzset", 0, -1);
+jedis.zrangeWithScores("myzset", 0, -1);
 ```
 
 </TabItem>

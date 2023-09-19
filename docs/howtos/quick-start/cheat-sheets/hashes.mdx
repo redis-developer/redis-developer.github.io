@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -51,7 +54,7 @@ HSET h_employee_profile:101 name "Nicol" age 33
       <td>
         <pre>
           <code>{`
-HGET h_employee_profile:101 name 
+HGET h_employee_profile:101 name
 `}</code>
         </pre>
       </td>
@@ -145,6 +148,83 @@ const hmGetResult = await client.hmGet('h_employee_profile:101', [
   'age',
 ]);
 console.log(hmGetResult); // ["Nicol", "33"]
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# HSET key field value [field value ...]
+# O(N)
+# Sets the specified fields to their respective values in the hash stored at key.
+r.hset('h_employee_profile:nicol', 'name', 'Nicol')
+
+# HGETALL key
+# O(N)
+# Returns all fields and values of the hash stored at key.
+r.hgetall('h_employee_profile:nicol')
+
+# HGET key field
+# O(1)
+# Returns the value associated with field in the hash stored at key.
+r.hget('h_employee_profile:nicol', 'name')
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * HSET key field value [field value ...]
+ * O(N)
+ * Sets the specified fields to their respective values in the hash stored at
+ * key.
+ */
+db.HashSet("h_employee_profile:nicol", new HashEntry[] { new HashEntry("name"Nicol") });
+
+/*
+ * HGETALL key
+ * O(N)
+ * Returns all fields and values of the hash stored at key.
+ */
+db.HashGetAll("h_employee_profile:nicol");
+
+/*
+ * HGET key field
+ * O(1)
+ * Returns the value associated with field in the hash stored at key.
+ */
+db.HashGet("h_employee_profile:nicol", "name");
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * HSET key field value [field value ...]
+ * O(N)
+ * Sets the specified fields to their respective values in the hash stored at
+ * key.
+ */
+jedis.hset("h_employee_profile:nicol", "name", "Nicol");
+
+/*
+ * HGETALL key
+ * O(N)
+ * Returns all fields and values of the hash stored at key.
+ */
+jedis.hgetAll("h_employee_profile:nicol");
+
+/*
+ * HGET key field
+ * O(1)
+ * Returns the value associated with field in the hash stored at key.
+ */
+jedis.hget("h_employee_profile:nicol", "name");
 ```
 
 </TabItem>

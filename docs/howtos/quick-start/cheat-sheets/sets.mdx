@@ -6,7 +6,10 @@ import TabItem from '@theme/TabItem';
   groupId="REDIS_CHEAT_SHEET"
   values={[
     {label: 'CLI', value: 'CLI'},
-    {label: 'NodeRedis', value: 'NODE_JS'},
+    {label: 'node-redis', value: 'NODE_JS'},
+    {label: 'redis-py', value: 'PYTHON'},
+    {label: 'NRedisStack', value: 'C#'},
+    {label: 'Jedis', value: 'JAVA'}
   ]}>
 
 <TabItem value="CLI">
@@ -220,6 +223,43 @@ console.log(sDiffStoreResult); // 1
     */
 const sRemResult = await client.sRem('mySet', 'Hello');
 console.log(sRemResult); // 1
+```
+
+</TabItem>
+
+<TabItem value="PYTHON">
+
+```python
+# SADD key member [member ...]
+# O(N)
+# Add the specified members to the set stored at key.
+r.sadd('myset', 'Hello')
+```
+
+</TabItem>
+
+<TabItem value="C#">
+
+```csharp
+/*
+ * SADD key member [member ...]
+ * O(N)
+ * Add the specified members to the set stored at key.
+ */
+db.SetAdd("myset", "Hello");
+```
+
+</TabItem>
+
+<TabItem value="JAVA">
+
+```java
+/*
+ * SADD key member [member ...]
+ * O(N)
+ * Add the specified members to the set stored at key.
+ */
+jedis.sadd("myset", "Hello");
 ```
 
 </TabItem>
