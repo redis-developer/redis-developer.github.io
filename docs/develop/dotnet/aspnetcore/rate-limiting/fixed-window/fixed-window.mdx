@@ -114,7 +114,7 @@ The issue we need to contend with here is that this rate-limiting requires atomi
  local expiry = tonumber(ARGV[2])
  local requests = redis.call('INCR',key)
  redis.call('EXPIRE', key, expiry)
- if requests < max_requests then
+ if requests <= max_requests then
      return 0
  else
     return 1
@@ -126,7 +126,7 @@ Alternatively, StackExchange.Redis contains support for a [more readable mode of
 ```sh
  local requests = redis.call('INCR',@key)
  redis.call('EXPIRE', @key, @expiry)
- if requests < tonumber(@maxRequests) then
+ if requests <= tonumber(@maxRequests) then
      return 0
  else
      return 1
@@ -148,7 +148,7 @@ To run a Lua script with StackExchange.Redis, you need to prepare a script and r
         private const string RATE_LIMITER = @"
             local requests = redis.call('INCR',@key)
             redis.call('EXPIRE', @key, @expiry)
-            if requests < tonumber(@maxRequests) then
+            if requests <= tonumber(@maxRequests) then
                 return 0
             else
                 return 1
@@ -207,7 +207,7 @@ You will see some of your requests return a `200`, and at least one request retu
  HTTP 200, 0.001492 s
  HTTP 200, 0.001449 s
  HTTP 200, 0.001551 s
- {"status":429,"traceId":"00-16e9da63f77c994db719acff5333c509-f79ac0c862c5a04c-00"} HTTP 429, 0.001803 s
+ HTTP 200, 0.001551 s
  {"status":429,"traceId":"00-3d2e4e8af851024db121935705d5425f-0e23eb80eae0d549-00"} HTTP 429, 0.001521 s
  {"status":429,"traceId":"00-b5e824c9ebc4f94aa0bda2a414afa936-8020a7b8f2845544-00"} HTTP 429, 0.001475 s
  {"status":429,"traceId":"00-bd6237c5d0362a409c436dcffd0d4a7a-87b544534f397247-00"} HTTP 429, 0.001549 s
