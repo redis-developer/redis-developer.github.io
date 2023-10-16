@@ -49,11 +49,14 @@
     margin-right: 18px;
   }
 
-  // &__brand,
-  // &__logo {
-  //   width: 168px !important;
-  //    height: auto !important;
-  // }
+  &__brand,
+  &__logo {
+    // width: 168px !important;
+    //  height: auto !important;
+    @include mobile {
+      display: none;
+    }
+  }
 
   &__link {
     padding: 7px 21px 8px;
