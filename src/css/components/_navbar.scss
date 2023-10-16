@@ -1,5 +1,5 @@
 .navbar-sidebar--show .navbar-sidebar {
-  box-shadow: 0 5px 40px rgba($primary-black, .5);
+  box-shadow: 0 5px 40px rgba($primary-black, 0.5);
 }
 
 .navbar-sidebar {
@@ -7,7 +7,7 @@
   box-shadow: none;
 
   &__backdrop {
-    background-color: rgba($primary-blue, .5);
+    background-color: rgba($primary-blue, 0.5);
   }
 
   &__brand {
@@ -52,7 +52,7 @@
   &__brand,
   &__logo {
     width: 168px !important;
-    height: auto !important;
+    // height: auto !important;
   }
 
   &__link {
