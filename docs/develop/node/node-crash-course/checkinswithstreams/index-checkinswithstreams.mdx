@@ -129,7 +129,7 @@ const latestCheckin = await redisClient.xrevrange(checkinStreamKey, 'TODO');
 
 Remember: When using ioredis, each parameter to a Redis command needs to be passed as a separate value.
 
-Test your code by visiting `http://localhost:8081/checkins/latest` - you should see a JSON representation of a checkin.
+Test your code by visiting `http://localhost:8081/api/checkins/latest` - you should see a JSON representation of a checkin.
 
 To make sure your code returns the latest checkin, you need to POST a checking using Postman. Start the Checkin Receiver component in a new terminal window:
 
@@ -141,7 +141,7 @@ Then use Postman to POST a checkin. In Postman, open a new request, configure it
 
 ![Checkin Test with Postman](images/xrevrange_checkin_test.png)
 
-Now when you refresh `http://localhost:8081/checkins/latest` in your browser, the values shown should match those that you supplied in Postman.
+Now when you refresh `http://localhost:8081/api/checkins/latest` in your browser, the values shown should match those that you supplied in Postman.
 
 ## External Resources
 
