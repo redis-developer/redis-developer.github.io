@@ -52,7 +52,7 @@ function Hero() {
                     Create a database <SvgArrowRight color="#DC382C" />
                   </span>
                 </div>
-                <a href={useBaseUrl('/create/redis-stack')} className="link">
+                <a href={useBaseUrl('/create/')} className="link">
                   Read More
                 </a>
               </div>
@@ -111,9 +111,6 @@ function Hero() {
                     <SvgArrowRight color="#DC382C" />
                   </span>
                 </div>
-                <a href={useBaseUrl('/operate/')} className="link">
-                  Read More
-                </a>
               </div>
             </div>
           </div>

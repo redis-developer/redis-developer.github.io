@@ -1,0 +1,191 @@
+---
+id: index-vercel
+title: Getting Started with Vercel and Redis
+sidebar_label: Getting Started with Vercel and Redis
+slug: /create/vercel
+authors: [ajeet]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+[Vercel ](https://vercel.com/)is a popular static web hosting serverless platform for frontend developers. The platform allows developers to host websites and web services, deploy instantly, and scale automatically with minimal configuration.
+
+Vercel is the preferred platform to host [Next.js-based web applications](https://vercel.com/docs/concepts/next.js/overview). It allows you to deploy serverless functions that take an HTTP request and provide a response. You can use [serverless functions](https://vercel.com/docs/concepts/functions/serverless-functions) to handle user authentication, form submission, database queries, custom Slack commands, and more.
+
+Vercel integrates well with popular tools, such as [GitHub](https://vercel.com/docs/concepts/git/vercel-for-github), [GitLab](https://vercel.com/docs/concepts/git/vercel-for-gitlab), [Lighthouse](https://vercel.com/integrations/lighthouse), [Doppler](https://vercel.com/integrations/doppler), and [Divjoy](https://divjoy.com/). NodeJS, Go, Python, and Ruby are the leading [official runtimes supported by Vercel](https://vercel.com/docs/runtimes).
+
+![vercel](images/vercel_redis.png)
+
+### Features of Vercel
+
+- Vercel is focused on the build and deployment aspects of the [JAMstack approach](https://jamstack.org/what-is-jamstack/).
+- [The Vercel API](https://vercel.com/docs/rest-api) provides full control over the Vercel platform, exposed as simple HTTP service endpoints over SSL.
+- All endpoints live under the URL [https://api.vercel.com](https://api.vercel.com) and follow the REST architecture.
+- Vercel provides custom domains to deploy your code on the live server (vercel.app as the suffix in the domain).
+- Vercel provides you with an option to choose any framework of the repository you wish to deploy either Node.js, React, Gatsby, or [Next.js](https://nextjs.org/) (a full-stack React serverless framework that integrates seamlessly with Vercel).
+- Vercel integrates with a GitHub repository for automatic deployments upon commits.
+
+In this tutorial, you will learn how to deploy a Node.js based Redis chat application using Vercel in just 5 minutes.
+
+### Table of Contents
+
+- Step 1. Set up a free Redis Cloud account
+- Step 2. Install Vercel CLI
+- Step 3. Log in to your Vercel Account
+- Step 4. Clone your GitHub repository
+- Step 5. Create a vercel.json file
+- Step 6. Set up environment variables
+- Step 7. Deploy the Node.js app
+- Step 8. Access your app
+
+### Step 1. Set up a free Redis Cloud account
+
+Visit [redis.com/try-free](https://redis.com/try-free) and create [a free Redis Cloud account](https://redis.com/try-free/). Once you complete this tutorial, you will be provided with the database endpoint URL and password. Save it for future reference.
+
+![alt_text](images/details_database.png)
+
+### Step 2. Install Vercel CLI
+
+```
+npm i -g vercel
+
+vercel -v
+Vercel CLI 23.1.2
+23.1.2
+
+```
+
+### Step 3. Log in to your Vercel account
+
+The `vercel login` command allows you to log in to your Vercel account through Vercel CLI.
+
+```
+vercel login
+Vercel CLI 23.1.2
+> Log in to Vercel github
+> Success! GitHub authentication complete for xx@xx.com
+Congratulations! You are now logged in. In order to deploy something, run `vercel`.
+💡  Connect your Git Repositories to deploy every branch push automatically (https://vercel.link/git).
+```
+
+Once Vercel gets connected to your GitHub account, it displays your public repositories. Let us clone [https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs) to the local repository.
+
+### Step 4. Clone the GitHub repository
+
+The complete source code of the Redis Chat application is hosted [here](https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs). React and Socket.IO are used for building the frontend while Node.js and Redis power the backend. Redis is used mainly as a database to keep the user/messages data and for sending messages between connected servers.
+
+```
+git clone https://github.com/redis-developer/basic-redis-chat-app-demo-nodejs
+```
+
+### Step 5. Create a vercel.json for Node.js app
+
+If you run the `vercel init` command, it will list various frameworks but you won’t be able to find Node.js, hence you will need to create a `vercel.json` file as shown below:
+
+```
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./index.vercel.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
+
+```
+
+### Step 6. Set up environment variables
+
+The `vercel env` command is used to manage [environment variables](https://vercel.com/docs/concepts/projects/environment-variables) under a Project, providing functionality to list, add, remove, and pull.
+
+Let us first set up environment variables.
+
+```
+ vercel env add
+Vercel CLI 23.1.2
+? What's the name of the variable? REDIS_ENDPOINT_URI
+? What's the value of REDIS_ENDPOINT_URI? redis-XXXX.c110-qa.us-east-1-1-1.ec2.qa-cloud.redislabs.com:XXX
+
+```
+
+Listing the environment variables:
+
+```
+vercel env ls
+Vercel CLI 23.1.2
+> Environment Variables found in Project basic-redis-chat-app-demo-nodejs [684ms]
+
+ name                       value               environments                        created
+ REDIS_PASSWORD             Encrypted           Production, Preview, Development    2d ago
+ REDIS_ENDPOINT_URL         Encrypted           Production, Preview, Development    2d ago
+
+```
+
+### Step 7. Deploy the Node.js app
+
+When you run a vercel command in a directory for the first time, [Vercel CLI](https://vercel.com/cli) needs to know which [scope](https://vercel.com/docs/cli#options/global-options/scope) and [Project](https://vercel.com/docs/concepts/projects/overview) you want to deploy your directory to. You can choose to either link an existing project or create a new one.
+
+```
+vercel
+Vercel CLI 23.1.2
+? Set up and deploy "~/projects/10feb/basic-redis-chat-app-demo-nodejs"? [Y/n] y
+? Which scope do you want to deploy to? redis-developer
+? Found project "redis-developer/basic-redis-chat-app-demo-nodejs". Link to it? [Y/n] y
+🔗  Linked to redis-developer/basic-redis-chat-app-demo-nodejs (created .vercel)
+🔍  Inspect: https://vercel.com/redis-developer/basic-redis-chat-app-demo-nodejs/5KZydRNsXwnjRxDYa65x4Ak8KwZT [4s]
+✅  Preview: https://basic-redis-chat-app-demo-nodejs-redis-developer.vercel.app [copied to clipboard] [27s]
+📝  To deploy to production (basic-redis-chat-app-demo-nodejs.vercel.app), run `vercel --prod`
+❗️  Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+
+```
+
+Once the deployment process has completed, a new `.vercel` directory will be added to your directory. The `.vercel` directory contains both the organization and project ID of your project.
+
+The "project.json" file contains:
+
+- The ID of the Vercel project that you linked ("projectId")
+
+- The ID of the user or team your Vercel project is owned by ("orgId")
+
+:::note
+Vercel CLI automatically detects the framework you are using and offers default project settings accordingly.
+:::
+
+### Step 8. Accessing the app
+
+Run the following command to deploy the Redis chat app to the Prod environment.
+
+```
+vercel --prod
+Vercel CLI 23.1.2
+🔍  Inspect: https://vercel.com/redis-developer/basic-redis-chat-app-demo-nodejs/GoRdy7LKxqhBfJNW8hSvvFLQC6EN [2s]
+✅  Production: https://basic-redis-chat-app-demo-nodejs.vercel.app [copied to clipboard] [14s]
+
+
+```
+
+By now, you will be able to login to Chat app and start chatting.
+
+![alt_text](images/vercel13.png)
+
+The chat server works as a basic REST API which involves keeping the session and handling the user state in the chat rooms (besides the WebSocket/real-time part). When a WebSocket/real-time server is instantiated, which listens for the next events:
+
+![alt_text](images/vercel3.png)
+
+If you want to know how the chat app works internally, [refer to this detailed blog tutorial](/howtos/chatapp#how-it-works)
+
+### References
+
+- [Getting Started with Vercel](https://vercel.com/docs/get-started)
+- [Serverless Functions under Vercel](https://vercel.com/docs/concepts/functions/serverless-functions)
+- [A Look at Vercel Supported Languages](https://vercel.com/docs/concepts/functions/supported-languages)
+- [Next.js on Vercel](https://vercel.com/docs/concepts/next.js/overview)

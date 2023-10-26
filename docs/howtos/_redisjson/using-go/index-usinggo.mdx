@@ -1,0 +1,134 @@
+---
+id: index-usinggo
+title: How to cache JSON data in Redis with Go
+sidebar_label: Redis JSON and Go
+slug: /howtos/redisjson/using-go
+authors: [ajeet]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+[Go-ReJSON](https://github.com/nitishm/go-rejson) is a Go client for Redis JSON feature. It is a Golang client that support multiple Redis clients such as the print-like Redis-api client redigo and the type-safe Redis client go-redis.
+
+Follow the below steps to get started with Redis JSON using Go client.
+
+### Step 1. Initialize the Go feature
+
+```bash
+ go mod init github.com/my/repo
+```
+
+### Step 2. Install Go-redis
+
+```bash
+ go get github.com/go-redis/redis/v8
+```
+
+### Step 3. Install Go client for Redis JSON
+
+```bash
+ go get github.com/nitishm/go-rejson/v4
+```
+
+### Step 4. Clone the repository
+
+```bash
+ git clone https://github.com/nitishm/go-rejson
+ cd go-rejson/example
+```
+
+### Step 5. Build the Go package
+
+<b>Command:</b>
+
+```go
+ go build json_set/json_set.go
+```
+
+<b>Result:</b>
+
+```go
+ go: downloading github.com/go-redis/redis/v8 v8.4.4
+ go: downloading github.com/gomodule/redigo v1.8.3
+ go: downloading go.opentelemetry.io/otel v0.15.0
+ go build: build output "json_set" already exists and is a directory
+```
+
+### Step 6. Run the Go program
+
+<b>Command:</b>
+
+```go
+ go run json_set/json_set.go
+```
+
+<b>Result:</b>
+
+```go
+ Executing Example_JSONSET for Redigo Client
+ Success: OK
+ Student read from redis : main.Student{Name:main.Name{First:"Mark", Middle:"S", Last:"Pronto"}, Rank:1}
+
+ Executing Example_JSONSET for Redigo Client
+ Success: OK
+ Student read from redis : main.Student{Name:main.Name{First:"Mark", Middle:"S", Last:"Pronto"}, Rank:1}
+```
+
+<b>Command:</b>
+
+```go
+ pwd
+ go-rejson/examples
+```
+
+<b>Command:</b>
+
+```go
+ go run json_array/json_array.go
+```
+
+<b>Result:</b>
+
+```go
+ Executing Example_JSONSET for Redigo Client
+ arr: OK
+ arr before pop: [one two three four five]
+ Length: 5
+ Deleted element: five
+ arr after pop: [one two three four]
+ Length: 4
+ Index of "one": 0
+ Out of range: -1
+ "ten" not found: -1
+ no. of elements left: 2
+ arr after trimming to [1,2]: [two three]
+ no. of elements: 3
+ arr after inserting "one": [one two three]
+
+ Executing Example_JSONSET for Redigo Client
+ arr: OK
+ arr before pop: [one two three four five]
+ Length: 5
+ Deleted element: five
+ arr after pop: [one two three four]
+ Length: 4
+ Index of "one": 0
+ Out of range: -1
+ "ten" not found: -1
+ no. of elements left: 2
+ arr after trimming to [1,2]: [two three]
+ no. of elements: 3
+ arr after inserting "one": [one two three]
+```
+
+### References
+
+- [RU204: Storing, Querying and Indexing JSON at Speed](https://university.redis.com/courses/ru204/) - a course at Redis University
+- [Redis JSON and Python](/howtos/redisjson/using-python)
+- [How to store and retrieve nested JSON document](/howtos/redisjson/storing-complex-json-document)
+- [Importing JSON data into Redis using NodeJS](/howtos/redisjson/using-nodejs)
+- Learn more about [Redis JSON](https://oss.redis.com/redisjson/) in the QuickStart tutorial.
+- [How to build shopping cart app using NodeJS and Redis JSON](/howtos/shoppingcart)
+- [Indexing, Querying, and Full-Text Search of JSON Documents with Redis](https://redis.com/blog/index-and-query-json-docs-with-redis/)

@@ -249,16 +249,8 @@ module.exports = {
             title: 'Get Started',
             items: [
               {
-                label: 'Create Database',
-                to: '/create/rediscloud',
-              },
-              {
                 label: 'Develop',
                 to: '/develop/',
-              },
-              {
-                label: 'Explore your data',
-                to: '/explore/redisinsight/',
               },
               {
                 label: 'Best Practices',
@@ -272,10 +264,6 @@ module.exports = {
               //   label: 'Samples & Demos',
               //   to: '#',
               // },
-              {
-                label: 'Redis Stack',
-                href: '/create/redis-stack/',
-              },
             ],
           },
           {
@@ -292,10 +280,6 @@ module.exports = {
               {
                 label: 'Redis Commands',
                 href: 'https://redis.io/commands',
-              },
-              {
-                label: 'How-tos & tutorials',
-                to: '/howtos',
               },
               {
                 label: 'Stack Overflow',

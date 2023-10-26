@@ -1,0 +1,124 @@
+---
+id: index-azure-terraform-private-endpoint
+title: Azure Cache for Redis Enterprise using Terraform with Private Link
+sidebar_label: Azure Cache for Redis Enterprise using Terraform with Private Link
+slug: /create/azure/terraform-private-endpoint
+---
+
+Azure Private Link for Azure Cache for Redis provides private connectivity from a virtual network to your cache instance. This means that you can now use Azure Private Link to connect to an Azure Cache for Redis instance from your virtual network via a private endpoint, which is assigned a private IP address in a subnet within the virtual network.It simplifies the network architecture and secures the connection between endpoints in Azure by eliminating data exposure to the public internet. Private Link carries traffic privately, reducing your exposure to threats and helps you meet compliance standards.
+
+Azure Resource Manager(a.k.a AzureRM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. You can use management features, like access control, locks, and tags, to secure and organize your resources after deployment. The "azurerm_redis_enterprise_cluster" is a resource that manages a Redis Enterprise cluster. This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
+
+### Prerequisite
+
+1.  [Terraform](https://terraform.io)
+2.  [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+### Step 1. Getting Started
+
+Login in Azure using the Azure CLI
+
+```bash
+az login
+```
+
+> Login with a Service Principal will also work
+
+Login using an Azure Service Principal
+
+```bash
+az login --service-principal --username APP_ID --tenant TENANT_ID --password [password || /path/to/cert]
+```
+
+### Step 2: Clone the repository
+
+```bash
+git clone https://github.com/redis-developer/acre-terraform
+```
+
+### Step 3: Initialize the repository
+
+```bash
+cd acre-terraform
+terraform init
+```
+
+> The output should include: `Terraform has been successfully initialized`
+
+### Step 4: Modify the variables(optional)
+
+The default variables are setup to deploy the smallest 'E10' instance into the 'East US' region.
+Changes can be made by updating the `variables.tf` file.
+
+### Step 5: Verify the plan
+
+The 'plan' output will show you everything being created by the template.
+
+```bash
+terraform plan
+```
+
+> The output should include: `Plan: 18 to add, 0 to change, 0 to destroy.`
+
+### Step 6: Apply the plan
+
+When the plan looks good, 'apply' the template.
+
+```bash
+terraform apply
+```
+
+> The output should include: `Apply complete! Resources: 18 added, 0 changed, 0 destroyed.`
+
+### Step 7: Connect using generated output
+
+The access key is sensitive, so viewing the outputs must be requested specifically.
+The output is also in JSON format.
+
+```bash
+terraform output redisgeek_config
+```
+
+> Example output:
+
+```
+{
+"hostname" = "redisgeek-8jy4.eastus.redisenterprise.cache.azure.net"
+"access_key" = "DQYABC3uRMXXXXXXXXXXXXXXXXTRkfgOXXXPjs82Y="
+"port" = "10000"
+}
+```
+
+### Resources
+
+##### 1. How to use Redis Cache for Redis like a Pro
+
+<div class="text--center">
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/eThj-jwViZw"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
+</div>
+
+##### 2. Do More with Azure Cache for Redis, Enterprise Tiers
+
+<div class="text--center">
+  <iframe
+    width="760"
+    height="415"
+    src="https://www.youtube.com/embed/t6XQHsKFMKQ"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
+</div>
+
+### References
+
+- [Azure Cache for Redis Enterprise](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redisga_redislabs_cloudpartner_cta1)
+- [Accelerate Modern Application Delivery with Redis Enterprise on Microsoft Azure](https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWGGx3)
+- [Quickstart: Create a Redis Enterprise cache](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/quickstart-create-redis-enterprise)

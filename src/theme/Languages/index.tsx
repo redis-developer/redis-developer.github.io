@@ -40,29 +40,9 @@ function Languages() {
           </li>
 
           <li>
-            <a href={useBaseUrl('/develop/python/')}>
-              <SvgPython />
-              <span className="btn">Python</span>
-            </a>
-          </li>
-
-          <li>
             <a href={useBaseUrl('/develop/node/')}>
               <SvgNode />
               <span className="btn">Node.js</span>
-            </a>
-          </li>
-          <li>
-            <a href="/develop/dotnet">
-              <SvgCSharp />
-              <span className="btn">.NET</span>
-            </a>
-          </li>
-
-          <li>
-            <a href={useBaseUrl('/develop/golang/')}>
-              <SvgGo />
-              <span className="btn">Go</span>
             </a>
           </li>
 
@@ -92,13 +72,6 @@ function Languages() {
           </li>
 
           <li>
-            <a href={useBaseUrl('/create/gcp/')}>
-              <SvgGCP />
-              <span className="btn">GCP</span>
-            </a>
-          </li>
-
-          <li>
             <a href={useBaseUrl('/create/docker/')}>
               <SvgDocker />
               <span className="btn">Docker</span>
@@ -111,13 +84,6 @@ function Languages() {
               <span className="btn">Kubernetes</span>
             </a>
           </li>
-
-          <li>
-            <a href={useBaseUrl('/create/from-source/')}>
-              <SvgLinux />
-              <span className="btn">Linux</span>
-            </a>
-          </li>
         </ul>
       </div>
 
@@ -127,35 +93,6 @@ function Languages() {
             <a href={useBaseUrl('/create/windows/')}>
               <SvgWindows />
               <span className="btn">Windows</span>
-            </a>
-          </li>
-
-          <li>
-            <a href={useBaseUrl('/create/homebrew/')}>
-              <SvgApple />
-              <span className="btn">Mac</span>
-            </a>
-          </li>
-
-          <li>
-            <a
-              href={useBaseUrl('/create/netlify/getting-started-with-netlify')}>
-              <SvgNetlify />
-              <span className="btn">Netlify</span>
-            </a>
-          </li>
-
-          <li>
-            <a href={useBaseUrl('/create/vercel/')}>
-              <SvgVercel />
-              <span className="btn">Vercel</span>
-            </a>
-          </li>
-
-          <li>
-            <a href={useBaseUrl('/create/cloudrun/')}>
-              <SvgCloudRun />
-              <span className="btn">Cloudrun</span>
             </a>
           </li>
 

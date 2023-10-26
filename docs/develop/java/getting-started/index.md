@@ -30,7 +30,6 @@ Use these commands to setup a Redis server locally on Mac OS:
 
 :::info INFO
 Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack provides the following in addition to Redis Open Source: JSON, Search, Time Series, and Probabilistic data structures.
-[Learn more](/create/redis-stack)
 :::
 
 Ensure that you are able to use the following Redis command to connect to the Redis instance.

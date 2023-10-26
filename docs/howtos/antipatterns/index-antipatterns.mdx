@@ -31,8 +31,6 @@ Let us look at the redis-py that uses a connection pool to manage connections to
  >>> r = redis.Redis(connection_pool=pool)
 ```
 
-[Learn more about redis-py](/develop/python/)
-
 ### 2. Connecting directly to Redis instances
 
 With a large number of clients, a reconnect flood will be able to simply overwhelm a single threaded Redis process and force a failover. Hence, it is recommended that you should use the right tool that allows you to reduce the number of open connections to your Redis server.

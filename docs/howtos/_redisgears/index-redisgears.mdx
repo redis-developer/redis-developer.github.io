@@ -1,0 +1,69 @@
+---
+id: index-redisgears
+title: RedisGears Tutorial
+sidebar_label: RedisGears Tutorial
+slug: /howtos/redisgears
+authors: [ajeet]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+[RedisGears](https://redis.com/modules/redis-gears/) is an engine for data processing in Redis. RedisGears supports batch and event-driven processing for Redis data. To use RedisGears, you write functions that describe how your data should be processed. You then submit this code to your Redis deployment for remote execution.
+
+RedisGears is implemented by a Redis module. To use RedisGears, you’ll need to make sure that your Redis deployment has the module installed.
+
+### Step 1. Installing RedisGears
+
+Before you can use RedisGears, you have to install the RedisGears module. We will be using redislabs/redismod Docker image for this demonsration
+
+```bash
+ docker run -d -p 6379:6379 redislabs/redismod
+```
+
+### Step 2. Verifying if RedisGears module is enabled:
+
+You can directly use `redis-cli` CLI to verify if RedisGears module("rg") is properly loaded or not.
+
+```bash
+ redis-cli
+ redis-cli
+ 127.0.0.1:6379> info modules
+ # Modules
+ ..
+ module:name=rg,ver=10006,api=1,filters=0,usedby=[],using=[ai],options=[]
+```
+
+### Step 3. Create a "wordcount" Python script
+
+To demonstrate RedisGears functionality, we will be performing a unique word count on the existing strings.
+We will be writing a RedisGears function to do this.
+
+Open a file called wordcount.py, and add the following code:
+
+```python
+ gb = GearsBuilder()
+ gb.map(lambda x: x['value'])     # map each key object to its string value
+ gb.flatmap(lambda x: x.split())  # split each string into a list of words
+ gb.countby()                     # run a count-unique on these words
+ gb.run()
+```
+
+### Step 4. Execute the CLI
+
+```bash
+ redis-cli rg.pyexecute "`cat wordcount.py`"
+  1) 1) "{'key': 'world', 'value': 1}"
+  2) "{'key': 'galaxy', 'value': 1}"
+  3) "{'key': 'hello', 'value': 3}"
+  4) "{'key': 'universe', 'value': 1}"
+ 2) (empty array)
+```
+
+The results here show the number of occurences of each word in all of our strings. So, we’ve effectively processed the data in our Redis database all at once, in a batch.
+
+### References
+
+- [How to build a Fraud Detection System using Probabilistic Data Structure](/howtos/frauddetection)
+- [RedisGears Module](https://redis.com/modules/redis-gears/)

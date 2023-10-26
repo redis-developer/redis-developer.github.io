@@ -1,0 +1,70 @@
+---
+id: index-from-source
+title: Create Redis database from Source
+sidebar_label: Redis from Source
+slug: /create/from-source/
+authors: [ajeet]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+### Step 1: Download, extract and compile Redis
+
+Redis stands for REmote DIctionary Server. Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+In order to install Redis from source, first you need to download the latest Redis source code.
+The Redis source code is available to download [here](https://download.redis.io/redis-stable.tar.gz). You can verify the integrity of these downloads by checking them against the digests in the [redis-hashes git repository](https://github.com/redis/redis-hashes)
+
+```
+wget https://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+```
+
+It is a good idea to copy both the Redis server and the command line interface into the proper places, either manually using the following commands:
+
+```
+sudo cp src/redis-server /usr/local/bin/
+sudo cp src/redis-cli /usr/local/bin/
+```
+
+Or just using `sudo make install.`
+
+The binaries that are now compiled are available in the src directory.
+
+### Step 2: Running Redis Server
+
+Install the Redis server by running the following command:
+
+```
+$ redis-server
+```
+
+:::note
+
+You don't need to restart the Redis service.
+
+:::
+
+### Step 3: Interacting with Redis Client
+
+Once the Redis installation has completed, you can use the Redis client to connect to the Redis server.
+Use the following commands to store and retrieve a string:
+
+```
+$ src/redis-cli
+redis> set foo bar
+OK
+redis> get foo
+"bar"
+```
+
+`redis.conf` is the Redis configuration file, used to configure the behavior of the Redis Server. For more information on the available configuration options, check out the [documentation on redis.io](https://redis.io/docs/manual/config/).
+
+### Next Steps
+
+- [Develop with Java and Redis](/develop/java)
+- [High availability with Redis Sentinel](https://redis.io/docs/manual/sentinel/)

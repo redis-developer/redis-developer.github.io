@@ -1,0 +1,108 @@
+---
+id: index-redisgears
+title: Write Your Serverless Redis function using RedisInsight Browser Tool
+sidebar_label: Write Your Serverless Redis function using RedisInsight Browser Tool
+slug: /explore/redisinsight/redisgears
+authors: [ajeet]
+---
+
+import Authors from '@theme/Authors';
+
+<Authors frontMatter={frontMatter} />
+
+RedisInsight has built-in support for Redis with JSON, Search, Graph, Streams, Time Series, and Triggers and Functions. Triggers and Functions enable reactive programming at the database level. It's like using lambda functions, but with a dramatically lower latency, and with much less encoding/decoding overhead.
+
+Support for [Triggers and Functions](https://oss.redis.com/redisgears/) was first introduced in RedisInsight v1.5.0. RedisInsights allows you:
+
+- Explore the latest executed functions and analyze the results or errors.
+- Manage registered functions and get execution summary.
+- Code, build and execute functions.
+
+Triggers and Functions enable developers to write and execute [functions](https://oss.redis.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. These capabilities enable efficient data processing using multiple models in Redis with infinite programmability, while remaining simple to use in any environment.
+
+Follow the below steps to get started with the RedisInsight browser tool for RedisGears.
+
+## Step 1. Create Redis database
+
+[Follow this link to get started with Redis Stack](/howtos/quick-start)
+
+## Step 2: Download RedisInsight
+
+To install RedisInsight on your local system, you need to first download the software from the Redis website.
+
+[Click this link ](https://redis.com/redis-enterprise/redis-insight/#insight-form) to access a form that allows you to select the operating system of your choice.
+
+![My Image](images/redisinsightinstall.png)
+
+Run the installer. After the web server starts, open http://YOUR_HOST_IP:8001 and add a Redis database connection.
+
+Select "Connect to a Redis database"
+![My Image](images/redisinsight4.png)
+
+Enter the requested details, including Name, Host (endpoint), Port, and Password. Then click “ADD REDIS DATABASE”.
+
+## Step 3. Clone the repository
+
+```
+$ git clone https://github.com/RedisGears/ImdbExample
+$ cd ImdbExample
+```
+
+## Step 4. Download the IMDB data
+
+Download the data from this link and extract it to the current directory: [https://datasets.imdbws.com/title.basics.tsv.gz](https://datasets.imdbws.com/title.basics.tsv.gz)
+
+```
+$ wget https://datasets.imdbws.com/title.basics.tsv.gz
+$ gunzip title.basics.tsv.gz
+```
+
+## Step 5. Execute the script
+
+```
+$ python3 UploadImdb.py -H localhost -P 6379
+
+python3 UploadImdb.py -H 192.168.1.9 -P 6379
+/Users/ajeetraina/projects/redis-datasets/redisgears/ImdbExample/UploadImdb.py:27: DeprecationWarning: Pipeline.hmset() is deprecated. Use Pipeline.hset() instead.
+  pipe.hmset(d['tconst'], d)
+done
+```
+
+## Step 6. Accessing RedisInsight
+
+Choose “RedisGears” on the left menu.
+
+![alt_text](images/image1.png)
+
+## Step 7. Add the below script:
+
+```
+GB('KeysOnlyReader').map(lambda x: execute('hget', x, 'genres')).flatmap(lambda x: x.split(',')).countby().run()
+```
+
+![alt_text](images/image2.png)
+
+![alt_text](images/image3.png)
+
+## Additional References
+
+- [Triggers and Functions Project](https://oss.redis.com/redisgears/)
+- [How to build a Fraud Detection System using Probabilistic Data Structures](/howtos/frauddetection)
+- [Building a Pipeline for Natural Language Processing using Redis](/howtos/nlp)
+
+##
+
+<div>
+  <a
+    href="https://launchpad.redis.com"
+    target="_blank"
+    rel="noopener"
+    className="link">
+    <img
+      src="/img/launchpad.png"
+      className="thumb"
+      loading="lazy"
+      alt="Redis Launchpad"
+    />
+  </a>
+</div>
