@@ -98,7 +98,7 @@ Stream messages enforce no requirement that field names be unique. We use a dict
 
 ## Spin up most recent element task
 
-Next, we'll need to spin up a task to read the most recent element off of the stream. To do this, we'll use the `StreamRangeAsync` method passing in two special ids, `-` which means the lowest id, and `+`, which means the highest id. Running this command will result in some duplication. This redundancy is necessary because the `StackExchange.Redis` library does not support blocking stream reads and does not support the special `$` character for stream reads. Overcoming this behavior is explored in-depth in the [Blocking Reads](blocking-reads) tutorial. For this tutorial, you can manage these most-recent reads with the following code:
+Next, we'll need to spin up a task to read the most recent element off of the stream. To do this, we'll use the `StreamRangeAsync` method passing in two special ids, `-` which means the lowest id, and `+`, which means the highest id. Running this command will result in some duplication. This redundancy is necessary because the `StackExchange.Redis` library does not support blocking stream reads and does not support the special `$` character for stream reads. For this tutorial, you can manage these most-recent reads with the following code:
 
 ```csharp
 var readTask = Task.Run(async () =>

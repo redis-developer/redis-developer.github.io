@@ -17,13 +17,13 @@ Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming l
 <Tabs
   defaultValue="direct"
   values={[
-    {label: 'Direct via Redis Enterprise Cloud', value: 'direct'},
+    {label: 'Direct via Redis Cloud', value: 'direct'},
     {label: 'Addons using Heroku CLI', value: 'CLI'},
     {label: 'Addons using Heroku Dashboard', value: 'dashboardui'},
   ]}>
   <TabItem value="direct">
 
-### Using Redis Enterprise Cloud directly
+### Using Redis Cloud directly
 
 Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
 
@@ -33,22 +33,15 @@ Redis Cloud is a fully-managed cloud service for hosting and running your Redis 
 Heroku addons are set of tools and services for developing, extending, and operating your app.
 :::
 
-You can quickly and easily get your apps up and running with Redis Enterprise Cloud directly. Follow the below steps:
+You can quickly and easily get your apps up and running with Redis Cloud directly. Follow the below steps:
 
-#### Step 1. Create Redis Enterprise Cloud
+#### Step 1. Create Redis Cloud
 
-Create your free Redis Enterprise Cloud account by visiting [this link](https://redis.com/try-free)
-
-:::tip
-For a limited time, use **TIGER200** to get **$200** credits on Redis Enterprise Cloud and try all the advanced capabilities!
-
-:tada: [Click here to sign up](https://redis.com/try-free)
-
-:::
+Create your free Redis Cloud account by visiting [this link](https://redis.com/try-free)
 
 ![recloud](tryfree.png)
 
-[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database. Once you create the database, you will be provisioned with a unique database endpoint URL, port and password. Save these for future reference.
+[Follow this link to create a Redis Cloud](https://redis.com/try-free) subscription and database. Once you create the database, you will be provisioned with a unique database endpoint URL, port and password. Save these for future reference.
 
 Before you proceed with heroku redis, ensure that you can connect to Redis instance and verify if it is accessible via redis-cli command. You can run `info` command that is available in redis client software to see the version, memory usage, stats, and modules enabled in the Redis cloud database.
 
@@ -74,7 +67,7 @@ If you are using Heroku for the first time, create your new Heroku account [thro
  Logged in as your_email_address
 ```
 
-#### Step 5. Connect your application to Redis Enterprise Cloud
+#### Step 5. Connect your application to Redis Cloud
 
 For this demonstration, we will be using a [Sample Rate Limiting application](https://github.com/redis-developer/basic-rate-limiting-demo-python).
 
@@ -96,7 +89,7 @@ Run the commands below to get a functioning Git repository that contains a simpl
 
 #### Step 6. Setting up environment variables
 
-[Follow this link to create a Redis Enterprise Cloud](/create/rediscloud) subscription and database connection as shown below: Go to the Heroku dashboard, click "Settings" and set `REDIS_URL` and `REDIS_PASSWORD` under the Config Vars.
+[Follow this link to create a Redis Cloud](https://redis.com/try-free) subscription and database connection as shown below: Go to the Heroku dashboard, click "Settings" and set `REDIS_URL` and `REDIS_PASSWORD` under the Config Vars.
 
 :::note
 
@@ -148,11 +141,11 @@ Check the logs:
 
 :::note
 
-Please note that this method won't allow you to choose Redis Modules while creating your Redis database. Also, it doesn't provide you with the flexibility to choose the Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+Please note that this method won't allow you to choose Redis Modules while creating your Redis database. Also, it doesn't provide you with the flexibility to choose the Cloud platform of your choice. It is recommended to use Redis Cloud directly. [Click here to learn more](https://redis.com/try-free).
 
 :::
 
-In this section, we will create a Heroku account, use the Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
+In this section, we will create a Heroku account, use the Heroku CLI to login and add Redis Cloud as an add-on.
 
 #### Step 1: Install Heroku
 
@@ -219,13 +212,13 @@ Once Redis Cloud has been added, you will notice a REDISCLOUD_URL config var in 
  REDISCLOUD_URL: redis://default:ajSE7DuqhmGG7u2ZbSU0HTuEqTx1FuEQ@redis-17268.c256.us-east-1-2.ec2.cloud.redislabs.com:17268
 ```
 
-#### Step 5. Accessing the Redis Enterprise Cloud dashboard
+#### Step 5. Accessing the Redis Cloud dashboard
 
 Go to Heroku and click on “Installed add-ons”:
 
 ![heroku](heroku_addons.png)
 
-Click on “Redis Enterprise Cloud” and you will be redirected to the Redis Enterprise Cloud Dashboard.
+Click on “Redis Cloud” and you will be redirected to the Redis Cloud Dashboard.
 
 ![heroku](heroku_rediscloud1.png)
 
@@ -258,7 +251,7 @@ Open https://lit-island-48230.herokuapp.com/ and access the rate limiting app.
 
 :::note
 
-Please note that this method won't allow you to choose Redis Modules while creating a Redis database. Also, it doesn't provide you with the flexibility to choose the Cloud platform of your choice. It is recommended to use Redis Enterprise Cloud directly. [Click here to learn more](/create/rediscloud).
+Please note that this method won't allow you to choose Redis Modules while creating a Redis database. Also, it doesn't provide you with the flexibility to choose the Cloud platform of your choice. It is recommended to use Redis Cloud directly. [Click here to learn more](https://redis.com/try-free).
 
 :::
 
@@ -312,11 +305,6 @@ Click "Open App" on the top right corner.
 
  </TabItem>
 </Tabs>
-
-### Next Steps
-
-- [How to build a Java based Rate Limiting application on Heroku using Redis](/howtos/herokujava)
-- [How to build a NodeJS based Rate Limiting application on Heroku using Redis](/howtos/herokunodejs)
 
 ##
 

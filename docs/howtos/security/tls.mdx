@@ -26,7 +26,7 @@ In this article, we will focus on the Two-Way SSL, and using Redis Enterprise.
 
 - A Redis Enterprise 6.0.x database, (my database is protected by the password `secretdb01`, and listening on port `12000`)
 - `redis-cli` to run basic commands
-- [Python](/develop/python/), [Node](/develop/node), and [Java](/develop/java) installed if you want to test various languages.
+- [Node](/develop/node), and [Java](/develop/java) installed if you want to test various languages.
 
 ## Simple Test
 
@@ -41,7 +41,6 @@ You can either run Redis server in a Docker container or directly on your machin
 
 :::info INFO
 Redis Stack unifies and simplifies the developer experience of the leading Redis modules and the capabilities they provide. Redis Stack supports the folliwng in additon to Redis: JSON, Search, Time Series, Triggers and Functions, and Probilistic data structures.
-[Learn more](/create/redis-stack)
 :::
 
 Let's make sure that the database is available:
@@ -194,8 +193,6 @@ try:
 except Exception as err:
   print("Error connecting to Redis: {}".format(err))
 ```
-
-More information in the documentation "[Using Redis with Python](/develop/python/)".
 
 ### Step 5.3 Using Node.JS
 
