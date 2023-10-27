@@ -47,7 +47,7 @@ Ensure that you are able to use the following Redis command to connect to the Re
  <dependency>
      <groupId>redis.clients</groupId>
      <artifactId>jedis</artifactId>
-     <version>3.4.0</version>
+     <version>5.0.2</version>
  </dependency>
 ```
 
@@ -208,7 +208,6 @@ Redis for Java Developers teaches you how to build robust Redis client applicati
 <div class="text--center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/CmQMdJefTjc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
-
 
 <div>
 <a href="https://launchpad.redis.com" target="_blank" rel="noopener" className="link"> <img src="/img/launchpad.png"  className="thumb" loading="lazy" alt="Redis Launchpad" /></a>
