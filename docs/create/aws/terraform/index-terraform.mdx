@@ -32,10 +32,10 @@ Terraform is an open source IaC software tool that provides a consistent CLI wor
 - It is not intended to give low-level programmatic access to providers, but instead provides a high-level syntax for describing how cloud resources and services should be created, provisioned, and combined.
 - It provides a simple, unified syntax, allowing almost any resource to be managed without learning new tooling.
 
-### The HashiCorp Terraform Redis Enterprise Cloud provider
+### The HashiCorp Terraform Redis Cloud provider
 
-Redis has developed a Terraform provider for Redis Enterprise Cloud. The HashiCorp Terraform Redis Enterprise Cloud provider allows customers to deploy and manage Redis Enterprise Cloud subscriptions, databases, and network peering easily as code, on any cloud provider. It is a plugin for Terraform that allows Redis Enterprise Cloud Flexible customers to manage the full life cycle of their subscriptions and related Redis databases.
-The Redis Enterprise Cloud provider is used to interact with the resources supported by Redis Enterprise Cloud. The provider needs to be configured with the proper credentials before it can be used. Use the navigation to the left to read about the available provider resources and data sources.
+Redis has developed a Terraform provider for Redis Cloud. The HashiCorp Terraform Redis Cloud provider allows customers to deploy and manage Redis Cloud subscriptions, databases, and network peering easily as code, on any cloud provider. It is a plugin for Terraform that allows Redis Cloud Flexible customers to manage the full life cycle of their subscriptions and related Redis databases.
+The Redis Cloud provider is used to interact with the resources supported by Redis Cloud. The provider needs to be configured with the proper credentials before it can be used. Use the navigation to the left to read about the available provider resources and data sources.
 
 ![rediscloud](terraform_rediscloud.png)
 
@@ -108,13 +108,13 @@ Data sources allow Terraform to use information defined outside of Terraform, de
 A data block requests that Terraform read from a given data source ("rediscloud_payment_method") and export the result under the given local name ("card"). The name is used to refer to this resource from elsewhere in the same Terraform module, but has no significance outside of the scope of a module.
 Within the block body (between { and }) are query constraints defined by the data source. Most arguments in this section depend on the data source, and indeed in this example card_type and last_four_numbers are all arguments defined specifically for the rediscloud_payment_method data source.
 
-### Configure Redis Enterprise Cloud programmatic access
+### Configure Redis Cloud programmatic access
 
-In order to set up authentication with the Redis Enterprise Cloud provider, a programmatic API key must be generated for Redis Enterprise Cloud. The Redis Enterprise Cloud documentation contains the most up-to-date instructions for creating and managing your key(s) and IP access.
+In order to set up authentication with the Redis Cloud provider, a programmatic API key must be generated for Redis Cloud. The Redis Cloud documentation contains the most up-to-date instructions for creating and managing your key(s) and IP access.
 
 :::note
 
-Flexible and Annual Redis Enterprise Cloud subscriptions can leverage a RESTful API that permits operations against a variety of resources, including servers, services, and related infrastructure. The REST API is not supported for Fixed or Free subscriptions.
+Flexible and Annual Redis Cloud subscriptions can leverage a RESTful API that permits operations against a variety of resources, including servers, services, and related infrastructure. The REST API is not supported for Fixed or Free subscriptions.
 
 :::
 
@@ -126,7 +126,7 @@ Flexible and Annual Redis Enterprise Cloud subscriptions can leverage a RESTful 
 ### Prerequisites:
 
 - Install Terraform on MacOS.
-- Create a free Redis Enterprise Cloud account.
+- Create a free Redis Cloud account.
 - Create your first subscription.
 - Enable API
 
@@ -138,15 +138,15 @@ Use Homebrew to install Terraform on MacOS as shown below:
  brew install terraform
 ```
 
-### Step 2: Sign up for a free Redis Enterprise Cloud account
+### Step 2: Sign up for a free Redis Cloud account
 
-[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for free Redis Enterprise Cloud account.
+[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for free Redis Cloud account.
 
 ![Redis Cloud](tryfree.png)
 
-### Step 3: Enable Redis Enterprise Cloud API
+### Step 3: Enable Redis Cloud API
 
-If you have a Flexible (or Annual) Redis Enterprise Cloud subscription, you can use a REST API to manage your subscription programmatically. The Redis Cloud REST API is available only to Flexible or Annual subscriptions. It is not supported for Fixed or Free subscriptions.
+If you have a Flexible (or Annual) Redis Cloud subscription, you can use a REST API to manage your subscription programmatically. The Redis Cloud REST API is available only to Flexible or Annual subscriptions. It is not supported for Fixed or Free subscriptions.
 
 For security reasons, the Redis Cloud API is disabled by default. To enable the API:
 Sign in to your Redis Cloud subscription as an account owner.
@@ -552,5 +552,5 @@ Destroy complete! Resources: 3 destroyed.
 
 ### Further References:
 
-- [Provision and Manage Redis Enterprise Cloud Anywhere with HashiCorp Terraform](https://redis.com/blog/provision-manage-redis-enterprise-cloud-hashicorp-terraform/)
-- [The HashiCorp Terraform Redis Enterprise Cloud provider](https://registry.terraform.io/providers/RedisLabs/rediscloud/latest)
+- [Provision and Manage Redis Cloud Anywhere with HashiCorp Terraform](https://redis.com/blog/provision-manage-redis-enterprise-cloud-hashicorp-terraform/)
+- [The HashiCorp Terraform Redis Cloud provider](https://registry.terraform.io/providers/RedisLabs/rediscloud/latest)

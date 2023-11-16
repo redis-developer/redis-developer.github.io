@@ -76,13 +76,12 @@ function Resources() {
                   )}
                   className="thumb"
                   loading="lazy"
-                  alt="Redis Enterprise Cloud sample app architecture diagram"
+                  alt="Redis Cloud sample app architecture diagram"
                 />
                 <div className="article-body">
                   <span className="type">Blog</span>
                   <h3 className="title">
-                    Serverless development with AWS Lambda and Redis Enterprise
-                    Cloud
+                    Serverless development with AWS Lambda and Redis Cloud Cloud
                   </h3>
                 </div>
                 <a

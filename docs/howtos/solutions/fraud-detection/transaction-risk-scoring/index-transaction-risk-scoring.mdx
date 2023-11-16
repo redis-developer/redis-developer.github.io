@@ -42,13 +42,13 @@ More accurate risk scoring with **AI/ML** addresses these issues. Modern fraud d
 
 The models use historical as well as most recent data to create a risk profile for each customer. By analyzing past behaviour it is possible to create a profile of what is normal for each customer. Any transactions that deviate from this profile can be flagged as suspicious, reducing the likelihood of false positives. The models are very fast to adapt to changes in normal behaviour too, and can quickly identify patterns of fraud transactions.
 
-This is exactly where **Redis Enterprise** excels in transaction risk scoring.
+This is exactly where **Redis Cloud** excels in transaction risk scoring.
 
-### How to use Redis Enterprise for transaction risk scoring
+### How to use Redis Cloud for transaction risk scoring
 
-People use Redis Enterprise as the **in-memory** online feature store for online and **real-time access** to feature data as part of a transaction risk scoring system. By serving online features with low latency, Redis Enterprise enables the risk-scoring models to return results in real-time, thereby allowing the whole system to achieve high accuracy and **instant response** on approving legitimate online transactions.
+People use Redis Cloud as the **in-memory** online feature store for online and **real-time access** to feature data as part of a transaction risk scoring system. By serving online features with low latency, Redis Cloud enables the risk-scoring models to return results in real-time, thereby allowing the whole system to achieve high accuracy and **instant response** on approving legitimate online transactions.
 
-Another very common use for Redis Enterprise in transaction risk scoring is for **transaction filters**. A transaction filter can be implemented as a **Bloom** filter that stores information about user behaviours. It can answer questions like "Have we seen this user purchase at this merchant before?" Or, "Have we seen this user purchase at this merchant in the X to Y price range before?" Being a probabilistic data structure, Redis Bloom filters do, indeed, sacrifice some accuracy, but in return, they get a very low memory footprint and response time.
+Another very common use for Redis Cloud in transaction risk scoring is for **transaction filters**. A transaction filter can be implemented as a **Bloom** filter that stores information about user behaviours. It can answer questions like "Have we seen this user purchase at this merchant before?" Or, "Have we seen this user purchase at this merchant in the X to Y price range before?" Being a probabilistic data structure, Redis Bloom filters do, indeed, sacrifice some accuracy, but in return, they get a very low memory footprint and response time.
 
 :::tip
 
@@ -564,7 +564,7 @@ These filters are pre-populated in the demo application based on a feature store
 
 ## Conclusion
 
-In this post, you learned how to use Redis Streams to build a transaction risk scoring pipeline. You also learned how to use Redis Enterprise as a feature store and Redis Bloom filters to calculate a profile score. Every application is unique, so this tutorial is meant to be a starting point for you to build your own transaction risk scoring pipeline.
+In this post, you learned how to use Redis Streams to build a transaction risk scoring pipeline. You also learned how to use Redis Cloud as a feature store and Redis Bloom filters to calculate a profile score. Every application is unique, so this tutorial is meant to be a starting point for you to build your own transaction risk scoring pipeline.
 
 ### Additional resources
 
@@ -577,4 +577,4 @@ In this post, you learned how to use Redis Streams to build a transaction risk s
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
 - [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
-- [Try Redis Enterprise for free](https://redis.com/try-free/)
+- [Try Redis Cloud for free](https://redis.com/try-free/)

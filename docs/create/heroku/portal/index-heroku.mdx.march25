@@ -17,7 +17,7 @@ Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming l
 <Tabs
   defaultValue="direct"
   values={[
-    {label: 'Direct via Redis Enterprise Cloud', value: 'direct'},
+    {label: 'Direct via Redis Cloud', value: 'direct'},
     {label: 'Addons using Heroku CLI', value: 'CLI'},
     {label: 'Addons using Heroku Dashboard', value: 'dashboardui'},
   ]}>
@@ -25,25 +25,25 @@ Heroku is a cloud Platform as a Service (PaaS) supporting multiple programming l
 
 
 
-## Using Redis Enterprise Cloud
+## Using Redis Cloud
 
 ![heroku](heroku_rediscloud.png)
 
-You can quickly and easily get your apps up and running with Redis Enterprise Cloud directly. Follow the below steps:
+You can quickly and easily get your apps up and running with Redis Cloud directly. Follow the below steps:
 
 
-### Step 1. Create Redis Enterprise Cloud
+### Step 1. Create Redis Cloud
 
-Create your free Redis Enterprise Cloud account. Follow this link to know how to create Redis Enterprise Cloud subscription and database as shown below:
+Create your free Redis Cloud account. Follow this link to know how to create Redis Cloud subscription and database as shown below:
 
 ![heroku](rediscloud.png)
 
 
 Save the database endpoint URL and password for future reference.
 
-### Step 2. Connect your application to Redis Enterprise Cloud
+### Step 2. Connect your application to Redis Cloud
 
-Here’s a sample rate limiting application that you can connect to Redis Enterprise Cloud:
+Here’s a sample rate limiting application that you can connect to Redis Cloud:
 
 #### Cloning the repository
 
@@ -180,7 +180,7 @@ You now have a functioning Git repository that contains a simple application as 
 ## Addons using Heroku CLI
 
 
-You can use Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
+You can use Heroku CLI to login and add Redis Cloud as an add-on.
 
 ### Step 1: Install Heroku
 
@@ -201,7 +201,7 @@ Assuming that you already have Heroku account created, run the below command to 
    ```
 
 
-### Step 2. Installing Redis Enterprise Cloud Add-on
+### Step 2. Installing Redis Cloud Add-on
 
 
 Create a Heroku app
@@ -269,11 +269,11 @@ You can even browse it through Heroku Dashboard:
 
 ![heroku](heroku_selectrecloud.png)
 
-Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
+Click on “Redis Cloud” and it will be redirected over Redis Cloud Dashboard
 
 ![heroku](heroku_recloud.png)
 
-As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard.
+As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Cloud dashboard.
 
 
  </TabItem>
@@ -289,9 +289,9 @@ As shown above, a database called "redis-kickstartredis-XXX" gets created over R
 
 Open  https://dashboard.heroku.com/apps and create a new sample application. For this demo, I have deployed an application with the name “kickstartredis”.
 
-### Step 2: Install Redis Enterprise Cloud
+### Step 2: Install Redis Cloud
 
-Open https://elements.heroku.com/addons/rediscloud and click on “Install Redis Enterprise Cloud” to sign up with Heroku.
+Open https://elements.heroku.com/addons/rediscloud and click on “Install Redis Cloud” to sign up with Heroku.
 
 ![heroku](heroku2.png)
 
@@ -307,17 +307,17 @@ Once you sign in, you will see “Online Order Form” as shown below:
 
 ![heroku](orderform.png)
 
-### Step 5. Provision Redis Enterprise Cloud database
+### Step 5. Provision Redis Cloud database
 
-Provision Redis Enterprise Cloud on your personal application(which in the above case is “kickstartredis”.
+Provision Redis Cloud on your personal application(which in the above case is “kickstartredis”.
 
 ![heroku](heroku_selectrecloud.png)
 
-Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
+Click on “Redis Cloud” and it will be redirected over Redis Cloud Dashboard
 
 ![heroku](heroku_recloud.png)
 
-As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Enterprise Cloud dashboard.
+As shown above, a database called "redis-kickstartredis-XXX" gets created over Redis Cloud dashboard.
 
 ### Step 6. Accessing the database
 
@@ -333,4 +333,4 @@ redis-11324.c82.us-east-1-2.ec2.cloud.redislabs.com:11324>
 
 
  </TabItem>
-<Tabs>
+</Tabs>

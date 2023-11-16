@@ -46,13 +46,13 @@ Ready to get started? Ok, let’s dive straight in.
 
 #### All auctions
 
-NodeJS connects to the Redis Enterprise Cloud database.
+NodeJS connects to the Redis Cloud database.
 
 The frontend then communicates with the NodeJS backend through API calls.
 
 `GET : /api/auctions` fetches all the keys from Auctions Hash.
 
-NodeJS uses the Redis module to work with Redis Enterprise Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
+NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then created using the Redis credentials and hmget(). This is the equivalent of the HMSET command that’s used to push data to the Redis database.
 
 #### Each auction
 
@@ -85,13 +85,13 @@ NodeJS uses the Redis module to work with Redis Cloud. The Redis client is then 
 - [NodeJS](https://nodejs.org/en/)
 - [NPM](https://www.npmjs.com/)
 
-### Step 1. Sign up for a Free Redis Enterprise Cloud Account
+### Step 1. Sign up for a Free Redis Cloud Account
 
-[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for a free Redis Enterprise Cloud account.
+[Follow this tutorial](https://developer.redis.com/create/aws/redis-on-aws) to sign up for a free Redis Cloud account.
 
 ![image](sign3.png)
 
-Choose AWS as a Cloud vendor while creating your new subscription. At the end of the database creation process, you will get a Redis Enterprise CLoud database endpoint and password. You can save it for later use.
+Choose AWS as a Cloud vendor while creating your new subscription. At the end of the database creation process, you will get a Redis Cloud database endpoint and password. You can save it for later use.
 
 ![image](sign4.png)
 
@@ -173,7 +173,7 @@ npm start
 
 ### How data is stored
 
-The [Redis Enterprise Cloud](https://redis.com/try-free) database with Redis Stack is what you’ll use to install the data.
+The [Redis Cloud](https://redis.com/try-free) database with Redis Stack is what you’ll use to install the data.
 
 ### Auctions
 
@@ -288,4 +288,4 @@ But thanks to Redis, the components that made up the architecture system became 
 
 [NR-Digital-Auction](https://launchpad.redis.com/?id=project%3ANR-digital-auction-frontend) is a fantastic example of how innovations can be brought to life by using Redis. Everyday programmers are experimenting with Redis to build applications that are impacting everyday life from around the world and you can too!
 
-So what can you build with Redis? For more inspiration, you can head over to the [Redis Launchpad](https://launchpad.redis.com/) to access an exciting range of applications. If you're ready to get started building, quickly spin up a free database [Redis Enterprise](https://redis.com/try-free/).
+So what can you build with Redis? For more inspiration, you can head over to the [Redis Launchpad](https://launchpad.redis.com/) to access an exciting range of applications. If you're ready to get started building, quickly spin up a free database [Redis Cloud](https://redis.com/try-free/).
