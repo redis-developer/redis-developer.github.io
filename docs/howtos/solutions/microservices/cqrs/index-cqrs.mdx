@@ -10,7 +10,7 @@ import Authors from '@theme/Authors';
 import MicroservicesEcommerceDesign from '../common-data/microservices-ecommerce.mdx';
 import InitialMicroservicesArchitecture from '../common-data/microservices-arch.mdx';
 import SourceCode from '../common-data/microservices-source-code-tip.mdx';
-import RedisEnterprise from '../common-data/redis-enterprise.mdx';
+import RedisCloud from '../common-data/redis-enterprise.mdx';
 
 import cqrsPattern from './images/cqrs-pattern.png';
 import cqrsArchitectureWithCdc from './images/cqrs-architecture-with-cdc.png';
@@ -47,7 +47,7 @@ Implementing CDC requires:
 
 :::tip
 
-While you can implement your own CDC mechanism with Redis using RedisGears, Redis Enterprise comes with its own integrated CDC mechanism to solve this problem for you.
+While you can implement your own CDC mechanism with Redis using Triggers and Functions, Redis Cloud comes with its own integrated CDC mechanism to solve this problem for you.
 
 :::
 
@@ -79,7 +79,7 @@ For the purposes of this tutorial, we’re not highlighting how communication is
 
 :::tip
 
-When your e-commerce application eventually needs to scale across the globe, Redis Enterprise provides Active-Active geo-distribution for reads and writes at local latencies as well as availability of 99.999% uptime.
+When your e-commerce application eventually needs to scale across the globe, Redis Cloud provides Active-Active geo-distribution for reads and writes at local latencies as well as availability of 99.999% uptime.
 
 :::
 
@@ -172,7 +172,7 @@ For tutorial simplicity, we add data to both primary database and Redis in the s
 
 :::tip
 
-If you're using **Redis Enterprise**, you can take advantage of the **integrated CDC** mechanism to avoid having to roll your own.
+If you're using **Redis Cloud**, you can take advantage of the **integrated CDC** mechanism to avoid having to roll your own.
 
 :::
 
@@ -341,4 +341,4 @@ Hopefully, this tutorial has helped you visualize how to use Redis with the CQRS
 - [Redis YouTube channel](https://www.youtube.com/c/Redisinc)
 - Clients like [Node Redis](https://github.com/redis/node-redis) and [Redis om Node](https://github.com/redis/redis-om-node) help you to use Redis in Node.js applications.
 - [RedisInsight](https://redis.com/redis-enterprise/redis-insight/) : To view your Redis data or to play with raw Redis commands in the workbench
-- [Try Redis Enterprise for free](https://redis.com/try-free/)
+- [Try Redis Cloud for free](https://redis.com/try-free/)

@@ -35,7 +35,7 @@ Sign in to Heroku, open  https://dashboard.heroku.com/apps and create a new samp
 
 ### Step 2:
 
-Open https://elements.heroku.com/addons/rediscloud and click on “Install Redis Enterprise Cloud” to sign up with Heroku.
+Open https://elements.heroku.com/addons/rediscloud and click on “Install Redis Cloud” to sign up with Heroku.
 
 ![heroku](heroku2.png)
 
@@ -53,11 +53,11 @@ Once you sign in, you will see “Online Order Form” as shown below:
 
 ### Step 5.
 
-Provision Redis Enterprise Cloud on your personal application(which in the above case is “kickstartredis”.
+Provision Redis Cloud on your personal application(which in the above case is “kickstartredis”.
 
 ### References
 
-- [Redis Enterprise Cloud on Heroku](https://elements.heroku.com/addons/rediscloud)
+- [Redis Cloud on Heroku](https://elements.heroku.com/addons/rediscloud)
 - [Pricing](https://elements.heroku.com/addons/rediscloud#pricing)
 - [Region Availability](https://elements.heroku.com/addons/rediscloud#region-map)
 - [Documentation](https://elements.heroku.com/addons/rediscloud#docs)
@@ -70,7 +70,7 @@ Provision Redis Enterprise Cloud on your personal application(which in the above
 ## Using Heroku CLI
 
 
-You can use Heroku CLI to login and add Redis Enterprise Cloud as an add-on.
+You can use Heroku CLI to login and add Redis Cloud as an add-on.
 
 ### Step 1: Install Heroku on MacOS
 
@@ -151,7 +151,7 @@ You can even browse it through Heroku Dashboard:
 
 ![heroku](heroku_selectrecloud.png)
 
-Click on “Redis Enterprise Cloud” and it will be redirected over Redis Enterprise Cloud Dashboard
+Click on “Redis Cloud” and it will be redirected over Redis Cloud Dashboard
 
 ![heroku](heroku_recloud.png)
 
@@ -186,7 +186,7 @@ You now have a functioning Git repository that contains a simple application as 
 
 ### Deploy the app
 
-It is recommended to use Redis Enterprise Cloud Page for creating the database as it allows you to add Redis modules of your choice. Also, it provides you freedom to choose Cloud other than AWS for creating the database.
+It is recommended to use Redis Cloud Page for creating the database as it allows you to add Redis modules of your choice. Also, it provides you freedom to choose Cloud other than AWS for creating the database.
 
 
 In this step you will deploy the app to Heroku.

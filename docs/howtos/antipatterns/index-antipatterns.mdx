@@ -20,7 +20,7 @@ Developers don’t just use Redis, they love it. [Stack Overflow’s annual Deve
 
 With large databases running on a single shard/Redis instance, there are chances that the fail over, backup and recovery all will take longer. Hence, it’s always recommended to keep shards to recommended sizes. General conservative rule of thumb is 25Gb or 25K Ops/Second.
 
-Redis Enterprise recommends to shard if you have more than 25 GB of data and a high number of operations. Another aspect is if you have above 25,000 operations per second, then sharding can improve performance. With less number of operations/second, it can handle up to 50GB of data too.
+Redis Cloud recommends to shard if you have more than 25 GB of data and a high number of operations. Another aspect is if you have above 25,000 operations per second, then sharding can improve performance. With less number of operations/second, it can handle up to 50GB of data too.
 
 ### Examples #1 - redis-py
 
@@ -41,7 +41,7 @@ With a large number of clients, a reconnect flood will be able to simply overwhe
 
 Redis OSS uses a shard-based quorum. It's advised to use at least 3 copies of the data (2 replica shards per master shard) in order to be protected from split-brain situations. In nutshell, Redis OSS solves the quorum challenge by having an odd number of shards (primary + 2 replicas).
 
-Redis Enterprise solves the quorum challenge with an odd number of nodes. Redis Enterprise avoids a split-brain situation with only 2 copies of the data, which is more cost-efficient. In addition, the so-called ‘quorum-only node' can be used to bring a cluster up to an odd number of nodes if an additional, not necessary data node would be too expensive.
+Redis Cloud solves the quorum challenge with an odd number of nodes. Redis Cloud avoids a split-brain situation with only 2 copies of the data, which is more cost-efficient. In addition, the so-called ‘quorum-only node' can be used to bring a cluster up to an odd number of nodes if an additional, not necessary data node would be too expensive.
 
 ### 4. Performing single operation
 
@@ -84,7 +84,7 @@ Scaning keyspace by keyname is an extremely slow operation and will run O(N) wit
 
 Redis is often used as a primary storage engine for applications. Unlike using Redis as a cache, using Redis as a primary database requires two extra features to be effective. Any primary database should really be highly available. If a cache goes down, then generally your application is in a brown-out state. If a primary database goes down, your application also goes down. Similarly, if a cache goes down and you restart it empty, that’s no big deal. For a primary database, though, that’s a huge deal. Redis can handle these situations easily, but they generally require a different configuration than running as a cache. Redis as a primary database is great, but you’ve got to support it by turning on the right features.
 
-With Redis open source, you need to set up Redis Sentinel for high availability. In Redis Enterprise, it’s a core feature that you just need to turn on when creating the database. As for durability, both Redis Enterprise and open source Redis provide durability through AOF or snapshotting so your instance(s) start back up the way you left them.
+With Redis open source, you need to set up Redis Sentinel for high availability. In Redis Cloud, it’s a core feature that you just need to turn on when creating the database. As for durability, both Redis Cloud and open source Redis provide durability through AOF or snapshotting so your instance(s) start back up the way you left them.
 
 ### 10. Storing JSON blobs in a string
 

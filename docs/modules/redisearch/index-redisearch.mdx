@@ -11,7 +11,7 @@ Redis Search also supports auto-completion with fuzzy prefix matching, and atomi
 
 ### Step 1. Register and subscribe
 
-Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Enterprise Cloud
+Follow [this link to register](/create/cloud/rediscloud) and subscribe to Redis Cloud
 
 ![Redisearch](redisearch3.png)
 
@@ -47,7 +47,7 @@ HSET movies:11002 title "Star Wars: Episode V - The Empire Strikes Back" plot "L
 (integer) 6
 ```
 
-Your Redis Enterprise Cloud database now contains two Hashes. It is simple to retrieve information using the HMGET command, if you know the key of the movies (movies:11002):
+Your Redis Cloud database now contains two Hashes. It is simple to retrieve information using the HMGET command, if you know the key of the movies (movies:11002):
 
 ```
 > HMGET movies:11002 title rating

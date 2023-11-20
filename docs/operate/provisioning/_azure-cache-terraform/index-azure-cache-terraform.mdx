@@ -1,18 +1,18 @@
 ---
 id: index-azure-cache-terraform
-title: Azure Cache for Redis Enterprise using Terraform
-sidebar_label: Azure Cache for Redis Enterprise using Terraform
+title: Azure Cache for Redis Cloud using Terraform
+sidebar_label: Azure Cache for Redis Cloud using Terraform
 slug: /operate/provisioning/azure-cache-terraform
 ---
 
-The Enterprise Tiers of Azure Cache for Redis are generally available as a native fully managed service on Microsoft Azure. This offering combines Azure’s global presence, flexibility, security, and compliance with Redis Enterprise’s unmatched availability, performance, and extended data structure functionality to create the best experience for enterprises. Enterprise features include:
+The Enterprise Tiers of Azure Cache for Redis are generally available as a native fully managed service on Microsoft Azure. This offering combines Azure’s global presence, flexibility, security, and compliance with Redis Cloud’s unmatched availability, performance, and extended data structure functionality to create the best experience for enterprises. Cloud features include:
 
 - [Open source Redis 6.0](https://redis.com/blog/diving-into-redis-6/)
 - [Zone redundancy, with up to 99.99% availability](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-high-availability#zone-redundancy)
 - [Active geo-replication, with up to 99.999% availability](https://redis.com/redis-enterprise/technology/active-active-geo-distribution/) - Preview
 - [Redis on Flash (RoF)](https://redis.com/redis-enterprise/technology/redis-on-flash/)
 - [Disk persistence with recovery](https://redis.com/redis-enterprise/technology/durable-redis/) - Preview
-- Redis Enterprise features:
+- Redis Cloud features:
   - [Search and Query](https://redis.com/blog/redisearch-2-build-modern-applications-interactive-search/)
   - [TimeSeries data model](https://redis.com/modules/redis-timeseries/)
   - [Probabilistic data model](https://redis.com/modules/redis-bloom/)
@@ -28,7 +28,7 @@ The Enterprise Tiers of Azure Cache for Redis are generally available as a nativ
 
 Azure Resource Manager (a.k.a AzureRM) is the deployment and management service for Azure. It provides a management layer that enables you to create, update, and delete resources in your Azure account. You use management features, like access control, locks, and tags, to secure and organize your resources after deployment.
 
-The "azurerm_redis_enterprise_cluster" is a resource that manages a Redis Enterprise cluster. This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
+The "azurerm_redis_enterprise_cluster" is a resource that manages a Redis Cloud cluster. This is a template to get started with the 'azurerm_redis_enterprise_cluster' resource available in the 'azurerm' provider with Terraform.
 
 ### Prerequisites
 
@@ -115,7 +115,7 @@ terraform output redisgeek_config
     allowfullscreen></iframe>
 </div>
 
-##### Do More with Azure Cache for Redis, Enterprise Tiers
+##### Do More with Azure Cache for Redis, Cloud Tiers
 
 <div class="text--center">
   <iframe
@@ -130,6 +130,6 @@ terraform output redisgeek_config
 
 ### References
 
-- [Azure Cache for Redis Enterprise](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redisga_redislabs_cloudpartner_cta1)
-- [Accelerate Modern Application Delivery with Redis Enterprise on Microsoft Azure](https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWGGx3)
+- [Azure Cache for Redis Cloud](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redisga_redislabs_cloudpartner_cta1)
+- [Accelerate Modern Application Delivery with Redis Cloud on Microsoft Azure](https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWGGx3)
 - [Quickstart: Create a Redis Enterprise cache](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/quickstart-create-redis-enterprise)

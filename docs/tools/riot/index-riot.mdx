@@ -21,7 +21,7 @@ Redis Input/Output Tools (RIOT) is a set of import/export command line utilities
   ]}>
   <TabItem value="RIOT Redis">
 
-Most database migration tools available today are offline in nature. Migrating data from AWS ElastiCache to Redis Enterprise Cloud for example means backing up your Elasticache data to an AWS S3 bucket and importing it into Redis Enterprise Cloud using its UI.This implies some downtime and might result in data loss.
+Most database migration tools available today are offline in nature. Migrating data from AWS ElastiCache to Redis Cloud for example means backing up your Elasticache data to an AWS S3 bucket and importing it into Redis Cloud using its UI.This implies some downtime and might result in data loss.
 Other available techniques include creating point-in-time snapshots of the source Redis server & applying the changes to the destination servers to keep both servers in sync.
 It might sound like a good approach but can be challenging when you have to maintain dozens of scripts to implement the migration strategy.
 
@@ -120,7 +120,7 @@ RIOT Redis implements client-side replication using a producer/consumer approach
 
 - the producer is connected to the source Redis (e.g. ElastiCache) and iterates over keys to read their corresponding values
 
-- the consumer is connected to the target Redis (e.g. Redis Enterprise Cloud) and writes the key/value tuples previously created
+- the consumer is connected to the target Redis (e.g. Redis Cloud) and writes the key/value tuples previously created
 
 1. Key reader: initiates a SCAN and optionally calls SUBSCRIBE to listen for keyspace notifications (live replication).
 2. Value reader: takes the keys and calls DUMP and TTL.

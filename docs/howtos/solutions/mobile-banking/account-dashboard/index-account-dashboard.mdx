@@ -23,18 +23,18 @@ The following diagram is an example data architecture for an account dashboard:
 ![dashboard](./images/dashboard.png)
 
 1. Banks store information in a number of separate databases that support individual banking products
-2. Key customer account details (balances, recent transactions) across the banks product portfolio are prefetched into Redis Enterprise using Redis Data Integration (RDI)
-3. Redis Enterprise powers customer's account dashboards, enabling mobile banking users to view balances and other high-priority information immediately upon login
+2. Key customer account details (balances, recent transactions) across the banks product portfolio are prefetched into Redis Cloud using Redis Data Integration (RDI)
+3. Redis Cloud powers customer's account dashboards, enabling mobile banking users to view balances and other high-priority information immediately upon login
 
 ## Why you should use Redis for account dashboards in mobile banking
 
-- **Resilience**: Redis Enterprise provides resilience with 99.999% uptime and Active-Active Geo Distribution to prevent loss of critical user profile data
+- **Resilience**: Redis Cloud provides resilience with 99.999% uptime and Active-Active Geo Distribution to prevent loss of critical user profile data
 
-- **Scalability**: Redis Enterprise provides < 1ms performance at incredibly high scale to ensure apps perform under peak loads
+- **Scalability**: Redis Cloud provides < 1ms performance at incredibly high scale to ensure apps perform under peak loads
 
 - **JSON Support**: Provides the ability to create and store account information as JSON documents with the < 1ms speed of Redis
 
-- **Querying and Indexing**: Redis Enterprise can quickly identify and store data from multiple different databases and index data to make it readily searchable
+- **Querying and Indexing**: Redis Cloud can quickly identify and store data from multiple different databases and index data to make it readily searchable
 
 :::note
 
