@@ -395,6 +395,7 @@ module.exports = {
               label: 'Vector Database',
               items: [
                 'howtos/solutions/vector/getting-started-vector/index-getting-started-vector',
+                'howtos/solutions/vector/gen-ai-chatbot/index-solutions-gen-ai-chatbot',
               ],
             },
           ],
