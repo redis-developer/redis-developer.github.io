@@ -10,6 +10,7 @@ import Authors from '@theme/Authors';
 import InitialMicroservicesArchitecture from '../../microservices/common-data/microservices-arch.mdx';
 import MicroservicesEcommerceAIDesign from '../common-ai/microservices-ecommerce-ai.mdx';
 import sampleProductImage from './images/product-img.webp';
+import SourceCode from '../common-ai/microservices-source-code-ai.mdx';
 
 <Authors frontMatter={frontMatter} />
 
@@ -29,17 +30,9 @@ This tutorial demonstrates how to perform semantic search on product images usin
 
 **[OpenAI](https://openai.com/)** provides advanced language models like GPT-3, which have revolutionized the field with their ability to understand and generate human-like text. These models form the backbone of many modern AI applications including semantic text/ image search and chatbots.
 
-## Source code
-
-:::tip GITHUB CODE
-
-Below is a command to the clone the source code for the application used in this tutorial
-
-git clone --branch v9.0.0 https://github.com/redis-developer/redis-microservices-ecommerce-solutions
-
-:::
-
 ## Microservices architecture for an e-commerce application
+
+<SourceCode />
 
 <InitialMicroservicesArchitecture />
 
@@ -52,6 +45,8 @@ git clone --branch v9.0.0 https://github.com/redis-developer/redis-microservices
 :::info
 Sign up for an <u>[OpenAI account](https://platform.openai.com/)</u> to get your API key to be used in the demo (add OPEN_AI_API_KEY variable in .env file). You can also refer to the <u>[OpenAI API documentation](https://platform.openai.com/docs/api-reference/introduction)</u> for more information.
 :::
+
+<SourceCode />
 
 ### Sample data
 
@@ -396,7 +391,7 @@ const getSimilarProductsScoreByVSSImageSummary = async (
 
   // filter by scoreLimit
   for (let [doc, score] of vectorDocsWithScore) {
-    if (score >= scoreLimit) {
+    if (score <= scoreLimit) {
       doc['similarityScore'] = score;
       vectorDocs.push(doc);
     }
