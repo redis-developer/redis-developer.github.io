@@ -291,7 +291,7 @@ const addImageSummaryEmbeddingsToRedis = async (
 };
 ```
 
-The image below shows the JSON structure of openAI product image summary within RedisInsight.
+The image below shows the JSON structure of **openAI image summary** within RedisInsight.
 ![Redis Insight AI products](./images/redis-insight-ai-image.png)
 
 :::tip
@@ -317,7 +317,7 @@ POST http://localhost:3000/products/getProductsByVSSImageSummary
 
    //optional
    "maxProductCount": 4, // 2 (default)
-   "similarityScoreLimit":0.1, // 0.1 (default)
+   "similarityScoreLimit":0.2, // 0.2 (default)
 }
 ```
 
@@ -370,7 +370,7 @@ const getSimilarProductsScoreByVSSImageSummary = async (
   const client = getNodeRedisClient();
 
   KNN = KNN || 2;
-  scoreLimit = scoreLimit || 0;
+  scoreLimit = scoreLimit || 1;
 
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: openAIApiKey,
@@ -410,7 +410,7 @@ const getProductsByVSSImageSummary = async (
 
   const openAIApiKey = process.env.OPEN_AI_API_KEY || '';
   maxProductCount = maxProductCount || 2;
-  similarityScoreLimit = similarityScoreLimit || 0.1;
+  similarityScoreLimit = similarityScoreLimit || 0.2;
 
   //VSS search
   const vectorDocs = await getSimilarProductsScoreByVSSImageSummary({

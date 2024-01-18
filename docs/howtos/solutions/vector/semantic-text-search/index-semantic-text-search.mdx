@@ -15,19 +15,16 @@ import SourceCode from '../common-ai/microservices-source-code-ai.mdx';
 
 ## What you will learn in this tutorial
 
-This tutorial demonstrates how to perform semantic text search on product description using LangChain (OpenAI) and Redis. Specifically, we'll cover the following topics:
+This tutorial explores the implementation of semantic text search in product descriptions using LangChain (OpenAI) and Redis. The focus areas include:
 
-- **E-Commerce Application Context** : Consider a sample e-commerce application scenario where customers can perform semantic text search on product details, add items to their shopping cart, and complete purchases, thereby highlighting a real-world application of semantic search.
-
-- **Database setup** : This involves generating semantic embeddings for product details and efficiently storing them in Redis.
-
-- **Setting up the search API** : This API is designed to process user queries in the context of product details. It integrates the capabilities of OpenAI for semantic analysis with Redis for efficient data retrieval and storage.
+- **Contextualizing E-Commerce**: Dive into an e-commerce scenario where semantic text search empowers users to find products through detailed textual queries.
+- **Database Implementation**: Learn to create and store semantic embeddings from product descriptions in Redis for efficient search capabilities.
+- **Search API Development**: Understand how to build an API that leverages OpenAI for semantic analysis of text and Redis for data management.
 
 ## Terminology
 
-**[LangChain](https://js.langchain.com)** is an innovative library for building language model applications. It offers a structured way to combine different components like language models (e.g., OpenAI's models), storage solutions (like Redis), and custom logic. This modular approach facilitates the creation of sophisticated AI applications.
-
-**[OpenAI](https://openai.com/)** provides advanced language models like GPT-3, which have revolutionized the field with their ability to understand and generate human-like text. These models form the backbone of many modern AI applications including semantic text/ image search and chatbots.
+- **[LangChain](https://js.langchain.com)**: A versatile library for developing language model applications, combining language models, storage systems, and custom logic.
+- **[OpenAI](https://openai.com/)**: A provider of cutting-edge language models like GPT-3, essential for applications in semantic search and conversational AI.
 
 ## Microservices architecture for an e-commerce application
 
@@ -49,7 +46,7 @@ Sign up for an <u>[OpenAI account](https://platform.openai.com/)</u> to get your
 
 ### Sample data
 
-For the purposes of this tutorial, let's consider a simplified e-commerce context. The `products` JSON provided offers a glimpse into AI search functionalities we'll be operating on.
+Consider a simplified e-commerce dataset featuring product details for semantic search.
 
 ```ts title="database/fashion-dataset/001/products/*.json"
 const products = [
@@ -75,7 +72,9 @@ const products = [
 
 ### Seeding product details embeddings
 
-The `addEmbeddingsToRedis` function plays a critical role in integrating AI-generated product details embeddings with Redis. This process involves two main steps:
+Implement the `addEmbeddingsToRedis` function to integrate AI-generated product description embeddings with Redis.
+
+This process involves two main steps:
 
 1. **Generating Vector Documents**: Utilizing the `convertToVectorDocuments` function, we transform product details into vector documents. This transformation is crucial as it converts product details into a format suitable for Redis storage.
 
@@ -163,7 +162,8 @@ const addEmbeddingsToRedis = async (
 };
 ```
 
-The image below shows the JSON structure of openAI product details within RedisInsight.
+Examine the structured `openAI product details` within Redis using RedisInsight.
+
 ![Redis Insight AI products](./images/redis-insight-ai-product-details.png)
 
 :::tip
@@ -189,7 +189,7 @@ POST http://localhost:3000/products/getProductsByVSSText
 
    //optional
    "maxProductCount": 4, // 2 (default)
-   "similarityScoreLimit":0.1, // 0.1 (default)
+   "similarityScoreLimit":0.2, // 0.2 (default)
 }
 ```
 
@@ -240,7 +240,7 @@ const getSimilarProductsScoreByVSS = async (
   const client = getNodeRedisClient();
 
   KNN = KNN || 2;
-  scoreLimit = scoreLimit || 0;
+  scoreLimit = scoreLimit || 1;
 
   let embeddings = new OpenAIEmbeddings({
     openAIApiKey: openAIApiKey,
@@ -284,7 +284,7 @@ const getProductsByVSSText = async (
 
   const openAIApiKey = process.env.OPEN_AI_API_KEY || '';
   maxProductCount = maxProductCount || 2;
-  similarityScoreLimit = similarityScoreLimit || 0.1;
+  similarityScoreLimit = similarityScoreLimit || 0.2;
 
   if (!openAIApiKey) {
     throw new Error('Please provide openAI API key in .env file');
@@ -317,18 +317,18 @@ const getProductsByVSSText = async (
 
 ### Frontend UI
 
-- **Settings configuration**: Initially, ensure that the `Semantic text search` option is enabled in the settings page.
+- **Settings configuration**: Enable `Semantic text search` in the settings page
   ![settings page](./images/01-ui-settings2.png)
 
-- **Performing a search**: On the dashboard page, users can conduct searches using semantic text. For example, if the query is `pure cotton blue shirts`, the search results will display products like men and women blue shirts, as shown below.
-
+- **Performing a search**: Use textual queries on the dashboard.
   ![search page](./images/02-ui-image-search2.png)
 
-- **Viewing product description**: Users can click on any product description to view full description details.
+- <i>Note:</i> Users can click on the product description within the product card
+  to view the complete details.
 
 ## Ready to use Redis for semantic text search?
 
-Performing semantic text search is a powerful tool for e-commerce applications. It allows users to search for products based on their descriptions, enabling a more intuitive and efficient shopping experience. This tutorial has demonstrated how to integrate OpenAI's semantic analysis capabilities with Redis to create a robust search engine for e-commerce applications.
+Discover the power of semantic text search for enhancing the e-commerce experience. This tutorial guides you through integrating OpenAI's semantic capabilities with Redis for a dynamic product search engine.
 
 ## Further reading
 
