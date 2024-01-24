@@ -60,14 +60,14 @@ To get started with our AI-powered video Q&A application, you'll first need to s
 - [Node.js](https://nodejs.org/)
 - [Docker](https://www.docker.com/)
 - [SearchAPI.io API Key](https://www.searchapi.io/)
-    - This is used to retrieve video transcripts and free for up to 100 requests. The application will cache the results to help avoid exceeding the free tier.
+  - This is used to retrieve video transcripts and free for up to 100 requests. The application will cache the results to help avoid exceeding the free tier.
 - [Google API Key](https://console.cloud.google.com/apis/credentials)
-    - You must have the following APIs enabled:
-        - YouTube Data API v3
-        - Generative Language API
-    - This is used to retrieve video information and prompt the Google Gemini model. This is not free.
+  - You must have the following APIs enabled:
+    - YouTube Data API v3
+    - Generative Language API
+  - This is used to retrieve video information and prompt the Google Gemini model. This is not free.
 - [OpenAI API Key](https://platform.openai.com/api-keys)
-    - This is used to prompt the OpenAI ChatGPT model. This is not free.
+  - This is used to prompt the OpenAI ChatGPT model. This is not free.
 
 ### Setting Up Redis
 
@@ -188,31 +188,31 @@ The backend is set up to handle YouTube video links or IDs. The relevant code sn
 
 ```typescript title="services/video-search/src/transcripts/load.ts"
 export type VideoDocument = Document<{
-    id: string;
-    link: string;
-    title: string;
-    description: string;
-    thumbnail: string;
+  id: string;
+  link: string;
+  title: string;
+  description: string;
+  thumbnail: string;
 }>;
 
 export async function load(videos: string[] = config.youtube.VIDEOS) {
-    // Parse the video URLs to get a list of video IDs
-    const videosToLoad: string[] = videos.map(parseVideoUrl).filter((video) => {
-        return typeof video === 'string';
-    }) as string[];
+  // Parse the video URLs to get a list of video IDs
+  const videosToLoad: string[] = videos.map(parseVideoUrl).filter((video) => {
+    return typeof video === 'string';
+  }) as string[];
 
-    // Get video title, description, and thumbail from YouTube API v3
-    const videoInfo = await getVideoInfo(videosToLoad);
+  // Get video title, description, and thumbail from YouTube API v3
+  const videoInfo = await getVideoInfo(videosToLoad);
 
-    // Get video transcripts from SearchAPI.io, join the video info
-    const transcripts = await mapAsyncInOrder(videosToLoad, async (video) => {
-        return await getTranscript(video, videoInfo[video]);
-    });
+  // Get video transcripts from SearchAPI.io, join the video info
+  const transcripts = await mapAsyncInOrder(videosToLoad, async (video) => {
+    return await getTranscript(video, videoInfo[video]);
+  });
 
-    // Return the videos as documents with metadata, and pageContent being the transcript
-    return transcripts.filter(
-        (transcript) => typeof transcript !== 'undefined',
-    ) as VideoDocument[];
+  // Return the videos as documents with metadata, and pageContent being the transcript
+  return transcripts.filter(
+    (transcript) => typeof transcript !== 'undefined',
+  ) as VideoDocument[];
 }
 ```
 
@@ -227,25 +227,25 @@ These caches are used to store the transcripts (as a `string`) and video metadat
 
 ```typescript title="services/video-search/src/db.ts"
 export function cacheAside(prefix: string) {
-    return {
-        get: async (key: string) => {
-            return await client.get(`${prefix}${key}`);
-        },
-        set: async (key: string, value: string) => {
-            return await client.set(`${prefix}${key}`, value);
-        },
-    };
+  return {
+    get: async (key: string) => {
+      return await client.get(`${prefix}${key}`);
+    },
+    set: async (key: string, value: string) => {
+      return await client.set(`${prefix}${key}`, value);
+    },
+  };
 }
 
 export function jsonCacheAside<T>(prefix: string) {
-    return {
-        get: async (key: string): Promise<T | undefined> => {
-            return client.json.get(`${prefix}${key}`) as T;
-        },
-        set: async (key: string, value: RedisJSON) => {
-            return await client.json.set(`${prefix}${key}`, '$', value);
-        },
-    };
+  return {
+    get: async (key: string): Promise<T | undefined> => {
+      return client.json.get(`${prefix}${key}`) as T;
+    },
+    set: async (key: string, value: RedisJSON) => {
+      return await client.json.set(`${prefix}${key}`, '$', value);
+    },
+  };
 }
 ```
 
@@ -303,7 +303,7 @@ SUMMARY AND QUESTIONS:
 `;
 
 export const SUMMARY_REFINE_PROMPT = PromptTemplate.fromTemplate(
-    summaryRefineTemplate,
+  summaryRefineTemplate,
 );
 ```
 
@@ -311,56 +311,56 @@ The `summary prompts` are used to create a `refinement chain` with LangChain. La
 
 ```typescript title="services/video-search/src/api/prompt.ts" {1-5,30-35}
 const videoSummarizeChain = loadSummarizationChain(llm, {
-    type: 'refine',
-    questionPrompt: SUMMARY_PROMPT,
-    refinePrompt: SUMMARY_REFINE_PROMPT,
+  type: 'refine',
+  questionPrompt: SUMMARY_PROMPT,
+  refinePrompt: SUMMARY_REFINE_PROMPT,
 });
 
 const summaryCache = cacheAside(`${prefix}-${config.redis.SUMMARY_PREFIX}`);
 
 async function summarizeVideos(videos: VideoDocument[]) {
-    const summarizedDocs: VideoDocument[] = [];
+  const summarizedDocs: VideoDocument[] = [];
 
-    for (const video of videos) {
-        log.debug(`Summarizing ${video.metadata.link}`, {
-            ...video.metadata,
-            location: `${prefix}.summarize.docs`,
-        });
-        const existingSummary = await summaryCache.get(video.metadata.id);
+  for (const video of videos) {
+    log.debug(`Summarizing ${video.metadata.link}`, {
+      ...video.metadata,
+      location: `${prefix}.summarize.docs`,
+    });
+    const existingSummary = await summaryCache.get(video.metadata.id);
 
-        if (typeof existingSummary === 'string') {
-            summarizedDocs.push(
-                new Document({
-                    metadata: video.metadata,
-                    pageContent: existingSummary,
-                }),
-            );
+    if (typeof existingSummary === 'string') {
+      summarizedDocs.push(
+        new Document({
+          metadata: video.metadata,
+          pageContent: existingSummary,
+        }),
+      );
 
-            continue;
-        }
-
-        const splitter = new TokenTextSplitter({
-            chunkSize: 10000,
-            chunkOverlap: 250,
-        });
-        const docsSummary = await splitter.splitDocuments([video]);
-        const summary = await videoSummarizeChain.run(docsSummary);
-
-        log.debug(`Summarized ${video.metadata.link}:\n ${summary}`, {
-            summary,
-            location: `${prefix}.summarize.docs`,
-        });
-        await summaryCache.set(video.metadata.id, summary);
-
-        summarizedDocs.push(
-            new Document({
-                metadata: video.metadata,
-                pageContent: summary,
-            }),
-        );
+      continue;
     }
 
-    return summarizedDocs;
+    const splitter = new TokenTextSplitter({
+      chunkSize: 10000,
+      chunkOverlap: 250,
+    });
+    const docsSummary = await splitter.splitDocuments([video]);
+    const summary = await videoSummarizeChain.run(docsSummary);
+
+    log.debug(`Summarized ${video.metadata.link}:\n ${summary}`, {
+      summary,
+      location: `${prefix}.summarize.docs`,
+    });
+    await summaryCache.set(video.metadata.id, summary);
+
+    summarizedDocs.push(
+      new Document({
+        metadata: video.metadata,
+        pageContent: summary,
+      }),
+    );
+  }
+
+  return summarizedDocs;
 }
 ```
 
@@ -368,63 +368,63 @@ Notice the `summaryCache` is used to first ask Redis if the video has already be
 
 ```text title="https://www.youtube.com/watch?v=LaiQFZ5bXaM"
 Summary:
-The video provides a walkthrough of building a real-time stock tracking application 
-using Redis Stack, demonstrating its capability to handle multiple data models and 
-act as a message broker in a single integrated database. The application maintains 
-a watch list of stock symbols, along with real-time trading information and a chart 
-updated with live data from the Alpaca API. The presenter uses Redis Stack features 
-such as sets, JSON documents, time series, Pub/Sub, and Top-K filter to store and 
-manage different types of data. An architecture diagram is provided, explaining the 
-interconnection between the front end, API service, and streaming service within 
-the application. Code snippets highlight key aspects of the API and streaming 
-service written in Python, highlighting the use of Redis Bloom, Redis JSON, Redis 
-Time Series, and Redis Search for managing data. The video concludes with a 
-demonstration of how data structures are visualized and managed in RedisInsight, 
-emphasizing how Redis Stack can simplify the building of a complex real-time 
+The video provides a walkthrough of building a real-time stock tracking application
+using Redis Stack, demonstrating its capability to handle multiple data models and
+act as a message broker in a single integrated database. The application maintains
+a watch list of stock symbols, along with real-time trading information and a chart
+updated with live data from the Alpaca API. The presenter uses Redis Stack features
+such as sets, JSON documents, time series, Pub/Sub, and Top-K filter to store and
+manage different types of data. An architecture diagram is provided, explaining the
+interconnection between the front end, API service, and streaming service within
+the application. Code snippets highlight key aspects of the API and streaming
+service written in Python, highlighting the use of Redis Bloom, Redis JSON, Redis
+Time Series, and Redis Search for managing data. The video concludes with a
+demonstration of how data structures are visualized and managed in RedisInsight,
+emphasizing how Redis Stack can simplify the building of a complex real-time
 application by replacing multiple traditional technologies with one solution.
 
 Example Questions and Answers:
 
 Q1: What is Redis Stack and what role does it play in the application?
-A1: Redis Stack is an extension to Redis that adds additional modules, turning it 
-into a multi-model database. In the application, it is used for storing various 
+A1: Redis Stack is an extension to Redis that adds additional modules, turning it
+into a multi-model database. In the application, it is used for storing various
 types of data and managing real-time communication between microservices.
 
 Q2: How is the stock watch list stored and managed within the application?
-A2: The watch list is stored as a Redis set which helps automatically prevent 
-duplicate stock symbols. In addition, further information about each stock is 
+A2: The watch list is stored as a Redis set which helps automatically prevent
+duplicate stock symbols. In addition, further information about each stock is
 stored in JSON documents within Redis Stack.
 
-Q3: What type of data does the application store using time series capabilities of 
+Q3: What type of data does the application store using time series capabilities of
 Redis Stack?
-A3: The application uses time series data to store and retrieve the price movements 
-of the stocks, making it easy to query over a date range and to visualize chart 
+A3: The application uses time series data to store and retrieve the price movements
+of the stocks, making it easy to query over a date range and to visualize chart
 data with time on the x-axis.
 
 Q4: Can you explain the use of the Top-K filter in the application?
-A4: The Top-K filter is a feature of Redis Bloom that is used to maintain a 
-leaderboard of the most frequently traded stocks on the watch list, updating every 
+A4: The Top-K filter is a feature of Redis Bloom that is used to maintain a
+leaderboard of the most frequently traded stocks on the watch list, updating every
 minute with the number of trades that happen.
 
-Q5: What methods are used to update the front end with real-time information in 
+Q5: What methods are used to update the front end with real-time information in
 the application?
-A5: WebSockets are used to receive real-time updates for trending stocks, trades, 
-and stock bars from the API service, which, in turn, receives the information from 
+A5: WebSockets are used to receive real-time updates for trending stocks, trades,
+and stock bars from the API service, which, in turn, receives the information from
 Redis Pub/Sub messages generated by the streaming service.
 
 Q6: How does the application sync the watch list with the streaming service?
-A6: The application listens to the watch list key space in Redis for updates. When 
-a stock is added or removed from the watch list on the front end, the API 
-communicates this to Redis, and the streaming service then subscribes or 
+A6: The application listens to the watch list key space in Redis for updates. When
+a stock is added or removed from the watch list on the front end, the API
+communicates this to Redis, and the streaming service then subscribes or
 unsubscribes to updates from the Alpaca API for that stock.
 
 Q7: What frontend technologies are mentioned for building the UI of the application?
-A7: The UI service for the front end is built using Tailwind CSS, Chart.js, and 
+A7: The UI service for the front end is built using Tailwind CSS, Chart.js, and
 Next.js, which is a typical tech stack for creating a modern web application.
 
 Q8: How does Redis Insight help in managing the application data?
-A8: Redis Insight provides a visual interface to see and manage the data structures 
-used in Redis Stack, including JSON documents, sets, and time series data related 
+A8: Redis Insight provides a visual interface to see and manage the data structures
+used in Redis Stack, including JSON documents, sets, and time series data related
 to the stock information in the application.
 ```
 
@@ -432,13 +432,13 @@ The `vector embedding chain` is used to generate vector embeddings for the video
 
 ```typescript title="services/video-search/src/api/store.ts"
 const vectorStore = new RedisVectorStore(embeddings, {
-    redisClient: client,
-    indexName: `${prefix}-${config.redis.VIDEO_INDEX_NAME}`,
-    keyPrefix: `${prefix}-${config.redis.VIDEO_PREFIX}`,
-    indexOptions: {
-        ALGORITHM: VectorAlgorithms.HNSW,
-        DISTANCE_METRIC: 'IP',
-    },
+  redisClient: client,
+  indexName: `${prefix}-${config.redis.VIDEO_INDEX_NAME}`,
+  keyPrefix: `${prefix}-${config.redis.VIDEO_PREFIX}`,
+  indexOptions: {
+    ALGORITHM: VectorAlgorithms.HNSW,
+    DISTANCE_METRIC: 'IP',
+  },
 });
 ```
 
@@ -446,9 +446,9 @@ The vector store uses the `RedisVectorStore` class from LangChain. This class is
 
 ```typescript title="services/video-search/src/api/llms/google.ts"
 new GoogleGenerativeAIEmbeddings({
-    apiKey: config.google.API_KEY,
-    modelName: modelName ?? config.google.EMBEDDING_MODEL,
-    taskType: TaskType.SEMANTIC_SIMILARITY,
+  apiKey: config.google.API_KEY,
+  modelName: modelName ?? config.google.EMBEDDING_MODEL,
+  taskType: TaskType.SEMANTIC_SIMILARITY,
 });
 ```
 
@@ -456,11 +456,11 @@ Or for OpenAI:
 
 ```typescript title="services/video-search/src/api/llms/openai.ts"
 new OpenAIEmbeddings({
-    openAIApiKey: config.openai.API_KEY,
-    modelName: modelName ?? config.openai.EMBEDDING_MODEL,
-    configuration: {
-        organization: config.openai.ORGANIZATION,
-    },
+  openAIApiKey: config.openai.API_KEY,
+  modelName: modelName ?? config.openai.EMBEDDING_MODEL,
+  configuration: {
+    organization: config.openai.ORGANIZATION,
+  },
 });
 ```
 
@@ -468,42 +468,42 @@ The `embeddings` object is used to generate vector embeddings for the video summ
 
 ```typescript title="services/video-search/src/api/store.ts" {28}
 async function storeVideoVectors(documents: VideoDocument[]) {
-    log.debug('Storing documents...', {
-        location: `${prefix}.store.store`,
-    });
-    const newDocuments: VideoDocument[] = [];
+  log.debug('Storing documents...', {
+    location: `${prefix}.store.store`,
+  });
+  const newDocuments: VideoDocument[] = [];
 
-    await Promise.all(
-        documents.map(async (doc) => {
-            const exists = await client.sIsMember(
-                `${prefix}-${config.redis.VECTOR_SET}`,
-                doc.metadata.id,
-            );
+  await Promise.all(
+    documents.map(async (doc) => {
+      const exists = await client.sIsMember(
+        `${prefix}-${config.redis.VECTOR_SET}`,
+        doc.metadata.id,
+      );
 
-            if (!exists) {
-                newDocuments.push(doc);
-            }
-        }),
-    );
+      if (!exists) {
+        newDocuments.push(doc);
+      }
+    }),
+  );
 
-    log.debug(`Found ${newDocuments.length} new documents`, {
-        location: `${prefix}.store.store`,
-    });
+  log.debug(`Found ${newDocuments.length} new documents`, {
+    location: `${prefix}.store.store`,
+  });
 
-    if (newDocuments.length === 0) {
-        return;
-    }
+  if (newDocuments.length === 0) {
+    return;
+  }
 
-    await vectorStore.addDocuments(newDocuments);
+  await vectorStore.addDocuments(newDocuments);
 
-    await Promise.all(
-        newDocuments.map(async (doc) => {
-            await client.sAdd(
-                `${prefix}-${config.redis.VECTOR_SET}`,
-                doc.metadata.id,
-            );
-        }),
-    );
+  await Promise.all(
+    newDocuments.map(async (doc) => {
+      await client.sAdd(
+        `${prefix}-${config.redis.VECTOR_SET}`,
+        doc.metadata.id,
+      );
+    }),
+  );
 }
 ```
 
@@ -518,7 +518,7 @@ One of the key features of our application is the ability to search through vide
 When a user submits a question through the frontend, the backend performs the following steps to obtain the answer to the question as well as supporting videos:
 
 1. An `answerVectorStore` is used to check if a similar question has already been answered. If so, we can skip the LLM and return the answer. This is called `semantic vector caching`.
-    - This step is optional, the user can choose to generate a unique answer every time.
+   - This step is optional, the user can choose to generate a unique answer every time.
 1. Assuming we need to generate a unique answer, we generate a semantically similar question to the one being asked. This helps to find the most relevant videos.
 1. We then use the `vectorStore` to search for the most relevant videos based on the semantic question.
 1. If we don't find any relevant videos, we search with the original question.
@@ -530,13 +530,13 @@ The `answerVectorStore` looks nearly identical to the `vectorStore` we defined e
 
 ```typescript title="services/video-search/src/api/store.ts" {6-7}
 const answerVectorStore = new RedisVectorStore(embeddings, {
-    redisClient: client,
-    indexName: `${prefix}-${config.redis.ANSWER_INDEX_NAME}`,
-    keyPrefix: `${prefix}-${config.redis.ANSWER_PREFIX}`,
-    indexOptions: {
-        ALGORITHM: VectorAlgorithms.FLAT,
-        DISTANCE_METRIC: 'L2',
-    },
+  redisClient: client,
+  indexName: `${prefix}-${config.redis.ANSWER_INDEX_NAME}`,
+  keyPrefix: `${prefix}-${config.redis.ANSWER_PREFIX}`,
+  indexOptions: {
+    ALGORITHM: VectorAlgorithms.FLAT,
+    DISTANCE_METRIC: 'L2',
+  },
 });
 ```
 
@@ -544,66 +544,63 @@ The following code demonstrates how to use the `answerVectorStore` to check if a
 
 ```typescript title="services/video-search/src/api/search.ts" {16-19}
 async function checkAnswerCache(question: string) {
-    const haveAnswers = await answerVectorStore.checkIndexExists();
+  const haveAnswers = await answerVectorStore.checkIndexExists();
 
-    if (!(haveAnswers && config.searches.answerCache)) {
-        return;
+  if (!(haveAnswers && config.searches.answerCache)) {
+    return;
+  }
+
+  log.debug(`Searching for closest answer to question: ${question}`, {
+    location: `${prefix}.search.getAnswer`,
+    question,
+  });
+
+  /**
+   * Scores will be between 0 and 1, where 0 is most accurate and 1 is least accurate
+   */
+  let results = (await answerVectorStore.similaritySearchWithScore(
+    question,
+    config.searches.KNN,
+  )) as Array<[AnswerDocument, number]>;
+
+  if (Array.isArray(results) && results.length > 0) {
+    // Filter out results with too high similarity score
+    results = results.filter(
+      (result) => result[1] <= config.searches.maxSimilarityScore,
+    );
+
+    const inaccurateResults = results.filter(
+      (result) => result[1] > config.searches.maxSimilarityScore,
+    );
+
+    if (Array.isArray(inaccurateResults) && inaccurateResults.length > 0) {
+      log.debug(
+        `Rejected ${inaccurateResults.length} similar answers that have a score > ${config.searches.maxSimilarityScore}`,
+        {
+          location: `${prefix}.search.getAnswer`,
+          scores: inaccurateResults.map((result) => result[1]),
+        },
+      );
     }
+  }
 
-    log.debug(`Searching for closest answer to question: ${question}`, {
+  if (Array.isArray(results) && results.length > 0) {
+    log.debug(
+      `Accepted ${results.length} similar answers that have a score <= ${config.searches.maxSimilarityScore}`,
+      {
         location: `${prefix}.search.getAnswer`,
-        question,
+        scores: results.map((result) => result[1]),
+      },
+    );
+
+    return results.map((result) => {
+      return {
+        ...result[0].metadata,
+        question: result[0].pageContent,
+        isOriginal: false,
+      };
     });
-
-    /**
-     * Scores will be between 0 and 1, where 0 is most accurate and 1 is least accurate
-     */
-    let results = (await answerVectorStore.similaritySearchWithScore(
-        question,
-        config.searches.KNN,
-    )) as Array<[AnswerDocument, number]>;
-
-    if (Array.isArray(results) && results.length > 0) {
-        // Filter out results with too high similarity score
-        results = results.filter(
-            (result) => result[1] <= config.searches.maxSimilarityScore,
-        );
-
-        const inaccurateResults = results.filter(
-            (result) => result[1] > config.searches.maxSimilarityScore,
-        );
-
-        if (
-            Array.isArray(inaccurateResults) &&
-            inaccurateResults.length > 0
-        ) {
-            log.debug(
-                `Rejected ${inaccurateResults.length} similar answers that have a score > ${config.searches.maxSimilarityScore}`,
-                {
-                    location: `${prefix}.search.getAnswer`,
-                    scores: inaccurateResults.map((result) => result[1]),
-                },
-            );
-        }
-    }
-
-    if (Array.isArray(results) && results.length > 0) {
-        log.debug(
-            `Accepted ${results.length} similar answers that have a score <= ${config.searches.maxSimilarityScore}`,
-            {
-                location: `${prefix}.search.getAnswer`,
-                scores: results.map((result) => result[1]),
-            },
-        );
-
-        return results.map((result) => {
-            return {
-                ...result[0].metadata,
-                question: result[0].pageContent,
-                isOriginal: false,
-            };
-        });
-    }
+  }
 }
 ```
 
@@ -634,72 +631,72 @@ Using this prompt, we generate the `semantic question` and use it to search for 
 
 ```typescript title="services/video-search/src/api/search.ts" {12-14,33,38,48,55,58,61-67}
 async function getVideos(question: string) {
-    log.debug(
-        `Performing similarity search for videos that answer: ${question}`,
-        {
-            question,
-            location: `${prefix}.search.search`,
-        },
-    );
+  log.debug(
+    `Performing similarity search for videos that answer: ${question}`,
+    {
+      question,
+      location: `${prefix}.search.search`,
+    },
+  );
 
-    const KNN = config.searches.KNN;
-    /* Simple standalone search in the vector DB */
-    return await (vectorStore.similaritySearch(question, KNN) as Promise<
-        VideoDocument[]
-    >);
+  const KNN = config.searches.KNN;
+  /* Simple standalone search in the vector DB */
+  return await (vectorStore.similaritySearch(question, KNN) as Promise<
+    VideoDocument[]
+  >);
 }
 
 async function searchVideos(
-    question: string,
-    { useCache = config.searches.answerCache }: VideoSearchOptions = {},
+  question: string,
+  { useCache = config.searches.answerCache }: VideoSearchOptions = {},
 ) {
-    log.debug(`Original question: ${question}`, {
-        location: `${prefix}.search.search`,
-    });
+  log.debug(`Original question: ${question}`, {
+    location: `${prefix}.search.search`,
+  });
 
-    if (useCache) {
-        const existingAnswer = await checkAnswerCache(question);
+  if (useCache) {
+    const existingAnswer = await checkAnswerCache(question);
 
-        if (typeof existingAnswer !== 'undefined') {
-            return existingAnswer;
-        }
+    if (typeof existingAnswer !== 'undefined') {
+      return existingAnswer;
     }
+  }
 
-    const semanticQuestion = await prompt.getSemanticQuestion(question);
+  const semanticQuestion = await prompt.getSemanticQuestion(question);
 
-    log.debug(`Semantic question: ${semanticQuestion}`, {
+  log.debug(`Semantic question: ${semanticQuestion}`, {
+    location: `${prefix}.search.search`,
+  });
+  let videos = await getVideos(semanticQuestion);
+
+  if (videos.length === 0) {
+    log.debug(
+      'No videos found for semantic question, trying with original question',
+      {
         location: `${prefix}.search.search`,
-    });
-    let videos = await getVideos(semanticQuestion);
+      },
+    );
 
-    if (videos.length === 0) {
-        log.debug(
-            'No videos found for semantic question, trying with original question',
-            {
-                location: `${prefix}.search.search`,
-            },
-        );
+    videos = await getVideos(question);
+  }
 
-        videos = await getVideos(question);
-    }
+  log.debug(`Found ${videos.length} videos`, {
+    location: `${prefix}.search.search`,
+  });
 
-    log.debug(`Found ${videos.length} videos`, {
-        location: `${prefix}.search.search`,
-    });
+  const answerDocument = await prompt.answerQuestion(question, videos);
 
-    const answerDocument = await prompt.answerQuestion(question, videos);
+  if (config.searches.answerCache) {
+    await answerVectorStore.addDocuments([answerDocument]);
+  }
 
-    if (config.searches.answerCache) {
-        await answerVectorStore.addDocuments([answerDocument]);
-    }
-
-    return [
-        {
-            ...answerDocument.metadata,
-            question: answerDocument.pageContent,
-            isOriginal: true,
-        },
-    ];
+  return [
+    {
+      ...answerDocument.metadata,
+      question: answerDocument.pageContent,
+      isOriginal: true,
+    },
+  ];
 }
 ```
 
@@ -736,9 +733,7 @@ That's it! The backend will now return the answer and supporting videos to the u
 
 Below are a couple screenshots from the application to see what it looks like when you find an existing answer to a question:
 
-
 ![Existing video answer](./images/video-qa-existing-answer.png)
-
 
 ![Supporting videos](./images/video-qa-supporting-videos.png)
 
