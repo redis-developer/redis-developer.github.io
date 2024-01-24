@@ -400,6 +400,13 @@ module.exports = {
                 'howtos/solutions/vector/image-summary-search/index-image-summary-search',
               ],
             },
+            {
+              type: 'category',
+              label: 'Triggers and Functions',
+              items: [
+                'howtos/solutions/triggers-and-functions/getting-started-tf/index-triggers-and-functions',
+              ],
+            },
           ],
         },
         'howtos/leaderboard/index-leaderboard',
