@@ -444,13 +444,6 @@ redis.registerStreamTrigger(
   'calculateStats', // trigger name
   'TRANSACTION_STREAM', // Detects new data added to the stream
   function (client, data) {
-    // data = JSON.stringify(
-    //     data,
-    //     (key, value) => (typeof value === "bigint" ? value.toString() : value) //id conversion
-    // );
-
-    // data = JSON.parse(data);
-
     var streamEntry = {};
     for (let i = 0; i < data.record?.length; i++) {
       streamEntry[data.record[i][0]] = data.record[i][1];
@@ -527,6 +520,13 @@ redis.registerStreamTrigger(
   },
 );
 ```
+
+In above `calculateStats` function, we are listening to `TRANSACTION_STREAM` and updating different sales statistics like
+
+- `statsTotalPurchaseAmount` variable stores total purchase amount
+- `statsProductPurchaseQtySet` is a sorted set which tracks trending products based on highest purchase quantity
+- `statsCategoryPurchaseAmountSet` is a sorted set which tracks category wise purchase interest
+- `statsBrandPurchaseAmountSet` is a sorted set which tracks largest brand purchases
 
 ### Adding the function to Redis
 
@@ -609,7 +609,7 @@ A sample command to add details to the stream:
 "XADD" "TRANSACTION_STREAM" "*" "action" "PAYMENT_PROCESSED" "userId" "USR_f0f00a86-7131"  "orderDetails" "{'orderId':'bc438c5d-117e-41bd-97fa-943c03be0b1c','products':[],'paymentId':'clrrl8yp50007pf851m7f92u2'}" "transactionPipeline" "['PAYMENT_PROCESSED']"
 ```
 
-The `calculateStats` function listens to `TRANSACTION_STREAM` stream and updates the sales statistics accordingly.
+The `calculateStats` function listens to `TRANSACTION_STREAM` stream for `PAYMENT_PROCESSED` action and updates the sales statistics accordingly.
 
 Check different stats variable values in RedisInsight which were used in trigger function `calculateStats`.
 ![stream-trigger-test-ri](./images/stream-trigger-test-ri.png)
