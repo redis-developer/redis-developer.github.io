@@ -398,6 +398,7 @@ module.exports = {
                 'howtos/solutions/vector/gen-ai-chatbot/index-solutions-gen-ai-chatbot',
                 'howtos/solutions/vector/semantic-text-search/index-semantic-text-search',
                 'howtos/solutions/vector/image-summary-search/index-image-summary-search',
+                'howtos/solutions/vector/video-qa/index-video-qa'
               ],
             },
             {
