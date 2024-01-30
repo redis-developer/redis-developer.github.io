@@ -3,7 +3,7 @@ id: index-video-qa
 title: Building an AI-Powered Video Q&A Application with Redis and LangChain
 sidebar_label: Building an AI-Powered Video Q&A Application with Redis and LangChain
 slug: /howtos/solutions/vector/ai-qa-videos-langchain-redis-openai-google
-authors: [prasan, will]
+authors: [will, prasan]
 ---
 
 import Authors from '@theme/Authors';
@@ -14,7 +14,7 @@ import Authors from '@theme/Authors';
 
 This tutorial focuses on building a Q&A answer engine for video content. It will cover the following topics:
 
-1. How to use `OpenAI`, `Google Gemini`, and `LangChain` to summarize videos content and generate vector embeddings
+1. How to use `OpenAI`, `Google Gemini`, and `LangChain` to summarize video content and generate vector embeddings
 1. How to use `Redis` to store and search vector embeddings
 1. How to use `Redis` as a semantic vector search cache
 
@@ -121,11 +121,9 @@ to the stock information in the application.
 
 4. **Search and answer retrieval**: The frontend, built with Next.js, allows users to ask questions. The application then searches the Redis database using semantic vector similarity to find relevant video content. It further uses the LLM to formulate answers, prioritizing information from video transcripts.
 
-
 ![Asking a question](./images/ask-question.png)
 
 5. **Presentation of results**: The app displays the most relevant videos along with the AI-generated answers, offering a comprehensive and interactive user experience. It also displays cached results from previous queries using semantic vector caching for faster response times.
-
 
 ![Existing answers](./images/video-qa-existing-answer.png)
 
@@ -149,7 +147,7 @@ To get started with our AI-powered video Q&A application, you'll first need to s
 
 ### Setting Up Redis
 
-Redis is used as our database to store and retrieve data efficiently. You can start quickly with a cloud-hosted Redis instance by signing up at redis.com/try-free. This is ideal for both development and testing purposes. You can easily store the data for this application within the limitations of the Redis free tier.
+Redis is used as our database to store and retrieve data efficiently. You can start quickly with a cloud-hosted Redis instance by signing up at [redis.com/try-free](https://redis.com/try-free). This is ideal for both development and testing purposes. You can easily store the data for this application within the limitations of the Redis free tier.
 
 ### Cloning the Repository
 
