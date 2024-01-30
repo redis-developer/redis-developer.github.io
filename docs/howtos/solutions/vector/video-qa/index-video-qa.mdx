@@ -45,8 +45,9 @@ Our application leverages these technologies to create a unique Q&A platform bas
 
 Here's how our application uses AI and semantic vector search to answer user questions based on video content:
 
-1. **Uploading videos**: Users can upload YouTube videos either via links (e.g. `https://www.youtube.com/watch?v=LaiQFZ5bXaM`) or video IDs (e.g. `LaiQFZ5bXaM`). The application processes these inputs to retrieve necessary video information.
-![Upload videos screenshot](./images/upload-videos.png)
+1. **Uploading videos**: Users can upload YouTube videos either via links (e.g. `https://www.youtube.com/watch?v=LaiQFZ5bXaM`) or video IDs (e.g. `LaiQFZ5bXaM`). The application processes these inputs to retrieve necessary video information. For the purposes of this tutorial, the app is pre-seeded with a collection of videos from the [Redis YouTube channel](https://www.youtube.com/@Redisinc).
+
+![Upload videos screenshot](./images/upload-videos.png).
 
 2. **Video processing and AI interaction**: Using the [Youtube Data API](https://developers.google.com/youtube/v3), the application obtains video `titles`, `descriptions`, and `thumbnails`. It also uses [SearchAPI.io](https://searchapi.io) to retrieve video transcripts. These transcripts are then passed to a large language model (LLM) - either Google Gemini or OpenAI's ChatGPT - for summarization and sample question generation. The LLM also generates vector embeddings for these summaries.
 
