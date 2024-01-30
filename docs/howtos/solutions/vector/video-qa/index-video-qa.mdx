@@ -45,7 +45,7 @@ Our application leverages these technologies to create a unique Q&A platform bas
 
 Here's how our application uses AI and semantic vector search to answer user questions based on video content:
 
-1. **Uploading videos**: Users can upload YouTube videos either via links (e.g. `https://www.youtube.com/watch?v=LaiQFZ5bXaM`) or video IDs (e.g. `LaiQFZ5bXaM`). The application processes these inputs to retrieve necessary video information. For the purposes of this tutorial, the app is pre-seeded with a collection of videos from the [Redis YouTube channel](https://www.youtube.com/@Redisinc).
+1. **Uploading videos**: Users can upload YouTube videos either via links (e.g. `https://www.youtube.com/watch?v=LaiQFZ5bXaM`) or video IDs (e.g. `LaiQFZ5bXaM`). The application processes these inputs to retrieve necessary video information. For the purposes of this tutorial, the app is pre-seeded with a collection of videos from the [Redis YouTube channel](https://www.youtube.com/@Redisinc). However, when you run the application you can adjust it to cover your own set of videos.
 
 ![Upload videos screenshot](./images/upload-videos.png).
 
@@ -531,16 +531,144 @@ One of the key features of our application is the ability to search through vide
 
 When a user submits a question through the frontend, the backend performs the following steps to obtain the answer to the question as well as supporting videos:
 
-1. An `answerVectorStore` is used to check if a similar question has already been answered. If so, we can skip the LLM and return the answer. This is called `semantic vector caching`.
-   - This step is optional, the user can choose to generate a unique answer every time.
-1. Assuming we need to generate a unique answer, we generate a semantically similar question to the one being asked. This helps to find the most relevant videos.
+1. We generate a semantically similar question to the one being asked. This helps to find the most relevant videos.
 1. We then use the `vectorStore` to search for the most relevant videos based on the semantic question.
 1. If we don't find any relevant videos, we search with the original question.
 1. Once we find videos, we call the LLM to answer the question.
-1. We cache the answer and videos in Redis by generating a vector embedding for the original question and storing it along with the answer and videos.
 1. Finally, we return the answer and supporting videos to the user.
 
-The `answerVectorStore` looks nearly identical to the `vectorStore` we defined earlier, but it uses a different [algorithm and disance metric](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/).
+To answer a question, we first generate a semantically similar question to the one being asked. This is done using the `QUESTION_PROMPT` defined below:
+
+```typescript title="services/video-search/src/api/templates/questions.ts"
+import { PromptTemplate } from 'langchain/prompts';
+
+const questionTemplate = `
+You are an expert in summarizing questions.
+Your goal is to reduce a question down to its simplest form while still retaining the semantic meaning.
+Below you find the question:
+--------
+{question}
+--------
+
+Total output will be a semantically similar question that will be used to search an existing dataset.
+
+SEMANTIC QUESTION:
+`;
+
+export const QUESTION_PROMPT = PromptTemplate.fromTemplate(questionTemplate);
+```
+
+Using this prompt, we generate the `semantic question` and use it to search for videos. We may also need to search using the original `question` if we don't find any videos with the `semantic question`. This is done using the `ORIGINAL_QUESTION_PROMPT` defined below:
+
+```typescript title="services/video-search/src/api/search.ts" {12-14,22,27,37,44,46-52}
+async function getVideos(question: string) {
+  log.debug(
+    `Performing similarity search for videos that answer: ${question}`,
+    {
+      question,
+      location: `${prefix}.search.search`,
+    },
+  );
+
+  const KNN = config.searches.KNN;
+  /* Simple standalone search in the vector DB */
+  return await (vectorStore.similaritySearch(question, KNN) as Promise<
+    VideoDocument[]
+  >);
+}
+
+async function searchVideos(question: string) {
+  log.debug(`Original question: ${question}`, {
+    location: `${prefix}.search.search`,
+  });
+
+  const semanticQuestion = await prompt.getSemanticQuestion(question);
+
+  log.debug(`Semantic question: ${semanticQuestion}`, {
+    location: `${prefix}.search.search`,
+  });
+  let videos = await getVideos(semanticQuestion);
+
+  if (videos.length === 0) {
+    log.debug(
+      'No videos found for semantic question, trying with original question',
+      {
+        location: `${prefix}.search.search`,
+      },
+    );
+
+    videos = await getVideos(question);
+  }
+
+  log.debug(`Found ${videos.length} videos`, {
+    location: `${prefix}.search.search`,
+  });
+
+  const answerDocument = await prompt.answerQuestion(question, videos);
+
+  return [
+    {
+      ...answerDocument.metadata,
+      question: answerDocument.pageContent,
+      isOriginal: true,
+    },
+  ];
+}
+```
+
+The code above shows the whole process for getting answers from the LLM and returning them to the user. Once relevant videos are identified, the backend uses either Google Gemini or OpenAI's ChatGPT to generate answers. These answers are formulated based on the video transcripts stored in Redis, ensuring they are contextually relevant to the user's query. The `ANSWER_PROMPT` used to ask the LLM for answers is as follows:
+
+```typescript title="services/video-search/src/api/templates/answers.ts"
+import { PromptTemplate } from 'langchain/prompts';
+
+const answerTemplate = `
+You are an expert in answering questions about Redis and Redis Stack.
+Your goal is to take a question and some relevant information extracted from videos and return the answer to the question.
+
+- Try to mostly use the provided video info, but if you can't find the answer there you can use other resources.
+- Make sure your answer is related to Redis. All questions are about Redis. For example, if a question is asking about strings, it is asking about Redis strings.
+- The answer should be formatted as a reference document using markdown. Make all headings and links bold, and add new paragraphs around any code blocks.
+- Your answer should include as much detail as possible and be no shorter than 500 words.
+
+Here is some extracted video information relevant to the question: {data}
+
+Below you find the question:
+--------
+{question}
+--------
+
+Total output will be the answer to the question.
+
+ANSWER:
+`;
+
+export const ANSWER_PROMPT = PromptTemplate.fromTemplate(answerTemplate);
+```
+
+That's it! The backend will now return the answer and supporting videos to the user.
+
+## Going further with semantic answer caching
+
+The application we've built in this tutorial is a great starting point for exploring the possibilities of AI-powered video Q&A. However, there are many ways to improve the application and make it more efficient. One such improvement is to use Redis as a semantic vector cache.
+
+Note in the previous section, we discussed making a call to the LLM to answer every question. There is a performance bottleneck during this step, because LLM response times vary, but can take several seconds. What if there was a way we could prevent unnecessary calls to the LLM? This is where `semantic vector caching` comes in.
+
+### What is semantic vector caching?
+
+Semantic vector caching happens when you take the results of a call to an LLM and cache them alongside the vector embedding for the prompt. In the case of our application, we could generate vector embeddings for the questions and store them in Redis with the answer from the LLM. This would allow us to avoid calling the LLM for similar questions that have already been answered.
+
+You might ask why store the question as a vector? Why not just store the question as a string? The answer is that storing the question as a vector allows us to perform semantic vector similarity searches. So rather than relying on someone asking the exact same question, we can determine an acceptable similarity score and return answers for similar questions.
+
+### How to implement semantic vector caching in Redis
+
+If you're already familiar with storing vectors in Redis, which we have covered in this tutorial, semantic vector caching is an extenson of that and operates in essentially the same way. The only difference is that we are storing the question as a vector, rather than the video summary. We are also using the [cache aside](https://www.youtube.com/watch?v=AJhTduDOVCs) pattern. The process is as follows:
+
+1. When a user asks a question, we perform a vector similarity search for existing answers to the question.
+1. If we find an answer, we return it to the user. Thus, avoiding a call to the LLM.
+1. If we don't find an answer, we call the LLM to generate an answer.
+1. We then store the question as a vector in Redis, along with the answer from the LLM.
+
+In order to store the question vectors we need to create a new vector store. This will create an index specifically for the question and answer vector. The code looks like this:
 
 ```typescript title="services/video-search/src/api/store.ts" {6-7}
 const answerVectorStore = new RedisVectorStore(embeddings, {
@@ -553,6 +681,8 @@ const answerVectorStore = new RedisVectorStore(embeddings, {
   },
 });
 ```
+
+The `answerVectorStore` looks nearly identical to the `vectorStore` we defined earlier, but it uses a different [algorithm and disance metric](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/). This algorithm is better suited for similarity searches for our questions.
 
 The following code demonstrates how to use the `answerVectorStore` to check if a similar question has already been answered.
 
@@ -620,130 +750,73 @@ async function checkAnswerCache(question: string) {
 
 The `similaritySearchWithScore` will find similar questions to the one being asked. It ranks them from `0` to `1`, where `0` is most similar or "closest". We then filter out any results that are too similar, as defined by the `maxSimilarityScore` environment variable. If we find any results, we return them to the user. Using a max score is crucial here, because we don't want to return inaccurate results.
 
-If we don't find answers in the `semantic vector cache` then we need to generate a unique answer. This is done by first generating a semantically similar question to the one being asked. This is done using the `QUESTION_PROMPT` defined below:
+To complete this process, we need to apply the `cache aside` pattern and store the question as a vector in Redis. This is done as follows:
 
-```typescript title="services/video-search/src/api/templates/questions.ts"
-import { PromptTemplate } from 'langchain/prompts';
-
-const questionTemplate = `
-You are an expert in summarizing questions.
-Your goal is to reduce a question down to its simplest form while still retaining the semantic meaning.
-Below you find the question:
---------
-{question}
---------
-
-Total output will be a semantically similar question that will be used to search an existing dataset.
-
-SEMANTIC QUESTION:
-`;
-
-export const QUESTION_PROMPT = PromptTemplate.fromTemplate(questionTemplate);
-```
-
-Using this prompt, we generate the `semantic question` and use it to search for videos. We may also need to search using the original `question` if we don't find any videos with the `semantic question`. This is done using the `ORIGINAL_QUESTION_PROMPT` defined below:
-
-```typescript title="services/video-search/src/api/search.ts" {12-14,33,38,48,55,58,61-67}
-async function getVideos(question: string) {
-  log.debug(
-    `Performing similarity search for videos that answer: ${question}`,
-    {
-      question,
-      location: `${prefix}.search.search`,
-    },
-  );
-
-  const KNN = config.searches.KNN;
-  /* Simple standalone search in the vector DB */
-  return await (vectorStore.similaritySearch(question, KNN) as Promise<
-    VideoDocument[]
-  >);
-}
-
+```typescript title="services/video-search/src/api/search.ts" {3,9-15,23-29,50-52}
 async function searchVideos(
-  question: string,
-  { useCache = config.searches.answerCache }: VideoSearchOptions = {},
+    question: string,
+    { useCache = config.searches.answerCache }: VideoSearchOptions = {},
 ) {
-  log.debug(`Original question: ${question}`, {
-    location: `${prefix}.search.search`,
-  });
-
-  if (useCache) {
-    const existingAnswer = await checkAnswerCache(question);
-
-    if (typeof existingAnswer !== 'undefined') {
-      return existingAnswer;
-    }
-  }
-
-  const semanticQuestion = await prompt.getSemanticQuestion(question);
-
-  log.debug(`Semantic question: ${semanticQuestion}`, {
-    location: `${prefix}.search.search`,
-  });
-  let videos = await getVideos(semanticQuestion);
-
-  if (videos.length === 0) {
-    log.debug(
-      'No videos found for semantic question, trying with original question',
-      {
+    log.debug(`Original question: ${question}`, {
         location: `${prefix}.search.search`,
-      },
-    );
+    });
 
-    videos = await getVideos(question);
-  }
+    if (useCache) {
+        const existingAnswer = await checkAnswerCache(question);
 
-  log.debug(`Found ${videos.length} videos`, {
-    location: `${prefix}.search.search`,
-  });
+        if (typeof existingAnswer !== 'undefined') {
+            return existingAnswer;
+        }
+    }
 
-  const answerDocument = await prompt.answerQuestion(question, videos);
+    const semanticQuestion = await prompt.getSemanticQuestion(question);
 
-  if (config.searches.answerCache) {
-    await answerVectorStore.addDocuments([answerDocument]);
-  }
+    log.debug(`Semantic question: ${semanticQuestion}`, {
+        location: `${prefix}.search.search`,
+    });
 
-  return [
-    {
-      ...answerDocument.metadata,
-      question: answerDocument.pageContent,
-      isOriginal: true,
-    },
-  ];
+    if (useCache) {
+        const existingAnswer = await checkAnswerCache(semanticQuestion);
+
+        if (typeof existingAnswer !== 'undefined') {
+            return existingAnswer;
+        }
+    }
+
+    let videos = await getVideos(semanticQuestion);
+
+    if (videos.length === 0) {
+        log.debug(
+            'No videos found for semantic question, trying with original question',
+            {
+                location: `${prefix}.search.search`,
+            },
+        );
+
+        videos = await getVideos(question);
+    }
+
+    log.debug(`Found ${videos.length} videos`, {
+        location: `${prefix}.search.search`,
+    });
+
+    const answerDocument = await prompt.answerQuestion(question, videos);
+
+    if (config.searches.answerCache) {
+        await answerVectorStore.addDocuments([answerDocument]);
+    }
+
+    return [
+        {
+            ...answerDocument.metadata,
+            question: answerDocument.pageContent,
+            isOriginal: true,
+        },
+    ];
 }
 ```
 
-The code above shows the whole process, from checking the `semantic vector cache` for existing answers, all the way to getting answers from the LLM and caching them in Redis for future potential questions. Once relevant videos are identified, the backend uses either Google Gemini or OpenAI's ChatGPT to generate answers. These answers are formulated based on the video transcripts stored in Redis, ensuring they are contextually relevant to the user's query. The `ANSWER_PROMPT` used to ask the LLM for answers is as follows:
-
-```typescript title="services/video-search/src/api/templates/answers.ts"
-import { PromptTemplate } from 'langchain/prompts';
-
-const answerTemplate = `
-You are an expert in answering questions about Redis and Redis Stack.
-Your goal is to take a question and some relevant information extracted from videos and return the answer to the question.
-
-- Try to mostly use the provided video info, but if you can't find the answer there you can use other resources.
-- Make sure your answer is related to Redis. All questions are about Redis. For example, if a question is asking about strings, it is asking about Redis strings.
-- The answer should be formatted as a reference document using markdown. Make all headings and links bold, and add new paragraphs around any code blocks.
-- Your answer should include as much detail as possible and be no shorter than 500 words.
-
-Here is some extracted video information relevant to the question: {data}
-
-Below you find the question:
---------
-{question}
---------
-
-Total output will be the answer to the question.
-
-ANSWER:
-`;
-
-export const ANSWER_PROMPT = PromptTemplate.fromTemplate(answerTemplate);
-```
-
-That's it! The backend will now return the answer and supporting videos to the user. Not included in this tutorial is an overview of the frontend `Next.js` app. However, you can find the code in the [GitHub repository](https://github.com/wjohnsto/genai-qa-videos) in the `app` directory.
+When a question is asked, we first check the answer cache. We check both the question and the generated semantic question. If we find an answer, we return it to the user. If we don't find an answer, we call the LLM to generate an answer. We then store the question as a vector in Redis, along with the answer from the LLM. It may look like we're doing more work here than we were without the cache, but keep in mind the LLM is the bottleneck. By doing this, we are avoiding unnecessary calls to the LLM.
 
 Below are a couple screenshots from the application to see what it looks like when you find an existing answer to a question:
 
@@ -754,6 +827,8 @@ Below are a couple screenshots from the application to see what it looks like wh
 ## Conclusion
 
 In this tutorial, we've explored how to build an AI-powered video Q&A application using Redis, LangChain, and various other technologies. We've covered setting up the environment, processing video uploads, and implementing search functionality. You also saw how to use Redis as a `vector store` and `semantic vector cache`.
+
+> NOTE: Not included in this tutorial is an overview of the frontend `Next.js` app. However, you can find the code in the [GitHub repository](https://github.com/wjohnsto/genai-qa-videos) in the `app` directory.
 
 ### Key takeaways
 
