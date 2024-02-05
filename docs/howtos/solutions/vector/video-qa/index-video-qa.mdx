@@ -227,7 +227,7 @@ You should be up and running now! The rest of this tutorial is focused on how th
 
 ### Video uploading and processing
 
-#### Handling video uploads and retreiving video transcripts and metadata
+#### Handling video uploads and retrieving video transcripts and metadata
 
 The backend is set up to handle YouTube video links or IDs. The relevant code snippet from the project demonstrates how these inputs are processed.
 
@@ -246,7 +246,7 @@ export async function load(videos: string[] = config.youtube.VIDEOS) {
     return typeof video === 'string';
   }) as string[];
 
-  // Get video title, description, and thumbail from YouTube API v3
+  // Get video title, description, and thumbnail from YouTube API v3
   const videoInfo = await getVideoInfo(videosToLoad);
 
   // Get video transcripts from SearchAPI.io, join the video info
@@ -523,7 +523,7 @@ async function storeVideoVectors(documents: VideoDocument[]) {
 
 Notice that we first check if we have already generated a vector using the Redis Set `VECTOR_SET`. If we have, we skip the LLM and use the existing vector. This avoids unnecessary API calls and can speed things up.
 
-### Redis vector search funcationality and AI integration for video Q&A
+### Redis vector search functionality and AI integration for video Q&A
 
 One of the key features of our application is the ability to search through video content using AI-generated queries. This section will cover how the backend handles search requests and interacts with the AI models.
 
@@ -661,7 +661,7 @@ You might ask why store the question as a vector? Why not just store the questio
 
 ### How to implement semantic vector caching in Redis
 
-If you're already familiar with storing vectors in Redis, which we have covered in this tutorial, semantic vector caching is an extenson of that and operates in essentially the same way. The only difference is that we are storing the question as a vector, rather than the video summary. We are also using the [cache aside](https://www.youtube.com/watch?v=AJhTduDOVCs) pattern. The process is as follows:
+If you're already familiar with storing vectors in Redis, which we have covered in this tutorial, semantic vector caching is an extension of that and operates in essentially the same way. The only difference is that we are storing the question as a vector, rather than the video summary. We are also using the [cache aside](https://www.youtube.com/watch?v=AJhTduDOVCs) pattern. The process is as follows:
 
 1. When a user asks a question, we perform a vector similarity search for existing answers to the question.
 1. If we find an answer, we return it to the user. Thus, avoiding a call to the LLM.
@@ -682,7 +682,7 @@ const answerVectorStore = new RedisVectorStore(embeddings, {
 });
 ```
 
-The `answerVectorStore` looks nearly identical to the `vectorStore` we defined earlier, but it uses a different [algorithm and disance metric](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/). This algorithm is better suited for similarity searches for our questions.
+The `answerVectorStore` looks nearly identical to the `vectorStore` we defined earlier, but it uses a different [algorithm and distance metric](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/). This algorithm is better suited for similarity searches for our questions.
 
 The following code demonstrates how to use the `answerVectorStore` to check if a similar question has already been answered.
 
