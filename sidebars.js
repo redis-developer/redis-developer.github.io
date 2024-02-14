@@ -408,6 +408,13 @@ module.exports = {
                 'howtos/solutions/triggers-and-functions/getting-started-tf/index-triggers-and-functions',
               ],
             },
+            {
+              type: 'category',
+              label: 'Geo Location Search',
+              items: [
+                'howtos/solutions/geo/getting-started-geo/index-geo-search',
+              ],
+            },
           ],
         },
         'howtos/leaderboard/index-leaderboard',

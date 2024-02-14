@@ -1,0 +1,21 @@
+The e-commerce microservices application consists of a frontend, built using [Next.js](https://nextjs.org/) with [TailwindCSS](https://tailwindcss.com/). The application backend uses [Node.js](https://nodejs.org). The data is stored in [Redis](https://redis.com/try-free/) and either MongoDB or PostgreSQL, using [Prisma](https://www.prisma.io/docs/reference/database-reference/supported-databases). Below are screenshots showcasing the frontend of the e-commerce app.
+
+**Dashboard:** Displays a list of products with different search functionalities, configurable in the settings page.
+![Redis Microservices E-commerce App Frontend - Products Page](images/01-dashboard.png)
+
+**Settings:** Accessible by clicking the gear icon at the top right of the dashboard. Control the search bar, chatbot visibility, and other features here.
+![Redis Microservices E-commerce App Frontend - Settings Page](images/08-settings.png)
+
+**Dashboard (Geo Location Search):** Configured for `Geo location search`, the search bar enables location queries. <br/>
+_Note:_ In our demo, each zipCode location is mapped with lat long coordinates.
+![Redis Microservices E-commerce App Frontend - Semantic Text Search](images/01-dashboard-geo-search.png)
+
+**Shopping Cart:** Add products to the cart and check out using the "Buy Now" button.
+![Redis Microservices E-commerce App Frontend - Shopping Cart](images/02-cart.png)
+
+**Order History:** Post-purchase, the 'Orders' link in the top navigation bar shows the order status and history.
+![Redis Microservices E-commerce App Frontend - Order History Page](images/05-order-history.png)
+
+**Admin Panel:** Accessible via the 'admin' link in the top navigation. Displays purchase statistics and trending products.
+![Redis Microservices E-commerce App Frontend - Admin Page](images/06-admin-charts.png)
+![Redis Microservices E-commerce App Frontend - Admin Page](images/07-admin-top-trending.png)
