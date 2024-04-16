@@ -266,7 +266,7 @@ This section outlines the implementation of the `getStoreProductsByGeoFilter` AP
 
 4. **Result Processing**: The function filters out duplicate products across different stores, ensuring unique product listings in the final output. It then formats the store locations into a more readable structure and compiles the final list of products to return.
 
-```js
+```ts
 import * as StoreInventoryRepo from '../../../common/models/store-inventory-repo';
 
 interface IInventoryBodyFilter {
@@ -276,7 +276,7 @@ interface IInventoryBodyFilter {
   userLocation?: {
     latitude?: number;
     longitude?: number;
-  },
+  };
 }
 
 const searchStoreInventoryByGeoFilter = async (
@@ -286,13 +286,14 @@ const searchStoreInventoryByGeoFilter = async (
   const redisClient = getNodeRedisClient();
   const repository = StoreInventoryRepo.getRepository();
   let storeProducts: IStoreInventory[] = [];
-  const trimmedStoreProducts: IStoreInventory[] = [] // similar item of other stores are removed
+  const trimmedStoreProducts: IStoreInventory[] = []; // similar item of other stores are removed
   const uniqueProductIds = {};
 
-  if (repository
-    && _inventoryFilter?.userLocation?.latitude
-    && _inventoryFilter?.userLocation?.longitude) {
-
+  if (
+    repository &&
+    _inventoryFilter?.userLocation?.latitude &&
+    _inventoryFilter?.userLocation?.longitude
+  ) {
     const lat = _inventoryFilter.userLocation.latitude;
     const long = _inventoryFilter.userLocation.longitude;
     const radiusInMiles = _inventoryFilter.searchRadiusInMiles || 500;
@@ -306,17 +307,13 @@ const searchStoreInventoryByGeoFilter = async (
       .gt(0)
       .and('storeLocation')
       .inRadius((circle) => {
-        return circle
-          .latitude(lat)
-          .longitude(long)
-          .radius(radiusInMiles)
-          .miles
+        return circle.latitude(lat).longitude(long).radius(radiusInMiles).miles;
       });
 
     if (_inventoryFilter.productDisplayName) {
       queryBuilder = queryBuilder
         .and('productDisplayName')
-        .matches(_inventoryFilter.productDisplayName)
+        .matches(_inventoryFilter.productDisplayName);
     }
 
     console.log(queryBuilder.query);
@@ -325,26 +322,38 @@ const searchStoreInventoryByGeoFilter = async (
     FT.SEARCH "storeInventory:storeInventoryId:index" "( ( ( (@statusCode:[1 1]) (@stockQty:[(0 +inf]) ) (@storeLocation:[-73.968285 40.785091 50 mi]) ) (@productDisplayName:'puma') )"
             */
 
-   // (3) --- Executing the Query
+    // (3) --- Executing the Query
     const indexName = `storeInventory:storeInventoryId:index`;
     const aggregator = await redisClient.ft.aggregate(
       indexName,
       queryBuilder.query,
       {
-        LOAD: ["@storeId", "@storeName", "@storeLocation", "@productId", "@productDisplayName", "@stockQty"],
-        STEPS: [{
-          type: AggregateSteps.APPLY,
-          expression: `geodistance(@storeLocation, ${long}, ${lat})/1609`,
-          AS: 'distInMiles'
-        }, {
-          type: AggregateSteps.SORTBY,
-          BY: ["@distInMiles", "@productId"]
-        }, {
-          type: AggregateSteps.LIMIT,
-          from: 0,
-          size: 1000,
-        }]
-      });
+        LOAD: [
+          '@storeId',
+          '@storeName',
+          '@storeLocation',
+          '@productId',
+          '@productDisplayName',
+          '@stockQty',
+        ],
+        STEPS: [
+          {
+            type: AggregateSteps.APPLY,
+            expression: `geodistance(@storeLocation, ${long}, ${lat})/1609`,
+            AS: 'distInMiles',
+          },
+          {
+            type: AggregateSteps.SORTBY,
+            BY: ['@distInMiles', '@productId'],
+          },
+          {
+            type: AggregateSteps.LIMIT,
+            from: 0,
+            size: 1000,
+          },
+        ],
+      },
+    );
 
     /* Sample command to run on CLI
         FT.AGGREGATE "storeInventory:storeInventoryId:index"
@@ -360,37 +369,36 @@ const searchStoreInventoryByGeoFilter = async (
 
     if (!storeProducts.length) {
       // throw `Product not found with in ${radiusInMiles}mi range!`;
-    }
-    else {
-
-     // (4) --- Result Processing
+    } else {
+      // (4) --- Result Processing
       storeProducts.forEach((storeProduct) => {
-        if (storeProduct?.productId && !uniqueProductIds[storeProduct.productId]) {
+        if (
+          storeProduct?.productId &&
+          !uniqueProductIds[storeProduct.productId]
+        ) {
           uniqueProductIds[storeProduct.productId] = true;
 
-          if (typeof storeProduct.storeLocation == "string") {
-            const location = storeProduct.storeLocation.split(",");
+          if (typeof storeProduct.storeLocation == 'string') {
+            const location = storeProduct.storeLocation.split(',');
             storeProduct.storeLocation = {
               longitude: Number(location[0]),
               latitude: Number(location[1]),
-            }
+            };
           }
 
-          trimmedStoreProducts.push(storeProduct)
+          trimmedStoreProducts.push(storeProduct);
         }
       });
     }
-  }
-  else {
-    throw "Mandatory fields like userLocation latitude / longitude missing !"
+  } else {
+    throw 'Mandatory fields like userLocation latitude / longitude missing !';
   }
 
   return {
     storeProducts: trimmedStoreProducts,
-    productIds: Object.keys(uniqueProductIds)
+    productIds: Object.keys(uniqueProductIds),
   };
 };
-
 ```
 
 The implementation demonstrates a practical use case for Redis's Geo Location search capabilities, showcasing how to perform proximity searches combined with other filtering criteria (like product name) and present the results in a user-friendly format.

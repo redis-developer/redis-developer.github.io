@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  clientModules: ['./redirect.js'],
   title: 'The Home of Redis Developers',
   tagline:
     'Learn all the best practices to get up and running with Redis in no time. Get started and discover the power of Redis, whether on your local machines or in the cloud.',
@@ -181,7 +182,7 @@ module.exports = {
         name: 'Tugdual Grall',
         title: 'Former Technical Marketing Manager at Redis',
         image: 'profile_pic_tugdual_grall.png',
-      }
+      },
     },
   },
   themeConfig:
@@ -202,7 +203,7 @@ module.exports = {
           'elixir',
           'groovy',
           'sql',
-          'typescript'
+          'typescript',
         ],
       },
 
@@ -298,14 +299,14 @@ module.exports = {
         // Useful if you want to support a single color mode
         disableSwitch: false,
       },
-        announcementBar: {
-          id: 'redis-7-2-release', // Any value that will identify this message.
-          content:
-            '<div class="announcement-bar"><a href="https://redis.com/blog/introducing-redis-7-2/" target="_blank" rel="noopener"><span>Announcing Redis 7.2 and Enhanced Vector DB</span> <span style="margin-left:1rem">Learn more</span> <span style="margin-left:0.25rem">→</span></a></div>',
-          backgroundColor: 'rgb(210, 215, 254)', // Defaults to `#fff`.
-          textColor: 'rgb(22 31 49)', // Defaults to `#000`.
-          isCloseable: true, // Defaults to `true`.
-        },
+      announcementBar: {
+        id: 'redis-7-2-release', // Any value that will identify this message.
+        content:
+          '<div class="announcement-bar"><a href="https://redis.com/blog/introducing-redis-7-2/" target="_blank" rel="noopener"><span>Announcing Redis 7.2 and Enhanced Vector DB</span> <span style="margin-left:1rem">Learn more</span> <span style="margin-left:0.25rem">→</span></a></div>',
+        backgroundColor: 'rgb(210, 215, 254)', // Defaults to `#fff`.
+        textColor: 'rgb(22 31 49)', // Defaults to `#000`.
+        isCloseable: true, // Defaults to `true`.
+      },
     }),
   presets: [
     [
@@ -354,5 +355,5 @@ module.exports = {
   plugins: [
     'docusaurus-plugin-sass',
     path.resolve(__dirname, 'plugins', 'gtm'),
-  ]
+  ],
 };
