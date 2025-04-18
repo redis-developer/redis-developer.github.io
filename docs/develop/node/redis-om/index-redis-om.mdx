@@ -106,7 +106,7 @@ Create a file named `server.js` in the root of your project folder and populate 
 import express from 'express';
 
 // create an express app and use JSON
-let app = new express();
+const app = new express();
 app.use(express.json());
 
 // setup the root level GET to return name and version from package.json
@@ -163,7 +163,7 @@ class Song extends Entity {}
 Schemas define the fields on your entity, their types, and how they are mapped internally to Redis. By default, entities map to Hashes in Redis but we want ours to use JSON instead. When a `Schema` is created, it will add properties to the provided entity class based on the schema information provided. Here's a `Schema` that maps to our `Song`:
 
 ```javascript
-let schema = new Schema(Song, {
+const schema = new Schema(Song, {
   title: { type: 'string' }, // the title of the song
   artist: { type: 'string' }, // who performed the song
   genres: { type: 'string[]' }, // array of strings for the genres of the song
@@ -178,7 +178,7 @@ let schema = new Schema(Song, {
 Clients are used to connect to Redis. Create a `Client` and pass your Redis URL in the constructor. If you don't specify a URL, it will default to `redis://localhost:6379`. Clients have methods to `.open`, `.close`, and `.execute` raw Redis commands, but we're just going to open it:
 
 ```javascript
-let client = await new Client().open();
+const client = await new Client().open();
 ```
 
 > Remember that _top-level await_ stuff I mentioned at the top of the document? There it is!
@@ -186,7 +186,7 @@ let client = await new Client().open();
 Now we have all the pieces that we need to create a `Repository`. Repositories are the main interface into Redis OM. They give us the methods to read, write, and remove entities. Create a repository—and make sure it's exported as you'll need it when we get into the Express stuff:
 
 ```javascript
-export let songRepository = client.fetchRepository(schema);
+export const songRepository = client.fetchRepository(schema);
 ```
 
 We're almost done with setting up our repository. But we still need to create an index or we won't be able to search on anything. We do that by calling `.createIndex`. If an index already exists and it's the same, this function won't do anything. If it is different, it'll drop it and create a new one. In a real environment, you'd probably want to create your index as part of CI/CD. But we'll just cram them into our main code for this example:
@@ -205,7 +205,7 @@ Let's create a truly RESTful API with the CRUD operations mapping to PUT, GET, P
 import { Router } from 'express';
 import { songRepository as repository } from './song-repository.js';
 
-export let router = Router();
+export const router = Router();
 ```
 
 This router needs to be added in `server.js` under the `/song` path so let's do that next. Add the following line of code to at the top of `server.js`—with all the other imports—to import the song router:
@@ -227,7 +227,7 @@ import express from 'express';
 import { router as songRouter } from './song-router.js';
 
 // create an express app and use JSON
-let app = new express();
+const app = new express();
 app.use(express.json());
 
 // bring in some routers
@@ -252,7 +252,7 @@ Now, let's start putting some routes in our `song-router.js`. We'll create a son
 ```javascript
 router.put('/', async (req, res) => {
   // create the Song so we can save it
-  let song = repository.createEntity();
+  const song = repository.createEntity();
 
   // set all the properties, converting missing properties to null
   song.title = req.body.title ?? null;
@@ -265,7 +265,7 @@ router.put('/', async (req, res) => {
   song.link = req.body.link ?? null;
 
   // save the Song to Redis
-  let id = await repository.save(song);
+  const id = await repository.save(song);
 
   // return the id of the newly created Song
   res.send({ id });
@@ -300,7 +300,7 @@ Create down, let's add a GET route to read this song from HTTP instead of using 
 ```javascript
 router.get('/:id', async (req, res) => {
   // fetch the Song
-  let song = await repository.fetch(req.params.id);
+  const song = await repository.fetch(req.params.id);
 
   // return the Song we just fetched
   res.send(song);
@@ -336,7 +336,7 @@ Here's the code to update using a POST route. You'll note this code is nearly id
 ```javascript
 router.post('/:id', async (req, res) => {
   // fetch the Song we are replacing
-  let song = await repository.fetch(req.params.id);
+  const song = await repository.fetch(req.params.id);
 
   // set all the properties, converting missing properties to null
   song.title = req.body.title ?? null;
@@ -349,7 +349,7 @@ router.post('/:id', async (req, res) => {
   song.link = req.body.link ?? null;
 
   // save the Song to Redis
-  let id = await repository.save(song);
+  const id = await repository.save(song);
 
   // return the id of the Song we just saved
   res.send({ id });
@@ -431,7 +431,7 @@ Like with the CRUD operations for songs, we need to first create a router. This 
 import { Router } from 'express';
 import { songRepository as repository } from './song-repository.js';
 
-export let router = Router();
+export const router = Router();
 ```
 
 Add this router to Express in `server.js` under `/songs`, also like we did before. And, again, note the plural. Your `server.js` should now look like this:
@@ -442,7 +442,7 @@ import { router as songRouter } from './song-router.js';
 import { router as songsRouter } from './songs-router.js';
 
 // create an express app and use JSON
-let app = new express();
+const app = new express();
 app.use(express.json());
 
 // bring in some routers
@@ -469,7 +469,7 @@ Here's the simplest search—it just returns everything. Go ahead and add it to 
 
 ```javascript
 router.get('/', async (req, res) => {
-  let songs = await repository.search().returnAll();
+  const songs = await repository.search().returnAll();
   res.send(songs);
 });
 ```
@@ -482,8 +482,8 @@ We can search for a specific field by calling `.where` and `.eq`. This route fin
 
 ```javascript
 router.get('/by-artist/:artist', async (req, res) => {
-  let artist = req.params.artist;
-  let songs = await repository.search().where('artist').eq(artist).returnAll();
+  const artist = req.params.artist;
+  const songs = await repository.search().where('artist').eq(artist).returnAll();
   res.send(songs);
 });
 ```
@@ -496,8 +496,8 @@ Genres are stored as an array of strings. You can use `.contains` to see if the 
 
 ```javascript
 router.get('/by-genre/:genre', async (req, res) => {
-  let genre = req.params.genre;
-  let songs = await repository
+  const genre = req.params.genre;
+  const songs = await repository
     .search()
     .where('genres')
     .contains(genre)
@@ -515,9 +515,9 @@ This route lets you get all the songs between two years. Great for finding all t
 
 ```javascript
 router.get('/between-years/:start-:stop', async (req, res) => {
-  let start = Number.parseInt(req.params.start);
-  let stop = Number.parseInt(req.params.stop);
-  let songs = await repository
+  const start = Number.parseInt(req.params.start);
+  const stop = Number.parseInt(req.params.stop);
+  const songs = await repository
     .search()
     .where('year')
     .between(start, stop)
@@ -534,8 +534,8 @@ Let's add the final route to find songs that have certain words in the lyrics us
 
 ```javascript
 router.get('/with-lyrics/:lyrics', async (req, res) => {
-  let lyrics = req.params.lyrics;
-  let songs = await repository
+  const lyrics = req.params.lyrics;
+  const songs = await repository
     .search()
     .where('lyrics')
     .match(lyrics)
