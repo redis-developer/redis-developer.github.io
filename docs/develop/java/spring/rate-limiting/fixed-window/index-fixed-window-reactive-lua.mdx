@@ -28,16 +28,17 @@ if the request is to be rejected or `false` otherwise:
 ```py
 -- rateLimiter.lua
 local key = KEYS[1]
-local requests = tonumber(redis.call('GET', key) or '-1')
 local max_requests = tonumber(ARGV[1])
 local expiry = tonumber(ARGV[2])
+local requests = tonumber(redis.call('INCR', key))
 
-if (requests == -1) or (requests < max_requests) then
-  redis.call('INCR', key)
+if (requests == 1) then
   redis.call('EXPIRE', key, expiry)
-  return false
-else
+end
+if (requests > max_requests) then
   return true
+else
+  return false
 end
 ```
 
@@ -45,14 +46,14 @@ Place the script under `src/main/resources/scripts`. Now, Let's break it down:
 
 1. Lua scripts in Redis work with keys (`KEYS[]`) and arguments (`ARGV[]`) in our case
    we are expecting one `key` in `KEYS[1]` (Lua arrays are 1-based)
-2. We retrieve the quota for the key in `requests` by making a `call` to the `GET` command,
-   returning `-1` if the key does not exist, and converting the value to a number.
-3. The quota is passed as the first argument (`ARGV[1]`) and stored in `max_requests`, the
+2. The quota is passed as the first argument (`ARGV[1]`) and stored in `max_requests`, the
    expiry in seconds is the second argument and stored in `expiry`
-4. The `if` statement checks whether the request is the first request in the time window or
-   if the number of requests have not exceeded the quota, in which case we run the `INCR`-`EXPIRE`
-   commands and retunr `false` (meaning we are not rate limiting and allowing the request through).
-5. If they've exceeded the quote, then we rate limit by returning `true`
+3. We INCR the key. If it doesn't exist, Redis creates it with a value of 0 before
+   incrementing it. It returns the new, incremented value. This is our new `requests`
+   count.
+4. If Redis returned 1, it created the key, so we set its expiry.
+5. If they've exceeded the quota, then we rate limit by returning `true`. Otherwise
+   we return `false`.
 
 If you want to learn more about Lua, see [Programming in Lua](https://www.lua.org/pil/contents.html).
 
